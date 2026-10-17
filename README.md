@@ -10,7 +10,8 @@ Ministral-3-8B-Instruct-2512, Qwen3.5-9B).
 | [`kvpress/`](kvpress/) | our fork of [NVIDIA/kvpress](https://github.com/NVIDIA/kvpress) (via skylight-org/kvpress) with the presses and model support the evaluation uses |
 | [`environment/`](environment/) | the exact Python environment |
 
-Tag `final-eval-as-run` marks the code exactly as it ran for the paper.
+Tag `final-eval-as-run` marks the code exactly as it ran for the paper; its
+[release](https://github.com/skylight-org/vkv/releases/tag/final-eval-as-run) holds our Fast KVzip gates.
 
 kvpress is Apache-2.0 (`kvpress/LICENSE`). The Fast KVzip authors' training code is not included (it has no
 license); `final_eval/fastkvzip_gates/fetch_vendor.sh` downloads it at the pinned commit.

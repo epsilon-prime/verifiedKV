@@ -35,10 +35,18 @@ final_eval/
    ```
    Jobs run with `HF_HUB_OFFLINE=1`, so anything missing fails at load time, not silently.
 3. **Our Fast KVzip gates** for Ministral 3 and Qwen3.5 (the authors released none) are not in git (200 MB).
-   Put them in `fastkvzip_gates/gates/<model>/q4_dim16_sink16.pt` and check them with
-   `cd fastkvzip_gates/gates && md5sum -c ../GATES.md5`, or retrain them (`fastkvzip_gates/`). Qwen3-4B uses
-   the authors' released gate, which `download.py` fetches. Only the `fastkvzip` and `fast_needle_final` arms
-   need gates.
+   They are attached to the
+   [`final-eval-as-run` release](https://github.com/skylight-org/vkv/releases/tag/final-eval-as-run):
+   ```bash
+   cd final_eval/fastkvzip_gates
+   gh release download final-eval-as-run -R skylight-org/vkv -p '*.pt' -p gates.md5   # or from the release page
+   md5sum -c gates.md5
+   for m in ministral-3-8b-instruct-2512-bf16 qwen3.5-9b; do
+     mkdir -p gates/$m && mv ${m}__q4_dim16_sink16.pt gates/$m/q4_dim16_sink16.pt
+   done
+   ```
+   Or retrain them (`fastkvzip_gates/`). Qwen3-4B uses the authors' released gate, which `download.py` fetches.
+   Only the `fastkvzip` and `fast_needle_final` arms need gates.
 
 ## Running
 
