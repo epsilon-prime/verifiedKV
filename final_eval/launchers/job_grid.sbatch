@@ -1,30 +1,31 @@
 #!/bin/bash
-#SBATCH --job-name=p3grid
+#SBATCH --job-name=vkv-final
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=16
 #SBATCH --mem=192G
 #SBATCH --time=16:00:00
-#SBATCH --output=/home/rethinkingai-self/23b1835/phase3/experiments/final_eval/grid/logs/%x-%j.out
-# usage: SWEEPS="sweeps/<model>_<len>_r<x>.yaml ..." sbatch -p dgx --qos=dgx job_grid.sbatch   (FINAL GRID: test rows; submit only on an explicit go)
-# 128k sweeps need an 80 GB A100 (dgx) for every model: Qwen3.5-9B peaks at ~50 GB on a 174k-token row
-# and runs out of memory on an A40. 32k sweeps fit an A40.
-# Resumable: run_check skips cells that already hold metrics.json, so a resubmit only runs what is left
-# (e.g. the fastkvzip cells once a model's gates exist).
+#SBATCH --output=logs/%x-%j.out
+# Run sweeps of the final grid on one GPU. Submit from final_eval/ (the log path above is relative to it):
+#     cd final_eval && SWEEPS="sweeps/<model>_<len>_r<x>[_suffix].yaml ..." sbatch -p <partition> launchers/job_grid.sbatch
+# GPU memory: 128k sweeps need an 80 GB card (cells peak at 52-68 GB; Qwen3.5-9B ~50 GB on a 174k-token row);
+# 32k sweeps fit a 48 GB card (peak <= 31 GB). Set --time from README.md's cost table: a job stopped at its
+# limit keeps its finished cells, and a resubmit runs only what is left (cells holding metrics.json are skipped).
+# Optional environment: ENV (conda env, default kvpress-final), CONDA_SH, HF_HOME, KVPRESS_SCORE_CACHE, GATES.
 set -euo pipefail
+cd "${SLURM_SUBMIT_DIR:-$PWD}"
+[ -f run_sweep.py ] || { echo "submit from final_eval/ (no run_sweep.py in $PWD)" >&2; exit 1; }
 
-source "$HOME/miniforge3/etc/profile.d/conda.sh"
+source "${CONDA_SH:-$HOME/miniforge3/etc/profile.d/conda.sh}"
 conda activate "${ENV:-kvpress-final}"
-export PYTHONPATH="$HOME/src/kvpress-e5"
-export CONDA_OVERRIDE_CUDA=12.9 HF_HOME="$HOME/hf" TMPDIR="$HOME/tmp" \
+export HF_HOME="${HF_HOME:-$HOME/.cache/huggingface}" \
        TOKENIZERS_PARALLELISM=false HF_HUB_OFFLINE=1 HF_DATASETS_OFFLINE=1 \
        PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
-       KVPRESS_FASTKVZIP_GATES="${GATES:-$HOME/phase3/experiments/final_eval/fastkvzip_gates/gates}"
-# RULER and SCBench scorers import nltk -> sqlite3, which needs a CXXABI the node's libstdc++ lacks
+       KVPRESS_FASTKVZIP_GATES="${GATES:-$PWD/fastkvzip_gates/gates}"
+# RULER and SCBench scorers import nltk -> sqlite3, which needs a newer CXXABI than some system libstdc++ have
 export LD_LIBRARY_PATH="$CONDA_PREFIX/lib:${LD_LIBRARY_PATH:-}"
 
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
-cd "$HOME/phase3/experiments/final_eval/grid"
 for SW in $SWEEPS; do
-  stdbuf -oL -eL python -u "$HOME/phase3/harness_check/run_check.py" --sweep "$PWD/$SW" 2>&1 \
+  stdbuf -oL -eL python -u run_sweep.py --sweep "$PWD/$SW" 2>&1 \
     | grep --line-buffered -v "Loading weights"
 done

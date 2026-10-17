@@ -1,10 +1,11 @@
-"""Harness check: one model load per job, resumable, over a (dataset, task, arm) list.
+"""Run one sweep: one model load per job, resumable, over a (dataset, task, arm) list.
 
-    SWEEP=sweeps/tierA_llama.yaml sbatch -p a40 --qos=a40 job_check.sbatch
+    python final_eval/run_sweep.py --sweep sweeps/qwen3-4b_32k_r16_ruler.yaml
+    SWEEPS="sweeps/a.yaml sweeps/b.yaml" sbatch -p <partition> final_eval/launchers/job_grid.sbatch
 
-Structure copied from phase2/experiment6/run_sweep.py so the two behave identically: a run holding
-a metrics.json is skipped, which makes a requeued job resume, and the model is loaded once and
-monkeypatched onto each runner so a long job amortises the load.
+Results go to <folder above the sweep's folder>/results/<group>/, so sweeps/x.yaml writes to
+final_eval/results/<group>/. A run holding a metrics.json is skipped, which makes a requeued job resume, and
+the model is loaded once and monkeypatched onto each runner so a long job amortises the load.
 
 Yaml keys: group, model, cells (list of {dataset, task}), arms, ratio, n_samples / fraction /
 n_contexts, max_context_length.
@@ -23,8 +24,11 @@ import torch
 import yaml
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-HOME = os.path.expanduser("~")
-sys.path.insert(0, os.path.join(HOME, "src", "kvpress-e5", "evaluation"))
+KVPRESS_DIR = os.path.join(os.path.dirname(HERE), "kvpress")
+# This repo's kvpress, ahead of any other kvpress installed in the environment: the arms and the
+# model support for the final evaluation live only in this copy.
+sys.path.insert(0, os.path.join(KVPRESS_DIR, "evaluation"))
+sys.path.insert(0, KVPRESS_DIR)
 sys.path.insert(0, HERE)
 
 KEPT_RE = re.compile(r"kept fraction ([0-9.]+)")
@@ -48,18 +52,14 @@ def log(m):
 
 import evaluate  # noqa: E402
 import evaluate_registry  # noqa: E402
+import kvpress  # noqa: E402
 
-# Offline loading. `load_dataset(repo, data_dir=...)` cannot resolve from a local cache, only a
-# config can, so LongBench and RULER-4096 fail under HF_DATASETS_OFFLINE with
-# "Couldn't find cache for <repo> for config 'default-data_dir=...'". Phase 2 solved this with a
-# dispatcher that reads the hub snapshot's parquet and jsonl directly; import it rather than
-# reimplement it, so the rows are byte-identical to what Phase 2 scored.
-#
-# ruler32k / ruler64k / ruler128k do NOT go through this: evaluate dispatches them to
-# load_ruler_length_dataset, which uses the config form and already resolves offline.
-sys.path.insert(0, os.path.join(HOME, "phase2", "experiment4"))
-import data as phase2_data  # noqa: E402
+assert os.path.abspath(kvpress.__file__).startswith(KVPRESS_DIR + os.sep), \
+    f"kvpress imported from {kvpress.__file__}, not from this repo ({KVPRESS_DIR})"
 
+# The final grid's datasets (ruler32k / ruler128k, loft) never reach evaluate.load_dataset: evaluate
+# dispatches them to load_ruler_length_dataset and load_loft_dataset, which resolve offline. Only
+# SCBench is rerouted below.
 _real_load_dataset = evaluate.load_dataset
 
 
@@ -93,35 +93,24 @@ def _scbench_local(config: str):
 
 
 def _load(path, *a, **kw):
-    """Route each benchmark to the loader that is actually correct for it.
+    """SCBench from the hub snapshot's jsonl (see ``_scbench_local``); everything else unchanged.
 
-    SCBench goes to the REAL ``load_dataset``. It publishes its tasks as configs, which resolve
-    from the local cache offline (verified directly), so it never needed the patch. Sending it to
-    Phase 2's loader is wrong twice over: that loader takes BARE task names while
-    ``EvaluationConfig`` normalises ``summary`` to ``scbench_summary``, and it returns rows already
-    flattened to one per turn, so ``n_samples`` would select 5 random *turns* rather than 5
-    *contexts* and ``flatten_multi_turns`` would then run a second time on a frame with no
-    ``multi_turns`` column. It also silently applies experiment3's own length filter and
-    ``E3_N_CTX``.
-
-    Everything else keeps the patch: ``load_dataset(repo, data_dir=...)`` cannot resolve from a
-    local cache, only a config can, so LongBench and RULER-4096 fail under ``HF_DATASETS_OFFLINE``
-    with "Couldn't find cache for <repo> for config 'default-data_dir=...'".
-
-    ruler32k / ruler64k / ruler128k reach neither: evaluate dispatches them to
-    load_ruler_length_dataset, which uses its own import and already resolves offline.
+    ruler32k / ruler64k / ruler128k and loft never get here: evaluate dispatches them to
+    load_ruler_length_dataset and load_loft_dataset. Under ``HF_DATASETS_OFFLINE``, LongBench and
+    RULER-4096 cannot load through this path (``load_dataset(repo, data_dir=...)`` resolves only
+    online), which does not affect the final grid.
     """
     if "SCBench" in str(path):
         config = a[0] if a else (kw.get("name") or kw.get("data_dir"))
         return _scbench_local(str(config))
-    return phase2_data.load(path, *a, **kw)
+    return _real_load_dataset(path, *a, **kw)
 
 
 evaluate.load_dataset = _load
 
 # LOFT: kvpress's loader returns the dev (10) AND test (100) questions of a task's one shared context,
 # so n_samples / fraction would mix them. Score one split, named in the sweep: test by default, dev only
-# for tuning (final_eval/SETUP.md P9). Patched on evaluate's module globals, where run_evaluation looks
+# for tuning (docs/SETUP.md P9). Patched on evaluate's module globals, where run_evaluation looks
 # the loader up at call time.
 LOFT_SPLIT = SWEEP.get("loft_split", "test")
 _real_load_loft = evaluate.load_loft_dataset

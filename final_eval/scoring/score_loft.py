@@ -2,7 +2,7 @@
 
     python score_loft.py <results_dir> [<results_dir> ...] [--out scores.csv]
 
-    e.g. python score_loft.py ../grid/results/final_qwen3-4b --out final_qwen3-4b_loft.csv
+    e.g. python scoring/score_loft.py results/final_qwen3-4b --out final_qwen3-4b_loft.csv   (from final_eval/)
 
 Why (audit, 2026-10-14; confirmed in SETUP section 4d): kvpress's `benchmarks/loft/calculate_metrics.py` scores
 exactly as LOFT does, but its `extract_prediction` is more lenient than LOFT's `utils.extract_prediction`
@@ -30,7 +30,8 @@ import sys
 
 import pandas as pd
 
-sys.path.insert(0, os.path.expanduser("~/src/kvpress-e5/evaluation"))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+                                "kvpress", "evaluation"))  # this repo's kvpress
 from benchmarks.loft import calculate_metrics as cm  # noqa: E402
 
 KVPRESS_EXTRACT = cm.extract_prediction

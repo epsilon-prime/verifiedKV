@@ -22,9 +22,16 @@ class CachedKVzipPress(KVzipPress):
     gives exactly the uncached result. The cache key is a hash of the context token ids, the model
     name, ``n_sink`` and the context length. Writes are atomic, so parallel jobs can share the
     directory. Set ``KVPRESS_NO_SCORE_CACHE=1`` to bypass it.
+
+    The directory is ``$KVPRESS_SCORE_CACHE`` if set (read when kvpress is imported), else
+    ``~/.cache/kvpress/kvzip_scores``. The key does not include the code version or the GPU, and the first
+    writer wins: clear the directory after changing the scoring code, and do not share one directory
+    between GPU types if runs must be comparable bit for bit.
     """
 
-    cache_dir: str = os.path.join(os.path.expanduser("~"), "phase3", "cache", "kvzip_scores")
+    cache_dir: str = os.environ.get(
+        "KVPRESS_SCORE_CACHE", os.path.join(os.path.expanduser("~"), ".cache", "kvpress", "kvzip_scores")
+    )
 
     def _score_cache_path(self, model: PreTrainedModel) -> str:
         ids = self._context_ids.detach().cpu().numpy().tobytes()

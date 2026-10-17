@@ -1,13 +1,15 @@
 #!/bin/bash
-#SBATCH --job-name=p3gate-check
+#SBATCH --job-name=gate-check
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=64G
 #SBATCH --time=01:00:00
-#SBATCH --output=/home/rethinkingai-self/23b1835/phase3/experiments/final_eval/fastkvzip_gates/logs/%x-%j.out
-# usage: NAME=qwen3.5-9b sbatch -p l40 --qos=l40 job_check.sbatch   (CPU work; GPU partitions only)
+#SBATCH --output=logs/%x-%j.out
+# Scan extracted features for values the trainer cannot take (CPU work). Submit from final_eval/fastkvzip_gates/:
+#     NAME=<model dir name> sbatch -p <partition> job_check.sbatch
 set -euo pipefail
-source "$HOME/miniforge3/etc/profile.d/conda.sh"
-conda activate kvpress-final
-cd "$HOME/phase3/experiments/final_eval/fastkvzip_gates"
+cd "${SLURM_SUBMIT_DIR:-$PWD}"
+[ -f train_gates.py ] || { echo "submit from final_eval/fastkvzip_gates/" >&2; exit 1; }
+source "${CONDA_SH:-$HOME/miniforge3/etc/profile.d/conda.sh}"
+conda activate "${ENV:-kvpress-final}"
 CUDA_VISIBLE_DEVICES="" python -u check_data.py "$NAME"

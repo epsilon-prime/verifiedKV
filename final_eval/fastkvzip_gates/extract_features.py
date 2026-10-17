@@ -31,7 +31,9 @@ import numpy as np
 import pandas as pd
 import torch
 
-HOME = os.path.expanduser("~")
+# this repo's kvpress, ahead of any other installed copy
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "kvpress"))
+HF_HOME = os.environ.get("HF_HOME", os.path.expanduser("~/.cache/huggingface"))
 from transformers import AutoTokenizer, pipeline  # noqa: E402
 
 import kvpress  # noqa: E402,F401  registers the pipeline
@@ -53,7 +55,9 @@ def log(m):
 
 
 # ---------------------------------------------------------------- contexts, as in load_fineweb
-pq = glob.glob(os.path.join(HOME, "hf/hub/datasets--HuggingFaceFW--fineweb-edu/snapshots/*/sample/10BT/000_00000.parquet"))[0]
+pq = glob.glob(os.path.join(HF_HOME, "hub/datasets--HuggingFaceFW--fineweb-edu/snapshots/*/sample/10BT/000_00000.parquet"))
+assert pq, f"FineWeb-Edu sample/10BT/000_00000.parquet not under {HF_HOME} (see README.md, downloads)"
+pq = pq[0]
 df = pd.read_parquet(pq, columns=["text", "token_count"])
 length = df["token_count"].to_numpy()
 valid = np.arange(len(length))[(length >= 10000) & (length < 30000)]

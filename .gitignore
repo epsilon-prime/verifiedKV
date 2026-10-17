@@ -1,9 +1,12 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
+*.pt
 final_eval/results/
-final_eval/logs/
+final_eval/logs/*
+!final_eval/logs/.gitkeep
+final_eval/fastkvzip_gates/logs/*
+!final_eval/fastkvzip_gates/logs/.gitkeep
 final_eval/fastkvzip_gates/data/
 final_eval/fastkvzip_gates/gates/
 final_eval/fastkvzip_gates/vendor/
-*.pt
