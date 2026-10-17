@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+final_eval/results/
+final_eval/logs/
+final_eval/fastkvzip_gates/data/
+final_eval/fastkvzip_gates/gates/
+final_eval/fastkvzip_gates/vendor/
+*.pt

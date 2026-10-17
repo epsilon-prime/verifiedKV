@@ -1,0 +1,72 @@
+{
+  "citation": "",
+  "description": "",
+  "features": {
+    "source_index": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "_id": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "domain": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "sub_domain": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "difficulty": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "length": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "question": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "choice_A": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "choice_B": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "choice_C": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "choice_D": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "answer": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "context": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "max_new_tokens": {
+      "dtype": "int64",
+      "_type": "Value"
+    },
+    "answer_prefix": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "context_tokens": {
+      "dtype": "int64",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": ""
+}
