@@ -58,11 +58,11 @@ def test_block_mode_factory_unchanged():
     assert orch.residency is not None
 
 
-def _vc(async_scheduling=False, world=1, cg="NONE"):
+def _vc(async_scheduling=False, world=1, cg="NONE", mode="NONE"):
     from types import SimpleNamespace as N
     return N(scheduler_config=N(async_scheduling=async_scheduling),
              parallel_config=N(world_size=world),
-             compilation_config=N(cudagraph_mode=N(name=cg)))
+             compilation_config=N(cudagraph_mode=N(name=cg), mode=N(name=mode)))
 
 
 def test_token_mode_env_check(monkeypatch):
@@ -74,6 +74,13 @@ def test_token_mode_env_check(monkeypatch):
                        (_vc(cg="FULL_AND_PIECEWISE"), "CUDA graphs")):
         with pytest.raises(RuntimeError, match=match):
             check_token_mode_env(bad)
+    # FULL decode graphs without torch.compile: per-head engine only.
+    check_token_mode_env(_vc(cg="FULL_DECODE_ONLY"), per_head=True)
+    for bad, per_head in ((_vc(cg="FULL_DECODE_ONLY"), False),
+                          (_vc(cg="FULL_AND_PIECEWISE"), True),
+                          (_vc(cg="FULL_DECODE_ONLY", mode="VLLM_COMPILE"), True)):
+        with pytest.raises(RuntimeError, match="CUDA graphs"):
+            check_token_mode_env(bad, per_head=per_head)
     monkeypatch.setenv("VLLM_ENABLE_V1_MULTIPROCESSING", "1")
     with pytest.raises(RuntimeError, match="MULTIPROCESSING"):
         check_token_mode_env(_vc())

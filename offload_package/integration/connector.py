@@ -362,7 +362,9 @@ class OffloadPackageConnector(KVConnectorBase_V1):
         if ts is None and self._token_mode():
             from offload_package.integration.scheduler_connector import check_token_mode_env
             from offload_package.integration.token_mode import TokenModeScheduler
-            check_token_mode_env(self._vllm_config)
+            check_token_mode_env(
+                self._vllm_config,
+                per_head=self.offload_config.token_budget_scope != "shared")
             ts = self._token_sched = TokenModeScheduler(
                 interval_tokens=self.offload_config.interval_tokens,
                 engine_getter=lambda: getattr(self._worker_handler, "_token_engine", None),

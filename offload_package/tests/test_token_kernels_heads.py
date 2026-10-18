@@ -88,25 +88,40 @@ def _per_head_sel(eng, layer, n_per_head):
     return torch.cat([per_kv[q // GROUP] for q in range(H * GROUP)]).view(1, -1)
 
 
+def _check_store(st, layer=None, need_staged=()):
+    """Staging-map invariants (the kernel path allocates rows in atomic order,
+    so its maps are not byte-equal to the torch path's -- they must be
+    CONSISTENT): owner <-> tok_slot is a bijection over occupied rows, and
+    every key in `need_staged` (this layer's selected cold keys) is staged."""
+    flat = st.tok_slot.view(-1)
+    occ = (st.owner >= 0).nonzero().flatten()
+    assert torch.equal(flat[st.owner[occ]].long(), occ), "tok_slot[owner[v]] != v"
+    staged = (flat >= 0).nonzero().flatten()
+    assert torch.equal(st.owner[flat[staged].long()], staged), "owner[tok_slot[k]] != k"
+    if layer is not None and len(need_staged):
+        off = layer * st._S * st.kps
+        keys = torch.as_tensor(list(need_staged), device="cuda") + off
+        assert bool((flat[keys] >= 0).all()), "a selected cold key is not staged"
+
+
 def _compare(a, b, layer, idx):
     (pa, ea, sa, ra), (pb, eb, sb, rb) = a, b
     q = (idx.shape[1] // (H * GROUP), GROUP)
     out_a = sa.stage_tokens(layer, idx, ra, qheads=q)
     out_b = sb.stage_tokens(layer, idx, rb, qheads=q)
-    assert sa.last_counts[:2] == (idx.numel(), int(out_b[1].sum()))
+    # Kernel side: n_cold of this layer in the device counters (no readback).
+    assert int(sa._ctr[3]) == int(out_b[1].sum())
     for x, y in zip(out_a[:3], out_b[:3]):
         assert torch.equal(x, y)
     ma, mb = out_a[3], out_b[3]
     assert (ma is None) == (mb is None)
-    if ma is not None:
-        assert torch.equal(ma.cpu(), mb.cpu())
-    for name in ("tok_slot", "owner", "last_use"):
-        assert torch.equal(getattr(sa, name), getattr(sb, name)), name
+    if ma is not None:                                   # missing set, any order
+        assert torch.equal(ma.sort().values.cpu(), mb.sort().values.cpu())
     da = sa.phys_tokens(layer, *out_a[:3], None, None)
-    db = sb.phys_tokens(layer, *out_b[:3], None, None)
-    assert torch.equal(da, db)
     torch.cuda.synchronize()
-    assert torch.equal(_staging_rows(sa), _staging_rows(sb))
+    cold_keys = set(out_a[0][out_a[1]].tolist())
+    for st in (sa, sb):
+        _check_store(st, layer, cold_keys if ma is None else ())
     # Every address reads the right token: resident cells and staged ones.
     s = ea.slot_of("r")
     kvh = TokenStagingStore._kv_heads(idx.shape[1], q, idx.device)
@@ -146,22 +161,39 @@ def test_shared_pool_lets_one_layer_exceed_its_share():
     _compare(a, b, 0, idx)
 
 
-def test_cell_over_capacity_and_chunk_fetch():
+def test_cell_over_capacity():
+    """Kernel path (no sync, no chunking): going over capacity stages what
+    fits, keeps the maps consistent and raises at the per-step check. The
+    torch path still returns the missing set and chunk-fetches."""
     _kern_or_skip()
     a, b = _world(True), _world(False)
-    G = a[2].C
+    G = b[2].C
     idx = _per_head_sel(a[1], 0, 40)                        # 80 keys > 64 cells
     q = (40, GROUP)
-    outs = [w[2].stage_tokens(0, idx, w[3], qheads=q) for w in (a, b)]
-    ma, mb = outs[0][3], outs[1][3]
-    assert ma is not None and ma.numel() == 80 and torch.equal(ma.cpu(), mb.cpu())
-    for w, m in ((a, ma), (b, mb)):
-        w[2].tick += 1
-        assert w[2].fetch(0, m[:G].to("cuda"), m[:G].cpu())
-    for name in ("tok_slot", "owner", "last_use"):
-        assert torch.equal(getattr(a[2], name), getattr(b[2], name)), name
+    out_a = a[2].stage_tokens(0, idx, a[3], qheads=q)
+    assert out_a[3] is None
     torch.cuda.synchronize()
-    assert torch.equal(_staging_rows(a[2]), _staging_rows(b[2]))
+    _check_store(a[2])
+    assert int((a[2].tok_slot[0] >= 0).sum()) == G           # every row used once
+    with pytest.raises(RuntimeError, match="no free staging row"):
+        a[2].check_errors()
+    a[2].check_errors()                                      # reported once
+    mb = b[2].stage_tokens(0, idx, b[3], qheads=q)[3]
+    assert mb is not None and mb.numel() == 80
+    b[2].tick += 1
+    assert b[2].fetch(0, mb[:G].to("cuda"), mb[:G].cpu())
+    torch.cuda.synchronize()
+    _check_store(b[2], 0, set(mb[:G].tolist()))
+
+
+def test_cell_capacity_check():
+    pool, eng, store, rows = _world(True)
+    # C = 64 cells, H = 2: <= 32 keys per head (15 + 16 + 1 mid key fits).
+    store.check_capacity(topk=0.0, sink=15, local=16, max_len=128, max_seqs=1,
+                         gqa_share=True, group=GROUP)
+    with pytest.raises(ValueError, match="staging pages"):
+        store.check_capacity(topk=0.0, sink=15, local=16, max_len=128, max_seqs=1,
+                             gqa_share=False, group=GROUP)
 
 
 def test_cell_release_and_missing_cpu_copy():
@@ -176,8 +208,10 @@ def test_cell_release_and_missing_cpu_copy():
     assert int((store.tok_slot >= 0).sum()) == 0 and int((store.owner >= 0).sum()) == 0
     eng.cpu_row[1, s, cold[KSEL], 0] = -1
     bad = torch.full((1, H * GROUP * KSEL), int(cold[KSEL]), device="cuda")
-    with pytest.raises(RuntimeError, match="no CPU copy"):          # same call
-        store.stage_tokens(1, bad, rows, qheads=(KSEL, GROUP))
+    store.stage_tokens(1, bad, rows, qheads=(KSEL, GROUP))
+    with pytest.raises(RuntimeError, match="no CPU copy"):          # per-step check
+        store.check_errors()
     good = torch.full_like(bad, int(cold[KSEL + 1]))
     eng.cpu_row[1, s, cold[KSEL], 0] = 0                            # restore validity
-    store.stage_tokens(1, good, rows, qheads=(KSEL, GROUP))           # flag not sticky
+    store.stage_tokens(1, good, rows, qheads=(KSEL, GROUP))
+    store.check_errors()                                            # cleared once reported

@@ -140,6 +140,10 @@ class HeadTokenOffloadEngine:
         self.on_release: list = []
         self._free_req_slots: list[int] = []
         self.S = 0
+        # CUDA graphs capture data pointers: once frozen, the per-slot maps
+        # (score / cell / cpu_row) must never be reallocated (see _grow).
+        self.frozen = False
+        self.decode_rows_d = None               # see set_decode_rows
         self._grow(max(1, int(num_req_slots)))
         n_rows = self.L * self.H * int(num_cpu_tokens)
         self.cpu_pool = torch.empty((n_rows, self.C2), dtype=self.kv_caches[0].dtype,
@@ -153,6 +157,10 @@ class HeadTokenOffloadEngine:
     # ---- state tensors ----------------------------------------------------
 
     def _grow(self, n: int) -> None:
+        if self.frozen:
+            raise RuntimeError(
+                f"per-head token offload: all {self.S} request slots in use and the "
+                "maps are frozen for CUDA graphs (raise num_req_slots)")
         old = (getattr(self, "score", None), getattr(self, "cell", None),
                getattr(self, "cpu_row", None))
         shape = (self.L, n, self.max_len, self.H)
@@ -166,6 +174,43 @@ class HeadTokenOffloadEngine:
         self.score, self.cell, self.cpu_row = score, cell, cpu
         self._free_req_slots.extend(range(n - 1, self.S - 1, -1))
         self.S = n
+
+    def alloc_decode_rows(self, n: int) -> None:
+        """Persistent decode-row -> request-slot map, read by the captured
+        token-offload decode and score hooks (fixed address)."""
+        with torch.inference_mode(False):
+            self.decode_rows_d = torch.full((int(n),), -1, dtype=torch.long, device=self.dev)
+            # Two pinned staging buffers, each reused only after its last
+            # H2D copy completed (event), so a non-blocking copy never reads
+            # a buffer the host is rewriting.
+            self._decode_rows_h = [torch.full((int(n),), -1, dtype=torch.long,
+                                              pin_memory=True) for _ in range(2)]
+            self._decode_rows_ev = [None, None]
+            self._decode_rows_i = 0
+
+    def set_decode_rows(self, req_ids) -> bool:
+        """Write this step's decode rows' slots (eager, once per step, before
+        the forward / graph replay); rows past the batch are -1 (padding).
+        Returns whether every row is a tracked request."""
+        ids = [str(r) for r in (req_ids or ())]
+        n = len(ids)
+        if self.decode_rows_d is None or self.decode_rows_d.numel() < n:
+            if self.frozen:
+                raise RuntimeError(f"per-head token offload: {n} decode rows > the "
+                                   f"{self.decode_rows_d.numel()} sized for CUDA graphs")
+            self.alloc_decode_rows(max(n, 8))
+        sl = [self.slot_of(r) for r in ids]
+        i = self._decode_rows_i = 1 - self._decode_rows_i
+        h, ev = self._decode_rows_h[i], self._decode_rows_ev[i]
+        if ev is not None:
+            ev.synchronize()
+        h.fill_(-1)
+        if n:
+            h[:n] = torch.tensor(sl, dtype=torch.long)
+        self.decode_rows_d.copy_(h, non_blocking=True)
+        ev = self._decode_rows_ev[i] = torch.cuda.Event()
+        ev.record()
+        return n > 0 and min(sl) >= 0
 
     def unit(self, layer: int, block: int) -> int:
         return self.unit_base[layer] + int(block) * self.unit_stride

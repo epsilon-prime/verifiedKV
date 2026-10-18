@@ -85,6 +85,10 @@ PROMPT_B = ('Quantum computing promises to reshape cryptography, optimization, '
 #         f"section {(i * 11) % 23} marked it pending further review. "
 #         for i in range(170))
 
+# BENCH_CUDAGRAPH=1: FULL decode CUDA graphs (cudagraph_mode=FULL_DECODE_ONLY,
+# no torch.compile) for every config, pq included -- like for like.
+CUDAGRAPH = os.environ.get('BENCH_CUDAGRAPH', '0') == '1'
+
 SPARSE_ENV = {
     'SKYLIGHT_SPARSE_TOPK': os.environ.get('BENCH_TOPK', '0.1'),
     'SKYLIGHT_SPARSE_SINK': '64',
@@ -239,11 +243,12 @@ def shutdown_llm(llm):
         print(f"  engine shutdown failed ({e}); falling back to gc.unfreeze", flush=True)
     gc.unfreeze()
 
-def run(name, method, offload, fraction=0.5, staging_policy='auto',
-        num_staging_slots=None, scorer_type='paged_eviction',
-        fetch_granularity='per_layer_tokens', granularity='block',
-        token_scorer='fastkvzip', budget_scope='global'):
-    print(f"\n{'=' * 70}\nCONFIG: {name}\n{'=' * 70}", flush=True)
+def engine_kwargs(method, offload, fraction=0.5, staging_policy='auto',
+                  num_staging_slots=None, scorer_type='paged_eviction',
+                  fetch_granularity='per_layer_tokens', granularity='block',
+                  token_scorer='fastkvzip', budget_scope='global'):
+    """Set the Skylight env for ``method`` and return the ``LLM(**kwargs)``
+    of a config (CONFIGS entry); shared with LongBench/run_offload.py."""
     for k, v in SPARSE_ENV.items():
         os.environ[k] = v
     os.environ['SKYLIGHT_SPARSE_METHOD'] = method
@@ -255,7 +260,13 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
         os.environ['SKYLIGHT_SPARSE_METHOD'] = 'pq_optimized'
         os.environ['SKYLIGHT_INCR_FULLCG'] = '1'
         os.environ['SKYLIGHT_INCR_SLOT'] = '1'
-        os.environ['SKYLIGHT_SPARSE_DYNAMIC_TOPK'] = '1'
+        if CUDAGRAPH:
+            # FULL decode graphs: the same x%-of-live-context budget, held as
+            # a device value a replay re-reads (DYNAMIC_TOPK is eager-only).
+            os.environ.pop('SKYLIGHT_SPARSE_DYNAMIC_TOPK', None)
+            os.environ['SKYLIGHT_PQ_DYN_CG'] = '1'
+        else:
+            os.environ['SKYLIGHT_SPARSE_DYNAMIC_TOPK'] = '1'
 
     kv = None
     if offload and os.environ.get('BENCH_STAGING_SLOTS'):
@@ -285,15 +296,13 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
             kv_role='kv_both',
         )
 
-    torch.cuda.empty_cache()
-    torch.cuda.reset_peak_memory_stats()
 
     kwargs = dict(
         model=MODEL,
         dtype=os.environ.get('BENCH_DTYPE', 'float16'),
         max_model_len=MAX_MODEL_LEN,
         gpu_memory_utilization=0.20,
-        enforce_eager=True,
+        enforce_eager=not CUDAGRAPH,
         tensor_parallel_size=1,
         max_num_seqs=1,
         disable_log_stats=True,
@@ -305,6 +314,10 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
     )
     if kv is not None:
         kwargs['kv_transfer_config'] = kv
+    if CUDAGRAPH:
+        # Decode-only FULL graphs, no torch.compile (prefill stays eager).
+        kwargs['compilation_config'] = {'mode': 0, 'cudagraph_mode': 'FULL_DECODE_ONLY',
+                                        'cudagraph_capture_sizes': [1]}
     # BENCH_WARMUP=1: measure steady-state decode only. A short warm-up
     # generation on the same prompt pays the one-time per-process costs (PQ
     # codebook fit at the first decode step, JIT); prefix caching is off so the
@@ -320,6 +333,21 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
     if forced:
         from bench_force import ForcedTokens
         kwargs['logits_processors'] = [ForcedTokens]
+    return kwargs
+
+
+def run(name, method, offload, fraction=0.5, staging_policy='auto',
+        num_staging_slots=None, scorer_type='paged_eviction',
+        fetch_granularity='per_layer_tokens', granularity='block',
+        token_scorer='fastkvzip', budget_scope='global'):
+    print(f"\n{'=' * 70}\nCONFIG: {name}\n{'=' * 70}", flush=True)
+    kwargs = engine_kwargs(method, offload, fraction, staging_policy, num_staging_slots,
+                           scorer_type, fetch_granularity, granularity, token_scorer,
+                           budget_scope)
+    warmup = os.environ.get('BENCH_WARMUP') == '1'
+    forced = os.environ.get('BENCH_FORCE_TOKENS')
+    torch.cuda.empty_cache()
+    torch.cuda.reset_peak_memory_stats()
 
     t_init0 = time.time()
     llm = LLM(**kwargs)
@@ -334,6 +362,8 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
         _orig_schedule = _sched.schedule
 
         def _schedule(*a, **k):
+            if kv.get('prof') is not None:
+                kv['prof'].step()          # one profiler step per engine step
             out = _orig_schedule(*a, **k)
             f = _pool.get_num_free_blocks()
             kv['min_free'] = f if kv['min_free'] is None else min(kv['min_free'], f)
@@ -368,7 +398,23 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
             return _orig_mn(*a, **k)
         torch.multinomial = _traced_multinomial
 
-    if os.environ.get('BENCH_PROFILE') == '1':
+    if os.environ.get('BENCH_PROFILE_STEPS'):
+        # BENCH_PROFILE_STEPS="start,count": torch-profile `count` engine
+        # steps starting at step `start` of the timed request (stepped from
+        # the schedule() wrapper above); writes a chrome trace.
+        from torch.profiler import profile, ProfilerActivity, schedule as _psched
+        _ps, _pc = (int(x) for x in os.environ['BENCH_PROFILE_STEPS'].split(','))
+        _trace = os.environ.get('BENCH_PROFILE_TRACE', f'/tmp/trace_{name}.json')
+        with profile(
+            activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
+            schedule=_psched(skip_first=_ps, wait=0, warmup=2, active=_pc, repeat=1),
+            on_trace_ready=lambda p: p.export_chrome_trace(_trace),
+        ) as prof:
+            kv['prof'] = prof
+            outputs = llm.generate([PROMPT], sp)
+            kv['prof'] = None
+        print(f"  profile: steps {_ps}+2..{_ps + 2 + _pc} -> {_trace}", flush=True)
+    elif os.environ.get('BENCH_PROFILE') == '1':
         from torch.profiler import profile, ProfilerActivity
         with profile(
             activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
@@ -422,6 +468,8 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
     print(f"  token_ids[:32]: {list(outputs[0].outputs[0].token_ids)[:32]}")
     if forced:
         fs = ForcedTokens.instance.summary()
+        if os.environ.get('BENCH_FORCE_DUMP'):
+            ForcedTokens.instance.dump(os.environ['BENCH_FORCE_DUMP'])
         print(f"  forced: steps {fs['steps']}, agree {100 * fs['agree']:.2f}%, "
               f"ref NLL {fs['nll']:.4f}, first disagreement at step {fs['first_disagree']}")
     if reuse is not None:

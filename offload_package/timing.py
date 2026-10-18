@@ -45,6 +45,9 @@ _count: defaultdict[str, int] = defaultdict(int)
 _max: defaultdict[str, float] = defaultdict(float)
 _bytes: defaultdict[str, int] = defaultdict(int)
 _counts: defaultdict[str, int] = defaultdict(int)
+# (read, reset) pairs for counters that live on the GPU: read() -> {name: n},
+# called only when a report prints, so the hot path never syncs for stats.
+_providers: list = []
 _t0: dict[str, float] = {}
 _step_counter = 0
 
@@ -79,11 +82,19 @@ def note_count(name: str, n: int) -> None:
         _counts[name] += int(n)
 
 
+def register_counts(read, reset_fn) -> None:
+    """Add a device-side counter source (see ``_providers``)."""
+    if ENABLED:
+        _providers.append((read, reset_fn))
+
+
 def reset() -> None:
     """Drop everything accumulated so far (e.g. after a warm-up request)."""
     global _step_counter
     for d in (_total, _count, _max, _bytes, _counts, _t0):
         d.clear()
+    for _, reset_fn in _providers:
+        reset_fn()
     _step_counter = 0
 
 
@@ -114,8 +125,12 @@ def report(final: bool = False) -> None:
     if _bytes:
         print(f"[bytes moved, MB] " + " ".join(
             f"{s}={_bytes[s] / 1e6:.1f}" for s in sorted(_bytes)), flush=True)
-    if _counts:
-        print("[counts] " + " ".join(f"{s}={_counts[s]}" for s in sorted(_counts)),
+    counts = dict(_counts)
+    for read, _ in _providers:
+        for k, v in read().items():
+            counts[k] = counts.get(k, 0) + int(v)
+    if counts:
+        print("[counts] " + " ".join(f"{s}={counts[s]}" for s in sorted(counts)),
               flush=True)
 
 

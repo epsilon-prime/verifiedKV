@@ -92,6 +92,22 @@ def test_short_gate_token_match_per_layer_tokens():
     )
 
 
+def test_short_gate_token_match_token_offload():
+    """Token-level offload (per-head cell engine, the default scope): greedy
+    output must stay token-identical to pq. ``pq+tok0`` never remaps (no
+    round evicts anything), so this needs a real fraction."""
+    r = _run(
+        [PY, "bench_1req_off99.py", "pq,pq+tok70g"],
+        env_extra={"BENCH_NEW_TOKENS": "64", "BENCH_PROMPT_REPS": "10",
+                   "BENCH_INTERVAL": "32", "SKYLIGHT_PQ_DETERMINISTIC": "1"},
+    )
+    assert r.returncode == 0, f"bench failed:\n{r.stdout[-2000:]}\n{r.stderr[-2000:]}"
+    assert "pq+tok70g: PASS" in r.stdout, (
+        "short-gate (token offload) token mismatch:\n"
+        + "\n".join(r.stdout.splitlines()[-8:])
+    )
+
+
 def test_composition_gate_token_match():
     """Two requests, staggered decode budgets (96/40): per-request equality
     across the mid-decode finish (batch-composition change)."""

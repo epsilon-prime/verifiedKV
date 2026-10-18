@@ -574,6 +574,12 @@ class SkylightSparseMetadataBuilder(FlashInferMetadataBuilder):
         self._patch_bail_reason = None
         cls._step_serial = getattr(cls, "_step_serial", 0) + 1
         num_decodes = 0
+        # Per-head token offload fetches without per-layer syncs; its sticky
+        # error flag (missing CPU copy / no staging row) is checked here, once
+        # per step, so a violation still fails loudly (one step late).
+        _store = getattr(cls._offload_orchestrator, "token_store", None)
+        if _store is not None and hasattr(_store, "check_errors"):
+            _store.check_errors()
         # reorder_batch_to_split_decodes_and_prefills has already run by now,
         # so req_ids[:num_decodes] is the true decode row order -- including
         # mixed batches, where the scheduler-side id order is not guaranteed
@@ -973,8 +979,14 @@ class SkylightSparseMetadataBuilder(FlashInferMetadataBuilder):
         orch = type(self)._offload_orchestrator
         eng = getattr(orch, "token_offload", None) if orch is not None else None
         if eng is not None and rows:
+            # No ids (vLLM's dummy / capture batches): unsafe only once some
+            # request has been compacted; at startup capture none has.
+            if ids is None and any(eng.remapped(r) for r in list(eng._reqs)):
+                raise RuntimeError(
+                    "PQ codes would be re-encoded for an unidentified decode row "
+                    "while token-offloaded requests exist; refusing.")
             for b in rows:
-                if ids is None or eng.remapped(ids[b]):
+                if ids is not None and eng.remapped(ids[b]):
                     raise RuntimeError(
                         "PQ codes would be re-encoded from compacted pages "
                         "(token-level offloading); refusing -- codes must move.")

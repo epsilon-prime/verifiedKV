@@ -394,6 +394,19 @@ BATCHED_GATE_MAX_TOKENS = 512
 _GATE_CHECK = os.environ.get("OFFLOAD_PACKAGE_TOKEN_GATE_CHECK", "0") == "1"
 
 
+def _write_scores_masked(engine, slot_t: torch.Tensor, pos: torch.Tensor,
+                         score: torch.Tensor) -> None:
+    """``engine.score[:, slot, pos] = score`` for rows with ``slot >= 0``, as
+    one fixed-shape scatter (capturable): untracked / padded rows rewrite the
+    value already at (slot 0, pos 0) -- a sink token, never a decode token."""
+    valid = slot_t >= 0
+    s = torch.where(valid, slot_t, 0)
+    p = torch.where(valid, pos, 0)
+    cur = engine.score[:, s, p]
+    v = valid.view((1, -1) + (1,) * (score.dim() - 2))
+    engine.score[:, s, p] = torch.where(v, score.to(cur.dtype), cur)
+
+
 def install_score_hooks(runner, engine: TokenOffloadEngine, gates,
                         batched=None) -> list:
     """Score every written token with the layer's FastKVzip gate.
@@ -437,18 +450,31 @@ def install_score_hooks(runner, engine: TokenOffloadEngine, gates,
         return per_tok, n_tokens, all(x >= 0 for x in slots)
 
     handles = []
+    wants_ids = bool(getattr(batched, "wants_ids", False))
     for li, layer in enumerate(layers):
         gate = gates[li]
 
         def hook(module, args, kwargs, li=li, gate=gate):
-            if torch.cuda.is_current_stream_capturing():
-                return None
+            capturing = torch.cuda.is_current_stream_capturing()
+            if capturing and getattr(engine, "decode_rows_d", None) is None:
+                return None                   # engine not prepared for graphs
             hidden = kwargs.get("hidden_states", args[1] if len(args) > 1 else None)
             positions = kwargs.get("positions", args[0] if args else None)
             if hidden is None or positions is None:
                 return None
             if li == 0:
-                step["rows"] = _token_rows(int(hidden.shape[0]), hidden.device)
+                if capturing:
+                    # A FULL decode graph: one token per row, rows from the
+                    # engine's persistent map (written eagerly every step);
+                    # None = "write through the fixed-shape masked path".
+                    n = int(hidden.shape[0])
+                    if batched is None or n > min(BATCHED_GATE_MAX_TOKENS,
+                                                  engine.decode_rows_d.numel()):
+                        raise RuntimeError("token scoring under CUDA graphs needs the "
+                                           f"batched gate and n={n} <= the row map")
+                    step["rows"] = (engine.decode_rows_d[:n], n, None)
+                else:
+                    step["rows"] = _token_rows(int(hidden.shape[0]), hidden.device)
                 step["stash"] = []
             rows = step["rows"]
             if rows is None:
@@ -461,7 +487,9 @@ def install_score_hooks(runner, engine: TokenOffloadEngine, gates,
                 stash, step["stash"] = step["stash"], []
                 if len(stash) != len(layers):                 # a layer was skipped
                     return None
-                score = batched(torch.stack(stash))           # [L, n]
+                pos = positions[:n].long()
+                score = (batched(torch.stack(stash), positions=pos, slots=slot_t)
+                         if wants_ids else batched(torch.stack(stash)))   # [L, n]
                 if _GATE_CHECK and step.setdefault("checks", 0) < 8:
                     # Debug: the stashed inputs must still be the layers'
                     # attention inputs, i.e. batched == per-layer gates.
@@ -469,7 +497,9 @@ def install_score_hooks(runner, engine: TokenOffloadEngine, gates,
                     step["checks"] += 1
                     print(f"[TOKEN GATE CHECK] n={n} batched vs per-layer "
                           f"max|diff|={float((score - ref).abs().max()):.2e}", flush=True)
-                pos = positions[:n].long()
+                if all_tracked is None:
+                    _write_scores_masked(engine, slot_t, pos, score)
+                    return None
                 if not all_tracked:
                     keep = slot_t >= 0
                     slot_t, pos, score = slot_t[keep], pos[keep], score[:, keep]

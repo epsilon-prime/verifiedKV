@@ -68,6 +68,11 @@ class ForcedTokens(LogitsProcessor):
         for b in (self.nll, self.agree, self.seen):
             b.zero_()
 
+    def dump(self, path: str) -> None:
+        """Per-step vectors (for exact run-vs-run comparison): nll, agree."""
+        n = int(self.seen.sum().item())
+        torch.save({"nll": self.nll[:n].cpu(), "agree": self.agree[:n].cpu()}, path)
+
     def summary(self) -> dict:
         n = int(self.seen.sum().item())
         agree = self.agree.cpu()

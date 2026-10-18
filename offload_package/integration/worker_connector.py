@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import math
 import os
 from typing import Optional
 
@@ -319,6 +320,36 @@ class OffloadPackageWorker(KVConnectorBase_V1):
         self._orchestrator.token_offload = engine
         self._orchestrator.token_store = TokenStagingStore.for_token_engine(
             self._orchestrator.staging_pool, engine)
+        if per_head:
+            # The sync-free cell fetch has no over-capacity fallback: the
+            # shared staging pool must hold one layer's worst-case cold set.
+            _e = os.environ
+            self._orchestrator.token_store.check_capacity(
+                topk=float(_e.get("SKYLIGHT_SPARSE_TOPK") or 1.0),
+                sink=int(_e.get("SKYLIGHT_SPARSE_SINK") or 0),
+                local=int(_e.get("SKYLIGHT_SPARSE_LOCAL") or 0),
+                max_len=max_len, max_seqs=max_seqs,
+                gqa_share=_e.get("SKYLIGHT_PQ_GQA_SHARE", "0") == "1",
+                group=int(hf.num_attention_heads) // nkv)
+            from offload_package.integration.scheduler_connector import (
+                runtime_env, token_graphs_ok)
+            cc = vc.compilation_config
+            max_rows = max(max_seqs, int(getattr(cc, "max_cudagraph_capture_size", 0) or 0))
+            engine.alloc_decode_rows(max_rows)
+            if runtime_env(vc)[3] and token_graphs_ok(vc):
+                # FULL decode graphs: every buffer the captured stage reads is
+                # allocated now and never again. Selected entries per layer:
+                # rows x q heads x the gather width (<= max_len).
+                topk = float(_e.get("SKYLIGHT_SPARSE_TOPK") or 1.0)
+                sink = int(_e.get("SKYLIGHT_SPARSE_SINK") or 0)
+                local = int(_e.get("SKYLIGHT_SPARSE_LOCAL") or 0)
+                width = max_len if _e.get("SKYLIGHT_SPARSE_DENSE_UNTIL") else min(
+                    max_len, sink + local + math.ceil(topk * max(0, max_len - sink - local)) + 1)
+                self._orchestrator.token_store.prepare_graphs(
+                    max_rows * int(hf.num_attention_heads) * width)
+                logger.info("token offload: FULL decode CUDA graphs on (rows=%d, "
+                            "entries/layer=%d)", max_rows,
+                            max_rows * int(hf.num_attention_heads) * width)
         logger.info(
             "OffloadPackageWorker: token offloading on (%s, scope=%s, fraction=%.2f, "
             "sink=%d, window=%d, cpu rows=%d)", cfg.token_scorer, scope, cfg.offload_fraction,

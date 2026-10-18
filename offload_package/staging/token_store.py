@@ -26,11 +26,15 @@ Lookup per decode step and layer: resident on the GPU, else staged, else
 fetched from the CPU. Victims are NOT chosen by recency: a hand walks the
 pool and takes the next cells in ring order, skipping only cells stamped
 this tick (used by the current layer's selection); anything else -- any
-layer, any head -- may be evicted. The cost depends on the fetch size and
-this tick's hits, not on the pool size.
+layer, any head -- may be evicted. On the kernel path the fill kernel
+allocates the rows itself (atomic ring hand in device memory), so a fetch
+is one launch with no sort / topk / victim list; the torch reference path
+walks the same ring on the host.
 """
 
 from __future__ import annotations
+
+import math
 
 import torch
 
@@ -66,8 +70,80 @@ class TokenStagingStore:
             self._stage_units = torch.tensor(
                 [eng.unit(l, pool.base + b) for b in range(int(pool.num_slots))
                  for l in range(self.L)], dtype=torch.long, device=self.dev)
-            self._hand = 0
+            self._hand = 0                                     # torch path
+            self._hand_d = torch.zeros(1, dtype=torch.long, device=self.dev)  # kernel path
+            # Kernel path, no per-layer sync: the layer tick lives on the GPU,
+            # the fill launch is a fixed grid reading the miss count on device,
+            # and the counters accumulate on device (stats read at report time,
+            # the sticky error flag checked once per step: check_errors()).
+            self._tick_d = torch.zeros(1, dtype=torch.long, device=self.dev)
+            # [n_need, n_hit_new, err, n_cold, selected entries]
+            self._ctr_acc = torch.zeros(5, dtype=torch.long, device=self.dev)
+            self._fill_warps = 2048
+            # Set by prepare_graphs / the first captured stage: from then on no
+            # buffer a graph reads may be reallocated.
+            self._frozen = False
+            row_bytes = int(eng.C2) * eng.kv_rows.element_size()
+            _timing.register_counts(
+                lambda: {"tok.sel_entries": int(self._ctr_acc[4]),
+                         "tok.sel_cold": int(self._ctr_acc[3]),
+                         "tok.need_keys": int(self._ctr_acc[0]),
+                         "pool.d2h_token_bytes": int(self._ctr_acc[0]) * row_bytes},
+                self._reset_counts)
         residency.on_slot_release.append(self.release_slot)
+
+    def _reset_counts(self) -> None:
+        self._ctr_acc.zero_()
+
+    def prepare_graphs(self, max_entries: int) -> None:
+        """Cell mode under CUDA graphs: allocate every buffer the captured
+        stage reads (maps at the engine's frozen slot count, the miss list
+        for ``max_entries`` selected entries per layer) and resolve the
+        kernels now, eagerly; afterwards nothing is reallocated."""
+        if not self.heads:
+            raise ValueError("CUDA-graph token offload needs the per-head engine")
+        if self._kernels() is None:
+            raise RuntimeError("CUDA-graph token offload needs the token-staging CUDA "
+                               "kernels (the torch fallback syncs)")
+        self.res.engine.frozen = True          # slot count fixed from here on
+        self._ensure()
+        if self._need.numel() < max_entries:
+            with torch.inference_mode(False):
+                self._need = torch.empty(int(max_entries), dtype=torch.int64,
+                                         device=self.dev)
+        self._frozen = True
+
+    def check_errors(self) -> None:
+        """Cell mode: raise if any fetch since the last check hit a missing
+        CPU copy or ran out of staging (sticky device flag). Called once per
+        step, eagerly, by the attention backend -- the one host read of it."""
+        if getattr(self, "_tick_d", None) is None or getattr(self, "_ctr", None) is None:
+            return
+        if int(self._ctr[2]):
+            self._ctr[2] = 0                  # reported once
+            raise RuntimeError(
+                "token fetch: a selected token had no CPU copy or no free staging "
+                "row (staging below the capacity check?)")
+
+    def check_capacity(self, *, topk: float, sink: int, local: int, max_len: int,
+                       max_seqs: int, gqa_share: bool, group: int) -> None:
+        """Cell mode: the shared staging pool must hold one layer's selected
+        cold keys in the worst case, so no fetch can ever go over capacity (no
+        chunked path, no host-side count). Raises with the needed size."""
+        if not self.heads:
+            return
+        mid = max(0, max_len - sink - local)
+        k_mid = min(max(1, math.ceil(topk * mid)), mid) if mid else 0
+        total_k = min(max_len, sink + local + k_mid)
+        per_head = total_k if gqa_share else min(max_len, group * total_k)
+        need = int(max_seqs) * self.Hm * per_head
+        if self.C < need:
+            per_page = self.P * self.Hm * self.L
+            raise ValueError(
+                f"per-head token offload: staging pool holds {self.C} rows but one "
+                f"layer may need {need} (max_seqs={max_seqs}, H_kv={self.Hm}, "
+                f"{per_head} keys per head); use >= {-(-need // per_page)} staging "
+                f"pages (num_staging_slots)")
 
     @property
     def tick(self) -> int:
@@ -267,9 +343,16 @@ class TokenStagingStore:
         return idx[sel]
 
     def _stage_tokens_kernel(self, kern, eng, layer, idx, rows, qheads=None):
-        """``stage_tokens`` on the CUDA kernels: one classify/stamp/dedup
-        launch and ONE counter readback, then (if anything is missing) one
-        victim topk and one map-update + zero-copy fill launch."""
+        """``stage_tokens`` on the CUDA kernels.
+
+        Cell mode: no host sync -- tick bump, classify/stamp/dedup, counter
+        accumulation and a fixed-grid fill (rows allocated in-kernel) are all
+        stream-ordered launches; capacity is guaranteed by check_capacity, so
+        nothing is ever missing. Shared engine: one classify launch and ONE
+        counter readback, then (if anything is missing) a victim topk and one
+        map-update + zero-copy fill launch."""
+        if self.heads:
+            return self._stage_cells_nosync(kern, eng, layer, idx, rows, qheads)
         _timing.start("wrap.discover")
         self._ensure()
         self.tick += 1
@@ -286,7 +369,7 @@ class TokenStagingStore:
                           eng.cell[layer] if self.heads else eng.phys_of_logical[layer],
                           eng.cpu_row[layer] if self.heads else eng.cpu_slot[layer],
                           self.tok_slot[layer].view(-1),
-                          self._lu(layer), self.seen[layer].view(-1), self.tick,
+                          self._lu(layer), self.seen[layer].view(-1), self.tick, None,
                           self.mbp, self.Hm, ksel, group, phys_pos, cold, key,
                           self._need, self._ctr)
         self._ctr_host.copy_(self._ctr, non_blocking=True)
@@ -302,13 +385,53 @@ class TokenStagingStore:
         _timing.end("wrap.discover")
         if not n_need:
             return key, cold, phys_pos, None
-        # Same key order as torch.unique, so victim assignment matches the
-        # torch path exactly.
-        need_d = torch.sort(self._need[:n_need]).values
+        # Shared-engine mode: same key order as torch.unique, so victim
+        # assignment matches the torch path exactly. Cell mode allocates rows
+        # in the fill kernel and needs no order (keys are already unique).
+        need_d = (self._need[:n_need] if self.heads
+                  else torch.sort(self._need[:n_need]).values)
         _timing.start("wrap.fetch")
         ok = self.fetch(layer, need_d, need_d)
         _timing.end("wrap.fetch")
         return key, cold, phys_pos, None if ok else need_d
+
+    def _stage_cells_nosync(self, kern, eng, layer, idx, rows, qheads):
+        _timing.start("wrap.discover")
+        capturing = torch.cuda.is_current_stream_capturing()
+        if capturing and not self._frozen:
+            raise RuntimeError("token staging captured before prepare_graphs()")
+        if not self._frozen:
+            self._ensure()
+        idx = idx.contiguous()
+        total = idx.numel()
+        if self._need.numel() < total:
+            if self._frozen:
+                raise RuntimeError(
+                    f"token staging: {total} selected entries > the {self._need.numel()} "
+                    "reserved for CUDA graphs")
+            self._need = torch.empty(max(total, 2 * self._need.numel()),
+                                     dtype=torch.int64, device=self.dev)
+        phys_pos = torch.empty(idx.shape, dtype=torch.int32, device=self.dev)
+        cold = torch.empty(idx.shape, dtype=torch.bool, device=self.dev)
+        key = torch.empty(idx.shape, dtype=torch.int64, device=self.dev)
+        ksel, group = qheads
+        self._tick_d.add_(1)
+        kern.tok_discover(idx, rows.reshape(-1).contiguous(), eng.cell[layer],
+                          eng.cpu_row[layer], self.tok_slot[layer].view(-1),
+                          self.last_use, self.seen[layer].view(-1), 0, self._tick_d,
+                          self.mbp, self.Hm, ksel, group, phys_pos, cold, key,
+                          self._need, self._ctr)
+        self._ctr_acc[:4].add_(self._ctr)
+        self._ctr_acc[4:].add_(total)
+        _timing.end("wrap.discover")
+        _timing.start("wrap.fetch")
+        kern.tok_fill_cells(self._need, self.owner, self.tok_slot.view(-1),
+                            layer * self._S * self.kps, self.last_use, self._tick_d,
+                            self._fill_warps, self._hand_d, eng.cpu_row[layer], self.mbp,
+                            eng.cpu_pool, self._pool_dev, eng.kv_rows, self._stage_units,
+                            eng.HP, self._ctr)
+        _timing.end("wrap.fetch")
+        return key, cold, phys_pos, None
 
     def phys_tokens(self, layer, key, cold, phys_pos, indptr, indices) -> torch.Tensor:
         """Physical address per position in token-engine mode: resident
@@ -381,13 +504,12 @@ class TokenStagingStore:
             return False
         eng = self.res.engine
         if self.heads:
-            victims = self._victims(n, self._stamped)
             rows = eng.kv_rows
             _timing.note_bytes("pool.d2h_token", n * rows.shape[1] * rows.element_size())
             _timing.start("pool.h2d")
-            kern.tok_fill_cells(keys_d.contiguous(), victims.contiguous(), self.owner,
+            kern.tok_fill_cells(keys_d.contiguous(), self.owner,
                                 self.tok_slot.view(-1), layer * self._S * self.kps,
-                                self.last_use, self.tick, eng.cpu_row[layer],
+                                self.last_use, self.tick, self._hand_d, eng.cpu_row[layer],
                                 self.mbp, eng.cpu_pool, self._pool_dev, rows,
                                 self._stage_units, eng.HP, self._ctr)
             _timing.end("pool.h2d")

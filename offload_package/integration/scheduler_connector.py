@@ -68,22 +68,37 @@ def runtime_env(vllm_config) -> tuple[bool, bool, int, bool]:
     return _async, _mp, _world, _graphs
 
 
-def check_token_mode_env(vllm_config) -> None:
+def token_graphs_ok(vllm_config) -> bool:
+    """CUDA graphs the per-head token offload supports: FULL decode graphs
+    only (``cudagraph_mode=FULL_DECODE_ONLY``; prefill stays eager) without
+    torch.compile (its score hooks are Python forward pre-hooks)."""
+    cc = getattr(vllm_config, "compilation_config", None)
+    cg = getattr(getattr(cc, "cudagraph_mode", None), "name", "")
+    mode = getattr(getattr(cc, "mode", None), "name", str(getattr(cc, "mode", "")))
+    return str(cg).upper() == "FULL_DECODE_ONLY" and str(mode).upper() in ("NONE", "0")
+
+
+def check_token_mode_env(vllm_config, per_head: bool = False) -> None:
     """Token-level offloading compacts KV pages inside ``schedule()`` and
     reaches the worker's engine through the shared connector object: it is
-    only correct for an in-process, single-worker, synchronously scheduled,
-    eager engine. Refuse anything else instead of silently doing nothing or
-    racing the in-flight forward."""
+    only correct for an in-process, single-worker, synchronously scheduled
+    engine. CUDA graphs: only the per-head engine, on FULL decode graphs
+    without torch.compile (``token_graphs_ok``) -- its decode-time fetch is
+    sync-free and every buffer it reads is persistent; the shared engine
+    syncs per layer and stays eager. Refuse anything else instead of
+    silently doing nothing or racing the in-flight forward."""
     _async, _mp, _world, _graphs = runtime_env(vllm_config)
     bad = [name for name, on in (
         ("async_scheduling", _async),
         ("VLLM_ENABLE_V1_MULTIPROCESSING", _mp),
         (f"world_size={_world}", _world != 1),
-        ("CUDA graphs (use enforce_eager)", _graphs),
+        ("CUDA graphs (use enforce_eager, or per-head scope with "
+         "cudagraph_mode=FULL_DECODE_ONLY and compilation mode NONE)",
+         _graphs and not (per_head and token_graphs_ok(vllm_config))),
     ) if on]
     if bad:
         raise RuntimeError("token-level offloading (offload_granularity='token') "
-                           "needs an in-process, single-worker, synchronous, eager "
+                           "needs an in-process, single-worker, synchronous "
                            "engine; unsupported: " + ", ".join(bad))
 
 

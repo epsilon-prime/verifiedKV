@@ -145,9 +145,26 @@ class RandomTokenGate(nn.Module):
                           generator=self._gen)
 
 
+_M32 = 0xFFFFFFFF
+
+
+def _mix32(x: torch.Tensor) -> torch.Tensor:
+    """32-bit integer hash (int64 tensor in [0, 2^32), no overflow)."""
+    x = (((x >> 16) ^ x) * 0x45D9F3B) & _M32
+    x = (((x >> 16) ^ x) * 0x45D9F3B) & _M32
+    return (x >> 16) ^ x
+
+
 class BatchedRandomGates(nn.Module):
     """``RandomTokenGate`` for all layers at once: ``[L, N, D] -> [L, N]``
-    (``nhead``: ``[L, N, nhead]``, one score per KV head)."""
+    (``nhead``: ``[L, N, nhead]``, one score per KV head).
+
+    Given the tokens' ``positions`` and request ``slots`` (the score hook
+    passes them: ``wants_ids``), the score is a stateless hash of (seed,
+    layer, slot, position, head) in [0, 1): no generator state, so it is
+    capturable in a CUDA graph and identical eagerly and on replay."""
+
+    wants_ids = True
 
     def __init__(self, seed: int = 0, nhead: int | None = None) -> None:
         super().__init__()
@@ -156,7 +173,18 @@ class BatchedRandomGates(nn.Module):
         self._gen = None
 
     @torch.no_grad()
-    def forward(self, hidden: torch.Tensor) -> torch.Tensor:
+    def forward(self, hidden: torch.Tensor, positions: torch.Tensor | None = None,
+                slots: torch.Tensor | None = None) -> torch.Tensor:
+        if positions is not None:
+            L, n = int(hidden.shape[0]), int(hidden.shape[1])
+            H = self.nhead or 1
+            dev = hidden.device
+            tok = _mix32((((slots.long() + 1) * 0x9E3779B1) & _M32) ^ (positions.long() & _M32))
+            lh = torch.arange(L * H, device=dev, dtype=torch.long).view(L, 1, H)
+            lh = (((lh + self.seed * 7919 + 1) * 0x85EBCA6B) & _M32)
+            x = _mix32(tok.view(1, n, 1) ^ lh)                        # [L, n, H]
+            r = x.float() * (1.0 / 4294967296.0)
+            return r if self.nhead else r[..., 0]
         if self._gen is None or self._gen.device != hidden.device:
             self._gen = torch.Generator(device=hidden.device).manual_seed(self.seed)
         shape = tuple(hidden.shape[:2]) + ((self.nhead,) if self.nhead else ())

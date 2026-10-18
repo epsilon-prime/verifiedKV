@@ -46,19 +46,25 @@ __global__ void tok_discover_kernel(
     const int32_t* __restrict__ pol, const int32_t* __restrict__ cpu, int64_t max_len,
     const int32_t* __restrict__ tok_slot,
     int64_t* __restrict__ last_use, int64_t* __restrict__ seen,
-    int64_t tick, int64_t mbp, int64_t H, int64_t ksel, int64_t group,
+    const int64_t* __restrict__ tick_ptr, int64_t tick_val,
+    int64_t mbp, int64_t H, int64_t ksel, int64_t group,
     int32_t* __restrict__ phys_pos, bool* __restrict__ cold_out,
     int64_t* __restrict__ key_out, int64_t* __restrict__ need,
     int32_t* __restrict__ counters) {
+  // Cell mode reads the tick from device memory (bumped on the stream before
+  // this launch), so no host value is baked into the launch.
+  const int64_t tick = tick_ptr != nullptr ? *tick_ptr : tick_val;
   int64_t i = blockIdx.x * (int64_t)blockDim.x + threadIdx.x;
   const bool live = i < total;
   bool cold = false;
   int32_t p = 0;
   int64_t key = 0;
   int64_t mi = 0;
-  if (live) {
+  // row < 0: a padded decode row (CUDA-graph batch padding). Resident at
+  // cell 0, never staged -- its output is discarded.
+  const int64_t row = live ? rows[i / n_per_row] : -1;
+  if (live && row >= 0) {
     const int64_t b = i / n_per_row;
-    const int64_t row = rows[b];
     const int64_t pos = idx[i];
     const int64_t kvh = H == 1 ? 0 : ((i - b * n_per_row) / ksel) / group;
     mi = (row * max_len + pos) * H + kvh;
@@ -144,39 +150,65 @@ __global__ void tok_phys_kernel(
 }
 
 // Cell mode: one warp per fetched key copies ONE 2C row (16-byte vectors)
-// host -> device zero-copy; lane 0 updates the maps.
+// host -> device zero-copy. Lane 0 ALLOCATES the staging row itself: the next
+// row of the shared pool after a ring hand (atomicAdd), skipping rows stamped
+// this tick (in use by the current layer, or just claimed by another key of
+// this launch -- the claim is the atomicExch of last_use). The host only
+// checks there are enough unstamped rows (n <= G - stamped), so the loop
+// always ends. No sort / topk / victim list.
 __global__ void tok_fill_cells_kernel(
-    const int64_t* __restrict__ keys, const int64_t* __restrict__ victims, int64_t n,
+    const int64_t* __restrict__ keys, const int32_t* __restrict__ n_ptr,
     int64_t* __restrict__ owner, int32_t* __restrict__ tok_slot_all, int64_t layer_off,
-    int64_t* __restrict__ last_use, int64_t tick,
+    int64_t* __restrict__ last_use, const int64_t* __restrict__ tick_ptr,
+    ull* __restrict__ hand, int64_t G,
     const int32_t* __restrict__ cpu_row, int64_t max_len, int64_t H, int64_t mbp,
     const int4* __restrict__ pool, int64_t row_vecs, int4* __restrict__ kv_rows,
     const int64_t* __restrict__ stage_units, int64_t HP,
     int32_t* __restrict__ counters) {
-  const int64_t i = blockIdx.x * (int64_t)(blockDim.x / 32) + threadIdx.x / 32;
+  // Fixed grid (no host count): warps stride over the n keys tok_discover
+  // emitted, read from device memory on the same stream.
+  const int64_t n = *n_ptr;
+  const int64_t tick = *tick_ptr;
+  const int64_t warps = (int64_t)gridDim.x * (blockDim.x / 32);
   const int lane = threadIdx.x & 31;
-  if (i >= n) return;
+  for (int64_t i = blockIdx.x * (int64_t)(blockDim.x / 32) + threadIdx.x / 32; i < n;
+       i += warps) {                       // whole warp: i is per warp
   const int64_t key = keys[i];
-  const int64_t v = victims[i];
+  int64_t v = -1;
   if (lane == 0) {
-    const int64_t old = owner[v];
-    if (old >= 0) tok_slot_all[old] = -1;   // may belong to another layer
-    owner[v] = layer_off + key;
-    tok_slot_all[layer_off + key] = (int32_t)v;
-    last_use[v] = tick;
+    // Bounded walk: the startup capacity check guarantees a free row; if it
+    // is ever violated, flag it (sticky) and leave the key unstaged.
+    for (int64_t tries = 0; tries < G; ++tries) {
+      const int64_t c = (int64_t)(atomicAdd(hand, 1ULL) % (ull)G);
+      if ((int64_t)atomicExch(reinterpret_cast<ull*>(last_use + c), (ull)tick) != tick) {
+        v = c;
+        break;
+      }
+    }
+    if (v < 0) {
+      atomicExch(counters + 2, 1);
+    } else {
+      const int64_t old = owner[v];
+      if (old >= 0) tok_slot_all[old] = -1;   // may belong to another layer
+      owner[v] = layer_off + key;
+      tok_slot_all[layer_off + key] = (int32_t)v;
+    }
   }
+  v = __shfl_sync(0xffffffffu, v, 0);
+  if (v < 0) continue;
   const int64_t rh = key / mbp;              // row * H + kvh
   const int64_t pos = key - rh * mbp;
   const int64_t row = rh / H;
   const int64_t cs = cpu_row[(row * max_len + pos) * H + (rh - row * H)];
   if (cs < 0) {
     if (lane == 0) atomicExch(counters + 2, 1);
-    return;
+    continue;
   }
   const int64_t cell = stage_units[v / HP] * HP + v % HP;
   const int4* src = pool + cs * row_vecs;
   int4* dst = kv_rows + cell * row_vecs;
   for (int64_t e = lane; e < row_vecs; e += 32) dst[e] = src[e];
+  }
 }
 
 __global__ void tok_phys_cells_kernel(
@@ -204,9 +236,14 @@ void check_cuda(const torch::Tensor& t, const char* name, at::ScalarType dt) {
 }  // namespace
 
 // Returns nothing; writes phys_pos / cold / key / need / counters[0:2].
+// tick_d: optional 1-element int64 device tick (cell mode; then `tick` is
+// ignored and the error flag counters[2] is STICKY -- checked by the host once
+// per step instead of after every layer). Without it: shared-engine path,
+// tick by value, all counters reset.
 void tok_discover(torch::Tensor idx, torch::Tensor rows, torch::Tensor pol,
                   torch::Tensor cpu, torch::Tensor tok_slot, torch::Tensor last_use, torch::Tensor seen,
-                  int64_t tick, int64_t mbp, int64_t H, int64_t ksel, int64_t group,
+                  int64_t tick, c10::optional<torch::Tensor> tick_d,
+                  int64_t mbp, int64_t H, int64_t ksel, int64_t group,
                   torch::Tensor phys_pos, torch::Tensor cold,
                   torch::Tensor key, torch::Tensor need, torch::Tensor counters) {
   check_cuda(idx, "idx", at::kLong);
@@ -226,14 +263,23 @@ void tok_discover(torch::Tensor idx, torch::Tensor rows, torch::Tensor pol,
   TORCH_CHECK(need.numel() >= idx.numel(), "need buffer too small");
   const at::cuda::CUDAGuard guard(idx.device());
   auto stream = at::cuda::getCurrentCUDAStream();
-  C10_CUDA_CHECK(cudaMemsetAsync(counters.data_ptr<int32_t>(), 0, 4 * sizeof(int32_t), stream));
+  const bool dev_tick = tick_d.has_value();
+  if (dev_tick) {
+    check_cuda(*tick_d, "tick_d", at::kLong);
+    // n_need, n_hit_new reset; err (counters[2]) sticky; n_cold reset.
+    C10_CUDA_CHECK(cudaMemsetAsync(counters.data_ptr<int32_t>(), 0, 2 * sizeof(int32_t), stream));
+    C10_CUDA_CHECK(cudaMemsetAsync(counters.data_ptr<int32_t>() + 3, 0, sizeof(int32_t), stream));
+  } else {
+    C10_CUDA_CHECK(cudaMemsetAsync(counters.data_ptr<int32_t>(), 0, 4 * sizeof(int32_t), stream));
+  }
   const int64_t total = idx.numel();
   if (total == 0) return;
   const int blocks = (int)((total + kThreads - 1) / kThreads);
   tok_discover_kernel<<<blocks, kThreads, 0, stream>>>(
       idx.data_ptr<int64_t>(), idx.size(1), total, rows.data_ptr<int64_t>(),
       pol.data_ptr<int32_t>(), cpu.data_ptr<int32_t>(), pol.size(1), tok_slot.data_ptr<int32_t>(),
-      last_use.data_ptr<int64_t>(), seen.data_ptr<int64_t>(), tick, mbp, H, ksel, group,
+      last_use.data_ptr<int64_t>(), seen.data_ptr<int64_t>(),
+      dev_tick ? tick_d->data_ptr<int64_t>() : nullptr, tick, mbp, H, ksel, group,
       phys_pos.data_ptr<int32_t>(), cold.data_ptr<bool>(), key.data_ptr<int64_t>(),
       need.data_ptr<int64_t>(), counters.data_ptr<int32_t>());
   C10_CUDA_KERNEL_LAUNCH_CHECK();
@@ -327,13 +373,19 @@ torch::Tensor tok_phys(torch::Tensor phys_pos, torch::Tensor key, torch::Tensor 
   return out;
 }
 
-void tok_fill_cells(torch::Tensor keys, torch::Tensor victims, torch::Tensor owner,
+// keys: the discover `need` buffer; counters[0] (device) is the count. The
+// grid is fixed (max_warps warps, grid-stride), so no host value depends on
+// this layer's misses.
+void tok_fill_cells(torch::Tensor keys, torch::Tensor owner,
                     torch::Tensor tok_slot_all, int64_t layer_off, torch::Tensor last_use,
-                    int64_t tick, torch::Tensor cpu_row, int64_t mbp, torch::Tensor pool,
-                    int64_t pool_dev_ptr, torch::Tensor kv_rows, torch::Tensor stage_units,
-                    int64_t HP, torch::Tensor counters) {
+                    torch::Tensor tick_d, int64_t max_warps, torch::Tensor hand,
+                    torch::Tensor cpu_row, int64_t mbp,
+                    torch::Tensor pool, int64_t pool_dev_ptr, torch::Tensor kv_rows,
+                    torch::Tensor stage_units, int64_t HP, torch::Tensor counters) {
   check_cuda(keys, "keys", at::kLong);
-  check_cuda(victims, "victims", at::kLong);
+  check_cuda(hand, "hand", at::kLong);
+  check_cuda(tick_d, "tick_d", at::kLong);
+  TORCH_CHECK(hand.numel() == 1 && tick_d.numel() == 1, "hand / tick_d are 1-element");
   check_cuda(owner, "owner", at::kLong);
   check_cuda(tok_slot_all, "tok_slot_all", at::kInt);
   check_cuda(last_use, "last_use", at::kLong);
@@ -351,14 +403,16 @@ void tok_fill_cells(torch::Tensor keys, torch::Tensor victims, torch::Tensor own
   TORCH_CHECK(row_bytes % 16 == 0 && reinterpret_cast<uintptr_t>(kv_rows.data_ptr()) % 16 == 0 &&
                   pool_dev_ptr % 16 == 0 && pool_dev_ptr != 0,
               "tok_fill_cells needs 16-byte aligned, device-mapped rows");
-  const int64_t n = keys.numel();
-  if (n == 0) return;
+  const int64_t cap = std::min<int64_t>(keys.numel(), max_warps);
+  if (cap <= 0) return;
   const at::cuda::CUDAGuard guard(keys.device());
   auto stream = at::cuda::getCurrentCUDAStream();
   constexpr int kWarps = 4;
-  tok_fill_cells_kernel<<<(unsigned)((n + kWarps - 1) / kWarps), 32 * kWarps, 0, stream>>>(
-      keys.data_ptr<int64_t>(), victims.data_ptr<int64_t>(), n, owner.data_ptr<int64_t>(),
-      tok_slot_all.data_ptr<int32_t>(), layer_off, last_use.data_ptr<int64_t>(), tick,
+  tok_fill_cells_kernel<<<(unsigned)((cap + kWarps - 1) / kWarps), 32 * kWarps, 0, stream>>>(
+      keys.data_ptr<int64_t>(), counters.data_ptr<int32_t>(), owner.data_ptr<int64_t>(),
+      tok_slot_all.data_ptr<int32_t>(), layer_off, last_use.data_ptr<int64_t>(),
+      tick_d.data_ptr<int64_t>(),
+      reinterpret_cast<ull*>(hand.data_ptr<int64_t>()), last_use.numel(),
       cpu_row.data_ptr<int32_t>(), cpu_row.size(1), cpu_row.size(2), mbp,
       reinterpret_cast<const int4*>(pool_dev_ptr), row_bytes / 16,
       reinterpret_cast<int4*>(kv_rows.data_ptr()), stage_units.data_ptr<int64_t>(), HP,
@@ -389,7 +443,8 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
   m.def("tok_discover", &tok_discover, "classify + LRU-stamp + dedup missing keys");
   m.def("tok_fill", &tok_fill, "map update + zero-copy host->staging copy");
   m.def("tok_phys", &tok_phys, "physical address per selected position");
-  m.def("tok_fill_cells", &tok_fill_cells, "cell mode: map update + zero-copy row fill");
+  m.def("tok_fill_cells", &tok_fill_cells,
+        "cell mode: in-kernel staging-row allocation + map update + zero-copy row fill");
   m.def("tok_phys_cells", &tok_phys_cells, "cell mode: global cell per selected position");
   m.def("device_alias", &device_alias, "device pointer of a pinned host tensor (0 if none)");
 }
