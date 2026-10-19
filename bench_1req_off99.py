@@ -22,7 +22,9 @@ import gc
 import sys
 import time
 
-os.environ['VLLM_ENABLE_V1_MULTIPROCESSING'] = '0'
+# BENCH_MP=1: multiprocess frontend (EngineCore in its own process, uni
+# executor) -- what `vllm serve` runs. In-process engine otherwise.
+os.environ['VLLM_ENABLE_V1_MULTIPROCESSING'] = '1' if os.environ.get('BENCH_MP') == '1' else '0'
 os.environ['VLLM_USE_V2_MODEL_RUNNER'] = '0'
 os.environ['VLLM_ALLOW_LONG_MAX_MODEL_LEN'] = '1'
 os.environ['FLASHINFER_DISABLE_VERSION_CHECK'] = '1'
@@ -168,6 +170,10 @@ CONFIGS = {
                       staging_policy='auto', num_staging_slots=None,
                       scorer_type='paged_eviction', granularity='token',
                       budget_scope='layer'),
+    'pq+tokrand70u': dict(method='pq', offload=True, fraction=0.7,
+                          staging_policy='auto', num_staging_slots=None,
+                          scorer_type='paged_eviction', granularity='token',
+                          token_scorer='random', budget_scope='uniform'),
     'pq+tok70u': dict(method='pq', offload=True, fraction=0.7,
                       staging_policy='auto', num_staging_slots=None,
                       scorer_type='paged_eviction', granularity='token',
@@ -357,7 +363,7 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
 
     # Peak KV blocks in use, from vLLM's allocator (the KV pool is
     # preallocated, so "peak GPU allocated" cannot show offload savings).
-    kv = {'min_free': None, 'free': []}
+    kv = {'min_free': None, 'free': [], 't': []}
     try:
         _sched = llm.llm_engine.engine_core.engine_core.scheduler
         _pool = _sched.kv_cache_manager.block_pool
@@ -366,6 +372,7 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
         def _schedule(*a, **k):
             if kv.get('prof') is not None:
                 kv['prof'].step()          # one profiler step per engine step
+            kv['t'].append(time.perf_counter())   # one stamp per engine step
             out = _orig_schedule(*a, **k)
             f = _pool.get_num_free_blocks()
             kv['min_free'] = f if kv['min_free'] is None else min(kv['min_free'], f)
@@ -383,9 +390,11 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
         from offload_package import timing as _timing
         _timing.reset()  # breakdown covers the timed request only
         if forced:
-            ForcedTokens.instance.reset()
+            if ForcedTokens.instance is not None:   # in-process only; under
+                ForcedTokens.instance.reset()       # MP the timed run overwrites
         kv['min_free'] = None
         kv['free'] = []
+        kv['t'] = []
     torch.cuda.synchronize()
     t0 = time.time()
     if os.environ.get('BENCH_TRACE_MULTINOMIAL') == '1':
@@ -448,6 +457,13 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
     print(f"  new tokens: {out_tokens}")
     print(f"  total time: {elapsed:.1f}s")
     print(f"  decode TPOT: {tpot_ms:.2f} ms/token")
+    if os.environ.get('BENCH_STEP_TIMES') and kv.get('t'):
+        # Engine-step wall times of the timed request (schedule-to-schedule):
+        # step i = decode step i-1 after the prefill step(s).
+        import json as _json
+        _t = kv['t']
+        with open(os.environ['BENCH_STEP_TIMES'], 'w') as _f:
+            _json.dump([b - a for a, b in zip(_t, _t[1:])], _f)
     m = getattr(outputs[0], 'metrics', None)
     if m is not None and m.first_token_ts and m.last_token_ts and out_tokens > 1:
         print(f"  TTFT: {m.first_token_latency * 1000:.1f} ms")
@@ -469,9 +485,12 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
     print(f"  out: {outputs[0].outputs[0].text[:110]!r}")
     print(f"  token_ids[:32]: {list(outputs[0].outputs[0].token_ids)[:32]}")
     if forced:
-        fs = ForcedTokens.instance.summary()
-        if os.environ.get('BENCH_FORCE_DUMP'):
-            ForcedTokens.instance.dump(os.environ['BENCH_FORCE_DUMP'])
+        if ForcedTokens.instance is not None:
+            fs = ForcedTokens.instance.summary()
+            if os.environ.get('BENCH_FORCE_DUMP'):
+                ForcedTokens.instance.dump(os.environ['BENCH_FORCE_DUMP'])
+        else:   # multiprocess: the EngineCore-side processor saved the dump
+            fs = ForcedTokens.summary_from_file(os.environ['BENCH_FORCE_DUMP'])
         print(f"  forced: steps {fs['steps']}, agree {100 * fs['agree']:.2f}%, "
               f"ref NLL {fs['nll']:.4f}, first disagreement at step {fs['first_disagree']}")
     if reuse is not None:

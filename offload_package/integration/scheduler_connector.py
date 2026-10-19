@@ -80,17 +80,26 @@ def token_graphs_ok(vllm_config) -> bool:
 
 def check_token_mode_env(vllm_config, per_head: bool = False) -> None:
     """Token-level offloading compacts KV pages inside ``schedule()`` and
-    reaches the worker's engine through the shared connector object: it is
-    only correct for an in-process, single-worker, synchronously scheduled
-    engine. CUDA graphs: only the per-head engine, on FULL decode graphs
-    without torch.compile (``token_graphs_ok``) -- its decode-time fetch is
+    reaches the worker's engine through the shared connector object: the
+    scheduler and the worker must live in ONE process, scheduled
+    synchronously. That is the in-process engine
+    (VLLM_ENABLE_V1_MULTIPROCESSING=0) or the multiprocess frontend
+    (offline LLM / ``vllm serve``) with the ``uni`` executor, whose
+    EngineCore process runs the scheduler and the single worker together
+    and reuses one process-global connector (scheduler.py:152). Other
+    executors put workers in separate processes (MULTIPROCESS_PLAN.md).
+    CUDA graphs: only the per-head engine, on FULL decode graphs without
+    torch.compile (``token_graphs_ok``) -- its decode-time fetch is
     sync-free and every buffer it reads is persistent; the shared engine
     syncs per layer and stays eager. Refuse anything else instead of
     silently doing nothing or racing the in-flight forward."""
     _async, _mp, _world, _graphs = runtime_env(vllm_config)
+    _backend = getattr(vllm_config.parallel_config, "distributed_executor_backend", None)
+    _backend = getattr(_backend, "__name__", _backend)
     bad = [name for name, on in (
-        ("async_scheduling", _async),
-        ("VLLM_ENABLE_V1_MULTIPROCESSING", _mp),
+        ("async_scheduling (use --no-async-scheduling)", _async),
+        (f"executor {_backend!r} (needs 'uni': scheduler and worker in one process)",
+         _mp and _backend not in (None, "uni")),
         (f"world_size={_world}", _world != 1),
         ("CUDA graphs (use enforce_eager, or per-head scope with "
          "cudagraph_mode=FULL_DECODE_ONLY and compilation mode NONE)",
@@ -98,8 +107,9 @@ def check_token_mode_env(vllm_config, per_head: bool = False) -> None:
     ) if on]
     if bad:
         raise RuntimeError("token-level offloading (offload_granularity='token') "
-                           "needs an in-process, single-worker, synchronous "
-                           "engine; unsupported: " + ", ".join(bad))
+                           "needs the scheduler and a single worker in one "
+                           "process, scheduled synchronously; unsupported: "
+                           + ", ".join(bad))
 
 
 class OffloadPackageScheduler:

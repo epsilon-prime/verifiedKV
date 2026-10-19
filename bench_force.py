@@ -8,8 +8,10 @@ the same text in every config, and the recorded agreement / NLL measure how far
 each config's attention drifts from the reference.
 
 Stats stay on the GPU (no per-step sync); `ForcedTokens.instance.summary()`
-reads them after generation. Only for in-process engines
-(VLLM_ENABLE_V1_MULTIPROCESSING=0), which the bench uses.
+reads them after generation (in-process engine). With a multiprocess engine
+the processor lives in the EngineCore process: it saves its vectors to
+BENCH_FORCE_DUMP itself when the last reference step is scored, and the
+bench reads the summary back from that file (`summary_from_file`).
 """
 import json
 import os
@@ -60,6 +62,8 @@ class ForcedTokens(LogitsProcessor):
             self.nll[t] = -torch.log_softmax(row.float(), -1)[tok]
             self.agree[t] = (row.argmax() == tok).float()
             self.seen[t] = 1.0
+            if t == len(self.ref) - 1 and os.environ.get("BENCH_FORCE_DUMP"):
+                self.dump(os.environ["BENCH_FORCE_DUMP"])
             row.fill_(float('-inf'))
             row[tok] = 0.0
         return logits
@@ -72,6 +76,15 @@ class ForcedTokens(LogitsProcessor):
         """Per-step vectors (for exact run-vs-run comparison): nll, agree."""
         n = int(self.seen.sum().item())
         torch.save({"nll": self.nll[:n].cpu(), "agree": self.agree[:n].cpu()}, path)
+
+    @staticmethod
+    def summary_from_file(path: str) -> dict:
+        d = torch.load(path)
+        n = int(d["nll"].numel())
+        miss = d["agree"] == 0
+        return {"steps": n, "agree": float(d["agree"].sum()) / max(n, 1),
+                "nll": float(d["nll"].sum()) / max(n, 1),
+                "first_disagree": int(miss.nonzero()[0]) if miss.any() else -1}
 
     def summary(self) -> dict:
         n = int(self.seen.sum().item())

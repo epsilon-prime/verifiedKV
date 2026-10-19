@@ -58,10 +58,10 @@ def test_block_mode_factory_unchanged():
     assert orch.residency is not None
 
 
-def _vc(async_scheduling=False, world=1, cg="NONE", mode="NONE"):
+def _vc(async_scheduling=False, world=1, cg="NONE", mode="NONE", backend="uni"):
     from types import SimpleNamespace as N
     return N(scheduler_config=N(async_scheduling=async_scheduling),
-             parallel_config=N(world_size=world),
+             parallel_config=N(world_size=world, distributed_executor_backend=backend),
              compilation_config=N(cudagraph_mode=N(name=cg), mode=N(name=mode)))
 
 
@@ -81,9 +81,13 @@ def test_token_mode_env_check(monkeypatch):
                           (_vc(cg="FULL_DECODE_ONLY", mode="VLLM_COMPILE"), True)):
         with pytest.raises(RuntimeError, match="CUDA graphs"):
             check_token_mode_env(bad, per_head=per_head)
+    # Multiprocess frontend: fine with the uni executor (scheduler + worker in
+    # one EngineCore process), refused when workers are separate processes.
     monkeypatch.setenv("VLLM_ENABLE_V1_MULTIPROCESSING", "1")
-    with pytest.raises(RuntimeError, match="MULTIPROCESSING"):
-        check_token_mode_env(_vc())
+    check_token_mode_env(_vc())
+    check_token_mode_env(_vc(cg="FULL_DECODE_ONLY"), per_head=True)
+    with pytest.raises(RuntimeError, match="executor 'mp'"):
+        check_token_mode_env(_vc(backend="mp"))
 
 
 def test_token_mode_defaults_to_fastkvzip_global_policy():
