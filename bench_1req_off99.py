@@ -301,7 +301,7 @@ def engine_kwargs(method, offload, fraction=0.5, staging_policy='auto',
         model=MODEL,
         dtype=os.environ.get('BENCH_DTYPE', 'float16'),
         max_model_len=MAX_MODEL_LEN,
-        gpu_memory_utilization=0.20,
+        gpu_memory_utilization=float(os.environ.get('BENCH_GPU_UTIL', '0.20')),
         enforce_eager=not CUDAGRAPH,
         tensor_parallel_size=1,
         max_num_seqs=1,
@@ -346,6 +346,8 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
                            budget_scope)
     warmup = os.environ.get('BENCH_WARMUP') == '1'
     forced = os.environ.get('BENCH_FORCE_TOKENS')
+    if forced:
+        from bench_force import ForcedTokens
     torch.cuda.empty_cache()
     torch.cuda.reset_peak_memory_stats()
 
