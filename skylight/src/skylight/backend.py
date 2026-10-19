@@ -925,9 +925,12 @@ class SkylightSparseMetadataBuilder(FlashInferMetadataBuilder):
         runner = type(self)._offload_runner
         ib = getattr(runner, "input_batch", None) if runner is not None else None
         ids = list(getattr(ib, "req_ids", []) or [])[:nd]
-        if len(ids) != nd or any(i is None for i in ids):
+        if not ids or any(i is None for i in ids):
             return None
-        return [str(i) for i in ids]
+        # A FULL-cudagraph decode batch is padded to the captured size: rows
+        # past the real requests are padding, owned by no request (their
+        # codes are re-encoded harmlessly, never offloaded).
+        return [str(i) for i in ids] + [f"__pad{b}__" for b in range(len(ids), nd)]
 
     def _sk_plan_row_moves(self, changed_rows, seqs, prev_all, nd):
         """For each changed row, find the row its request occupied last step.
