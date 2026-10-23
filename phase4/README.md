@@ -47,3 +47,15 @@ r = 0 sit in T* (bias w, no variance). Local window default 0 (BernoulliPress ha
   decisions. The draft's Remark 2 / a shared question-pass plan is the open design lever.
 - Cost: sim ~40 s per layer for 8 configs x 2 residencies x 16 steps x 1 draw on an A40; a full context (36 layers, all
   steps, 3 residencies, 2 draws) ~5-6 GPU-h, so trim configs before a full run. Downstream ~2x Bernoulli's time per row.
+
+## 64 sinks + 64-token local window (default from 2026-10-23, user)
+
+`algo.residency` (shared by press and sim): first 64 and last 64 context entries at r = 1, paid from the kept budget.
+Downstream flags `sink=N` / `win=N` (default 64); `sink=4:win=0` reproduces BernoulliPress. Tests: 30 pass.
+2-context run (`vkv1_sim/out/sw64_2ctx`: cwe_150 + niah_single_3_150, all 36 layers, all decode steps, 1 draw;
+`vkv1_down/out/sw64_2ctx`: niah_single_3 + qa_1 row 152, full answer length):
+- upstream, exact weights: realised failure <= 0.0001 in all 96 rows (delta .05); Lemma 1 0 violations; tight never > simple.
+  Question pass: union per KV head 24-83% of the context (best tight-grad-trunc eps .5 at 1/16: 24%); decode per step
+  <= 0.09%. Gradient order roughly halves k* vs needle order; truncation cuts question fetch rate (e.g. 0.93 -> 0.69 at
+  1/16, eps .3).
+- downstream: all vkv1 arms 100 on both contexts (bern 0); eps0 = 0 == full and nofetch+ht+sink=4:win=0 == bern (2/2 each).
