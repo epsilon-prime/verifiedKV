@@ -162,6 +162,10 @@ CONFIGS = {
                          staging_policy='auto', num_staging_slots=None,
                          scorer_type='paged_eviction', granularity='token',
                          token_scorer='kvzip', budget_scope='global'),
+    'pq+tokkvz70u': dict(method='pq', offload=True, fraction=0.7,
+                         staging_policy='auto', num_staging_slots=None,
+                         scorer_type='paged_eviction', granularity='token',
+                         token_scorer='kvzip', budget_scope='uniform'),
     'pq+tokkvz70l': dict(method='pq', offload=True, fraction=0.7,
                          staging_policy='auto', num_staging_slots=None,
                          scorer_type='paged_eviction', granularity='token',
@@ -170,6 +174,20 @@ CONFIGS = {
                       staging_policy='auto', num_staging_slots=None,
                       scorer_type='paged_eviction', granularity='token',
                       budget_scope='layer'),
+    # Token-level LRU: evict the cells least recently selected by PQ top-k.
+    'pq+toklru70u': dict(method='pq', offload=True, fraction=0.7,
+                         staging_policy='auto', num_staging_slots=None,
+                         scorer_type='paged_eviction', granularity='token',
+                         token_scorer='lru', budget_scope='uniform'),
+    'pq+toklru70': dict(method='pq', offload=True, fraction=0.7,
+                        staging_policy='auto', num_staging_slots=None,
+                        scorer_type='paged_eviction', granularity='token',
+                        token_scorer='lru', budget_scope='global'),
+    # KeyDiff (key distinctiveness vs the mean key), equal per-head budgets.
+    'pq+tokkd70u': dict(method='pq', offload=True, fraction=0.7,
+                        staging_policy='auto', num_staging_slots=None,
+                        scorer_type='paged_eviction', granularity='token',
+                        token_scorer='keydiff', budget_scope='uniform'),
     'pq+tokrand70u': dict(method='pq', offload=True, fraction=0.7,
                           staging_policy='auto', num_staging_slots=None,
                           scorer_type='paged_eviction', granularity='token',
@@ -363,7 +381,10 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
 
     # Peak KV blocks in use, from vLLM's allocator (the KV pool is
     # preallocated, so "peak GPU allocated" cannot show offload savings).
-    kv = {'min_free': None, 'free': [], 't': []}
+    kv = {'min_free': None, 'free': [], 't': [],
+          'ctr': [] if os.environ.get('BENCH_STEP_COUNTERS') else None}
+    import skylight.backend as _skb
+    _sk_builder = _skb.SkylightSparseMetadataBuilder
     try:
         _sched = llm.llm_engine.engine_core.engine_core.scheduler
         _pool = _sched.kv_cache_manager.block_pool
@@ -373,6 +394,13 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
             if kv.get('prof') is not None:
                 kv['prof'].step()          # one profiler step per engine step
             kv['t'].append(time.perf_counter())   # one stamp per engine step
+            if kv.get('ctr') is not None:
+                # Cumulative token-offload counters (GPU), read once per engine
+                # step after the previous step's sampling sync: [n_need,
+                # n_hit_new, err, n_cold, selected entries].
+                _st = getattr(_sk_builder._offload_orchestrator, 'token_store', None)
+                _acc = getattr(_st, '_ctr_acc', None)
+                kv['ctr'].append(_acc.tolist() if _acc is not None else None)
             out = _orig_schedule(*a, **k)
             f = _pool.get_num_free_blocks()
             kv['min_free'] = f if kv['min_free'] is None else min(kv['min_free'], f)
@@ -383,10 +411,17 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
     except AttributeError:
         _pool = None
 
-    sp = SamplingParams(temperature=0, top_p=1.0, max_tokens=MAX_NEW_TOKENS, ignore_eos=True)
+    # BENCH_TEMPERATURE > 0: temperature sampling (BENCH_TOP_P / BENCH_TOP_K,
+    # fixed per-request BENCH_SEED so a config's run is reproducible); greedy
+    # otherwise. Each config samples its own text: offload perturbs logits.
+    _temp = float(os.environ.get('BENCH_TEMPERATURE', '0'))
+    _samp = (dict(temperature=_temp, top_p=float(os.environ.get('BENCH_TOP_P', '1.0')),
+                  top_k=int(os.environ.get('BENCH_TOP_K', '-1')),
+                  seed=int(os.environ.get('BENCH_SEED', '0')))
+             if _temp > 0 else dict(temperature=0, top_p=1.0))
+    sp = SamplingParams(max_tokens=MAX_NEW_TOKENS, ignore_eos=True, **_samp)
     if warmup:
-        llm.generate([PROMPT], SamplingParams(
-            temperature=0, top_p=1.0, max_tokens=8, ignore_eos=True))
+        llm.generate([PROMPT], SamplingParams(max_tokens=8, ignore_eos=True, **_samp))
         from offload_package import timing as _timing
         _timing.reset()  # breakdown covers the timed request only
         if forced:
@@ -395,6 +430,8 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
         kv['min_free'] = None
         kv['free'] = []
         kv['t'] = []
+        if kv['ctr'] is not None:
+            kv['ctr'] = []
     torch.cuda.synchronize()
     t0 = time.time()
     if os.environ.get('BENCH_TRACE_MULTINOMIAL') == '1':
@@ -464,6 +501,10 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
         _t = kv['t']
         with open(os.environ['BENCH_STEP_TIMES'], 'w') as _f:
             _json.dump([b - a for a, b in zip(_t, _t[1:])], _f)
+    if os.environ.get('BENCH_STEP_COUNTERS') and kv.get('ctr'):
+        import json as _json
+        with open(os.environ['BENCH_STEP_COUNTERS'], 'w') as _f:
+            _json.dump(kv['ctr'], _f)       # one cumulative row per engine step
     m = getattr(outputs[0], 'metrics', None)
     if m is not None and m.first_token_ts and m.last_token_ts and out_tokens > 1:
         print(f"  TTFT: {m.first_token_latency * 1000:.1f} ms")

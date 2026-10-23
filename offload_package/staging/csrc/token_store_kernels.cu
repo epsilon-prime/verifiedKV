@@ -50,7 +50,7 @@ __global__ void tok_discover_kernel(
     int64_t mbp, int64_t H, int64_t ksel, int64_t group,
     int32_t* __restrict__ phys_pos, bool* __restrict__ cold_out,
     int64_t* __restrict__ key_out, int64_t* __restrict__ need,
-    int32_t* __restrict__ counters) {
+    int32_t* __restrict__ counters, float* __restrict__ recency) {
   // Cell mode reads the tick from device memory (bumped on the stream before
   // this launch), so no host value is baked into the launch.
   const int64_t tick = tick_ptr != nullptr ? *tick_ptr : tick_val;
@@ -68,6 +68,9 @@ __global__ void tok_discover_kernel(
     const int64_t pos = idx[i];
     const int64_t kvh = H == 1 ? 0 : ((i - b * n_per_row) / ksel) / group;
     mi = (row * max_len + pos) * H + kvh;
+    // LRU scorer: the cell's score is the tick of its latest selection
+    // (same [S, max_len, H] indexing as the map; resident and cold alike).
+    if (recency != nullptr) recency[mi] = (float)tick;
     p = pol[mi];
     key = (row * H + kvh) * mbp + pos;
     cold = p < 0;
@@ -245,8 +248,13 @@ void tok_discover(torch::Tensor idx, torch::Tensor rows, torch::Tensor pol,
                   int64_t tick, c10::optional<torch::Tensor> tick_d,
                   int64_t mbp, int64_t H, int64_t ksel, int64_t group,
                   torch::Tensor phys_pos, torch::Tensor cold,
-                  torch::Tensor key, torch::Tensor need, torch::Tensor counters) {
+                  torch::Tensor key, torch::Tensor need, torch::Tensor counters,
+                  c10::optional<torch::Tensor> recency) {
   check_cuda(idx, "idx", at::kLong);
+  if (recency.has_value()) {
+    check_cuda(*recency, "recency", at::kFloat);
+    TORCH_CHECK(recency->numel() == pol.numel(), "recency must match the residency map");
+  }
   check_cuda(rows, "rows", at::kLong);
   check_cuda(pol, "phys_of_logical", at::kInt);
   check_cuda(cpu, "cpu map", at::kInt);
@@ -281,7 +289,8 @@ void tok_discover(torch::Tensor idx, torch::Tensor rows, torch::Tensor pol,
       last_use.data_ptr<int64_t>(), seen.data_ptr<int64_t>(),
       dev_tick ? tick_d->data_ptr<int64_t>() : nullptr, tick, mbp, H, ksel, group,
       phys_pos.data_ptr<int32_t>(), cold.data_ptr<bool>(), key.data_ptr<int64_t>(),
-      need.data_ptr<int64_t>(), counters.data_ptr<int32_t>());
+      need.data_ptr<int64_t>(), counters.data_ptr<int32_t>(),
+      recency.has_value() ? recency->data_ptr<float>() : nullptr);
   C10_CUDA_KERNEL_LAUNCH_CHECK();
 }
 

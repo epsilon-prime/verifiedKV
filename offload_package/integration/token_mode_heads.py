@@ -143,6 +143,8 @@ class HeadTokenOffloadEngine:
         # CUDA graphs capture data pointers: once frozen, the per-slot maps
         # (score / cell / cpu_row) must never be reallocated (see _grow).
         self.frozen = False
+        self.lru = False                        # score = latest selection tick (LRU scorer)
+        self.keydiff = False                    # score = KeyDiff key distinctiveness, at rounds
         self.decode_rows_d = None               # see set_decode_rows
         self._grow(max(1, int(num_req_slots)))
         n_rows = self.L * self.H * int(num_cpu_tokens)
@@ -351,6 +353,31 @@ class HeadTokenOffloadEngine:
         return self._lowest(tok, n).unsqueeze(-1).expand(L, Lg, H) & resid
 
     @torch.no_grad()
+    def _keydiff_scores(self, s: int, Lg: int, chunk: int = 8192) -> None:
+        """KeyDiff (arXiv 2504.15364, Eq. 8): per (layer, KV head), the score
+        of a resident key is -cos(k_i, anchor), the anchor being the mean of
+        the L2-normalized resident keys; low similarity = distinctive = kept.
+        Keys as stored in the cache (post-RoPE); query-agnostic. Computed
+        from the resident cells at the round, in position chunks."""
+        C = self.C2 // 2                                   # K half of a 2C cell row
+        for l in range(self.L):
+            cells = self.cell[l, s, :Lg]                   # [Lg, H]
+            acc = torch.zeros((self.H, C), dtype=torch.float32, device=self.dev)
+            n = torch.zeros((self.H, 1), dtype=torch.float32, device=self.dev)
+            for a in range(0, Lg, chunk):
+                c = cells[a:a + chunk]
+                ok = (c >= 0).unsqueeze(-1)
+                k = self.kv_rows[c.clamp(min=0).long()][..., :C].float()
+                acc += (torch.nn.functional.normalize(k, dim=-1) * ok).sum(0)
+                n += ok.sum(0)
+            anchor = torch.nn.functional.normalize(acc / n.clamp(min=1), dim=-1)  # [H, C]
+            for a in range(0, Lg, chunk):
+                c = cells[a:a + chunk]
+                k = torch.nn.functional.normalize(
+                    self.kv_rows[c.clamp(min=0).long()][..., :C].float(), dim=-1)
+                self.score[l, s, a:a + c.shape[0]] = -(k * anchor).sum(-1)
+
+    @torch.no_grad()
     def run_round(self, req_id: str, extra_tokens: int = 0) -> list[int]:
         """Offload the lowest-scored resident cells under the scope's budget,
         pack all survivors densely into the request's first blocks, and return
@@ -367,6 +394,8 @@ class HeadTokenOffloadEngine:
         K = max(self.keep_count(Lg), self._n_protected(Lg))
         cells = self.cell[:, s, :Lg]                                       # [L, Lg, H]
         resid = cells >= 0
+        if self.keydiff:
+            self._keydiff_scores(s, Lg)
         pos = torch.arange(Lg, device=self.dev)
         protect = ((pos < self.sink) | (pos >= Lg - self.window)).view(1, -1, 1)
         sc = (self.score[:, s, :Lg].masked_fill(protect, float("inf"))

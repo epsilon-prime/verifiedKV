@@ -294,6 +294,8 @@ class TokenStagingStore:
         if self.heads:
             kvh = self._kv_heads(idx.shape[1], qheads, idx.device)
             phys_pos = eng.cell[layer][rows, idx, kvh]
+            if getattr(eng, "lru", False):        # LRU scorer: latest selection tick
+                eng.score[layer][rows, idx, kvh] = float(self.tick + 1)
             key = (rows * self.Hm + kvh) * self.mbp + idx
         else:
             phys_pos = eng.phys_of_logical[layer][rows, idx]
@@ -371,7 +373,7 @@ class TokenStagingStore:
                           self.tok_slot[layer].view(-1),
                           self._lu(layer), self.seen[layer].view(-1), self.tick, None,
                           self.mbp, self.Hm, ksel, group, phys_pos, cold, key,
-                          self._need, self._ctr)
+                          self._need, self._ctr, None)
         self._ctr_host.copy_(self._ctr, non_blocking=True)
         torch.cuda.current_stream(self.dev).synchronize()   # the one per-layer readback
         n_need, n_hit, err, n_cold = (int(x) for x in self._ctr_host.tolist())
@@ -420,7 +422,8 @@ class TokenStagingStore:
                           eng.cpu_row[layer], self.tok_slot[layer].view(-1),
                           self.last_use, self.seen[layer].view(-1), 0, self._tick_d,
                           self.mbp, self.Hm, ksel, group, phys_pos, cold, key,
-                          self._need, self._ctr)
+                          self._need, self._ctr,
+                          eng.score[layer].view(-1) if getattr(eng, "lru", False) else None)
         self._ctr_acc[:4].add_(self._ctr)
         self._ctr_acc[4:].add_(total)
         _timing.end("wrap.discover")

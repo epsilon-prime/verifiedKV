@@ -46,7 +46,9 @@ class OffloadConfig:
     # per layer (FastKVzip gate), offload the lowest-scored ones per layer,
     # and compact survivors so emptied pages return to vLLM's allocator.
     offload_granularity: str = "block"
-    token_scorer: str = "fastkvzip"  # "kvzip" (context reconstruction) or "random"
+    token_scorer: str = "fastkvzip"  # "kvzip" (context reconstruction), "random" or
+    # "lru" (evict the cells least recently selected by sparse attention; per-head only)
+    # or "keydiff" (KeyDiff: evict keys most similar to the mean key; per-head only)
     kvzip_device: str | None = None   # GPU for KVzip's private HF model (None = worker's)
     kvzip_chunk: int = 2000           # context tokens per reconstruction chunk
     token_sink: int = 64          # first tokens never offloaded
@@ -123,9 +125,13 @@ class OffloadConfig:
         if self.offload_granularity not in ("block", "token"):
             raise ValueError("offload_granularity must be 'block' or 'token'")
         if self.offload_granularity == "token" and self.token_scorer not in (
-                "fastkvzip", "kvzip", "random"):
-            raise ValueError("token offloading supports token_scorer='fastkvzip', 'kvzip' or "
-                             "'random'")
+                "fastkvzip", "kvzip", "random", "lru", "keydiff"):
+            raise ValueError("token offloading supports token_scorer='fastkvzip', 'kvzip', "
+                             "'random', 'lru' or 'keydiff'")
+        if (self.offload_granularity == "token" and self.token_scorer in ("lru", "keydiff")
+                and self.token_budget_scope == "shared"):
+            raise ValueError(f"token_scorer={self.token_scorer!r} needs a per-head scope "
+                             "(not 'shared')")
         if self.token_budget_scope not in ("shared", "global", "layer", "uniform", "cells_shared"):
             raise ValueError("token_budget_scope must be shared, global, layer, uniform "
                              "or cells_shared")

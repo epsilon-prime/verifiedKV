@@ -215,3 +215,28 @@ def test_cell_release_and_missing_cpu_copy():
     eng.cpu_row[1, s, cold[KSEL], 0] = 0                            # restore validity
     store.stage_tokens(1, good, rows, qheads=(KSEL, GROUP))
     store.check_errors()                                            # cleared once reported
+
+
+def test_lru_recency_stamps_match_torch_path():
+    """token_scorer='lru': every selected (position, KV head) cell's score
+    becomes the tick of its latest selection, on the kernel path (written by
+    tok_discover) and the torch path alike; other cells are untouched."""
+    _kern_or_skip()
+    a, b = _world(True), _world(False)
+    for w in (a, b):
+        w[1].lru = True
+        w[1].score.zero_()
+    g = torch.Generator(device="cuda").manual_seed(5)
+    q = (KSEL, GROUP)
+    s = a[1].slot_of("r")
+    want = torch.zeros_like(a[1].score)
+    for step in range(1, 7):
+        layer = step % LAYERS
+        idx = _sel(g)
+        for w in (a, b):
+            w[2].stage_tokens(layer, idx, w[3], qheads=q)
+        kvh = TokenStagingStore._kv_heads(idx.shape[1], q, idx.device)
+        want[layer, s][idx[0], kvh[0]] = float(step)
+        torch.cuda.synchronize()
+        assert torch.equal(a[1].score, want), step
+        assert torch.equal(b[1].score, want), step

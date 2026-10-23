@@ -284,7 +284,18 @@ class OffloadPackageWorker(KVConnectorBase_V1):
         else:
             engine = TokenOffloadEngine(**kw)
         nkv = int(hf.num_key_value_heads)
-        if cfg.token_scorer == "random":
+        gates = batched = None
+        if cfg.token_scorer == "lru":
+            # Recency instead of a learned score: the decode-time discover
+            # kernel stamps each selected cell's score with the current tick
+            # (TokenStagingStore), so a round evicts the least recently
+            # selected cells. No score hooks.
+            engine.lru = True
+        elif cfg.token_scorer == "keydiff":
+            # KeyDiff: scores come from the resident keys at each round
+            # (HeadTokenOffloadEngine._keydiff_scores). No score hooks.
+            engine.keydiff = True
+        elif cfg.token_scorer == "random":
             gates = [RandomTokenGate(seed=i, nhead=nkv if per_head else 1)
                      for i in range(len(kv_cache_view.k_caches))]
             batched = BatchedRandomGates(seed=len(gates), nhead=nkv if per_head else None)
@@ -314,7 +325,8 @@ class OffloadPackageWorker(KVConnectorBase_V1):
             batched = BatchedFastKVzipGates(gates, per_head=per_head).to(kv_cache_view.device)
         for h in getattr(self, "_token_hooks", []):
             h.remove()
-        self._token_hooks = install_score_hooks(self._model_runner, engine, gates, batched)
+        self._token_hooks = ([] if gates is None else
+                             install_score_hooks(self._model_runner, engine, gates, batched))
         self._token_engine = engine
         self._model_runner.token_offload = engine
         self._orchestrator.token_offload = engine
@@ -350,6 +362,22 @@ class OffloadPackageWorker(KVConnectorBase_V1):
                 logger.info("token offload: FULL decode CUDA graphs on (rows=%d, "
                             "entries/layer=%d)", max_rows,
                             max_rows * int(hf.num_attention_heads) * width)
+        # GPU memory token offload adds on top of the KV it occupies (the KV
+        # pool and its staging pages are vLLM's preallocated blocks): the
+        # engine's per-request maps and the staging store's maps / buffers.
+        # Printed once, after allocation, for the memory accounting of runs.
+        st = self._orchestrator.token_store
+        if not getattr(st, "_S", 0):
+            st._ensure()
+        _nb = lambda ts: sum(int(t.numel()) * t.element_size() for t in ts
+                             if isinstance(t, torch.Tensor) and t.is_cuda)
+        eng_b = _nb([engine.score, engine.cell, getattr(engine, "cpu_row", None),
+                     getattr(engine, "decode_rows_d", None)])
+        st_b = _nb([getattr(st, n, None) for n in ("tok_slot", "seen", "owner", "last_use",
+                                                    "_need", "_stage_units", "_ctr")])
+        print(f"[TOKEN OFFLOAD MEM] engine maps {eng_b / 2**30:.3f} GiB, store maps "
+              f"{st_b / 2**30:.3f} GiB, staging pages {int(self._orchestrator.staging_pool.num_slots)}",
+              flush=True)
         logger.info(
             "OffloadPackageWorker: token offloading on (%s, scope=%s, fraction=%.2f, "
             "sink=%d, window=%d, cpu rows=%d)", cfg.token_scorer, scope, cfg.offload_fraction,
