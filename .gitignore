@@ -11,3 +11,6 @@ final_eval/fastkvzip_gates/data/
 final_eval/fastkvzip_gates/gates/
 final_eval/fastkvzip_gates/vendor/
 final_eval/fastkvzip_gates/gates.md5
+phase4/**/out/
+phase4/**/logs/
+phase4/**/smoke_x/

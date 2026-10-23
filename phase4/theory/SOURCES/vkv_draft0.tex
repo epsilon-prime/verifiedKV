@@ -1,0 +1,361 @@
+% Transcription of the user's vkv_draft0.pdf (received 2026-10-23 as a chat attachment; the original file was not
+% on disk). Text and formulas are kept verbatim, including the author's wording; only typesetting is redone.
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=2.2cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,enumitem,xcolor}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage[hidelinks]{hyperref}
+\usepackage[most]{tcolorbox}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\newcommand{\eps}{\varepsilon}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}[lemma]{Proposition}
+\newtheorem{theorem}[lemma]{Theorem}
+\theoremstyle{definition}
+\newtheorem{assumption}{Assumption}
+\renewcommand{\theassumption}{A\arabic{assumption}}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\title{\textbf{Vkv}\\[2pt]\large Truncated Horvitz--Thompson estimation with certified fetching for the attention denominator}
+\author{VerifiedKV algorithm explainer}
+\date{23 October 2026}
+
+\begin{document}
+\maketitle
+
+At prefill, Vkv keeps each tail token with probability $r_i$ (KVzip scores) and moves the rest to CPU. At every attention
+decision it does three things, all computed from the query sketch and $r$, never from which tokens were drawn. First, it
+\emph{truncates} the tail tokens whose Horvitz--Thompson upweighting is too risky: if sampled, they get weight 1 instead of
+$1/r$. The set is chosen by an MSE criterion. Second, it bounds the resulting error with a Bernstein certificate that treats
+the known truncation bias and the random fluctuation separately. Third, if the bound exceeds the tolerance $\eps_0$, it
+fetches the heaviest tokens by sketch weight, and picks how many to fetch in a single prefix-sum sweep. With exact weights
+in the plan, every decision then satisfies $\mathbb P(|\hat B - B| > \eps_0 B) \le \delta$. The effect of sketch error is
+left to Part III.
+
+\part*{Part I \quad Theory}
+
+\section{Setting}
+
+Fix one (layer, KV head) and one decision, i.e.\ one query row. The context has keys $k_i$, and the query $q$ (scaled by
+$1/\sqrt d$) gives weights $w_i = e^{\langle q, k_i\rangle - m}$. The quantity to estimate is the softmax denominator
+\[ B = \sum_i w_i + w^x, \]
+where $w^x$ is the exact weight of the question and generated keys.
+
+\textbf{Prefill.} Each context token has a keep probability $r_i = \min(1, c\tau_i)$ from KVzip scores $\tau_i$. Sinks and
+the local window get $r_i = 1$. Write $H = \{r_i = 1\}$ for the always-resident set and $L = \{r_i < 1\}$ for the tail.
+Independent draws $Z_i \sim \mathrm{Bernoulli}(r_i)$ decide which tail tokens stay on the GPU; call these the sample
+$S = \{i \in L : Z_i = 1\}$. The full cache is offloaded to the CPU.
+
+\textbf{Sketch.} A compact sketch of all keys gives an approximate weight $\hat w_i$ for every tail token, sampled or not.
+In the analysis below we take the plan's weights to be exact ($\hat w_i = w_i$). The effect of sketch error is discussed
+in Part III.
+
+\begin{assumption}[Draw independence]\label{a1}
+The $Z_i$ are independent, and independent of everything a plan may use: the query, the sketch, and $r$.
+\end{assumption}
+
+This holds in the question pass when draws are independent across layers. At decode it holds along a fixed reference
+prefix.
+
+\section{The base estimator and why plans must ignore the draw}
+
+The Horvitz--Thompson (HT) estimator weights each sampled tail token by $1/r_i$:
+\[ \hat B_{\mathrm{HT}} = \sum_H w_i + w^x + \sum_{i \in L} \frac{Z_i}{r_i} w_i, \qquad \mathbb E \hat B_{\mathrm{HT}} = B,
+\qquad \mathrm{Var} = \sum_L w_i^2 \frac{1 - r_i}{r_i}. \]
+
+\textbf{Design rule.} Every set used below (truncated, fetched) must be chosen from $(\hat w, r)$ only. If you instead pick
+sampled tokens \emph{because} they were sampled and give them weight 1, you discard the mass they represented. On a
+synthetic head this biased the estimate by $-25\%$ to $-41\%$.
+
+\section{Truncation: trading a little bias for a lot of variance}
+
+\subsection{One token}
+
+Give a tail token weight 1 instead of $1/r$ if it is sampled. Its contribution changes as follows:
+\begin{center}
+\begin{tabular}{lccc}\toprule
+ & weight if sampled & bias & variance \\ \midrule
+HT & $1/r$ & $0$ & $w^2(1-r)/r$ \\
+Truncated & $1$ & $-w(1-r)$ & $w^2 r(1-r)$ \\ \bottomrule
+\end{tabular}
+\end{center}
+So truncation adds bias $b = w(1-r)$, always downward, and removes variance $w^2(1-r)/r - w^2 r(1-r) = w^2(1-r)^2(1+r)/r$.
+
+\subsection{Many tokens: why the per-token test is wrong}
+
+$\mathrm{MSE} = (\text{total bias})^2 + \text{total variance}$. Variances of independent tokens add. Biases add
+\emph{before} squaring, and they all point the same way. If $T$ is the truncated set and $\beta_T = \sum_{i \in T}
+w_i(1 - r_i)$ its total bias, the bias term is $\beta_T^2$. Keep in mind the square of sum vs sum of square.
+
+\subsection{The MSE rule}
+
+Adding token $j$ to $T$ changes the MSE by
+\[ \Delta\mathrm{MSE} = \underbrace{2\beta_T w_j(1 - r_j) + w_j^2(1 - r_j)^2}_{(\beta_T + b_j)^2 - \beta_T^2}
+ - w_j^2 (1 - r_j)^2 \frac{1 + r_j}{r_j}. \]
+Dividing by $w_j(1 - r_j)$ gives
+\begin{tcolorbox}[colback=green!3,colframe=green!40!black,boxrule=0.4pt,arc=2pt]
+\centering truncating $j$ lowers the MSE $\iff J_j := \dfrac{w_j(1 - r_j)}{r_j} > 2\beta_T$.
+\end{tcolorbox}
+$J_j$ is token $j$'s \emph{jump}: how far HT overshoots when $j$ is sampled. Go through tokens in decreasing order of jump.
+Jumps fall and $\beta_T$ rises along that order, so the MSE first decreases and then increases, and the best set $T^\star$
+is the prefix that stops at the first $j$ with $J_j \le 2\beta_T$. Large-jump tokens (heavy weight, tiny $r$) are truncated
+first.
+
+\begin{lemma}[Truncation caps the jumps]\label{lem:cap}
+Every tail token left as HT has $J_j \le 2\beta_{T^\star}$.
+\end{lemma}
+\begin{proof}
+The rule stops at the first token whose jump is at most $2\beta_{T^\star}$, and all later tokens in the order have jumps no
+larger.
+\end{proof}
+
+This is what makes the certificate in \S\ref{sec:cert} tight. Without truncation, a single token with $r = 10^{-3}$ can have a
+jump $1000\times$ its weight, and any Bernstein-type bound pays for that even though it happens with probability $10^{-3}$.
+
+\begin{remark}
+\textbf{interesting thing i found:} Shrinking extreme HT weights to trade bias for variance is known in survey statistics as
+\emph{weight trimming}. What is specific here is choosing the trimmed set from a query-time sketch, before the draw is seen,
+and using the trimming to bound the jumps so that a closed-form certificate becomes tight.
+\end{remark}
+
+\section{Fetching}
+
+Fetching a token makes it exact. For this to stay unbiased, \emph{every} fetched token must get weight 1, not only the ones
+outside the sample. Tokens outside $S$ are read from CPU; tokens already sampled lose their $1/r$ upweighting. (If sampled
+members kept $1/r$, a fetched token would contribute $w + w(1 - r)$ on average.) A fetched token then contributes no error.
+The transfer cost is the number of fetched tokens that were not sampled.
+
+\textbf{Order.} Fetch tail tokens in decreasing order of $\hat w$, as in needle fetch. Let $F_k$ be the top $k$. Fetching
+removes a token's variance and, if it was truncated, also its bias.
+
+\section{The error after fetching \texorpdfstring{$k$}{k} tokens}
+
+After fetching the top $k$ tokens, every tail token falls into one of three groups. Each group contributes to the error
+$\hat B_k - B$ in a different way.
+\begin{itemize}
+\item \textbf{Fetched} ($F_k$): counted with its exact weight. Error 0.
+\item \textbf{Truncated, not fetched} ($T^\star \setminus F_k$): counted with weight 1 if sampled, missing if dropped.
+\item \textbf{HT, not fetched} (the rest of $L$): counted with weight $1/r$ if sampled, missing if dropped.
+\end{itemize}
+Tokens in $H$ and the question/generated keys are exact and contribute no error.
+
+\textbf{One truncated token.} If it was sampled (probability $r$), we count $w$, which is exactly right: error 0. If it was
+dropped (probability $1 - r$), we count nothing: error $-w$. So its error is $w(Z - 1)$. On average this is $-w(1 - r)$
+(the bias basically), a \emph{known} shortfall we can compute in advance. Around that average, the error moves up by
+$w(1 - r)$ when the token is sampled, and down by $wr$ when it is dropped.
+
+\textbf{One HT token.} If it was sampled, we count $w/r$: error $+w(1 - r)/r$ (its jump). If it was dropped, we count
+nothing: error $-w$. So its error is $w(Z/r - 1)$. On average this is exactly 0 (this is why we call this part unbiased):
+the occasional overshoot cancels the frequent miss.
+
+\begin{center}
+\begin{tabular}{lccccc}\toprule
+ & if sampled & if dropped & mean & variance & max move up / down \\ \midrule
+Truncated & $0$ & $-w$ & $-w(1-r)$ & $w^2 r(1-r)$ & $w(1-r)$ \ / \ $wr$ \\
+HT & $+w(1-r)/r$ & $-w$ & $0$ & $w^2(1-r)/r$ & $w(1-r)/r$ \ / \ $w$ \\ \bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Adding up.} Each unfetched token's error is its mean plus a random part with mean 0 (we do this so we can later apply
+the bernstein, which only works on mean zero vector sum). Summing over all unfetched tokens splits the total error into a
+known part and a random part:
+\begin{equation}\label{eq:split}
+\hat B_k - B = \underbrace{-\beta(k)}_{\text{known bias}} + \underbrace{Y(k)}_{\text{random part}}, \qquad
+\beta(k) = \sum_{T^\star \setminus F_k} w_i (1 - r_i).
+\end{equation}
+\begin{itemize}
+\item $\beta(k)$ is the sum of the truncated tokens' shortfalls. It does not depend on the draw, and it always pushes the
+estimate down.
+\item $Y(k)$ is the sum of the random parts of all unfetched tokens. They are independent (each token was kept
+independently) and each has expectation value zero with non zero variance. Their total variance is
+\[ V(k) = \sum_{T^\star \setminus F_k} w_i^2 r_i(1 - r_i) + \sum_{L \setminus (T^\star \cup F_k)} w_i^2 \frac{1 - r_i}{r_i}, \]
+and no single one moves away from its mean by more than $b(k)$, the largest entry of the last column over unfetched tokens.
+\end{itemize}
+
+\textbf{Why this split helps.} The known bias can simply be added to the error budget. Only $Y(k)$ needs a probability
+bound, and for that we need just $V(k)$ and $b(k)$ (next section). Fetching moves a token out of the residual groups, which
+removes its terms from $\beta$, $V$ and $b$. That is how fetching lowers the error bound. By Lemma~\ref{lem:cap}, the upward
+moves of the remaining HT tokens are at most $2\beta_{T^\star}$, which keeps $b(k)$ small.
+
+\section{The certificate}\label{sec:cert}
+
+\begin{lemma}[Bernstein]
+If $Y$ is a sum of independent, zero-mean terms with $|Y_i| \le b$ and $\sum \mathrm{Var}(Y_i) = V$, then for $t > 0$,
+$\mathbb P(|Y| \ge t) \le 2\exp\bigl(-t^2 / (2(V + bt/3))\bigr)$.
+\end{lemma}
+
+Set the right-hand side equal to $\delta$ and solve. With $L_\delta = \ln(2/\delta)$,
+\[ t(k) = \frac{b(k) L_\delta}{3} + \sqrt{\Bigl(\frac{b(k) L_\delta}{3}\Bigr)^2 + 2V(k)L_\delta}, \qquad
+\boxed{\eps(k) = \frac{\beta(k) + t(k)}{B}} \]
+On the event $|Y(k)| \le t(k)$, which has probability at least $1 - \delta$, \eqref{eq:split} gives
+$|\hat B_k - B| \le \beta(k) + t(k) = \eps(k) B$.
+
+\section{Decision and fetch size in one rule}
+
+\begin{proposition}[Monotone along the order]\label{prop:mono}
+$\beta(k)$, $V(k)$ and $b(k)$ never increase in $k$, so neither does $\eps(k)$.
+\end{proposition}
+\begin{proof}
+Each fetch removes a non-negative term from $\beta$ and from $V$, and a maximum over a smaller set cannot grow. $t$ is
+increasing in $V$ and $b$.
+\end{proof}
+
+\textbf{Rule.} If $\eps(0) \le \eps_0$, do not fetch. Otherwise fetch $F_{k^\star}$, where $k^\star$ is the smallest $k$
+with $\eps(k) \le \eps_0$. By Proposition~\ref{prop:mono}, $k^\star$ is the first index that passes in one sweep. It always
+exists, because fetching the whole tail gives $\beta = V = b = 0$.
+
+\section{The guarantee}
+
+\begin{theorem}[Vkv guarantee]\label{thm:vkv}
+Under Assumption~\ref{a1}, let Vkv fetch $F_{k^\star}$ with $k^\star$ the smallest $k$ such that $\eps(k) \le \eps_0$
+(no fetch if $k = 0$ passes). Then for every decision,
+\[ \mathbb P\bigl(|\hat B_{k^\star} - B| > \eps_0 B\bigr) \le \delta. \]
+Consequently the expected fraction of failing decisions is at most $\delta$, whatever the correlation between decisions.
+\end{theorem}
+\begin{proof}
+$T^\star$, the fetch order and $\eps(k)$ depend only on the weights and $r$, so by Assumption~\ref{a1} the chosen $k^\star$
+is independent of the draw. The certificate of \S\ref{sec:cert} then applies at $k^\star$. The last claim is linearity of
+expectation.
+\end{proof}
+
+\begin{remark}[Marginal targets]
+The theorem certifies each decision separately. If transfer per forward turns out too high (one fetch set serves all query
+rows in a forward), replace the per-decision test by a budget on the \emph{average} failure bound across a forward. The
+expected failing fraction stays bounded by linearity, and the policy can give up on a few expensive diffuse decisions.
+\end{remark}
+
+\part*{Part II \quad The full algorithm}
+
+Algorithm~\ref{alg:prefill} runs once per context. Algorithm~\ref{alg:decision} runs for every decision, vectorised over
+query rows. Every quantity in lines 1--18 of Algorithm~\ref{alg:decision} is computed from $(\hat w, r)$ alone; the draw $Z$
+is used only to decide what to transfer and how to bias attention (lines 19--22).
+
+\begin{algorithm}[H]
+\caption{Vkv prefill (once per context)}\label{alg:prefill}
+\KwIn{context keys and values; kept fraction $\kappa$}
+Compute KVzip scores $\tau_i$\;
+Choose $c$ so that $\sum_i \min(1, c\tau_i) = \kappa n$; set $r_i \gets \min(1, c\tau_i)$\;
+$r_i \gets 1$ on sinks and the local window; $H \gets \{r_i = 1\}$, $L \gets \{r_i < 1\}$\;
+\ForEach{(layer, KV head)}{
+  Draw $Z_i \sim \mathrm{Bernoulli}(r_i)$ independently for $i \in L$ (independent stream per (layer, KV head))\;
+  Keep $H \cup \{i \in L : Z_i = 1\}$ on the GPU\;
+}
+Offload the full cache to CPU; build the key sketch; store $r_i$ for all $i \in L$\;
+\end{algorithm}
+
+\begin{algorithm}[H]
+\caption{Vkv decision, truncation and fetch (one query row)}\label{alg:decision}
+\KwIn{sketch weights $\hat w_i$ for $i \in L$; exact $w_i$ on $H$ and $w^x$; $r$; tolerance $\eps_0$; failure
+probability $\delta$}
+\KwOut{fetch set $F$; attention bias}
+$\tilde B \gets \sum_H w_i + w^x + \sum_L \hat w_i$; \ $L_\delta \gets \ln(2/\delta)$\;
+\tcp{(a) truncation set by the MSE rule}
+$J_i \gets \hat w_i (1 - r_i)/r_i$ for $i \in L$; sort $L$ by $J$ in decreasing order\;
+$T^\star \gets \emptyset$; \ $\hat\beta \gets 0$\;
+\ForEach{$i$ in that order}{
+  \lIf{$J_i \le 2\hat\beta$}{break}
+  $T^\star \gets T^\star \cup \{i\}$; \ $\hat\beta \gets \hat\beta + \hat w_i(1 - r_i)$\;
+}
+\tcp{(b) per-token bias, variance and maximal move}
+\For{$i \in L$}{
+  \eIf{$i \in T^\star$}{
+    $b_i \gets \hat w_i(1 - r_i)$; \ $v_i \gets \hat w_i^2 r_i (1 - r_i)$; \ $m_i \gets \max(\hat w_i(1 - r_i),\, \hat w_i r_i)$\;
+  }{
+    $b_i \gets 0$; \ $v_i \gets \hat w_i^2 (1 - r_i)/r_i$; \ $m_i \gets \max(\hat w_i(1 - r_i)/r_i,\, \hat w_i)$\;
+  }
+}
+\tcp{(c) one sweep in needle order, $k = 0, 1, \dots, |L|$}
+Sort $L$ by $\hat w$ in decreasing order; let $F_k$ be the first $k$ tokens\;
+$\hat\beta(k) \gets \sum_{L \setminus F_k} b_i$; \ $\hat V(k) \gets \sum_{L \setminus F_k} v_i$; \
+$\hat b(k) \gets \max_{L \setminus F_k} m_i$ \tcp*{prefix sums, suffix max}
+$t(k) \gets \dfrac{\hat b(k) L_\delta}{3} + \sqrt{\Bigl(\dfrac{\hat b(k) L_\delta}{3}\Bigr)^2 + 2\hat V(k) L_\delta}$\;
+$\hat\eps(k) \gets \bigl(\hat\beta(k) + t(k)\bigr) / \tilde B$\;
+\tcp{(d) decision}
+\eIf{$\hat\eps(0) \le \eps_0$}{
+  $F \gets \emptyset$ \tcp*{no fetch}
+}{
+  $k^\star \gets \min\{k : \hat\eps(k) \le \eps_0\}$; \ $F \gets F_{k^\star}$; \ fetch $F \setminus S$ from CPU\;
+}
+\tcp{(e) attention bias}
+Bias 0 on $H \cup F$ and on sampled tokens in $T^\star \setminus F$\;
+Bias $\log(1/r_i)$ on sampled tokens in $L \setminus (T^\star \cup F)$\;
+Bias $-\infty$ on all other tail tokens\;
+\end{algorithm}
+
+The attention bias in (e) implements the estimator
+\[ \hat B = \sum_H w_i + w^x + \sum_F w_i + \sum_{S \cap T^\star \setminus F} w_i + \sum_{S \setminus (T^\star \cup F)}
+\frac{w_i}{r_i}, \]
+where $S = \{i \in L : Z_i = 1\}$. By Proposition~\ref{prop:mono}, $\hat\eps(k)$ is non-increasing, so $k^\star$ is the first
+index that passes in the sweep. With exact weights ($\hat w = w$, so $\tilde B = B$), Theorem~\ref{thm:vkv} gives
+$\mathbb P(|\hat B - B| > \eps_0 B) \le \delta$.
+
+\part*{Part III \quad Implementation note}
+
+\section{What the code runs (differs from the theory only where stated)}
+
+\textbf{Tight certificate.} The bias always points down, so bound the two sides separately and pass if
+\[ P_{\mathrm{fail}}(k) = e^{-u_+^2 / (2(V + b^+ u_+/3))} + e^{-u_-^2 / (2(V + b^- u_-/3))} \le \delta, \qquad
+u_\pm = \eps_0 \tilde B \pm \beta(k), \]
+with $b^\pm$ the separate up and down maxima from the table in \S5, and the second term set to 1 if $u_- \le 0$. Use the same
+sweep and take the first passing $k$.
+
+\begin{tcolorbox}[colback=blue!3,colframe=blue!50!black,boxrule=0.4pt,arc=2pt,title=Why this is safe]
+If the simple check passes at $k$, then $t \le u_- \le u_+$, so each term is at most $\delta/2$. The tight check therefore
+passes wherever the simple one does: the guarantee carries over, and $k_{\mathrm{practice}} \le k_{\mathrm{theory}}$. What is
+lost is \emph{monotonicity}. As $\beta$ shrinks, $u_+$ shrinks too, so the over-estimation term can grow: $P_{\mathrm{fail}}$
+can pass at $k$ and fail at $k + 1$ (112 of 20k rows in simulation). The first passing index is still the minimal passing
+one, but the tight check cannot be binary-searched, and ``fetching more is always safe'' does not hold for it. Both
+properties hold for the simple check only.
+\end{tcolorbox}
+
+\textbf{Sketch error (theory deferred).} With real sketches, $\hat\beta$, $\hat V$, $\hat b$ and $\tilde B$ are estimates,
+so the certificate is approximate. First run with \emph{true} weights in place of $\hat w$ (the simulation has them) to
+separate algorithm behaviour from sketch error. A simple correction to try later: inflate $V$ by $\gamma^2$, $b$ and $\beta$ by
+$\gamma$, and divide $\tilde B$ by $\gamma$, with $\gamma$ calibrated so these hold on most decisions.
+
+\textbf{Numerics and cost.}
+\begin{itemize}
+\item Two sorts, a few cumsums and one reverse cummax per row. A top-$K$ partial sort (e.g.\ $K = 4096$) suffices; treat the
+rest as HT.
+\item Compute $\hat w^2(1 - r)/r$ in fp32, since it overflows fp16 when $r$ is tiny.
+\item $T^\star$ lives in the per-row attention bias, so truncation costs no transfer.
+\item Keep $T^\star$ frozen after fetching. Re-truncating could only lower the bound; freezing may over-fetch slightly but
+stays valid.
+\item If Bernstein is still loose, try exact Chernoff at a few ladder points rather than in the sweep. In the synthetic test it
+was only about $1.3\times$ tighter.
+\end{itemize}
+
+\section{What to log, and what ``logical'' looks like}
+
+Per decision, log: phase, layer, head; $\eps(0)$; decision; $k^\star$; transfers $|F \setminus S|$; $|T^\star|$;
+$\beta/\tilde B$ at $k^\star$; $b^+$ before and after truncation. Using the full cache, also log the true error
+$e = |\hat B_{k^\star} - B|/B$, and the error the no-fetch estimator would have had.
+
+\begin{center}\small
+\begin{tabular}{p{0.38\textwidth}p{0.55\textwidth}}\toprule
+Check & Expected if Vkv is behaving \\ \midrule
+Fetch rate vs $\eps_0$, $\delta$, kept fraction & Rises as each decreases; monotone curves \\
+$\mathbb P(e > \eps_0)$ over all decisions & $\le \delta$; with true weights, a violation is a bug \\
+$k^\star$ vs oracle $k$ (smallest $k$ with true error $\le \eps_0$) & Ratio $\ge 1$; its size is the bound's slack \\
+Tight vs simple certificate & Tight never fetches more per row; log rows where $P_{\mathrm{fail}}$ passes at $k$ and fails at
+$k + 1$ \\
+$b^+$ before vs after truncation & After $\le 2\beta$ (Lemma~\ref{lem:cap}); before can be orders of magnitude larger \\
+Truncation on vs off ($T^\star = \emptyset$) & Truncation cuts fetches at matched failure rate \\
+Transfer per forward (union over rows) & Compare with needle fetch at matched memory; if far higher, switch to the averaged
+budget (Remark 2) \\
+$\beta/\tilde B$ at $k^\star$ & Small (a few \%); watch whether it compounds downstream \\ \bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Red flags.}
+\begin{itemize}
+\item Failure rate above $\delta$ with true weights: a sampled set leaked into $T^\star$ or the order, or sampled members of
+$F$ kept weight $1/r$.
+\item $T^\star$ equal to the whole tail: the bias is being summed over sampled tokens only. It must include unsampled truncated
+tokens.
+\item Fetch rate near 100\%: fp16 overflow in the variance, or a sketch that overestimates weights.
+\end{itemize}
+
+\end{document}

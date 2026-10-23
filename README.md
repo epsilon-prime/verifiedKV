@@ -15,3 +15,5 @@ Tag `final-eval-as-run` marks the code exactly as it ran for the paper; its
 
 kvpress is Apache-2.0 (`kvpress/LICENSE`). The Fast KVzip authors' training code is not included (it has no
 license); `final_eval/fastkvzip_gates/fetch_vendor.sh` downloads it at the pinned commit.
+
+**Branch `vkv_draft0`:** also holds `phase4/`, the work-in-progress Vkv1 code (see `phase4/WIP.md`).
