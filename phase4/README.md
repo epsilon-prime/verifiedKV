@@ -59,3 +59,8 @@ Downstream flags `sink=N` / `win=N` (default 64); `sink=4:win=0` reproduces Bern
   <= 0.09%. Gradient order roughly halves k* vs needle order; truncation cuts question fetch rate (e.g. 0.93 -> 0.69 at
   1/16, eps .3).
 - downstream: all vkv1 arms 100 on both contexts (bern 0); eps0 = 0 == full and nofetch+ht+sink=4:win=0 == bern (2/2 each).
+- Same 2-context run with needle fetch's 2-bit 16-pair sketch as plan weights (`vkv1_sim/out/sw64_2ctx_sketch`; downstream
+  arms `:sketch` in `vkv1_down/out/sw64_2ctx`): the guarantee breaks at small eps0. Question-pass fail up to 10.4%
+  (tight-grad-trunc, 1/32, eps .1), 6.0% for the draft's config at 1/16 eps .1; within delta at eps0 >= .3 for
+  simple-needle-trunc. The configs with the least slack (tight + grad: k*/oracle 70-120x with true weights, 2-6x with the
+  sketch) miss most; plain HT misses least. Traffic only 0-10% lower. Downstream: still 100 on both contexts, fail 0.5-2.9%.
