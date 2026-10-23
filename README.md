@@ -1,4 +1,5 @@
-# vKV: final evaluation
+# vKV
+Phase 4 : the current wip code 
 
 KV cache compression with Bernoulli sampling and needle fetch, evaluated against KVzip and Fast KVzip on
 RULER and LOFT (32k and 128k context, 8x / 16x / 32x compression; Qwen3-4B-Instruct-2507,
