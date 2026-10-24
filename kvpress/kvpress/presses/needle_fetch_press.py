@@ -108,11 +108,84 @@ def _top_energy_channels_partial(keys: torch.Tensor, n_channels: int, rotary_dim
     return out
 
 
-def sketch_bytes_per_entry(head_dim: int, group: int, bits: int = 1, n_pairs: int | None = None) -> float:
-    """Packed bits plus two fp16 values per sketched channel (levels, or zero and scale), amortised over
-    the group. The per-head list of pairs is negligible."""
+def sketch_bytes_per_entry(
+    head_dim: int,
+    group: int,
+    bits: int = 1,
+    n_pairs: int | None = None,
+    sketch: str = "quant",
+    pq_subspaces: int = 16,
+    pq_bits: int = 8,
+    ctx: int | None = None,
+) -> float:
+    """Sketch bytes per (token, KV head).
+
+    "quant": packed bits plus two fp16 values per sketched channel (levels, or zero and scale), amortised
+    over the group. The per-head list of pairs is negligible.
+
+    "pq": one ``pq_bits`` code per subspace, plus the per-(layer, KV head) codebook (2**pq_bits fp16
+    centroids per subspace, head_dim * 2**pq_bits values in all) amortised over the ``ctx`` context tokens.
+    The codebook is left out while the context length is unknown.
+    """
+    if sketch == "pq":
+        codebook = head_dim * 2**pq_bits * 2 / ctx if ctx else 0.0
+        return pq_subspaces * pq_bits / 8 + codebook
     channels = head_dim if n_pairs is None else 2 * min(n_pairs, head_dim // 2)
     return bits * channels / 8 + 2 * channels * 2 / group
+
+
+def _nearest_centroid(x: torch.Tensor, centroids: torch.Tensor, chunk: int = 8192) -> torch.Tensor:
+    """Index of the nearest centroid for every row of ``x`` ([B, n, s] against [B, K, s]), in token chunks.
+    |x|^2 is the same for every centroid, so |c|^2 - 2 x.c ranks them; no [B, n, K, s] tensor is built."""
+    c_sq = (centroids * centroids).sum(-1)[:, None, :]
+    return torch.cat([(c_sq - 2 * xc @ centroids.transpose(1, 2)).argmin(-1) for xc in x.split(chunk, dim=1)], 1)
+
+
+def pq_sketch(
+    keys: torch.Tensor,
+    subspaces: int,
+    bits: int,
+    iters: int = 10,
+    seed: int = 0,
+    fit_sample: int | None = None,
+    skip: int = 0,
+) -> torch.Tensor:
+    """Dequantised product-quantisation sketch of post-RoPE keys (PQCache; the skylight runtime's PQ).
+
+    ``keys`` is ``[n_kv, n, d]``. Each key is split into ``subspaces`` contiguous sub-vectors, and every
+    (KV head, subspace) gets a k-means codebook of 2**bits centroids (Euclidean, random-sample start,
+    ``iters`` Lloyd steps, empty clusters refilled with random keys). The codebook is fit on ``fit_sample``
+    random keys from positions ``>= skip`` (the sinks left out; all of them when ``fit_sample`` is None),
+    then every key is encoded with its nearest centroid. Returns each key's centroids, ``[n_kv, n, d]`` in
+    float32, so ``q . k_hat`` is the PQ score sum_s q_s . centroid_s[code_s]. The generator is local: the
+    global random state is untouched.
+    """
+    n_kv, n, d = keys.shape
+    assert d % subspaces == 0, f"head_dim {d} is not divisible by {subspaces} subspaces"
+    sub = d // subspaces
+    x = keys.float().reshape(n_kv, n, subspaces, sub).transpose(1, 2).reshape(n_kv * subspaces, n, sub)
+    g = torch.Generator(device=x.device).manual_seed(seed)
+    fit = x
+    if fit_sample is not None or skip:
+        pool = torch.arange(min(skip, n - 1), n, device=x.device)
+        if fit_sample is not None and fit_sample < pool.numel():
+            pool = pool[torch.randperm(pool.numel(), generator=g, device=x.device)[:fit_sample]]
+        fit = x[:, pool]
+    n_fit, k = fit.shape[1], 2**bits
+    start = torch.stack([torch.randperm(n_fit, generator=g, device=x.device)[:k] for _ in range(x.shape[0])])
+    centroids = fit.gather(1, start[:, :, None].expand(-1, -1, sub))
+    for _ in range(iters):
+        codes = _nearest_centroid(fit, centroids)
+        sums = torch.zeros_like(centroids).scatter_add_(1, codes[:, :, None].expand(-1, -1, sub), fit)
+        counts = torch.zeros(centroids.shape[:2], device=x.device).scatter_add_(
+            1, codes, torch.ones_like(codes, dtype=x.dtype)
+        )
+        picks = torch.randint(0, n_fit, centroids.shape[:2], generator=g, device=x.device)
+        refill = fit.gather(1, picks[:, :, None].expand(-1, -1, sub))
+        centroids = torch.where(counts[:, :, None] > 0, sums / counts.clamp_min(1)[:, :, None], refill)
+    codes = _nearest_centroid(x, centroids)
+    k_hat = centroids.gather(1, codes[:, :, None].expand(-1, -1, sub))
+    return k_hat.reshape(n_kv, subspaces, n, sub).transpose(1, 2).reshape(n_kv, n, d)
 
 
 def needle_decode_bias(query: torch.Tensor, key: torch.Tensor, state: dict, scaling: float) -> torch.Tensor:
@@ -222,6 +295,11 @@ class NeedleFetchPress(BasePress):
     isolates what fetching adds (an ablation; it uses more memory than the ratio). The full cache stays
     in GPU memory, so "fetching" is unmasking; fetch counts are recorded in ``fetch_stats``.
     Composition: the sampling is BernoulliPress's, unchanged.
+
+    ``sketch="pq"`` replaces the low-bit channel sketch with product quantisation of whole keys
+    (``pq_subspaces`` subspaces, 2**``pq_bits`` centroids each, codebook fit on ``pq_fit_sample`` keys past
+    the first ``pq_skip``), as PQCache and the skylight runtime do. ``bits``, ``n_pairs`` and ``group`` then
+    play no part. Its bytes, codebook included, are charged to the budget like the low-bit sketch's.
     """
 
     bern: BernoulliPress = field(default_factory=lambda: BernoulliPress(press=KVzipPress()))
@@ -238,9 +316,17 @@ class NeedleFetchPress(BasePress):
     group: int = 128
     head_dim: int = 128
     charge_overhead: bool = True
+    sketch: str = "quant"
+    pq_subspaces: int = 16
+    pq_bits: int = 8
+    pq_fit_sample: int | None = 4096
+    pq_skip: int = 128
+    pq_iters: int = 10
     _total: float = 0.0
 
     def __post_init__(self):
+        assert self.sketch in ("quant", "pq"), f"unknown sketch {self.sketch!r}"
+        self._ctx = None  # the context length, once known: the PQ codebook is charged per context
         self.reset_stats()
 
     def reset_stats(self):
@@ -263,8 +349,9 @@ class NeedleFetchPress(BasePress):
 
     @property
     def sketch_frac(self) -> float:
-        return sketch_bytes_per_entry(self.head_dim, self.group, self.bits, self.pairs) / (
-            self.head_dim * KV_BYTES_PER_CHANNEL)
+        return sketch_bytes_per_entry(
+            self.head_dim, self.group, self.bits, self.pairs, self.sketch, self.pq_subspaces, self.pq_bits,
+            getattr(self, "_ctx", None)) / (self.head_dim * KV_BYTES_PER_CHANNEL)
 
     @property
     def compression_ratio(self):
@@ -311,8 +398,14 @@ class NeedleFetchPress(BasePress):
 
         def compress_post(m):
             ctx = int(self.bern.press.score_val.shape[-1])
+            self._ctx = ctx  # before the budget: the PQ codebook's share depends on it
             self._ctx_reserve = self._reserve_for(ctx)
             self._set_kept(self._ctx_reserve)  # the kept budget for THIS context, reserve paid
+            if self.charge_overhead and self._total > 0 and self.bern.compression_ratio >= 1.0:
+                raise ValueError(
+                    f"the sketch ({self.sketch_frac:.4f} of the cache) and reserve ({self._ctx_reserve:.4f}) "
+                    f"leave nothing of the {1 - self._total:.4f} budget"
+                )
             original(m)
             self._attach_sketch(m)
 
@@ -335,13 +428,20 @@ class NeedleFetchPress(BasePress):
             keys, _ = adapter.get_keys_values(cache, modules[int(layer_idx)])
             ctx = bias.shape[-1]
             k_ctx = keys[:, :, :ctx]
-            channels = None if self.pairs is None else top_energy_pairs(
-                k_ctx, self.pairs, getattr(self, "rotary_dim", None))
-            if channels is not None:
-                k_ctx = k_ctx.gather(-1, channels[:, :, None, :].expand(-1, -1, ctx, -1))
+            if self.sketch == "pq":
+                assert k_ctx.shape[0] == 1, "the PQ sketch supports batch size 1 only"
+                channels = None  # the sketch covers every channel
+                k_hat = pq_sketch(k_ctx[0], self.pq_subspaces, self.pq_bits, self.pq_iters, seed=int(layer_idx),
+                                  fit_sample=self.pq_fit_sample, skip=self.pq_skip)[None]
+            else:
+                channels = None if self.pairs is None else top_energy_pairs(
+                    k_ctx, self.pairs, getattr(self, "rotary_dim", None))
+                if channels is not None:
+                    k_ctx = k_ctx.gather(-1, channels[:, :, None, :].expand(-1, -1, ctx, -1))
+                k_hat = quant_sketch(k_ctx, self.bits, self.group)
             needle[layer_idx] = {
                 "bias": bias,
-                "k_hat": quant_sketch(k_ctx, self.bits, self.group),
+                "k_hat": k_hat,
                 "channels": channels,
                 "log_theta": float(torch.log(torch.tensor(self.theta))),
                 "log_theta_question": float(torch.log(torch.tensor(

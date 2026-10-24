@@ -135,6 +135,12 @@ PRESS_REGISTRY = {
     "needle_qonly_c": NeedleFetchPress(bern=BernoulliPress(press=CachedKVzipPress()), theta=float("inf"), theta_question=0.003, persist=True, reserve=0.01, reserve_entries=128, bits=2, n_pairs=16, pairs_per_128_dims=True),
     # 16x ablation: half the sketch (8 RoPE pairs, 0.9% of K+V) to leave more kept budget
     "needle_p8_c": NeedleFetchPress(bern=BernoulliPress(press=CachedKVzipPress()), theta=0.1, theta_question=0.003, persist=True, reserve=0.01, reserve_entries=128, bits=2, n_pairs=8),
+    # needle_final_c with a product-quantisation sketch in place of the 2-bit one (16 subspaces, codebook fit on
+    # 4096 keys past the first 128, as in the skylight runtime), its codebook charged to the budget per context.
+    # 4-bit codes cost about the 2-bit sketch's bytes (~1.6% of K+V at 45k tokens); 8-bit codes are the skylight
+    # runtime's (~3.5%), which leaves nothing at 32x, so that arm runs at 8x and 16x only
+    "needle_final_pq4_c": NeedleFetchPress(bern=BernoulliPress(press=CachedKVzipPress()), theta=0.1, theta_question=0.003, persist=True, reserve=0.01, reserve_entries=128, sketch="pq", pq_subspaces=16, pq_bits=4),
+    "needle_final_pq8_c": NeedleFetchPress(bern=BernoulliPress(press=CachedKVzipPress()), theta=0.1, theta_question=0.003, persist=True, reserve=0.01, reserve_entries=128, sketch="pq", pq_subspaces=16, pq_bits=8),
     # final_eval: extra Bernoulli draws for LOFT, where every question of a task shares one context (one
     # draw per cell). Seed 0 is the arm above; s1/s2 differ only in the draw (same scores, same budget).
     **{f"bernoulli_kvzip_c_s{s}": BernoulliPress(press=CachedKVzipPress(), seed=s) for s in (1, 2)},
