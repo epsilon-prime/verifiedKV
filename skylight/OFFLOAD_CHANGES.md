@@ -9,7 +9,7 @@ What the KV-offload project adds to Skylight, measured against two baselines:
 
 Current size of the changes:
 - `backend.py`: +392 / −12 over upstream's PQ backend.
-- `skylight_kernels`: 9 files, +886 / −53. The PQ wrapper accounts for +599.
+- `skylight_kernels`: the PQ wrapper +588 / −11 and `slot_codes.py` +19 / −3 over HEAD (plus the committed build / stride / deterministic fixes).
 
 Before the cleanup, `skylight_kernels` was +1,760, including +1,472 for the PQ wrapper and 11 tracked `.pyc` files. Our own `backend.py` was +611 over the old `20d5255` copy, before being replaced by upstream's.
 
@@ -27,7 +27,10 @@ Each change belongs to one of four groups:
 
 This file is now upstream Skylight's backend (github.com/skylight-org/skylight, branch `ak/pq`, commit `88105e8191d9`, which has its own PQ support), plus the changes below: +392 / −12 lines, from the `curl … | diff` command in the table above. The PQ wiring this project once wrote itself is gone; upstream's version is used.
 
-**Run settings.** Upstream drives PQ slot codes only on its FULL-cg slot path, and calls the production method `pq_optimized` (its `pq` is the pure-torch reference). For `method='pq'` the benches (`bench_1req_off99.py`, `bench_2req_composition.py`) set `SKYLIGHT_SPARSE_METHOD=pq_optimized`, `SKYLIGHT_INCR_FULLCG=1`, `SKYLIGHT_INCR_SLOT=1` and `SKYLIGHT_SPARSE_DYNAMIC_TOPK=1`, still running eager.
+**Run settings.** Upstream drives PQ slot codes only on its FULL-cg slot path, and calls the production method `pq_optimized` (its `pq` is the pure-torch reference). For `method='pq'` the benches (`bench_1req_off99.py`, `bench_2req_composition.py`) set `SKYLIGHT_SPARSE_METHOD=pq_optimized`, `SKYLIGHT_INCR_FULLCG=1` and `SKYLIGHT_INCR_SLOT=1`.
+- With FULL decode CUDA graphs (`BENCH_CUDAGRAPH=1`, and `bench_results/serve/serve.sh`) the top-k uses upstream's graph default: a fixed width from `max_model_len`.
+- `SKYLIGHT_PQ_DYN_CG=1` (a live budget under graphs) is not used: it needs a sorted top-k, measured +4.2 ms / token (~25%) at 128k.
+- Eager runs keep `SKYLIGHT_SPARSE_DYNAMIC_TOPK=1`, the live budget without a sort.
 
 ### Compatibility with this vLLM fork
 - `get_flashinfer_layout_string(self.kv_cache_layout)` replaces `get_kv_cache_layout()`, which the fork doesn't have (`:37`, plus its two call sites).
@@ -61,7 +64,7 @@ This file is now upstream Skylight's backend (github.com/skylight-org/skylight, 
 ## 2. `skylight/skylight_kernels/pq_optimized/batch_decode_with_paged_kv_cache_wrapper.py`
 
 ### Offload integration
-- **Optional offload hooks** (`:45-59`): `offload_package.debug` / `timing`, with no-op stand-ins, so the kernels package still imports without `offload_package`.
+The wrapper imports nothing from `offload_package`; everything below is reached only when the backend has attached an offload orchestrator.
 - **Setters:** `set_offload_orchestrator` (`:211`) and `set_offload_request_ids` (`:215`), called from `backend.py` each build.
 - **Per-step caches** reset in `plan()` (`:373-377`): the discovery cache plus the token-store and token-offload row maps. A released and re-added request can get a different slot.
 - **Block offload, block-granularity fetch:**
@@ -83,11 +86,11 @@ This file is now upstream Skylight's backend (github.com/skylight-org/skylight, 
 - **Over-capacity (chunked) decode.** A base pass without the unfetched entries, then capacity-sized chunks, merged with `_lse2_merge` (`:693`):
   - token store / cells: `:1020-1040`;
   - block pages: `:1050-1110`.
-- **Selection export:** `_last_topk_idx` (`:888`) is read by `backend._note_selection`.
-- **Timing stages** (`pq.append`, `pq.luts`, `pq.adc`, `pq.select`, `wrap.*`): no-ops unless `SKYLIGHT_OFFLOAD_TIMING=1`.
+- **Selection export:** `_last_topk_idx` is read by `backend._note_selection`.
+- **LSE:** the decode kernel returns the LSE whenever an orchestrator is attached (the chunked merges need it); without one, only when the caller asks, as upstream.
 
 ### Bug fixes
-- **Zero-weight padding** (`:875`): padding picks point at token 0 instead of arbitrary positions. They used to read stale, freed or reused page ids.
+- **Zero-weight padding:** with an orchestrator attached, padding picks point at token 0 instead of arbitrary positions, which under offload could name freed, compacted or reused pages. Without offload the upstream behaviour is kept (stale bytes are only read at weight 0).
 - **Chunked page loop** (`:1083`): the loop variable is now `chunk`, not `group`. `group` is the GQA ratio, reused afterwards by the attention-error measurement.
 
 ### Deterministic mode
@@ -99,7 +102,7 @@ This file is now upstream Skylight's backend (github.com/skylight-org/skylight, 
 |---|---|---|
 | `original_optimized/batch_decode_with_paged_kv_cache_wrapper.py` (`_unpack_paged_kv_cache`) | KV strides are taken from the tensors, not derived from shapes; non-contiguous innermost dimensions raise. The fork hands interleaved `[P, N, H, 2C]` K/V views, where shape-derived strides read the wrong elements. | bug fix (offload integration) |
 | `test_original_optimized.py` | Regression tests for the stride fix; `FLASHINFER_DISABLE_VERSION_CHECK`. | test |
-| `pq_optimized/slot_codes.py` | `phys_lengths` in `append` (token offload); combined `[P, H, N, 2C]` K view in `_norm_K`; optional `offload_package.timing` around the codebook fit; `[PQ FIT]` printed only when timing is on. | offload integration |
+| `pq_optimized/slot_codes.py` | `phys_lengths` in `append` (token offload); combined `[P, H, N, 2C]` K view in `_norm_K` (+19 / −3). | offload integration |
 | `pq_optimized/cuda_ops.py` | ninja and `CUDA_HOME` on `PATH` so the CUDA scorer actually builds (otherwise a silent fallback ~17× slower); one-time fallback warning. | build / environment |
 | `pq_optimized/selection.py` | Torch fallback scorer expands codes one subspace at a time (less memory, identical result). | build / environment (memory) |
 | `pq/codebook.py` | Fixed-order Lloyd update under `SKYLIGHT_PQ_DETERMINISTIC`. | deterministic mode |
@@ -109,6 +112,12 @@ This file is now upstream Skylight's backend (github.com/skylight-org/skylight, 
 Caveat, unchanged: `slot_codes._norm_K` decides it has the combined layout when `shape[1] == h_kv`. That's correct for this fork's caches, but it would misread a separate `[P, H, N, D]` cache.
 
 ---
+
+## Removed in the second cleanup (non-offload pq path = upstream)
+- **PQ wrapper:** the `offload_package.debug` / `timing` imports and their no-op stand-ins, all `pq.*` / `wrap.*` timing stages and the `[FETCH DEBUG]` prints.
+- **PQ wrapper, pq without offload:** the zero-weight padding fill and the forced LSE now run only with an orchestrator attached, measured +0.27 ms / token before.
+- **`slot_codes.py`:** the codebook-fit timing and the `[PQ FIT]` print.
+- **Benches / server:** `SKYLIGHT_PQ_DYN_CG` (the sorted top-k).
 
 ## Removed in the cleanup
 - **`backend.py`:**
