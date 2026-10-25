@@ -1,6 +1,7 @@
-# Vkv1, final configuration for testing: Chernoff certificate + grad order, no persistence (2026-10-24)
+# Vkv1, final configuration: Chernoff certificate + grad order, no persistence (2026-10-25)
 
-The version of Vkv1 we are handing over for testing. The algorithm source is `theory/SOURCES/vkv_draft0.pdf`. Two
+The final version of Vkv1. **Recommended setting: eps0 = 0.5, delta = 0.05, kept 1/16.** Over 260 RULER-32k
+contexts it scores the same as eps0 = 0.3 at about 1/7 of the traffic (see "Final results"). The algorithm source is `theory/SOURCES/vkv_draft0.pdf`. Two
 changes from the draft were tested: an exact two-point Chernoff certificate replaces Bernstein, and the fetch order is
 by eps-gradient instead of by weight. Fetched tokens no longer persist.
 
@@ -82,7 +83,36 @@ python summarize.py out/<run>
 model: A40 and L40S give different draws. Compare draw-dependent numbers (fail, transfers) only across runs on the same
 GPU type. Draw-free numbers (k*, the fetch decisions) do not depend on it.
 
-## Results so far (perfect sketch, kept 1/16, delta 0.05)
+## Final results: 13 tasks x 20 rows (2026-10-25)
+
+**Setup:** Qwen3-4B-Instruct-2507, RULER-32k, 16x (kept 1/16), perfect sketch, rows 152-171 of every task (260
+contexts), all on A40. Code is in `experiments/vkv1_r20/`: `job_down.sbatch` plus `analyze.py`, which merges the six
+jobs into `out/r20_all` (in git: one `rows.jsonl` per arm, 260 rows each) and prints the tables.
+
+| arm | mean score | paired vs full (+- SE) | MB per answer | sec per answer |
+|---|---|---|---|---|
+| full | 91.46 | – | – | 10 |
+| Bernoulli 1/16 | 64.78 | -26.69 +- 2.54 | 0 | 20 |
+| needle_final_c 16x | 87.53 | -3.93 +- 1.21 | 36 | 18 |
+| **chern-grad eps0 0.3** | **89.99** | -1.47 +- 0.60 | 1089 | 243 |
+| **chern-grad eps0 0.5** | **90.21** | -1.25 +- 0.67 | 152 | 245 |
+
+- **Against needle:** chern-grad is +2.46 +- 1.23 (eps0 0.3) and +2.68 +- 1.27 (0.5), about 2 SE.
+- **eps0 0.3 against 0.5:** -0.22 +- 0.78, no difference.
+- **Online fail:** 0.15% (eps0 0.3) and 0.07% (0.5) of decisions, against delta = 5%.
+- **Per task:** almost all of the loss is on cwe (full 79.0, chern 66.5 / 64.0, needle 47.5) and qa_1 (75 against 70).
+  The other 11 tasks match the full cache.
+- **Consistency with the Phase 3 final eval** (`vkv1_r20/plot/compare.py`). That eval used test rows 0-49 at 16x; this
+  sweep used dev rows. The shared arms agree within 1 SE:
+  - full 92.84 there, 91.46 here;
+  - Bernoulli 62.01 there, 64.78 here;
+  - needle 88.22 there, 87.53 here.
+
+  `vkv1_r20/plot/` has the final-eval figure with the chern-grad points added.
+- **Caveats:** chern-grad plans with the exact weights while needle uses its 2-bit sketch; traffic is 4x needle at
+  eps0 0.5; about 245 s per answer in this unoptimised simulation.
+
+## Earlier results (perfect sketch, kept 1/16, delta 0.05)
 
 **Offline, no persistence.** 2 contexts (cwe_150, niah_single_3_150), all 36 layers and decode steps, A40
 (`vkv1_nopersist/out/two_ctx_a40`).
@@ -105,11 +135,11 @@ GPU type. Draw-free numbers (k*, the fetch decisions) do not depend on it.
 **With persistence (the earlier variant, for reference only).** All 13 tasks x 4 rows (rows 152-155), downstream:
 - Mean score: full 88.1, bern 57.0, needle 85.1, chern-grad 86.3 (eps0 0.3) and 86.5 (0.5).
 - Paired difference vs full: -1.6 to -1.7 points.
-- The no-persistence variant has not been run on all 13 tasks yet.
+- The no-persistence variant is in "Final results" above.
 
 ## Known problems and open questions
 
-1. **Traffic.** At eps0 0.5 chern-grad reads about 5x needle per answer; at 0.3 about 37x.
+1. **Traffic.** At eps0 0.5 chern-grad reads about 4-5x needle per answer; at 0.3 about 30-37x.
    - Even the ideal per-decision rule (mc_grad) reads 285 MB at eps0 0.3, so 0.3 cannot reach needle level with a
      draw-free per-decision certificate under this residency.
 2. **Where the slack is.** `experiments/vkv1_hx/slack.py` measured the bound against the true failure probability at

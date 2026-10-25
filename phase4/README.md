@@ -147,3 +147,37 @@ The full run was cancelled (user). `slack.py` shows why hx cannot help much:
   2-4.5% and Chernoff about 5%.
 - The slack is the moderate-deviation looseness of exponential bounds, not heavy jumps. Berry-Esseen is useless here
   (C rho / sigma^3 is about 0.4).
+
+## Chern-grad downstream, 20 rows per task (2026-10-24/25; `experiments/vkv1_r20/`)
+
+**Setup:** Qwen3-4B-Instruct-2507, RULER-32k, 13 tasks x rows 152-171 (260 contexts), 16x, perfect sketch, A40 only.
+Six jobs; `analyze.py` merges them into `out/r20_all`.
+
+**Mean score:**
+
+| arm | score |
+|---|---|
+| full | 91.46 |
+| bern | 64.78 |
+| needle_final_c | 87.53 |
+| chern-grad eps0 0.3 (no persistence) | 89.99 |
+| chern-grad eps0 0.5 (no persistence) | 90.21 |
+
+**Paired differences:**
+- Against full: chern .3 -1.47 +- 0.60, chern .5 -1.25 +- 0.67, needle -3.93 +- 1.21, bern -26.7 +- 2.5.
+- Chern against needle: +2.46 +- 1.23 (.3) and +2.68 +- 1.27 (.5).
+- Chern .3 against .5: -0.22 +- 0.78.
+
+**Loss by task:** most of chern's loss is on cwe (full 79, chern 66.5 / 64, needle 47.5) and qa_1 (75 against 70).
+
+**Online fail:** 0.15% (.3) and 0.07% (.5) in both the question pass and decode.
+
+**Cost per answer:**
+
+| arm | MB per answer | question pass, % of context per KV head | decode, % per step | time |
+|---|---|---|---|---|
+| chern .3 | 1089 | 8.7 | 0.36 | about 245 s |
+| chern .5 | 152 | 1.7 | 0.035 | about 245 s |
+| needle | 36 | | | 18 s |
+
+**Caveat:** chern plans with exact weights; needle uses its 2-bit sketch, which is charged to its budget.
