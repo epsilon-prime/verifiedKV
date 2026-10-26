@@ -1,12 +1,4 @@
-"""offload_package.integration — lazy exports to avoid import cycles with vLLM.
-
-Eagerly importing the connector/worker modules from here creates a package-level
-cycle: vllm.distributed.kv_transfer.kv_connector.v1 imports the registered
-offload_package_connector module, which imports back into this package. With
-lazy exports, importing ``offload_package.integration`` never touches vLLM.
-"""
-
-from .manager import OffloadOrchestrator  # lightweight: no vllm imports
+from .manager import OffloadOrchestrator 
 
 __all__ = [
     "OffloadOrchestrator",
@@ -16,7 +8,6 @@ __all__ = [
     "OffloadPackageMetadata",
     "OffloadPackageWorkerMetadata",
 ]
-
 
 def __getattr__(name: str):
     if name == "OffloadPackageConnector":

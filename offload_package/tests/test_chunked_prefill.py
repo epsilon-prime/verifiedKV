@@ -66,7 +66,6 @@ class TestChunkedPrefill:
             staging_base_page_idx=50,
             offload_fraction=0.25,
         )
-        orchestrator._enable_sparse_mode()
         
         return orchestrator, page_size
 
@@ -175,7 +174,6 @@ class TestPrefillCompletionDetection:
             staging_base_page_idx=50,
             offload_fraction=0.25,
         )
-        orchestrator._enable_sparse_mode()
         
         return orchestrator
 
@@ -277,12 +275,11 @@ class TestPreemptionHandling:
             staging_base_page_idx=50,
             offload_fraction=0.25,
         )
-        orchestrator._enable_sparse_mode()
         
         return orchestrator, offload_manager, staging_pool, residency
 
-    def test_on_request_preempted_cleans_up(self, setup_orchestrator):
-        """Test that on_request_preempted cleans up resources."""
+    def test_on_request_done_cleans_up(self, setup_orchestrator):
+        """Test that on_request_done cleans up resources."""
         orchestrator, offload_manager, staging_pool, residency = setup_orchestrator
         
         req_id = "req1"
@@ -302,8 +299,8 @@ class TestPreemptionHandling:
         if gpu_refs:
             staging_pool.ensure_resident(gpu_refs[:1])  # (staged, skipped) ignored here
         
-        # Preempt the request
-        orchestrator.on_request_preempted(req_id)
+        # Finish the request
+        orchestrator.on_request_done(req_id)
         
         # Request should be removed
         assert req_id not in orchestrator._request_blocks
@@ -313,29 +310,6 @@ class TestPreemptionHandling:
         assert len(staging_pool._lru) == 0
         # CPU slots should be freed
         assert offload_manager._cpu_pool.num_free == 32
-
-    def test_on_request_done_cleans_up_same_as_preempted(self, setup_orchestrator):
-        """Test that on_request_done has same cleanup as on_request_preempted."""
-        orchestrator, offload_manager, staging_pool, residency = setup_orchestrator
-        
-        req_id = "req1"
-        block_ids = [0, 1, 2]
-        orchestrator.sync_request_blocks(req_id, block_ids, num_computed_tokens=48)
-        for ref in orchestrator._request_blocks[req_id]:
-            orchestrator.residency.mark_gpu(ref, ref.block_idx, complete=True)
-        
-        # Offload some
-        orchestrator.offload_manager.offload_fraction(
-            orchestrator._request_blocks[req_id], 0.5
-        )
-        
-        # Finish request
-        orchestrator.on_request_done(req_id)
-        
-        # Same cleanup
-        assert req_id not in orchestrator._request_blocks
-        assert orchestrator.controller.count(req_id) == 0
-        assert len(staging_pool._lru) == 0
 
 
 class TestControllerInterval:

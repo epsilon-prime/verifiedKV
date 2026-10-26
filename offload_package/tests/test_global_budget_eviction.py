@@ -75,7 +75,6 @@ class TestGlobalBudgetEviction:
             staging_base_page_idx=100,
             offload_fraction=0.3,
         )
-        orchestrator._enable_sparse_mode()
         
         return orchestrator, page_size
 
@@ -142,28 +141,6 @@ class TestGlobalBudgetEviction:
         expected_offload = int(total_blocks * 0.3)
         assert abs(len(offloaded) - expected_offload) <= 2  # Allow small variance
 
-    def test_decode_step_global_eviction(self, setup_orchestrator):
-        """Test that decode step also uses global eviction."""
-        orchestrator, page_size = setup_orchestrator
-        
-        # Add requests
-        for req_id, start in [("req1", 0), ("req2", 20), ("req3", 40)]:
-            block_ids = list(range(start, start + 15))
-            orchestrator.sync_request_blocks(req_id, block_ids, num_computed_tokens=len(block_ids) * page_size)
-            for ref in orchestrator._request_blocks[req_id]:
-                orchestrator.residency.mark_gpu(ref, ref.block_idx, complete=True)
-        
-        # Complete prefill for all
-        for req_id in ["req1", "req2", "req3"]:
-            orchestrator.controller.on_prefill_complete(req_id)
-        
-        # Trigger decode step for all - should use global pool
-        offloaded = orchestrator.on_decode_step(["req1", "req2", "req3"], num_tokens=4)
-        
-        # Should offload from global pool
-        assert isinstance(offloaded, list)
-
-
 class TestOnPrefillCompleteReturnsList:
     """Test that on_prefill_complete returns list of offloaded blocks."""
 
@@ -218,7 +195,6 @@ class TestOnPrefillCompleteReturnsList:
             staging_base_page_idx=50,
             offload_fraction=0.25,
         )
-        orchestrator._enable_sparse_mode()
         
         return orchestrator
 

@@ -958,6 +958,13 @@ class SkylightSparseMetadataBuilder(FlashInferMetadataBuilder):
                 moves.append((src, b))
             else:
                 need_init.append(b)
+        if need_init and os.environ.get("SKYLIGHT_DEBUG_ROWS") == "1":
+            for b in need_init:
+                rid = ids[b]
+                src = old_row.get(rid)
+                print(f"[sk rows] row {b} rid {rid} seq {seqs[b]} src {src} "
+                      f"prev {None if src is None else prev_all[src]} nd {nd} "
+                      f"owners {owners[:nd + 2]} ids {ids}", flush=True)
         self._sk_assert_safe_reencode(need_init, ids)
         return moves
 

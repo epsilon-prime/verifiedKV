@@ -61,7 +61,6 @@ class TestOffloadOrchestrator:
             cfg,
             kv_cache_view=kv_cache_view,
         )
-        orchestrator._enable_sparse_mode()
 
         return orchestrator, cfg
 
@@ -151,29 +150,6 @@ class TestOffloadOrchestrator:
         for ref in offloaded:
             loc = orchestrator.residency.get(ref)
             assert loc.residency == Residency.CPU
-
-    def test_on_decode_step_respects_intervals(self, orchestrator_setup):
-        """Test that on_decode_step respects W-token intervals."""
-        orchestrator, _ = orchestrator_setup
-        
-        req_id = "req1"
-        block_ids = [0, 1, 2, 3, 4]
-        
-        orchestrator.sync_request_blocks(req_id, block_ids, num_computed_tokens=50)
-        
-        # Mark blocks complete
-        for i, ref in enumerate(orchestrator._request_blocks[req_id]):
-            orchestrator.residency.mark_gpu(ref, gpu_block_id=i, complete=True)
-        
-        orchestrator.controller.on_prefill_complete(req_id)
-        
-        # Decode 1 token - should not trigger (W=16)
-        result1 = orchestrator.on_decode_step([req_id], num_tokens=1)
-        assert len(result1) == 0  # No offload
-        
-        # Decode 15 more tokens (total 16) - should trigger
-        result2 = orchestrator.on_decode_step([req_id], num_tokens=15)
-        assert len(result2) > 0  # Should offload on W-token boundary
 
     def test_prepare_staging_moves_to_staging(self, orchestrator_setup):
         """Test that prepare_staging moves blocks from CPU to staging."""

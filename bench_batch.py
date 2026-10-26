@@ -36,9 +36,15 @@ def main(name: str) -> None:
     kw = B1.engine_kwargs(**B1.CONFIGS[name])
     kw["max_num_seqs"] = BATCH
     kw["enable_prefix_caching"] = False
+    if os.environ.get("BENCH_GPU_BLOCKS"):           # small KV pool: force preemption
+        kw["num_gpu_blocks_override"] = int(os.environ["BENCH_GPU_BLOCKS"])
     kw["disable_log_stats"] = False
     if B1.CUDAGRAPH:
         sizes = sorted({min(1 << i, BATCH) for i in range(8)} | {BATCH})
+        # BENCH_CAPTURE_SIZES="1,2,4,8,12,..": finer capture sizes, so a batch
+        # is padded less (padded rows cost pq as much as real ones).
+        if os.environ.get("BENCH_CAPTURE_SIZES"):
+            sizes = sorted({int(x) for x in os.environ["BENCH_CAPTURE_SIZES"].split(",")})
         kw["compilation_config"] = {"mode": 0, "cudagraph_mode": "FULL_DECODE_ONLY",
                                     "cudagraph_capture_sizes": sizes}
     llm = LLM(**kw)

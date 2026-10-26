@@ -49,14 +49,8 @@ orchestrator.sync_request_blocks(req_id, block_ids, current_seq_len)
 orchestrator.on_prefill_complete(req_id)
 ```
 
-for each request after prefill, and:
-
-```python
-orchestrator.on_decode_step(active_req_ids, 1)
-```
-
-at each decode step. The package keeps W per request and only triggers on a
-request's W-th decode token.
+for each request after prefill. The package keeps W per request and only
+triggers on a request's W-th decode token.
 
 On completion/preemption:
 

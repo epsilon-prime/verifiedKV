@@ -3,40 +3,25 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence
-from typing import TYPE_CHECKING, Any, Optional, Optional
+from typing import TYPE_CHECKING
 
-import sys
 import os as _os
-import torch
 
 from vllm.config import VllmConfig
 from vllm.v1.kv_cache_interface import KVCacheConfig
 from vllm.distributed.kv_transfer.kv_connector.v1.base import (
     KVConnectorBase_V1,
-    KVConnectorMetadata,
     KVConnectorRole,
-    KVConnectorWorkerMetadata,
-    SupportsHMA,
 )
 from vllm.logger import init_logger
-from vllm.v1.outputs import KVConnectorOutput
-from vllm.v1.core.sched.output import SchedulerOutput
 
 from offload_package.config import OffloadConfig
 from offload_package.debug import dbg as _dbg
-# Lazy imports for scheduler_connector/worker_connector/manager: importing
-# them at module level creates a cycle (vllm's kv_transfer v1 __init__
-# re-exports this module, which would re-enter offload_package.integration
-# while manager is still mid-import).
+
 
 if TYPE_CHECKING:
-    from vllm.forward_context import ForwardContext
-    from vllm.v1.attention.backend import AttentionMetadata
     from vllm.v1.core.block_pool import BlockPool
-    from vllm.v1.core.kv_cache_manager import KVCacheBlocks
     from vllm.v1.kv_cache_interface import KVCacheConfig
-    from vllm.v1.request import Request
 
 logger = init_logger(__name__)
 
@@ -495,7 +480,6 @@ try:
         from offload_package.integration.metadata import OffloadPackageMetadata
         if has_kv_transfer_group():
             if scheduler_output.kv_connector_metadata is None:
-                import logging
                 #logging.warning("kv_connector_metadata was None, substituting empty OffloadPackageMetadata")
                 scheduler_output.kv_connector_metadata = OffloadPackageMetadata()
         return _orig_execute_model(self, scheduler_output, *args, **kwargs)

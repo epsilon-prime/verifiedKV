@@ -42,10 +42,6 @@ class OffloadOrchestrator:
         self._request_blocks: dict[str, list[BlockRef]] = {}
         self._scored: set[BlockRef] = set()
         self._sparse_mode = True  # Enable offloading by default
-        self._last_offload_step = 0  # Track offload steps for pattern caching
-        self._active_request_ids: list[str] = []  # Track active requests for staging
-        # Set by the scheduler: with true freeing, offloaded pages are
-        # recycled, so CPU-resident unstaged indices must be null-filled.
         self.true_freeing = False
         # Last residency CPU-version seen by the lag prefetch (gate state).
         self._lag_seen_cpu_version = 0
@@ -53,10 +49,6 @@ class OffloadOrchestrator:
         # (true-free surgery done). Until then an offloaded block's page is
         # still intact and readable through the block table.
         self.freed_pages: set[BlockRef] = set()
-
-    def _enable_sparse_mode(self) -> None:
-        """Enable sparse attention offloading mode."""
-        self._sparse_mode = True
 
     # FIX — track last seen block count per request and only process new tail blocks:
     def sync_request_blocks(self, request_id, gpu_block_ids, num_computed_tokens: int):
@@ -156,49 +148,6 @@ class OffloadOrchestrator:
             self.offload_manager.score_blocks(_score_refs, _score_gids)
         return []
 
-    def on_decode_step(
-        self,
-        request_ids: Sequence[str],
-        num_tokens: int = 1,
-    ) -> list[BlockRef]:
-
-        triggered_requests = []
-
-        for request_id in request_ids:
-            if self.controller.on_decode(
-                request_id,
-                num_tokens,
-            ):
-                triggered_requests.append(request_id)
-
-        if not triggered_requests:
-            return []
-
-        # Track active request IDs for staging
-        self._active_request_ids = list(request_ids)
-
-        # Debug: Print block residency for each active request
-        for request_id in request_ids:
-            refs = self.residency.refs_for_request(request_id)
-            if refs:
-                _dbg(f"[ORCH DECODE] req={request_id}:")
-                for bref in refs:
-                    loc = self.residency.get(bref)
-                    if loc:
-                        _dbg(f"  block_idx={bref.block_idx}, gpu_block_id={loc.gpu_block_id}, residency={loc.residency.name}, complete={loc.complete}")
-
-        # Global candidate pool for all triggered requests
-        all_gpu_complete = self.residency.all_gpu_blocks(complete_only=True)
-        
-        # Increment offload step counter for pattern caching
-        if triggered_requests:
-            self._last_offload_step += 1
-            _dbg(f"[ORCH DEBUG] Offload triggered! Step={self._last_offload_step}")
-
-        return self.offload_manager.offload_fraction(
-            all_gpu_complete, self.offload_fraction, self._scored
-        )
-
     def prepare_staging(
         self,
         request_ids: Sequence[str],
@@ -292,10 +241,6 @@ class OffloadOrchestrator:
         _timing.end("lru.note")
 
     def on_request_done(self, request_id: str) -> None:
-        self._cleanup_request(request_id)
-
-    def on_request_preempted(self, request_id: str) -> None:
-        """Handle preempted request - same cleanup as finished request."""
         self._cleanup_request(request_id)
 
     def _cleanup_request(self, request_id: str) -> None:

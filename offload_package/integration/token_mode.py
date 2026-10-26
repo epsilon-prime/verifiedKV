@@ -297,6 +297,10 @@ class TokenModeScheduler:
         self.kv_mgr = None
         self._prompt_len: dict[str, int] = {}
         self._last_round: dict[str, int] = {}
+        # Requests that have decoded at least one step since they were last
+        # (re)admitted: the backend builds a request's PQ codes from its pages
+        # at its first decode step, so no round may compact it before then.
+        self._decoded: set[str] = set()
 
     def bind(self, *, scheduler=None, kv_cache_manager=None) -> None:
         if scheduler is not None:
@@ -317,6 +321,7 @@ class TokenModeScheduler:
         if eng is not None:
             eng.release(rid)
         self._last_round.pop(rid, None)
+        self._decoded.discard(rid)
         if self.sched is not None and rid in self.sched.requests:
             self.sched.requests[rid].num_offloaded_tokens = 0
 
@@ -356,8 +361,14 @@ class TokenModeScheduler:
             # the rest of that prefill attend over a compacted prefix.
             req = self.sched.requests.get(rid) if self.sched is not None else None
             decoding = req is None or num_computed >= req.num_tokens - 1
-            due = prompt > 0 and num_computed > prompt and decoding and (
-                last is None or num_computed - last >= self.W)
+            # A request resumed after preemption is far past its prompt at its
+            # first decode step; without the _decoded check it would compact
+            # before the backend encoded its (recomputed) pages.
+            due = (prompt > 0 and num_computed > prompt and decoding
+                   and rid in self._decoded
+                   and (last is None or num_computed - last >= self.W))
+            if decoding:
+                self._decoded.add(rid)
             if due:
                 if last is None and getattr(eng, "prompt_scorer", None) is not None \
                         and req is not None:

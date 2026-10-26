@@ -26,8 +26,6 @@ The benchmark entry point is [bench_1req_off99.py](../bench_1req_off99.py). It p
 
 **Not live in the bench:**
 - the legacy oracle adapters `integration/sparse_optimized_adapter.py`, `sparse_offload_adapter.py`, `offload_sparse_adapter.py` (reached only with `SKYLIGHT_SPARSE_METHOD=sparse_optimized|offload`);
-- the orchestrator's `on_decode_step` family;
-- the load-event machinery;
 - the wrapper's `token_mode` / straggler branch.
 
 See section 7.4.
@@ -365,8 +363,7 @@ This is only reachable when almost nothing is offloaded (fraction ≈ 0 or a lar
 
 ### 7.4 Dead or broken but unreachable in the bench
 - The legacy oracle adapters crash if enabled: they call `_dbg` without importing it and read `orchestrator.offload_config`.
-- `OffloadOrchestrator.on_decode_step` and related fields.
-- The load-event metadata, and interface no-ops (`start_load_kv`, `wait_for_layer_load`, `save_kv_layer`).
+- Interface no-ops (`start_load_kv`, `wait_for_layer_load`, `save_kv_layer`).
 - The wrapper's `token_mode` / straggler branch.
 - The duplicated FlashInfer metadata fields.
 - The no-op `platforms/cuda.py` condition.

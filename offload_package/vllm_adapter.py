@@ -4,14 +4,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from collections.abc import Sequence
-from typing import TYPE_CHECKING
 
 import torch
-
-if TYPE_CHECKING:
-    from offload_package.integration.manager import OffloadOrchestrator
-    from offload_package.staging.pool import KVStagingPool
 
 
 @dataclass(frozen=True)

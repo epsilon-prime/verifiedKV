@@ -3,27 +3,13 @@
 
 from collections import defaultdict
 from collections.abc import Iterable
-from typing import TYPE_CHECKING, Any, Optional
-
-import torch
+from typing import TYPE_CHECKING, Optional
 
 from vllm.config import VllmConfig
 from vllm.distributed.kv_events import KVCacheEvent
 from vllm.logger import init_logger
 from vllm.v1.core.block_pool import BlockPool
-from vllm.v1.core.kv_cache_coordinator import (
-    KVCacheCoordinator,
-    get_kv_cache_coordinator,
-)
 from vllm.v1.core.sched.output import SchedulerOutput
-from vllm.v1.kv_cache_interface import (
-    FullAttentionSpec,
-    MambaSpec,
-    SlidingWindowSpec,
-    UniformTypeKVCacheSpecs,
-    AttentionSpec,
-)
-from offload_package.integration.metadata import INVALID_JOB_ID
 from offload_package import timing as _timing
 from vllm.v1.outputs import KVConnectorOutput
 from vllm.v1.request import Request
@@ -32,23 +18,10 @@ from offload_package.config import OffloadConfig
 from offload_package.debug import dbg as _dbg
 from offload_package.controller import KVCompressionController
 from offload_package.integration.manager import OffloadOrchestrator
-from offload_package.offload.manager import KVOffloadManager
-from offload_package.selection.adapter import (
-    collect_needed_block_refs,
-    patch_paged_kv_indices_with_staging,
-)
-from offload_package.staging.pool import KVStagingPool
-from offload_package.staging.residency import Residency, ResidencyTable
-from offload_package.vllm_adapter import KVCacheView
-from offload_package.shared.types import (
-    OrchestratorConfig,
-    build_orchestrator,
-    normalize_runner_kv_caches,
-)
+from offload_package.staging.residency import Residency
 
 if TYPE_CHECKING:
     from vllm.v1.core.kv_cache_manager import KVCacheBlocks
-    from vllm.v1.core.kv_cache_utils import KVCacheBlock
 
 logger = init_logger(__name__)
 
@@ -153,7 +126,6 @@ class OffloadPackageScheduler:
 
         # Event counters
         self._store_event_counter = 0
-        self._load_event_counter = 0
 
         # World size for multi-worker completion tracking
         self._expected_worker_count = vllm_config.parallel_config.world_size
@@ -170,8 +142,6 @@ class OffloadPackageScheduler:
         self._step_store_acc: list[tuple[list, list[int], list[int], list[str]]] = []
         # Pending store events: event_idx -> (refs, gpu_block_ids, cpu_block_ids, req_ids)
         self._pending_store_events: dict[int, tuple[list, list[int], list[int], list[str]]] = {}
-        # Pending load events: event_idx -> (staging_slot_ids, cpu_block_ids, req_ids)
-        self._pending_load_events: dict[int, tuple[list[int], list[int], list[str]]] = {}
         # Full cumulative GPU block-id list per request (mirrors the model
         # runner's block table: append new_block_ids, replace on resume).
         self._req_block_table: dict[str, list[int]] = {}
@@ -186,7 +156,6 @@ class OffloadPackageScheduler:
         # completion event is processed. With CUDA graphs the in-run fetch can't
         # run during replay, so freed pages must stay readable (shadow tier).
         _async, _mp, _world, _graphs = runtime_env(vllm_config)
-        self._graphs_active = _graphs
         self._true_free_enabled = (
             offload_config.enabled
             and offload_config.true_free
@@ -345,7 +314,6 @@ class OffloadPackageScheduler:
         # 4. Handle staging loads for sparse attention
         active_req_ids = self._get_active_decode_requests(scheduler_output)
         if active_req_ids:
-            self._prepare_staging_loads(metadata, active_req_ids)
             metadata.request_ids = active_req_ids
             _dbg(f"[SCHEDULER DEBUG] Set metadata.request_ids = {active_req_ids}")
 
@@ -383,7 +351,7 @@ class OffloadPackageScheduler:
                  f"{len(gpu_ids)} gpu blocks, {len(cpu_ids)} cpu blocks, "
                  f"reqs={metadata.store_event_to_reqs[event_idx]}")
 
-        _dbg(f"[SCHEDULER DEBUG] build_connector_meta returning: load_event={metadata.load_event}, store_event={metadata.store_event}, n_store_gpu_blocks={len(metadata.store_gpu_blocks)}")
+        _dbg(f"[SCHEDULER DEBUG] build_connector_meta returning: store_event={metadata.store_event}, n_store_gpu_blocks={len(metadata.store_gpu_blocks)}")
         _timing.step()
         return metadata
         
@@ -488,19 +456,6 @@ class OffloadPackageScheduler:
                      "(gpu offloadable %d -> keep %d)", req_id,
                      len(offloaded), len(offloadable_gpu), keep)
 
-    def _prepare_staging_loads(self, metadata, active_req_ids):
-        """Prepare CPU->GPU staging loads for sparse attention."""
-        # This will be populated by the worker after sparse kernel determines
-        # which tokens to attend to. For now, we set up the structure.
-        metadata.request_ids = active_req_ids
-        # Assign a load event ID for tracking
-        event_idx = self._load_event_counter
-        self._load_event_counter += 1
-        metadata.load_event = event_idx
-        metadata.load_event_to_reqs[event_idx] = active_req_ids
-        _dbg(f"[SCHEDULER DEBUG] _prepare_staging_loads: active_req_ids={active_req_ids}, load_event={event_idx}, metadata_id={id(metadata)}")
-        _dbg(f"[SCHEDULER DEBUG] metadata after: load_event={metadata.load_event}, request_ids={metadata.request_ids}")
-        
     def update_connector_output(self, connector_output: KVConnectorOutput) -> None:
         """Process completed transfers from worker."""
         # Recall (CPU -> staging) is synchronous inside the decode wrapper;

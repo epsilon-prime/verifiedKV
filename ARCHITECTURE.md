@@ -78,7 +78,6 @@ This document describes the scoring-based KV cache offloading system integrated 
 - Calls scorer, offload_manager, staging_pool in sequence
 - `sync_request_blocks(req_id, gpu_block_ids, seq_len)`: Track blocks
 - `on_prefill_complete(req_id)`: Score and offload prefill blocks
-- `on_decode_step(req_ids, num_tokens)`: Check W-token triggers
 - `prepare_staging(req_ids, sparse_idx, sparse_len)`: Ensure staging
 - `patch_paged_kv_indices(...)`: Remap page indices to staging
 - `on_request_done(req_id)`: Cleanup (free CPU slots, forget scorer)
@@ -107,7 +106,6 @@ This document describes the scoring-based KV cache offloading system integrated 
 - Called from `sample_tokens()` after postprocess_sampled()
 - Detects prefill→decode transitions
 - Calls `on_prefill_complete()` for each request that finished prefill
-- Calls `on_decode_step()` to trigger W-token scoring
 
 **Request lifecycle hooks**:
 - `_maybe_track_new_request_blocks()`: Called in `add_requests()`
@@ -144,11 +142,10 @@ This document describes the scoring-based KV cache offloading system integrated 
 ```
 1. Each decode token: sample_tokens()
    └─> _maybe_trigger_offload_scoring(is_prefill_complete=False)
-       └─> orchestrator.on_decode_step([req_ids], num_tokens=1)
-           └─> controller.on_decode(req_id)
-           └─> If decode_tokens % W == 0:
-               └─> orchestrator.offload_fraction()
-                   └─> Offload more blocks following same path
+       └─> controller.on_decode(req_id)
+       └─> If decode_tokens % W == 0:
+           └─> orchestrator.offload_fraction()
+               └─> Offload more blocks following same path
 
 2. Attention: prepare_attn()
    └─> _maybe_patch_block_tables_for_offload()

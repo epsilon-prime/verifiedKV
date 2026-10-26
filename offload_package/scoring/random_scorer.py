@@ -5,7 +5,7 @@ from collections.abc import Sequence, Hashable
 
 import torch
 
-from .base import BlockScorer, BlockRef, BlockKVStats
+from .base import BlockScorer, BlockKVStats
 
 
 class RandomScorer(BlockScorer):

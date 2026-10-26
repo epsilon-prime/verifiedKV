@@ -60,27 +60,19 @@ class OffloadPackageWorker(KVConnectorBase_V1):
 
         # Worker reference for getting request IDs
 
-        # Stream for async copies
-        self._load_stream = torch.cuda.Stream()
-        self._store_stream = torch.cuda.Stream()
-
         # Transfer tracking
-        self._load_events: list[tuple[int, torch.cuda.Event]] = []
         self._store_events: list[tuple[int, torch.cuda.Event]] = []
 
         # Model runner reference (set by set_runner)
         self._model_runner = None
 
         # Completion watermarks
-        self._load_hwm = -1
         self._store_hwm = -1
 
         # Pending event tracking
-        self._pending_load_event_indices: set[int] = set()
         self._pending_store_event_indices: set[int] = set()
 
         # Completed event counts (for multi-worker aggregation)
-        self._completed_load_events: dict[int, int] = defaultdict(int)
         self._completed_store_events: dict[int, int] = defaultdict(int)
 
         # Metadata from scheduler
@@ -88,7 +80,6 @@ class OffloadPackageWorker(KVConnectorBase_V1):
 
         # Staging pool config
         self._staging_slots = offload_config.num_staging_slots
-        self._staging_base_page = 0
 
         logger.info("OffloadPackageWorker initialized")
 
@@ -116,7 +107,6 @@ class OffloadPackageWorker(KVConnectorBase_V1):
         if spec is None:
             raise ValueError("No AttentionSpec found in KVCacheConfig")
         self.kv_cache_spec = spec
-        self._staging_base_page = self.kv_cache_config.num_blocks - self._staging_slots
 
     def _build_orchestrator(self) -> None:
         """Build the offload orchestrator with all components."""
@@ -389,7 +379,7 @@ class OffloadPackageWorker(KVConnectorBase_V1):
         """
         assert isinstance(connector_metadata, OffloadPackageMetadata)
         self._metadata = connector_metadata
-        _dbg(f"[WORKER DEBUG] bind_connector_metadata: load_event={connector_metadata.load_event}, store_event={connector_metadata.store_event}, n_request_ids={len(connector_metadata.request_ids)}, n_store_gpu_blocks={len(connector_metadata.store_gpu_blocks)}")
+        _dbg(f"[WORKER DEBUG] bind_connector_metadata: store_event={connector_metadata.store_event}, n_request_ids={len(connector_metadata.request_ids)}, n_store_gpu_blocks={len(connector_metadata.store_gpu_blocks)}")
 
     def clear_connector_metadata(self) -> None:
         """Clear the connector metadata."""
@@ -439,38 +429,33 @@ class OffloadPackageWorker(KVConnectorBase_V1):
         # make vLLM treat them as KV-transfer requests.
         # Check store events (offload)
         if self._pending_store_event_indices:
-            store_wm = self._poll_events(is_store=True)
+            store_wm = self._poll_events()
             for event_idx in [j for j in self._pending_store_event_indices if j <= store_wm]:
                 self._pending_store_event_indices.discard(event_idx)
                 self._completed_store_events[event_idx] = 1
 
         return None, None
 
-    def _poll_events(self, is_store: bool) -> int:
-        events = self._store_events if is_store else self._load_events
-        hwm = self._store_hwm if is_store else self._load_hwm
+    def _poll_events(self) -> int:
+        events = self._store_events
+        hwm = self._store_hwm
         while events:
             event_idx, event = events[0]
             if not event.query():
                 break
             hwm = event_idx
             events.pop(0)
-        if is_store:
-            self._store_hwm = hwm
-        else:
-            self._load_hwm = hwm
+        self._store_hwm = hwm
         return hwm
 
     def build_worker_meta(self) -> KVConnectorWorkerMetadata:
         """Build metadata to send back to scheduler."""
-        if not self._completed_store_events and not self._completed_load_events:
+        if not self._completed_store_events:
             return None
         meta = OffloadPackageWorkerMetadata(
             completed_store_events=self._completed_store_events,
-            completed_load_events=self._completed_load_events,
         )
         self._completed_store_events = {}
-        self._completed_load_events = {}
         return meta
 
     def flush_and_sync(self) -> None:
@@ -478,10 +463,6 @@ class OffloadPackageWorker(KVConnectorBase_V1):
         self._flush_and_sync_all()
 
     def _flush_and_sync_all(self) -> None:
-        for event_idx, event in self._load_events:
-            event.synchronize()
-            self._load_hwm = event_idx
-        self._load_events.clear()
         for event_idx, event in self._store_events:
             event.synchronize()
             self._store_hwm = event_idx
@@ -620,9 +601,6 @@ class OffloadPackageWorker(KVConnectorBase_V1):
                     )
                     self._vllm_config = new_vc
                     self._staging_slots = self.offload_config.num_staging_slots
-                    if self.kv_cache_config is not None:
-                        self._staging_base_page = (
-                            self.kv_cache_config.num_blocks - self._staging_slots)
                     logger.info(
                         "OffloadPackageWorker: refreshed config for reused "
                         "connector (scorer=%s, granularity=%s, fraction=%s)",

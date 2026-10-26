@@ -299,3 +299,14 @@ def test_token_scheduler_rounds_only_while_decoding():
     # num_computed = 42 > prompt, but 7 tokens of the recompute remain.
     _step(ts, cached=("r", 42), n_sched=7)
     assert not eng.remapped("r"), "round fired mid recompute-prefill"
+    s = eng.slot_of("r")
+    _write(eng, s, 0, prompt + 9)
+    eng.score[:, s, :prompt + 9] = torch.rand((L, prompt + 9, H), device="cuda")
+    # Recompute done: the first decode step is far past the prompt, but the
+    # backend encodes the request's codes from its pages at this step -- a
+    # round here would compact them first (crashed B=32 under preemption).
+    _step(ts, cached=("r", prompt + 9))
+    assert not eng.remapped("r"), "round fired before the resumed request decoded"
+    req.num_tokens = prompt + 11
+    _step(ts, cached=("r", prompt + 10))
+    assert eng.remapped("r")

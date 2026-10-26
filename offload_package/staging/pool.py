@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import os as _os
 from collections import OrderedDict
 from collections.abc import Sequence
 
