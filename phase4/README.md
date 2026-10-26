@@ -1,5 +1,10 @@
 # Phase 4: Vkv1
 
+> **Final algorithm (2026-10-27): `vkv_final_algo`** - chern-grad planned on the 2-bit key sketch with a per-KV-head
+> shortlist of 128 exactly scored keys; default 16x, eps0 0.3, delta 0.05. Code in `vkv_final/`, explanation and
+> results in [VKV_FINAL_ALGO.md](VKV_FINAL_ALGO.md). It supersedes `vkv_chern_pq` (the PQ-4 sketch fails: see section 6
+> there).
+
 Vkv1 = truncated Horvitz-Thompson estimation of the attention denominator, with a Bernstein certificate and a
 certified needle-order fetch. Opened 2026-10-23.
 
