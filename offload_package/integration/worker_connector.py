@@ -271,7 +271,9 @@ class OffloadPackageWorker(KVConnectorBase_V1):
             kv_caches=kv_cache_view.k_caches,
             page_size=self.kv_cache_spec.block_size,
             max_len=max_len,
-            num_req_slots=2 * max_seqs + 2,
+            # At most max_num_seqs requests run at once and a finished one
+            # releases its slot; +2 covers release/admit in the same step.
+            num_req_slots=max_seqs + 2,
             num_cpu_tokens=cfg.num_cpu_tokens or max_seqs * max_len,
             offload_fraction=cfg.offload_fraction,
             token_budget=cfg.token_budget,
@@ -286,14 +288,8 @@ class OffloadPackageWorker(KVConnectorBase_V1):
         nkv = int(hf.num_key_value_heads)
         gates = batched = None
         if cfg.token_scorer == "lru":
-            # Recency instead of a learned score: the decode-time discover
-            # kernel stamps each selected cell's score with the current tick
-            # (TokenStagingStore), so a round evicts the least recently
-            # selected cells. No score hooks.
             engine.lru = True
         elif cfg.token_scorer == "keydiff":
-            # KeyDiff: scores come from the resident keys at each round
-            # (HeadTokenOffloadEngine._keydiff_scores). No score hooks.
             engine.keydiff = True
         elif cfg.token_scorer == "random":
             gates = [RandomTokenGate(seed=i, nhead=nkv if per_head else 1)

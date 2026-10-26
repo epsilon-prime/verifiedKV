@@ -378,3 +378,56 @@ def test_dyn_cg_decode_matches_static_budget(_pq_env, monkeypatch):
         b = _run_layer(w_dyn, m, caches[l], PROMPT).run(q, kv, return_lse=True)
         torch.testing.assert_close(b[0], a[0], atol=2e-3, rtol=0, msg=f"layer {l} out")
         torch.testing.assert_close(b[1], a[1], atol=1e-4, rtol=0, msg=f"layer {l} lse")
+
+
+@pytest.mark.parametrize("det", [True, False])
+@pytest.mark.parametrize("dyn_cg", [False, True])
+@pytest.mark.parametrize("agg", ["max", "mean"])
+def test_kv_head_selection_matches_q_head_rows(_pq_env, monkeypatch, dyn_cg, agg, det):
+    """GQA share selects once per KV head (fused ADC group-max, top-k on H_kv
+    rows, broadcast after) -- bitwise the decode of the per-q-head path it
+    replaces (scores broadcast to H_q rows, top-k per q-head). A subclass that
+    overrides the selection hook keeps the q-head rows, so it is the reference.
+    Without the deterministic sort the gather order is top-k's, so the rows
+    must hold the same (index, weight) set and the output agree to rounding."""
+    from pq_optimized import BatchDecodeWithPagedKVCacheWrapper as W
+
+    class QRows(W):
+        def _build_gather(self, *a, **k):
+            return super()._build_gather(*a, **k)
+
+        def _build_gather_ranked(self, *a, **k):
+            return super()._build_gather_ranked(*a, **k)
+
+    if dyn_cg:
+        monkeypatch.setenv("SKYLIGHT_PQ_DYN_CG", "1")
+    if not det:
+        monkeypatch.setenv("SKYLIGHT_PQ_DETERMINISTIC", "0")
+    monkeypatch.setenv("SKYLIGHT_PQ_GQA_AGG", agg)
+    torch.manual_seed(0)
+    buf = torch.randn(L * PAGES * H * P * 2 * D, dtype=torch.float16, device="cuda")
+    caches = _caches(buf)
+    pages = list(range(1, 1 + -(-PROMPT // P)))
+    m = _maint()
+    for l in range(L):
+        m.init_layer(m.get_buf(caches[l], MAXLEN), caches[l],
+                     {0: torch.tensor(pages, device="cuda")}, [(0, 0, PROMPT)], torch.float16)
+    ws = [torch.zeros(256 << 20, dtype=torch.uint8, device="cuda") for _ in range(2)]
+    kw = dict(topk=TOPK, sink_size=SINK, local_size=LOCAL, max_seq_len=MAXLEN,
+              num_subspaces=8, codebook_size=64, n_slots=2)
+    w_kv, w_q = W(ws[0], "HND", **kw), QRows(ws[1], "HND", **kw)
+    _plan(w_kv, pages, PROMPT)
+    _plan(w_q, pages, PROMPT)
+    for l in range(L):
+        q = torch.randn((1, HQ, D), dtype=torch.float16, device="cuda")
+        kv = (caches[l][..., :D], caches[l][..., D:])
+        a = _run_layer(w_kv, m, caches[l], PROMPT).run(q, kv, return_lse=True)
+        b = _run_layer(w_q, m, caches[l], PROMPT).run(q, kv, return_lse=True)
+        ia, ib = w_kv._last_topk_idx, w_q._last_topk_idx
+        if det:
+            assert torch.equal(ia, ib), f"layer {l} idx"
+            assert torch.equal(a[0], b[0]) and torch.equal(a[1], b[1]), f"layer {l}"
+        else:
+            assert torch.equal(ia.sort(-1).values, ib.sort(-1).values), f"layer {l} idx"
+            torch.testing.assert_close(a[0], b[0], atol=2e-3, rtol=0)
+            torch.testing.assert_close(a[1], b[1], atol=1e-4, rtol=0)

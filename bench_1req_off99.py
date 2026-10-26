@@ -96,11 +96,13 @@ SPARSE_ENV = {
     'SKYLIGHT_SPARSE_SINK': '64',
     'SKYLIGHT_SPARSE_LOCAL': '64',
     'SKYLIGHT_SPARSE_CHANNEL_NUM': '64',
-    'SKYLIGHT_PQ_GQA_SHARE': '1',   # operating mode: selection per kv-head
+    'SKYLIGHT_PQ_GQA_SHARE': os.environ.get('BENCH_GQA_SHARE', '1'),  # selection per kv-head
 }
 
 CONFIGS = {
     'pq': dict(method='pq', offload=False),
+    # Dense attention, vLLM's own FlashAttention backend (no Skylight, no offload).
+    'dense': dict(method='dense', offload=False),
 
     'pq+off50': dict(method='pq', offload=True, fraction=0.5,
                      staging_policy='auto', num_staging_slots=None,
@@ -285,10 +287,11 @@ def engine_kwargs(method, offload, fraction=0.5, staging_policy='auto',
         os.environ['SKYLIGHT_INCR_FULLCG'] = '1'
         os.environ['SKYLIGHT_INCR_SLOT'] = '1'
         if CUDAGRAPH:
-            # FULL decode graphs: the same x%-of-live-context budget, held as
-            # a device value a replay re-reads (DYNAMIC_TOPK is eager-only).
+            # Upstream's FULL-graph default: a fixed top-k width from
+            # max_model_len. (SKYLIGHT_PQ_DYN_CG -- a live budget under
+            # graphs -- needs a sorted top-k: ~25% slower at 128k.)
             os.environ.pop('SKYLIGHT_SPARSE_DYNAMIC_TOPK', None)
-            os.environ['SKYLIGHT_PQ_DYN_CG'] = '1'
+            os.environ.pop('SKYLIGHT_PQ_DYN_CG', None)
         else:
             os.environ['SKYLIGHT_SPARSE_DYNAMIC_TOPK'] = '1'
 
@@ -313,6 +316,9 @@ def engine_kwargs(method, offload, fraction=0.5, staging_policy='auto',
         }
         if num_staging_slots is not None:
             extra['num_staging_slots'] = num_staging_slots
+        if os.environ.get('BENCH_NUM_CPU_TOKENS'):
+            # CPU token-pool capacity (default max_num_seqs * max_model_len).
+            extra['num_cpu_tokens'] = int(os.environ['BENCH_NUM_CPU_TOKENS'])
         kv = KVTransferConfig(
             kv_connector='OffloadPackageConnector',
             kv_connector_module_path='vllm.distributed.kv_transfer.kv_connector.v1.offload_package_connector',
@@ -330,7 +336,7 @@ def engine_kwargs(method, offload, fraction=0.5, staging_policy='auto',
         tensor_parallel_size=1,
         max_num_seqs=1,
         disable_log_stats=True,
-        attention_config={'backend': 'CUSTOM'},
+        attention_config={'backend': 'FLASH_ATTN' if method == 'dense' else 'CUSTOM'},
         async_scheduling=False,
         # Token-level offloading compacts KV, which invalidates block hashes.
         enable_prefix_caching=not ((offload and granularity == 'token')
@@ -381,7 +387,7 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
 
     # Peak KV blocks in use, from vLLM's allocator (the KV pool is
     # preallocated, so "peak GPU allocated" cannot show offload savings).
-    kv = {'min_free': None, 'free': [], 't': [],
+    kv = {'min_free': None, 'free': [], 't': [], 'nt': [],
           'ctr': [] if os.environ.get('BENCH_STEP_COUNTERS') else None}
     import skylight.backend as _skb
     _sk_builder = _skb.SkylightSparseMetadataBuilder
@@ -402,6 +408,7 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
                 _acc = getattr(_st, '_ctr_acc', None)
                 kv['ctr'].append(_acc.tolist() if _acc is not None else None)
             out = _orig_schedule(*a, **k)
+            kv['nt'].append(int(getattr(out, 'total_num_scheduled_tokens', 0) or 0))
             f = _pool.get_num_free_blocks()
             kv['min_free'] = f if kv['min_free'] is None else min(kv['min_free'], f)
             kv['free'].append(f)
@@ -430,6 +437,7 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
         kv['min_free'] = None
         kv['free'] = []
         kv['t'] = []
+        kv['nt'] = []
         if kv['ctr'] is not None:
             kv['ctr'] = []
     torch.cuda.synchronize()
@@ -510,6 +518,18 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
         print(f"  TTFT: {m.first_token_latency * 1000:.1f} ms")
         print(f"  decode-only TPOT: "
               f"{(m.last_token_ts - m.first_token_ts) / (out_tokens - 1) * 1000:.2f} ms/token")
+        # Post-prefill setup in TTFT: the first two decode steps build the
+        # request's PQ codes (every config) and run the first offload round
+        # (offload configs: ranking / KVzip pass / copy to CPU). Engine-step
+        # wall times from the schedule() stamps; decode steps = 1 token each.
+        _t, _nt = kv.get('t', []), kv.get('nt', [])
+        _dec = [b - a for a, b, n in zip(_t, _t[1:], _nt) if n == 1]
+        if len(_dec) > 3:
+            _setup = _dec[0] + _dec[1]
+            print(f"  TTFT incl. setup: {(m.first_token_latency + _setup) * 1000:.1f} ms "
+                  f"(TTFT + first 2 decode steps: {_dec[0] * 1e3:.0f} + {_dec[1] * 1e3:.0f} ms)")
+            print(f"  TPOT after setup: {sum(_dec[2:]) / len(_dec[2:]) * 1000:.2f} ms/token "
+                  f"({len(_dec) - 2} decode steps)")
     print(f"  throughput: {out_tokens / max(elapsed, 1e-9):.1f} tok/s")
     print(f"  peak GPU allocated: {peak_gb:.2f} GB")
     if kv.get('pool') is not None and kv['min_free'] is not None:
