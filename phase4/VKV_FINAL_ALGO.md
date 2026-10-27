@@ -215,3 +215,47 @@ in the estimate (exact weights: 0.4%).
 - **Simulation.** The full cache stays on the GPU. Dropping is masking and fetching is unmasking; transfers are
   counted, not timed.
 - **Use one GPU model for paired comparisons.** The draw depends on the GPU model (A40 and L40S differ).
+
+## 8. Grid version and speed (2026-10-27)
+
+For the final runs only downstream accuracy matters, so `vkv_final/press_grid.py` is the same press with every
+statistics-only computation removed:
+- no exact denominator or realised-error estimates;
+- no counters;
+- one `exp` pass instead of two.
+
+Its attention bias is bit-identical to `press_final.py` (`test_press_grid.py`, 8 tests). It also uses
+`chernoff_vec.kstar_fast`, which batches the 32-point lambda grid instead of looping over it. The arithmetic is the same
+and k\* is identical (`test_chernoff_vec.py`, 36 cases), with far fewer GPU kernel launches. `VKV_VEC=0` restores the
+loop.
+
+| L40S, eps0 0.3, delta 0.1 | full cache | loop | vectorised (default) |
+|---|---|---|---|
+| RULER-32k niah_single_3/152 | 9.8 s | 40.4 s | 32.7 s |
+| RULER-32k cwe/152 (119 decode steps) | 11.4 s | 93.0 s | 76.3 s |
+| RULER-64k niah_single_3/400 | 14.2 s | 59.4 s | 53.2 s |
+
+The answers are the same in all three cases.
+
+- **Kernel launches** per decode-step layer: 2279 (loop) vs 632 (vectorised).
+- **Where the time goes:** the certificate (k\*) is about 60% of vkv's planning time. Decode k\* gets about 2x faster;
+  the question pass does not, because it is already compute-bound.
+- **Next-largest cost:** the two float64 sorts in `algo.prepare` (about 25%).
+- **Scaling:** vkv's planning time grows about 1.34x from 32k to 64k.
+
+Runner `run_downstream_grid.py` and job script `job_down_grid.sbatch` follow the same arm syntax as section 4. The
+step-by-step guide to running tests on Prajna, written for someone without access to these files, is
+`vkv_final/RUNNING_TESTS.md`. `vkv_final/score_runs.py` scores runs and gives paired differences;
+`vkv_final/profile_grid.py` times each stage.
+
+**delta 5% vs 10% at eps0 0.3, on the four hardest tasks** (cwe, qa_1, niah_multikey_3, niah_multivalue, 25 rows each,
+A40):
+
+| | delta 5% | delta 10% |
+|---|---|---|
+| score (100 contexts) | 78.6 | 77.6 |
+| on rows 152-171 (80 contexts) | 79.6 | 78.9 |
+
+- delta 10% minus delta 5%: -1.0 +- 0.8, which is noise. 61 of the 100 answers are identical.
+- For reference on rows 152-171: full cache 88.5 and perfect sketch 84.1.
+- On these hard tasks the gap to perfect is about 5 points, mostly cwe and qa_1. The default stays delta 0.05.
