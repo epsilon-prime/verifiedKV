@@ -10,6 +10,13 @@ out/<run>/<arm>/rows.jsonl in the harness's format, so its score_runs.py scores 
     python /home/gaurav_kumar/vkv/phase4/vkv_final/score_runs.py out/r32k
 
 Arms are bench_1req_off99.CONFIGS names (dense, vkv, ...). Resumable.
+
+--question forced (default): the prompt is the context alone (the round compresses it), and
+question + chat suffix + answer prefix are forced as the first output tokens, one decode step
+each (``force_prefix.ForcePrefix``), as the harness's question pass runs over the compressed
+cache; ``pred`` is what follows. TTFT then runs to the first answer token (prefill, round and
+the question steps), and TPOT is over the answer's later steps. --question prefill: the whole
+prompt is prefilled (the question sees the full cache; the first token comes from prefill).
 """
 import argparse
 import json
@@ -27,6 +34,7 @@ ap.add_argument("--tasks", nargs="+", default=TASKS)
 ap.add_argument("--dataset", default="xAlg-AI/att-hub-ruler-32k")
 ap.add_argument("--run", default="ruler32k")
 ap.add_argument("--tag", default=None, help="output arm name (default --arm), e.g. vkv-compact")
+ap.add_argument("--question", choices=("forced", "prefill"), default="forced")
 args = ap.parse_args()
 
 import torch  # noqa: E402
@@ -43,6 +51,10 @@ if rows_f.exists():
     done = {(r["task"], r["row"]) for r in map(json.loads, open(rows_f))}
 
 kwargs = B.engine_kwargs(**B.CONFIGS[args.arm])
+if args.question == "forced":
+    from force_prefix import ForcePrefix, install_stop_guard
+    kwargs["logits_processors"] = [ForcePrefix]
+    install_stop_guard()
 llm = LLM(**kwargs)
 tok = llm.get_tokenizer()
 # Engine-step stamps (the offline engine returns no request metrics): one (time, scheduled
@@ -83,13 +95,14 @@ def copied_now():
 
 
 def prompt_ids(context, question, answer_prefix):
-    """kvpress KVPressTextGenerationPipeline.preprocess (chat-template branch)."""
+    """kvpress KVPressTextGenerationPipeline.preprocess (chat-template branch): (context ids,
+    question + chat suffix + answer prefix ids)."""
     sep = "#" * (len(context) + 10)
     t = tok.apply_chat_template([{"role": "user", "content": context + sep}],
                                 add_generation_prompt=True, tokenize=False, enable_thinking=False)
     ctx, suffix = t.split(sep)
-    return (tok.encode(ctx, add_special_tokens=False)
-            + tok.encode(question + suffix + answer_prefix, add_special_tokens=False))
+    return (tok.encode(ctx, add_special_tokens=False),
+            tok.encode(question + suffix + answer_prefix, add_special_tokens=False))
 
 
 a, b = (int(x) for x in args.rows.split(":"))
@@ -100,25 +113,44 @@ for task in args.tasks:
     for ridx, (_, row) in zip(range(a, b), df.iterrows()):
         if (task, ridx) in done:
             continue
-        ids = prompt_ids(row["context"], row["question"], row["answer_prefix"])
-        sp = SamplingParams(temperature=0.0, max_tokens=int(row["max_new_tokens"]))
+        c_ids, q_ids = prompt_ids(row["context"], row["question"], row["answer_prefix"])
+        if args.question == "forced":
+            ids, Q = c_ids, len(q_ids)
+            sp = SamplingParams(temperature=0.0, max_tokens=Q + int(row["max_new_tokens"]),
+                                extra_args={"force_ids": q_ids})
+        else:
+            ids, Q = c_ids + q_ids, 0
+            sp = SamplingParams(temperature=0.0, max_tokens=int(row["max_new_tokens"]))
         before = vkv.stats.clone() if vkv is not None else None
         steps.clear()
         t0 = time.perf_counter()
         out = llm.generate([{"prompt_token_ids": ids}], sp, use_tqdm=False)[0]
         sec = time.perf_counter() - t0
-        n_out = len(out.outputs[0].token_ids)
-        rec = {"task": task, "row": ridx, "pred": out.outputs[0].text, "gold": list(row["answer"]),
-               "sec": round(sec, 1), "n_prompt": len(ids),
-               "n_out": n_out, "gpu": torch.cuda.get_device_name(0)}
-        # step i lasts from its schedule() to the next one (the last to generate()'s return)
+        toks = list(out.outputs[0].token_ids)
+        if Q:
+            assert toks[:Q] == q_ids, f"{task}_{ridx}: the question was not forced"
+            pred = tok.decode(toks[Q:], skip_special_tokens=True)
+        else:
+            pred = out.outputs[0].text
+        n_out = len(toks) - Q                                  # answer tokens
+        rec = {"task": task, "row": ridx, "pred": pred, "gold": list(row["answer"]),
+               "sec": round(sec, 1), "n_prompt": len(ids), "n_question": Q,
+               "question": args.question, "n_out": n_out, "gpu": torch.cuda.get_device_name(0)}
+        # Step i lasts from its schedule() to the next one (the last to generate()'s return).
+        # Prefill steps schedule > 1 token; decode step j (from 1) produces output token j, so
+        # with Q forced tokens decode steps 1..Q end with the first answer token.
         dur = [(b[0] - a_[0], a_[1]) for a_, b in zip(steps, steps[1:] + [(t0 + sec, 0)])]
         pre = [x for x, n in dur if n > 1]
         dec = [x for x, n in dur if n == 1]
-        rec["ttft"] = (steps[0][0] - t0) + sum(pre) if steps else None
-        rec["tpot"] = sum(dec) / len(dec) if dec else None
-        rec["tpot_median"] = sorted(dec)[len(dec) // 2] if dec else None
+        qdec, adec = dec[:Q], dec[Q:]
+        rec["prefill_s"] = (steps[0][0] - t0) + sum(pre) if steps else None
+        rec["question_s"] = sum(qdec)
+        rec["ttft"] = rec["prefill_s"] + rec["question_s"] if steps else None
+        rec["tpot"] = sum(adec) / len(adec) if adec else None
+        rec["tpot_median"] = sorted(adec)[len(adec) // 2] if adec else None
+        rec["question_step_median"] = sorted(qdec)[len(qdec) // 2] if qdec else None
         rec["latency"] = sec
+        rec["decode_tok_s"] = len(adec) / sum(adec) if adec else None   # after the first answer token
         rec["tok_s"] = n_out / max(sec, 1e-9)
         if vkv is not None:
             from offload_package.vkv.state import STATS
@@ -132,6 +164,6 @@ for task in args.tasks:
             rec["fetch_bytes"] = n_cp * entry_bytes
         with open(rows_f, "a") as fh:
             fh.write(json.dumps(rec) + "\n")
-        print(f"{task}_{ridx} {args.arm}: {rec['sec']}s n={len(ids)} pred={rec['pred'][:60]!r} "
+        print(f"{task}_{ridx} {args.arm}: {rec['sec']}s n={len(ids)}+{Q} pred={rec['pred'][:60]!r} "
               f"gold={rec['gold'][:2]}", flush=True)
 B.shutdown_llm(llm)

@@ -24,6 +24,7 @@ import numpy as np
 import torch
 
 from . import reference as ref
+from . import dump as _dump
 from .sketch import SketchStore
 
 _BELOW_ONE = float(np.nextafter(np.float32(1.0), np.float32(0.0)))
@@ -262,6 +263,8 @@ class VkvState:
         crc keys the Bernoulli draw."""
         ids = list(prompt_ids)
         self._prompts[str(req_id)] = (len(ids), prompt_crc(ids))
+        if _dump.ENABLED:
+            self._dump_ids = ids
 
     def forget(self, req_id: str) -> None:
         self._prompts.pop(str(req_id), None)
@@ -290,12 +293,15 @@ class VkvState:
             return self._evict_round(req_id, slot, tau.contiguous())
         if cfg.recall:
             return self._recall_round(req_id, slot, ctx, crc)
+        tau_in = tau
         tau = ref.transform_scores_for_sampling(tau.reshape(-1)).view_as(tau)
         kept_frac = cfg.draw_frac(self.D)
         r = ref.residency(tau, kept_frac, cfg.n_sink, cfg.window)           # [L, H, ctx] f64
         gen = torch.Generator(device=r.device).manual_seed(draw_seed(crc, cfg.seed))
         keep = (torch.rand(r.reshape(-1).shape, generator=gen, dtype=torch.float64,
                            device=r.device) < r.reshape(-1)).view_as(r)
+        if _dump.ENABLED:
+            _dump.round_(self, req_id, slot, ctx, tau_in, r, keep, self._dump_ids)
         r32 = r.float()
         r32 = torch.where((r < 1) & (r32 >= 1), torch.full_like(r32, _BELOW_ONE), r32)
         self.r[:, slot, :ctx] = r32.permute(0, 2, 1)

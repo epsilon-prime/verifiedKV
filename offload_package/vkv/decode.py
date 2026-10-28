@@ -42,6 +42,7 @@ from . import reference as ref
 from . import reference_chernoff as chern
 from .decision import CHERN_MARGIN, attention_weights, decide, reference_rows
 from .state import STATS
+from . import dump as _dump
 from . import fallback as FB
 from .topk import row_topk
 
@@ -147,6 +148,7 @@ class VkvDecoder:
         # where it applies (see _cuda_ok); else the Triton kernels.
         self.cuda = os.environ.get("VKV_CUDA", "0") == "1" and not self.torch_path
         self._sms = None
+        self._step = -1                   # decode steps begun (VKV_DUMP picks steps by it)
         # vLLM FULL decode graphs (set by the wrapper): layer_full only, rows must be attend-only.
         self.full = False
         self._full_sig = None
@@ -177,6 +179,7 @@ class VkvDecoder:
         positions to the attended lists and read their widest list (the one per-step host read).
         ``hq``: query heads (sizes the graphs' miss list; default 8 per KV head)."""
         eng, st = self.eng, self.st
+        self._step += 1
         ids = [str(r) for r in req_ids]
         slots = [eng.slot_of(r) for r in ids]
         if not ids or min(slots) < 0:
@@ -704,6 +707,9 @@ class VkvDecoder:
         out, lse = self._merge(o, l2, o2, l22)
         st.add_stats_kernel(rows["ctx_d"], Hq, kst, tsize, beta_k, Bt, nonmono, fb, scr, slen,
                             xfer, keys_cnt, 0)
+        if _dump.ENABLED:
+            _dump.layer(self, layer, q, sm_scale, n=n, s_hat=s_hat, m=m, sure=sure, Bt=Bt,
+                        kst=kst, rank=rank, Tm=Tm, fb=fb, out=out)
         return out, lse
 
     def _chern(self, o_i, s_hat, r_l, slots_d, m, Tm, part, part_r, sure, kst, cap_k, beta_k, Bt,
