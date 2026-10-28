@@ -1,0 +1,792 @@
+% --- Qwen3, RULER, 32K, 8x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3, RULER, 32K, 8$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+S-NIAH1 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 \\
+S-NIAH2 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 \\
+S-NIAH3 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 \\
+MK-NIAH1 & 100.0 & 98.0 & 84.0 & 100.0 & 100.0 & 100.0 \\
+MK-NIAH2 & 100.0 & 70.0 & 86.0 & 100.0 & 100.0 & 100.0 \\
+MK-NIAH3 & 100.0 & 68.0 & 90.0 & 98.0 & 100.0 & 100.0 \\
+MV-NIAH & 100.0 & 81.0 & 68.0 & 95.0 & 100.0 & 99.5 \\
+MQ-NIAH & 100.0 & 95.0 & 97.0 & 99.0 & 100.0 & 100.0 \\
+VT & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 99.6 \\
+CWE & 75.6 & 63.0 & 52.6 & 67.8 & 65.4 & 65.0 \\
+FWE & 95.3 & 97.3 & 94.7 & 95.3 & 94.0 & 94.7 \\
+QA1 & 76.0 & 64.0 & 60.0 & 72.0 & 72.0 & 74.0 \\
+QA2 & 60.0 & 58.0 & 52.0 & 56.0 & 54.0 & 56.0 \\
+\midrule
+Avg & 92.8 & 84.2 & 83.4 & 91.0 & 91.2 & 91.4 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3, RULER, 32K, 16x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3, RULER, 32K, 16$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+S-NIAH1 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 \\
+S-NIAH2 & 100.0 & 66.0 & 52.0 & 28.0 & 98.0 & 100.0 \\
+S-NIAH3 & 100.0 & 96.0 & 54.0 & 18.0 & 100.0 & 100.0 \\
+MK-NIAH1 & 100.0 & 58.0 & 56.0 & 54.0 & 100.0 & 98.0 \\
+MK-NIAH2 & 100.0 & 20.0 & 58.0 & 92.0 & 100.0 & 98.0 \\
+MK-NIAH3 & 100.0 & 4.0 & 28.0 & 90.0 & 98.0 & 96.0 \\
+MV-NIAH & 100.0 & 36.0 & 17.0 & 53.0 & 97.5 & 96.5 \\
+MQ-NIAH & 100.0 & 40.0 & 31.0 & 52.5 & 99.5 & 99.5 \\
+VT & 100.0 & 100.0 & 98.8 & 100.0 & 99.2 & 99.2 \\
+CWE & 75.6 & 2.2 & 7.6 & 50.0 & 40.0 & 57.8 \\
+FWE & 95.3 & 83.3 & 88.7 & 92.7 & 92.7 & 94.0 \\
+QA1 & 76.0 & 34.0 & 28.0 & 44.0 & 72.0 & 78.0 \\
+QA2 & 60.0 & 42.0 & 38.0 & 32.0 & 50.0 & 48.0 \\
+\midrule
+Avg & 92.8 & 52.4 & 50.5 & 62.0 & 88.2 & 89.6 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3, RULER, 32K, 32x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3, RULER, 32K, 32$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+S-NIAH1 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 \\
+S-NIAH2 & 100.0 & 0.0 & 0.0 & 0.0 & 98.0 & 98.0 \\
+S-NIAH3 & 100.0 & 0.0 & 2.0 & 0.0 & 92.0 & 90.0 \\
+MK-NIAH1 & 100.0 & 0.0 & 6.0 & 6.0 & 96.0 & 98.0 \\
+MK-NIAH2 & 100.0 & 4.0 & 8.0 & 28.0 & 64.0 & 68.0 \\
+MK-NIAH3 & 100.0 & 0.0 & 0.0 & 0.0 & 34.0 & 46.0 \\
+MV-NIAH & 100.0 & 2.5 & 2.0 & 1.0 & 85.0 & 86.0 \\
+MQ-NIAH & 100.0 & 1.5 & 3.5 & 1.0 & 96.0 & 98.0 \\
+VT & 100.0 & 100.0 & 77.6 & 99.2 & 98.8 & 97.2 \\
+CWE & 75.6 & 0.4 & 0.4 & 29.4 & 21.2 & 22.6 \\
+FWE & 95.3 & 0.7 & 68.7 & 88.7 & 84.0 & 89.3 \\
+QA1 & 76.0 & 18.0 & 10.0 & 28.0 & 54.0 & 54.0 \\
+QA2 & 60.0 & 28.0 & 28.0 & 16.0 & 38.0 & 40.0 \\
+\midrule
+Avg & 92.8 & 19.6 & 23.6 & 30.6 & 73.9 & 75.9 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3, RULER, 128K, 8x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3, RULER, 128K, 8$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+S-NIAH1 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 \\
+S-NIAH2 & 100.0 & 76.0 & 94.0 & 100.0 & 100.0 & 100.0 \\
+S-NIAH3 & 100.0 & 100.0 & 98.0 & 100.0 & 100.0 & 100.0 \\
+MK-NIAH1 & 100.0 & 54.0 & 60.0 & 88.0 & 96.0 & 96.0 \\
+MK-NIAH2 & 92.0 & 60.0 & 60.0 & 90.0 & 84.0 & 88.0 \\
+MK-NIAH3 & 88.0 & 2.0 & 14.0 & 78.0 & 76.0 & 86.0 \\
+MV-NIAH & 100.0 & 76.5 & 71.0 & 99.0 & 100.0 & 99.5 \\
+MQ-NIAH & 97.0 & 86.5 & 81.5 & 95.5 & 97.5 & 98.0 \\
+VT & 96.0 & 94.8 & 93.6 & 94.4 & 94.4 & 94.8 \\
+CWE & 4.2 & 8.2 & 2.0 & 3.4 & 4.2 & 3.4 \\
+FWE & 86.0 & 83.3 & 79.3 & 83.3 & 84.0 & 84.0 \\
+QA1 & 68.0 & 48.0 & 46.0 & 72.0 & 72.0 & 74.0 \\
+QA2 & 44.0 & 30.0 & 30.0 & 44.0 & 42.0 & 40.0 \\
+\midrule
+Avg & 82.7 & 63.0 & 63.8 & 80.6 & 80.8 & 81.8 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3, RULER, 128K, 16x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3, RULER, 128K, 16$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+S-NIAH1 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 \\
+S-NIAH2 & 100.0 & 48.0 & 28.0 & 74.0 & 96.0 & 92.0 \\
+S-NIAH3 & 100.0 & 76.0 & 30.0 & 78.0 & 98.0 & 100.0 \\
+MK-NIAH1 & 100.0 & 26.0 & 28.0 & 62.0 & 84.0 & 82.0 \\
+MK-NIAH2 & 92.0 & 4.0 & 24.0 & 80.0 & 76.0 & 72.0 \\
+MK-NIAH3 & 88.0 & 0.0 & 0.0 & 56.0 & 46.0 & 32.0 \\
+MV-NIAH & 100.0 & 34.0 & 22.0 & 78.0 & 95.5 & 93.5 \\
+MQ-NIAH & 97.0 & 22.5 & 25.0 & 67.5 & 96.0 & 94.5 \\
+VT & 96.0 & 93.6 & 83.6 & 94.8 & 94.4 & 93.2 \\
+CWE & 4.2 & 2.4 & 0.2 & 3.6 & 4.2 & 3.4 \\
+FWE & 86.0 & 70.0 & 71.3 & 80.7 & 80.7 & 84.7 \\
+QA1 & 68.0 & 26.0 & 24.0 & 52.0 & 62.0 & 70.0 \\
+QA2 & 44.0 & 20.0 & 20.0 & 36.0 & 36.0 & 40.0 \\
+\midrule
+Avg & 82.7 & 40.2 & 35.1 & 66.4 & 74.5 & 73.6 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3, RULER, 128K, 32x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3, RULER, 128K, 32$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+S-NIAH1 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 \\
+S-NIAH2 & 100.0 & 2.0 & 2.0 & 4.0 & 88.0 & 82.0 \\
+S-NIAH3 & 100.0 & 0.0 & 6.0 & 0.0 & 78.0 & 80.0 \\
+MK-NIAH1 & 100.0 & 0.0 & 2.0 & 0.0 & 76.0 & 76.0 \\
+MK-NIAH2 & 92.0 & 0.0 & 0.0 & 28.0 & 28.0 & 28.0 \\
+MK-NIAH3 & 88.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+MV-NIAH & 100.0 & 1.5 & 2.5 & 5.0 & 77.5 & 74.0 \\
+MQ-NIAH & 97.0 & 0.0 & 1.5 & 5.0 & 82.5 & 83.0 \\
+VT & 96.0 & 93.2 & 73.6 & 94.4 & 94.0 & 88.0 \\
+CWE & 4.2 & 0.8 & 0.6 & 5.2 & 2.2 & 3.0 \\
+FWE & 86.0 & 26.7 & 64.7 & 82.7 & 81.3 & 84.7 \\
+QA1 & 68.0 & 18.0 & 14.0 & 26.0 & 44.0 & 48.0 \\
+QA2 & 44.0 & 22.0 & 14.0 & 24.0 & 34.0 & 26.0 \\
+\midrule
+Avg & 82.7 & 20.3 & 21.6 & 28.8 & 60.4 & 59.4 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3, LOFT, 32K, 8x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3, LOFT, 32K, 8$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+NQ & 41.0 & 14.0 & 31.0 & 42.0 & 50.0 & 47.0 \\
+HotpotQA & 38.0 & 32.0 & 44.0 & 44.0 & 49.0 & 44.0 \\
+MuSiQue & 14.0 & 10.0 & 15.0 & 8.0 & 8.0 & 7.0 \\
+QAMPARI & 41.7 & 0.0 & 0.0 & 20.0 & 20.0 & 26.7 \\
+QUEST & 16.7 & 1.7 & 10.0 & 13.3 & 13.3 & 20.0 \\
+\midrule
+Avg & 30.3 & 11.5 & 20.0 & 25.5 & 28.1 & 28.9 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3, LOFT, 32K, 16x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3, LOFT, 32K, 16$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+NQ & 41.0 & 7.0 & 10.0 & 36.0 & 37.0 & 47.0 \\
+HotpotQA & 38.0 & 10.0 & 21.0 & 25.0 & 27.0 & 30.0 \\
+MuSiQue & 14.0 & 4.0 & 5.0 & 0.0 & 5.0 & 5.0 \\
+QAMPARI & 41.7 & 0.0 & 0.0 & 3.3 & 10.0 & 5.0 \\
+QUEST & 16.7 & 0.0 & 0.0 & 1.7 & 10.0 & 11.7 \\
+\midrule
+Avg & 30.3 & 4.2 & 7.2 & 13.2 & 17.8 & 19.7 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3, LOFT, 32K, 32x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3, LOFT, 32K, 32$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+NQ & 41.0 & 0.0 & 0.0 & 21.0 & 15.0 & 33.0 \\
+HotpotQA & 38.0 & 1.0 & 11.0 & 0.0 & 0.0 & 11.0 \\
+MuSiQue & 14.0 & 0.0 & 2.0 & 1.0 & 4.0 & 2.0 \\
+QAMPARI & 41.7 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+QUEST & 16.7 & 0.0 & 0.0 & 0.0 & 3.3 & 1.7 \\
+\midrule
+Avg & 30.3 & 0.2 & 2.6 & 4.4 & 4.5 & 9.5 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3, LOFT, 128K, 8x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3, LOFT, 128K, 8$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+NQ & 16.0 & 14.0 & 7.0 & 12.0 & 8.0 & 13.0 \\
+HotpotQA & 27.0 & 25.0 & 33.0 & 35.0 & 33.0 & 24.0 \\
+MuSiQue & 8.0 & 5.0 & 4.0 & 6.0 & 7.0 & 8.0 \\
+QAMPARI & 5.0 & 0.0 & 0.0 & 2.0 & 0.0 & 2.0 \\
+QUEST & 7.0 & 3.0 & 2.0 & 3.0 & 1.0 & 4.0 \\
+\midrule
+Avg & 12.6 & 9.4 & 9.2 & 11.6 & 9.8 & 10.2 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3, LOFT, 128K, 16x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3, LOFT, 128K, 16$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+NQ & 16.0 & 3.0 & 10.0 & 2.0 & 10.0 & 2.0 \\
+HotpotQA & 27.0 & 6.0 & 16.0 & 28.0 & 27.0 & 28.0 \\
+MuSiQue & 8.0 & 0.0 & 7.0 & 5.0 & 3.0 & 1.0 \\
+QAMPARI & 5.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+QUEST & 7.0 & 0.0 & 0.0 & 2.0 & 2.0 & 2.0 \\
+\midrule
+Avg & 12.6 & 1.8 & 6.6 & 7.4 & 8.4 & 6.6 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3, LOFT, 128K, 32x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3, LOFT, 128K, 32$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+NQ & 16.0 & 0.0 & 2.0 & 1.0 & 4.0 & 5.0 \\
+HotpotQA & 27.0 & 7.0 & 7.0 & 13.0 & 14.0 & 19.0 \\
+MuSiQue & 8.0 & 0.0 & 3.0 & 1.0 & 0.0 & 0.0 \\
+QAMPARI & 5.0 & 0.0 & 0.0 & 0.0 & 0.0 & 1.0 \\
+QUEST & 7.0 & 0.0 & 0.0 & 0.0 & 1.0 & 1.0 \\
+\midrule
+Avg & 12.6 & 1.4 & 2.4 & 3.0 & 3.8 & 5.2 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3.5, RULER, 32K, 8x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3.5, RULER, 32K, 8$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+S-NIAH1 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 \\
+S-NIAH2 & 100.0 & 64.0 & 4.0 & 0.0 & 90.0 & 92.0 \\
+S-NIAH3 & 100.0 & 34.0 & 10.0 & 0.0 & 30.0 & 28.0 \\
+MK-NIAH1 & 100.0 & 52.0 & 14.0 & 2.0 & 88.0 & 94.0 \\
+MK-NIAH2 & 100.0 & 50.0 & 36.0 & 36.0 & 78.0 & 64.0 \\
+MK-NIAH3 & 100.0 & 0.0 & 14.0 & 0.0 & 6.0 & 12.0 \\
+MV-NIAH & 100.0 & 41.0 & 2.5 & 4.0 & 66.0 & 67.5 \\
+MQ-NIAH & 100.0 & 47.5 & 12.0 & 2.5 & 76.5 & 69.0 \\
+VT & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 \\
+CWE & 98.4 & 30.6 & 55.4 & 82.4 & 83.6 & 86.0 \\
+FWE & 100.0 & 21.3 & 73.3 & 98.7 & 98.0 & 98.7 \\
+QA1 & 90.0 & 36.0 & 16.0 & 48.0 & 80.0 & 82.0 \\
+QA2 & 74.0 & 34.0 & 46.0 & 34.0 & 60.0 & 58.0 \\
+\midrule
+Avg & 97.1 & 47.0 & 37.2 & 39.0 & 73.5 & 73.2 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3.5, RULER, 32K, 16x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3.5, RULER, 32K, 16$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+S-NIAH1 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 92.0 \\
+S-NIAH2 & 100.0 & 2.0 & 0.0 & 0.0 & 96.0 & 98.0 \\
+S-NIAH3 & 100.0 & 0.0 & 2.0 & 0.0 & 6.0 & 6.0 \\
+MK-NIAH1 & 100.0 & 0.0 & 6.0 & 0.0 & 78.0 & 88.0 \\
+MK-NIAH2 & 100.0 & 0.0 & 8.0 & 4.0 & 18.0 & 12.0 \\
+MK-NIAH3 & 100.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+MV-NIAH & 100.0 & 1.0 & 2.0 & 0.0 & 50.0 & 45.0 \\
+MQ-NIAH & 100.0 & 2.0 & 3.5 & 0.0 & 48.5 & 46.5 \\
+VT & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 93.6 \\
+CWE & 98.4 & 1.4 & 40.4 & 74.0 & 57.0 & 70.0 \\
+FWE & 100.0 & 0.0 & 81.3 & 98.7 & 97.3 & 97.3 \\
+QA1 & 90.0 & 12.0 & 16.0 & 28.0 & 82.0 & 76.0 \\
+QA2 & 74.0 & 32.0 & 48.0 & 28.0 & 58.0 & 60.0 \\
+\midrule
+Avg & 97.1 & 19.3 & 31.3 & 33.3 & 60.8 & 60.3 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3.5, RULER, 32K, 32x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3.5, RULER, 32K, 32$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+S-NIAH1 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 70.0 \\
+S-NIAH2 & 100.0 & 0.0 & 0.0 & 0.0 & 90.0 & 88.0 \\
+S-NIAH3 & 100.0 & 0.0 & 2.0 & 0.0 & 2.0 & 6.0 \\
+MK-NIAH1 & 100.0 & 0.0 & 6.0 & 0.0 & 84.0 & 82.0 \\
+MK-NIAH2 & 100.0 & 0.0 & 6.0 & 0.0 & 0.0 & 2.0 \\
+MK-NIAH3 & 100.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+MV-NIAH & 100.0 & 0.0 & 2.0 & 0.0 & 44.0 & 40.5 \\
+MQ-NIAH & 100.0 & 0.0 & 3.5 & 0.0 & 33.0 & 40.0 \\
+VT & 100.0 & 100.0 & 64.8 & 100.0 & 99.2 & 36.0 \\
+CWE & 98.4 & 0.0 & 40.8 & 46.0 & 17.4 & 18.8 \\
+FWE & 100.0 & 0.0 & 66.0 & 96.7 & 88.0 & 94.0 \\
+QA1 & 90.0 & 16.0 & 14.0 & 14.0 & 70.0 & 74.0 \\
+QA2 & 74.0 & 32.0 & 48.0 & 22.0 & 54.0 & 52.0 \\
+\midrule
+Avg & 97.1 & 19.1 & 27.2 & 29.1 & 52.4 & 46.4 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3.5, RULER, 128K, 8x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3.5, RULER, 128K, 8$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+S-NIAH1 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 \\
+S-NIAH2 & 100.0 & 64.0 & 10.0 & 4.0 & 94.0 & 92.0 \\
+S-NIAH3 & 100.0 & 26.0 & 6.0 & 0.0 & 12.0 & 24.0 \\
+MK-NIAH1 & 100.0 & 44.0 & 12.0 & 10.0 & 92.0 & 98.0 \\
+MK-NIAH2 & 100.0 & 16.0 & 8.0 & 36.0 & 68.0 & 64.0 \\
+MK-NIAH3 & 100.0 & 4.0 & 16.0 & 2.0 & 10.0 & 10.0 \\
+MV-NIAH & 100.0 & 46.5 & 4.5 & 2.0 & 63.5 & 65.0 \\
+MQ-NIAH & 100.0 & 49.5 & 10.0 & 3.0 & 67.0 & 71.0 \\
+VT & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 \\
+CWE & 100.0 & 47.0 & 59.2 & 84.4 & 93.0 & 94.2 \\
+FWE & 100.0 & 46.0 & 73.3 & 99.3 & 98.7 & 98.0 \\
+QA1 & 86.0 & 30.0 & 18.0 & 50.0 & 70.0 & 70.0 \\
+QA2 & 66.0 & 38.0 & 24.0 & 48.0 & 60.0 & 54.0 \\
+\midrule
+Avg & 96.3 & 47.0 & 33.9 & 41.4 & 71.4 & 72.3 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3.5, RULER, 128K, 16x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3.5, RULER, 128K, 16$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+S-NIAH1 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 \\
+S-NIAH2 & 100.0 & 6.0 & 2.0 & 0.0 & 88.0 & 88.0 \\
+S-NIAH3 & 100.0 & 0.0 & 6.0 & 0.0 & 8.0 & 10.0 \\
+MK-NIAH1 & 100.0 & 0.0 & 2.0 & 0.0 & 80.0 & 78.0 \\
+MK-NIAH2 & 100.0 & 0.0 & 0.0 & 6.0 & 12.0 & 12.0 \\
+MK-NIAH3 & 100.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+MV-NIAH & 100.0 & 3.0 & 2.0 & 0.0 & 47.0 & 33.5 \\
+MQ-NIAH & 100.0 & 2.5 & 1.5 & 0.0 & 47.5 & 41.5 \\
+VT & 100.0 & 100.0 & 99.6 & 100.0 & 100.0 & 95.2 \\
+CWE & 100.0 & 6.2 & 48.0 & 74.8 & 67.6 & 76.0 \\
+FWE & 100.0 & 3.3 & 90.0 & 99.3 & 99.3 & 99.3 \\
+QA1 & 86.0 & 16.0 & 18.0 & 32.0 & 72.0 & 70.0 \\
+QA2 & 66.0 & 28.0 & 30.0 & 34.0 & 52.0 & 48.0 \\
+\midrule
+Avg & 96.3 & 20.4 & 30.7 & 34.3 & 59.5 & 57.8 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3.5, RULER, 128K, 32x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3.5, RULER, 128K, 32$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+S-NIAH1 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 56.0 \\
+S-NIAH2 & 100.0 & 0.0 & 2.0 & 0.0 & 86.0 & 76.0 \\
+S-NIAH3 & 100.0 & 0.0 & 6.0 & 0.0 & 2.0 & 6.0 \\
+MK-NIAH1 & 100.0 & 0.0 & 2.0 & 0.0 & 64.0 & 72.0 \\
+MK-NIAH2 & 100.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+MK-NIAH3 & 100.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+MV-NIAH & 100.0 & 0.0 & 2.0 & 0.0 & 26.5 & 32.5 \\
+MQ-NIAH & 100.0 & 0.0 & 1.5 & 0.0 & 32.5 & 37.5 \\
+VT & 100.0 & 100.0 & 70.4 & 100.0 & 100.0 & 25.6 \\
+CWE & 100.0 & 0.0 & 47.4 & 45.0 & 30.0 & 32.6 \\
+FWE & 100.0 & 0.0 & 86.7 & 98.0 & 96.0 & 98.0 \\
+QA1 & 86.0 & 14.0 & 16.0 & 14.0 & 58.0 & 58.0 \\
+QA2 & 66.0 & 28.0 & 28.0 & 34.0 & 40.0 & 38.0 \\
+\midrule
+Avg & 96.3 & 18.6 & 27.8 & 30.1 & 48.8 & 40.9 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3.5, LOFT, 32K, 8x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3.5, LOFT, 32K, 8$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+NQ & 56.0 & 0.0 & 5.0 & 22.0 & 34.0 & 36.0 \\
+HotpotQA & 52.0 & 6.0 & 6.0 & 27.0 & 48.0 & 53.0 \\
+MuSiQue & 25.0 & 1.0 & 0.0 & 4.0 & 10.0 & 10.0 \\
+QAMPARI & 63.3 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+QUEST & 53.3 & 0.0 & 0.0 & 0.0 & 6.7 & 18.3 \\
+\midrule
+Avg & 49.9 & 1.4 & 2.2 & 10.6 & 19.7 & 23.5 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3.5, LOFT, 32K, 16x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3.5, LOFT, 32K, 16$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+NQ & 56.0 & 0.0 & 4.0 & 0.0 & 29.0 & 20.0 \\
+HotpotQA & 52.0 & 0.0 & 0.0 & 7.0 & 34.0 & 38.0 \\
+MuSiQue & 25.0 & 1.0 & 0.0 & 0.0 & 6.0 & 9.0 \\
+QAMPARI & 63.3 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+QUEST & 53.3 & 0.0 & 0.0 & 0.0 & 8.3 & 10.0 \\
+\midrule
+Avg & 49.9 & 0.2 & 0.8 & 1.4 & 15.5 & 15.4 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3.5, LOFT, 32K, 32x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3.5, LOFT, 32K, 32$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+NQ & 56.0 & 0.0 & 6.0 & 0.0 & 15.0 & 20.0 \\
+HotpotQA & 52.0 & 0.0 & 0.0 & 0.0 & 27.0 & 25.0 \\
+MuSiQue & 25.0 & 0.0 & 0.0 & 0.0 & 0.0 & 2.0 \\
+QAMPARI & 63.3 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+QUEST & 53.3 & 0.0 & 0.0 & 0.0 & 0.0 & 3.3 \\
+\midrule
+Avg & 49.9 & 0.0 & 1.2 & 0.0 & 8.4 & 10.1 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3.5, LOFT, 128K, 8x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3.5, LOFT, 128K, 8$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+NQ & 57.0 & 0.0 & 3.0 & 23.0 & 41.0 & 54.0 \\
+HotpotQA & 55.0 & 0.0 & 16.0 & 30.0 & 45.0 & 50.0 \\
+MuSiQue & 23.0 & 0.0 & 4.0 & 3.0 & 14.0 & 12.0 \\
+QAMPARI & 33.0 & 0.0 & 0.0 & 1.0 & 1.0 & 1.0 \\
+QUEST & 24.0 & 0.0 & 1.0 & 3.0 & 6.0 & 7.0 \\
+\midrule
+Avg & 38.4 & 0.0 & 4.8 & 12.0 & 21.4 & 24.8 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3.5, LOFT, 128K, 16x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3.5, LOFT, 128K, 16$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+NQ & 57.0 & 0.0 & 4.0 & 6.0 & 35.0 & 43.0 \\
+HotpotQA & 55.0 & 0.0 & 5.0 & 11.0 & 25.0 & 25.0 \\
+MuSiQue & 23.0 & 0.0 & 2.0 & 2.0 & 4.0 & 4.0 \\
+QAMPARI & 33.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+QUEST & 24.0 & 0.0 & 0.0 & 1.0 & 3.0 & 4.0 \\
+\midrule
+Avg & 38.4 & 0.0 & 2.2 & 4.0 & 13.4 & 15.2 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Qwen3.5, LOFT, 128K, 32x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Qwen3.5, LOFT, 128K, 32$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+NQ & 57.0 & 0.0 & 3.0 & 2.0 & 26.0 & 34.0 \\
+HotpotQA & 55.0 & 0.0 & 5.0 & 0.0 & 11.0 & 12.0 \\
+MuSiQue & 23.0 & 0.0 & 2.0 & 0.0 & 2.0 & 1.0 \\
+QAMPARI & 33.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+QUEST & 24.0 & 0.0 & 0.0 & 0.0 & 1.0 & 0.0 \\
+\midrule
+Avg & 38.4 & 0.0 & 2.0 & 0.4 & 8.0 & 9.4 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Ministral-3, RULER, 32K, 8x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Ministral-3, RULER, 32K, 8$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+S-NIAH1 & 98.0 & 66.0 & 92.0 & 86.0 & 92.0 & 90.0 \\
+S-NIAH2 & 98.0 & 98.0 & 100.0 & 100.0 & 100.0 & 100.0 \\
+S-NIAH3 & 100.0 & 98.0 & 100.0 & 96.0 & 100.0 & 100.0 \\
+MK-NIAH1 & 94.0 & 90.0 & 88.0 & 94.0 & 90.0 & 86.0 \\
+MK-NIAH2 & 98.0 & 98.0 & 98.0 & 100.0 & 98.0 & 98.0 \\
+MK-NIAH3 & 100.0 & 28.0 & 68.0 & 100.0 & 100.0 & 98.0 \\
+MV-NIAH & 98.0 & 92.0 & 86.0 & 98.0 & 97.0 & 98.0 \\
+MQ-NIAH & 96.0 & 96.0 & 97.0 & 96.5 & 93.5 & 91.5 \\
+VT & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 \\
+CWE & 76.4 & 40.0 & 31.8 & 74.6 & 79.6 & 74.0 \\
+FWE & 94.0 & 90.7 & 90.0 & 92.7 & 92.7 & 93.3 \\
+QA1 & 74.0 & 60.0 & 62.0 & 62.0 & 70.0 & 72.0 \\
+QA2 & 64.0 & 54.0 & 60.0 & 64.0 & 66.0 & 56.0 \\
+\midrule
+Avg & 91.6 & 77.7 & 82.5 & 89.5 & 90.7 & 89.0 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Ministral-3, RULER, 32K, 16x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Ministral-3, RULER, 32K, 16$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+S-NIAH1 & 98.0 & 70.0 & 100.0 & 74.0 & 90.0 & 94.0 \\
+S-NIAH2 & 98.0 & 98.0 & 46.0 & 72.0 & 80.0 & 88.0 \\
+S-NIAH3 & 100.0 & 98.0 & 54.0 & 24.0 & 38.0 & 36.0 \\
+MK-NIAH1 & 94.0 & 70.0 & 38.0 & 60.0 & 76.0 & 76.0 \\
+MK-NIAH2 & 98.0 & 84.0 & 66.0 & 100.0 & 92.0 & 86.0 \\
+MK-NIAH3 & 100.0 & 14.0 & 16.0 & 86.0 & 38.0 & 36.0 \\
+MV-NIAH & 98.0 & 54.5 & 38.0 & 57.0 & 66.0 & 69.5 \\
+MQ-NIAH & 96.0 & 78.0 & 45.0 & 47.5 & 68.0 & 66.0 \\
+VT & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 \\
+CWE & 76.4 & 13.0 & 26.8 & 65.6 & 63.4 & 64.6 \\
+FWE & 94.0 & 78.0 & 80.7 & 92.7 & 92.7 & 94.7 \\
+QA1 & 74.0 & 42.0 & 44.0 & 60.0 & 64.0 & 64.0 \\
+QA2 & 64.0 & 44.0 & 50.0 & 46.0 & 48.0 & 54.0 \\
+\midrule
+Avg & 91.6 & 64.9 & 54.2 & 68.1 & 70.5 & 71.4 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Ministral-3, RULER, 32K, 32x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Ministral-3, RULER, 32K, 32$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+S-NIAH1 & 98.0 & 68.0 & 100.0 & 82.0 & 94.0 & 100.0 \\
+S-NIAH2 & 98.0 & 52.0 & 0.0 & 2.0 & 42.0 & 38.0 \\
+S-NIAH3 & 100.0 & 14.0 & 2.0 & 0.0 & 0.0 & 0.0 \\
+MK-NIAH1 & 94.0 & 24.0 & 6.0 & 0.0 & 32.0 & 24.0 \\
+MK-NIAH2 & 98.0 & 20.0 & 18.0 & 16.0 & 10.0 & 4.0 \\
+MK-NIAH3 & 100.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+MV-NIAH & 98.0 & 26.0 & 3.0 & 2.0 & 25.0 & 23.0 \\
+MQ-NIAH & 96.0 & 17.0 & 4.0 & 3.5 & 33.0 & 36.5 \\
+VT & 100.0 & 100.0 & 98.4 & 100.0 & 100.0 & 98.4 \\
+CWE & 76.4 & 1.8 & 12.6 & 47.2 & 28.2 & 35.0 \\
+FWE & 94.0 & 47.3 & 72.0 & 92.0 & 83.3 & 88.7 \\
+QA1 & 74.0 & 20.0 & 16.0 & 40.0 & 46.0 & 46.0 \\
+QA2 & 64.0 & 18.0 & 36.0 & 32.0 & 32.0 & 38.0 \\
+\midrule
+Avg & 91.6 & 31.4 & 28.3 & 32.1 & 40.4 & 40.9 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Ministral-3, RULER, 128K, 8x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Ministral-3, RULER, 128K, 8$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+S-NIAH1 & 95.0 & 90.0 & 100.0 & 90.0 & 90.0 & 95.0 \\
+S-NIAH2 & 100.0 & 90.0 & 100.0 & 100.0 & 100.0 & 100.0 \\
+S-NIAH3 & 100.0 & 95.0 & 95.0 & 100.0 & 100.0 & 100.0 \\
+MK-NIAH1 & 100.0 & 65.0 & 75.0 & 100.0 & 100.0 & 100.0 \\
+MK-NIAH2 & 100.0 & 75.0 & 90.0 & 90.0 & 90.0 & 95.0 \\
+MK-NIAH3 & 100.0 & 0.0 & 20.0 & 95.0 & 95.0 & 95.0 \\
+MV-NIAH & 97.5 & 81.2 & 77.5 & 96.2 & 95.0 & 96.2 \\
+MQ-NIAH & 100.0 & 86.2 & 77.5 & 80.0 & 87.5 & 96.2 \\
+VT & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 \\
+CWE & 10.0 & 6.5 & 11.0 & 7.0 & 9.0 & 11.5 \\
+FWE & 98.3 & 73.3 & 70.0 & 95.0 & 96.7 & 95.0 \\
+QA1 & 80.0 & 40.0 & 75.0 & 80.0 & 80.0 & 75.0 \\
+QA2 & 55.0 & 35.0 & 45.0 & 50.0 & 40.0 & 60.0 \\
+\midrule
+Avg & 87.4 & 64.4 & 72.0 & 83.3 & 83.3 & 86.1 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Ministral-3, RULER, 128K, 16x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Ministral-3, RULER, 128K, 16$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+S-NIAH1 & 95.0 & 90.0 & 95.0 & 95.0 & 90.0 & 100.0 \\
+S-NIAH2 & 100.0 & 65.0 & 45.0 & 60.0 & 50.0 & 70.0 \\
+S-NIAH3 & 100.0 & 85.0 & 35.0 & 20.0 & 20.0 & 15.0 \\
+MK-NIAH1 & 100.0 & 25.0 & 0.0 & 50.0 & 60.0 & 70.0 \\
+MK-NIAH2 & 100.0 & 40.0 & 60.0 & 85.0 & 80.0 & 70.0 \\
+MK-NIAH3 & 100.0 & 0.0 & 10.0 & 55.0 & 10.0 & 0.0 \\
+MV-NIAH & 97.5 & 50.0 & 37.5 & 51.2 & 61.2 & 60.0 \\
+MQ-NIAH & 100.0 & 32.5 & 20.0 & 48.8 & 45.0 & 58.8 \\
+VT & 100.0 & 100.0 & 99.0 & 100.0 & 100.0 & 100.0 \\
+CWE & 10.0 & 0.0 & 3.5 & 6.5 & 7.0 & 6.5 \\
+FWE & 98.3 & 60.0 & 63.3 & 93.3 & 95.0 & 93.3 \\
+QA1 & 80.0 & 30.0 & 45.0 & 65.0 & 55.0 & 60.0 \\
+QA2 & 55.0 & 25.0 & 20.0 & 40.0 & 40.0 & 45.0 \\
+\midrule
+Avg & 87.4 & 46.3 & 41.0 & 59.2 & 54.9 & 57.6 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Ministral-3, RULER, 128K, 32x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Ministral-3, RULER, 128K, 32$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+S-NIAH1 & 95.0 & 90.0 & 100.0 & 90.0 & 95.0 & 95.0 \\
+S-NIAH2 & 100.0 & 5.0 & 0.0 & 0.0 & 20.0 & 15.0 \\
+S-NIAH3 & 100.0 & 0.0 & 5.0 & 0.0 & 0.0 & 0.0 \\
+MK-NIAH1 & 100.0 & 5.0 & 0.0 & 0.0 & 5.0 & 0.0 \\
+MK-NIAH2 & 100.0 & 0.0 & 10.0 & 20.0 & 5.0 & 5.0 \\
+MK-NIAH3 & 100.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+MV-NIAH & 97.5 & 5.0 & 0.0 & 5.0 & 8.8 & 11.2 \\
+MQ-NIAH & 100.0 & 0.0 & 0.0 & 1.2 & 2.5 & 10.0 \\
+VT & 100.0 & 100.0 & 99.0 & 100.0 & 100.0 & 99.0 \\
+CWE & 10.0 & 0.5 & 4.5 & 4.0 & 5.0 & 5.0 \\
+FWE & 98.3 & 40.0 & 73.3 & 93.3 & 90.0 & 88.3 \\
+QA1 & 80.0 & 20.0 & 30.0 & 40.0 & 50.0 & 30.0 \\
+QA2 & 55.0 & 5.0 & 15.0 & 40.0 & 30.0 & 40.0 \\
+\midrule
+Avg & 87.4 & 20.8 & 25.9 & 30.3 & 31.6 & 30.7 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Ministral-3, LOFT, 32K, 8x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Ministral-3, LOFT, 32K, 8$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+NQ & 77.0 & 36.0 & 53.0 & 77.0 & 66.0 & 64.0 \\
+HotpotQA & 60.0 & 48.0 & 50.0 & 53.0 & 54.0 & 47.0 \\
+MuSiQue & 35.0 & 29.0 & 29.0 & 33.0 & 26.0 & 35.0 \\
+QAMPARI & 38.3 & 6.7 & 0.0 & 25.0 & 30.0 & 23.3 \\
+QUEST & 30.0 & 8.3 & 5.0 & 30.0 & 26.7 & 21.7 \\
+\midrule
+Avg & 48.1 & 25.6 & 27.4 & 43.6 & 40.5 & 38.2 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Ministral-3, LOFT, 32K, 16x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Ministral-3, LOFT, 32K, 16$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+NQ & 77.0 & 9.0 & 28.0 & 39.0 & 30.0 & 33.0 \\
+HotpotQA & 60.0 & 36.0 & 30.0 & 41.0 & 48.0 & 42.0 \\
+MuSiQue & 35.0 & 4.0 & 10.0 & 9.0 & 22.0 & 18.0 \\
+QAMPARI & 38.3 & 0.0 & 0.0 & 11.7 & 5.0 & 6.7 \\
+QUEST & 30.0 & 11.7 & 0.0 & 20.0 & 13.3 & 8.3 \\
+\midrule
+Avg & 48.1 & 12.1 & 13.6 & 24.1 & 23.7 & 21.6 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Ministral-3, LOFT, 32K, 32x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Ministral-3, LOFT, 32K, 32$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+NQ & 77.0 & 0.0 & 1.0 & 15.0 & 11.0 & 18.0 \\
+HotpotQA & 60.0 & 0.0 & 8.0 & 14.0 & 16.0 & 14.0 \\
+MuSiQue & 35.0 & 0.0 & 6.0 & 4.0 & 6.0 & 4.0 \\
+QAMPARI & 38.3 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+QUEST & 30.0 & 0.0 & 0.0 & 10.0 & 10.0 & 3.3 \\
+\midrule
+Avg & 48.1 & 0.0 & 3.0 & 8.6 & 8.6 & 7.9 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Ministral-3, LOFT, 128K, 8x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Ministral-3, LOFT, 128K, 8$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+NQ & 42.0 & 18.0 & 26.0 & 55.0 & 44.0 & 35.0 \\
+HotpotQA & 57.0 & 33.0 & 40.0 & 55.0 & 52.0 & 56.0 \\
+MuSiQue & 29.0 & 17.0 & 22.0 & 4.0 & 6.0 & 21.0 \\
+QAMPARI & 14.0 & 0.0 & 4.0 & 8.0 & 7.0 & 11.0 \\
+QUEST & 15.0 & 2.0 & 4.0 & 11.0 & 7.0 & 10.0 \\
+\midrule
+Avg & 31.4 & 14.0 & 19.2 & 26.6 & 23.2 & 26.6 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Ministral-3, LOFT, 128K, 16x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Ministral-3, LOFT, 128K, 16$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+NQ & 42.0 & 3.0 & 20.0 & 26.0 & 36.0 & 19.0 \\
+HotpotQA & 57.0 & 17.0 & 30.0 & 43.0 & 35.0 & 37.0 \\
+MuSiQue & 29.0 & 3.0 & 16.0 & 1.0 & 8.0 & 5.0 \\
+QAMPARI & 14.0 & 0.0 & 0.0 & 4.0 & 4.0 & 3.0 \\
+QUEST & 15.0 & 1.0 & 0.0 & 4.0 & 3.0 & 3.0 \\
+\midrule
+Avg & 31.4 & 4.8 & 13.2 & 15.6 & 17.2 & 13.4 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+
+% --- Ministral-3, LOFT, 128K, 32x ---
+\begin{tabular}{lcccccc}
+\toprule
+\multicolumn{7}{c}{Ministral-3, LOFT, 128K, 32$\times$} \\
+\midrule
+Task & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV$\checkmark$+K & vKV$\checkmark$+F \\
+\midrule
+NQ & 42.0 & 0.0 & 4.0 & 16.0 & 6.0 & 8.0 \\
+HotpotQA & 57.0 & 0.0 & 15.0 & 3.0 & 16.0 & 16.0 \\
+MuSiQue & 29.0 & 0.0 & 8.0 & 4.0 & 3.0 & 1.0 \\
+QAMPARI & 14.0 & 0.0 & 0.0 & 0.0 & 1.0 & 0.0 \\
+QUEST & 15.0 & 0.0 & 0.0 & 1.0 & 13.0 & 1.0 \\
+\midrule
+Avg & 31.4 & 0.0 & 5.4 & 4.8 & 7.8 & 5.2 \\
+\bottomrule
+\end{tabular}
+\vspace{0.8em}
+

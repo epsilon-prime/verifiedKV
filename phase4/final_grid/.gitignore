@@ -1,0 +1,6 @@
+score_cache/
+results/
+results_pair/
+logs/
+__pycache__/
+results_smoke/

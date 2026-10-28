@@ -1,0 +1,11 @@
+# Two-jobs-per-GPU test: the same sweep alone vs two copies on one GPU (dev rows only)
+group: pair_qwen3-4b
+model: Qwen/Qwen3-4B-Instruct-2507
+ratio: 0.9375
+max_context_length: 200000
+arms: [vkv_final_kvzip]
+ruler_rows: "152:155"
+cells:
+- {dataset: ruler32k, task: cwe}
+- {dataset: ruler32k, task: qa_1}
+- {dataset: ruler32k, task: niah_multivalue}

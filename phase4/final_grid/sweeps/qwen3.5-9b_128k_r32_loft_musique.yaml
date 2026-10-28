@@ -1,0 +1,14 @@
+# FINAL GRID (test rows), written by make_sweeps.py: do not edit by hand
+group: final_vkv_qwen3.5-9b
+model: Qwen/Qwen3.5-9B
+ratio: 0.96875
+max_context_length: 200000
+arms:
+- vkv_final_kvzip
+- vkv_final_fastkvzip
+- vkv_final_perfect
+require_clean: true
+loft_split: test
+cells:
+- dataset: loft
+  task: musique_128k
