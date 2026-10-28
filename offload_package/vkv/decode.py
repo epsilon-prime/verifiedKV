@@ -23,8 +23,10 @@ later fetch of the same entry can hit, but r, the tail and A never change).
 
 ``layer`` runs the fused kernels (``kernels.py``, ``topk.py``, ``fallback.py``) with no host read:
 capped rows get the reference decision on the GPU, and the fetch lists have fixed widths (A plus
-k_max per row, an overflow list for capped rows past that). ``layer_torch`` is the same step in
-plain torch over ``decision.decide`` (the cross-check, and k_max > ``FUSED_K_MAX``). Eager only.
+k_max per row, an overflow list for capped rows past that). With VKV_CUDA=1 the decision runs
+in two CUDA launches instead (``_layer_cuda``, ``csrc/vkv_decide.cu``) where ``_cuda_ok`` holds.
+``layer_torch`` is the same step in plain torch over ``decision.decide`` (the cross-check, and
+k_max > ``FUSED_K_MAX``). ``layer_graphed`` replays ``layer`` from per-layer CUDA graphs.
 """
 from __future__ import annotations
 
@@ -60,15 +62,11 @@ _BP = 256               # partials per step of the per-row reductions
 FUSED_K_MAX = 4096
 # Attended-list width bucket of the per-layer CUDA graphs.
 GRAPH_WA_BUCKET = int(os.environ.get("VKV_GRAPH_WA_BUCKET", "512"))
-_GRAPH_DEBUG = os.environ.get("VKV_GRAPH_DEBUG") == "1"
-_GRAPH_EAGER = os.environ.get("VKV_GRAPH_EAGER") == "1"     # padded widths, no capture (checks)
-_CUDA_DEBUG = os.environ.get("VKV_CUDA_DEBUG") == "1"       # keep the CUDA path's intermediates
-_CUDA_CHECK = int(os.environ.get("VKV_CUDA_CHECK", "0"))    # layer calls checked against Triton
-_CUDA_TIME = os.environ.get("VKV_CUDA_TIME") == "1"         # per-phase timestamps (debug)
 GRAPH_MAX = int(os.environ.get("VKV_GRAPH_MAX", "256"))      # graphs kept (LRU)
 # Programs per row for the certificate's lambda grid (1 = the single-program kernel).
 CHERN_SPLIT = int(os.environ.get("OFFLOAD_PACKAGE_VKV_CHERN_SPLIT", "32"))
-_CHERN_EB = 512          # entries per program of the certificate's per-entry kernel      # the fused certificate holds the fetch-order head in one program
+_CHERN_EB = 512          # entries per program of the certificate's per-entry kernel
+CUDA_CLUSTER = 4         # most blocks per row of the CUDA decide kernel (it picks <= this)
 
 
 def lse2_merge(out_a, lse_a, out_b, lse_b):
@@ -149,12 +147,6 @@ class VkvDecoder:
         # where it applies (see _cuda_ok); else the Triton kernels.
         self.cuda = os.environ.get("VKV_CUDA", "0") == "1" and not self.torch_path
         self._sms = None
-        self._tim = None                  # [R, 16] int64: the decide kernel's phase timestamps
-        self._checked = 0
-        self._tlog = []
-        if _CUDA_TIME:
-            import atexit
-            atexit.register(self._print_times)
         # vLLM FULL decode graphs (set by the wrapper): layer_full only, rows must be attend-only.
         self.full = False
         self._full_sig = None
@@ -230,12 +222,6 @@ class VkvDecoder:
                     max(1, eng.decode_rows_d.numel()) * (hq or 8 * eng.H) * st.max_len)
                 self._gpool = torch.cuda.graph_pool_handle()
             self.rows["sig"] = (rk, WA, _buffers_sig(eng, st, st.sketch, self.store))
-            if _GRAPH_DEBUG:
-                self._steps = getattr(self, "_steps", 0) + 1
-                if self._steps % 64 == 0:
-                    print(f"[VKV GRAPHS] step {self._steps}: WA {WA} n {max(ctx)} captures "
-                          f"{self.captures} warm {len(self._warm)} sig {hash(self.rows['sig'])}",
-                          flush=True)
 
     # ---- helpers -------------------------------------------------------------------------------
 
@@ -327,8 +313,6 @@ class VkvDecoder:
             return self._attend_fa(layer, q, sm_scale, soft_cap, need_lse)
 
         if n > 0 and self.cuda and self._cuda_ok(B, Hq, D):
-            if _CUDA_CHECK and self._checked < _CUDA_CHECK:
-                self._check_cuda(layer, q, sm_scale, soft_cap)
             return self._layer_cuda(layer, q, sm_scale, soft_cap)
 
         # ---- exact logits over the attended lists A ------------------------------------------------
@@ -429,9 +413,6 @@ class VkvDecoder:
         FB.run(fbl, s_hat, r_l, slots_d, m, sure, self._grid, self._fb_consts(cfg, dev), Tm,
                rank, kst, beta_k, Bt, nonmono, tsize, scr, n=n, Kc=Kc, max_len=max_len, H=H,
                G=G, trunc=cfg.trunc, order=cfg.order, check=cfg.check)
-        if _CUDA_DEBUG:
-            self._dbg_t = dict(s_hat=s_hat, m=m, sure=sure, Tm=Tm, rank=rank, kst=kst,
-                               beta_k=beta_k, Bt=Bt, nonmono=nonmono, tsize=tsize, scr=scr, fb=fb)
 
         # ---- attention list: A with Algorithm 2 (e) weights, then the fetched entries -------------
         # F = the entries with 1 <= rank <= k*; its cold part is staged in. Every row's list holds
@@ -583,7 +564,7 @@ class VkvDecoder:
         the same launches for every step of a key. The returned tensors are shared by all layers:
         copy them before the next call."""
         rows = self.rows
-        if rows is None or "sig" not in rows or _GRAPH_EAGER or self.st.cfg.recall:
+        if rows is None or "sig" not in rows or self.st.cfg.recall:
             return self.layer(layer, q, sm_scale, soft_cap, need_lse)
         B, Hq, D = q.shape
         key = (layer, B, Hq, D, q.dtype, rows["n"], float(sm_scale), float(soft_cap),
@@ -628,8 +609,8 @@ class VkvDecoder:
     def _cuda_ok(self, B: int, Hq: int, D: int) -> bool:
         """The configurations the CUDA decision implements: the vkv_final defaults ("grad"
         order, Chernoff certificate, truncation), heads up to 4096, head_dim 64 / 128, every
-        row's block resident. Fetched entries are restored in place (no compaction) or listed
-        for the staging fetch (compaction)."""
+        row's block resident. Fetched entries are restored in place (no compaction) or staged by
+        the store (compaction: every position of every KV head must fit its ring at once)."""
         cfg, st = self.st.cfg, self.st
         if self._sms is None:
             self._sms = torch.cuda.get_device_properties(self.eng.dev).multi_processor_count
@@ -639,61 +620,11 @@ class VkvDecoder:
                 and (st.home is not None or B * self.eng.H * self.rows["n"] <= int(self.store.C))
                 and st.sketch.nch <= 64 and B * Hq <= self._sms)
 
-    def _print_times(self):
-        if not self._tlog:
-            return
-        names = ("A logits", "sketch", "shortlist", "m/sure", "jumps", "walk", "totals/key",
-                 "fetch topk", "rest/head", "chern")
-        lg = self._tlog[len(self._tlog) // 4:]            # past the warm-up
-        mean = torch.stack([x[0] for x in lg]).mean(0)
-        mx = torch.stack([x[1] for x in lg]).mean(0)
-        tot = sum(x[2] for x in lg) / len(lg)
-        scr = torch.stack([x[3] for x in lg]).float().mean()
-        print(f"[VKV CUDA TIME] {len(lg)} layer calls, slowest row {tot:.1f} us, screened {scr:.3f}")
-        for i, nm in enumerate(names):
-            print(f"  {nm:11s} mean {float(mean[i]):7.1f} us   slowest row {float(mx[i]):7.1f} us")
-
-    def _check_cuda(self, layer, q, sm_scale, soft_cap):
-        """VKV_CUDA_CHECK=N (with VKV_CUDA_DEBUG=1): the first N layer calls also run the Triton
-        decision on the same inputs (its statistics count too); per-row disagreements are
-        appended to VKV_CUDA_CHECK_LOG. Both restore the same entries, so the state stays put."""
-        self._checked += 1
-        self.cuda = False
-        try:
-            self.layer(layer, q, sm_scale, soft_cap)
-        finally:
-            self.cuda = True
-        t = self._dbg_t
-        self._layer_cuda(layer, q, sm_scale, soft_cap)
-        c = self._dbg
-        n = self.rows["n"]
-        bad = {}
-        for k in ("kst", "scr", "fb", "nonmono"):
-            d = (t[k] != c[k]).nonzero().flatten()
-            if d.numel():
-                bad[k] = d.tolist()
-        for k in ("Tm", "rank"):
-            d = (t[k][:, :n] != c[k][:, :n]).any(-1).nonzero().flatten()
-            if d.numel():
-                bad[k] = d.tolist()
-        dm = float((t["m"] - c["m"]).abs().max())
-        ds = float(((t["s_hat"] - c["s_hat"]).abs()).max())
-        dB = float(((t["Bt"] - c["Bt"]).abs() / t["Bt"].abs().clamp_min(1e-300)).max())
-        with open(os.environ.get("VKV_CUDA_CHECK_LOG", "/tmp/vkv_cuda_check.log"), "a") as f:
-            f.write(f"call {self._checked} layer {layer}: |dm| {dm:.3g} |ds_hat| {ds:.3g} "
-                    f"rel dBt {dB:.3g} mismatches {bad} kst_t {t['kst'][list(bad.get('kst', []))].tolist()} "
-                    f"kst_c {c['kst'][list(bad.get('kst', []))].tolist()}\n")
-
-    def _cluster(self, R: int) -> int:
-        """Upper bound of the decide kernel's blocks per row (the launcher takes the largest
-        size <= this with every row's cluster resident)."""
-        return int(os.environ.get("VKV_CUDA_CLUSTER", "4"))
-
     def _layer_cuda(self, layer, q, sm_scale, soft_cap):
         """``layer`` with the decision in CUDA (``csrc/vkv_decide.cu``): decide (A logits ..
         k*), the capped rows' fallback (Triton, device list), emit (A weights; F restored in
-        place and listed, or with compaction listed for ``_attend_fetch``, which stages it into
-        the staging tail), attention over the list (+ overflow), statistics."""
+        place and listed, or with compaction packed for ``store.stage_packed``, which stages it
+        into the ring and lists it), attention over the list (+ overflow), statistics."""
         from .cuda_decide import ext
         eng, st, cfg, rows = self.eng, self.st, self.st.cfg, self.rows
         B, Hq, D = q.shape
@@ -727,69 +658,52 @@ class VkvDecoder:
         fbl, keys_cnt, bar, xfer = _zeros(dev, ((R + 1,), i32), ((1,), i32), ((B * H,), i32),
                                           ((1,), i64))
         X = ext()
-        if _CUDA_TIME:
-            self._tim = torch.zeros((R, 16), dtype=torch.int64, device=dev)
         X.decide(q.contiguous(), float(sm_scale), slots_d, st.r[layer], eng.cell[layer],
                  eng.cpu_row[layer], st.alist[layer], st.acnt[layer], eng.kv_rows, eng.cpu_pool,
                  sk.codes[layer], sk.zero[layer], sk.scale[layer], sk.channels[layer], self._grid,
                  [B, H, G, n, WA, max_len, M_sl, M_t, Kc, int(Kc < n), sk.nch, sk.per_byte,
-                  sk.bits, sk.group, self._cluster(R)],
+                  sk.bits, sk.group, CUDA_CLUSTER],
                  [float(cfg.eps0), float(cfg.delta), float(cfg.delta * (1 - CHERN_MARGIN)),
                   _ln2_over(cfg.delta), 1.0 / 3.0],
                  s_hat, jbuf, whb, Tm, rank, sA, rA, pA, physA, o_i, m, sure, kst, beta_k, Bt,
-                 nonmono, tsize, scr, fb, fbl, keys_cnt, bar, self._tim)
-        if _CUDA_TIME:
-            t = self._tim
-            ph = (t[:, 1:11] - t[:, 0:10]).double() / 1e3              # us per phase per row
-            self._tlog.append((ph.mean(0), ph.max(0).values, float((t[:, 10] - t[:, 0]).max()) / 1e3,
-                               scr.clone()))
+                 nonmono, tsize, scr, fb, fbl, keys_cnt, bar)
         FB.run(fbl, s_hat, st.r[layer], slots_d, m, sure, self._grid, self._fb_consts(cfg, dev),
                Tm, rank, kst, beta_k, Bt, nonmono, tsize, scr, n=n, Kc=Kc, max_len=max_len, H=H,
                G=G, trunc=cfg.trunc, order=cfg.order, check=cfg.check)
+        # The list: A, then F's cold entries (W1 = A + k_max), the rest of a capped row's F in
+        # the overflow list (W2 = n), the two attended separately and LSE-merged.
         W1, W2 = WA + Kc, n
         idx = torch.empty((R, W1), dtype=i64, device=dev)
         w = torch.empty((R, W1), dtype=f32, device=dev)
         slen = torch.empty((R,), dtype=i32, device=dev)
-        qc = q.contiguous()
+        idx2 = torch.empty((R, W2), dtype=i64, device=dev)
+        w2 = torch.empty((R, W2), dtype=f32, device=dev)
+        slen2 = torch.empty((R,), dtype=i32, device=dev)
+        ints = [H, G, n, WA, Kc, max_len]
         if st.home is None:
-            # Compaction: F's cold entries staged into the staging tail at the end of the cache
-            # (the store's ring), listed after A.
+            # Compaction: emit packs F's cold positions per row; the store stages them into its
+            # ring (the staging tail of the cache) and lists them after A.
             posc = torch.empty((R, n), dtype=i64, device=dev)
             ncold = torch.empty((R,), dtype=i32, device=dev)
             X.emit(slots_d, st.acnt[layer], eng.cell[layer], eng.cpu_row[layer],
                    eng.cell[layer], eng.cell[layer], eng.cpu_pool, eng.kv_rows, rA, pA, physA,
-                   Tm, rank, kst, fb, o_i, jbuf, idx, w, slen, idx, w, slen, xfer,
-                   [H, G, n, WA, Kc, max_len], posc, ncold)
-            idx2 = torch.empty((R, W2), dtype=i64, device=dev)
-            w2 = torch.empty((R, W2), dtype=f32, device=dev)
-            slen2 = torch.empty((R,), dtype=i32, device=dev)
+                   Tm, rank, kst, fb, o_i, jbuf, idx, w, slen, idx, w, slen, xfer, ints,
+                   posc, ncold)
             self.store.stage_packed(layer, posc, ncold, eng.decode_rows_d[:B], G, slen, idx, w,
                                     slen, idx2, w2, slen2)
-            o, l2 = self._decode(qc, idx.view(B, Hq, W1), w.view(B, Hq, W1),
-                                 slen.view(B, Hq, 1), sm_scale, soft_cap)
-            o2, l22 = self._decode(qc, idx2.view(B, Hq, W2), w2.view(B, Hq, W2),
-                                   slen2.view(B, Hq, 1), sm_scale, soft_cap)
-            out, lse = self._merge(o, l2, o2, l22)
-            passes = 1
         else:
-            idx2 = torch.empty((R, W2), dtype=i64, device=dev)
-            w2 = torch.empty((R, W2), dtype=f32, device=dev)
-            slen2 = torch.empty((R,), dtype=i32, device=dev)
+            # No compaction: emit restores F's cold entries into their own cells and lists them.
             X.emit(slots_d, st.acnt[layer], eng.cell[layer], eng.cpu_row[layer], st.home[layer],
                    st.restored[layer], eng.cpu_pool, eng.kv_rows, rA, pA, physA, Tm, rank, kst,
-                   fb, o_i, jbuf, idx, w, slen, idx2, w2, slen2, xfer,
-                   [H, G, n, WA, Kc, max_len])
-            o, l2 = self._decode(qc, idx.view(B, Hq, W1), w.view(B, Hq, W1),
-                                 slen.view(B, Hq, 1), sm_scale, soft_cap)
-            o2, l22 = self._decode(qc, idx2.view(B, Hq, W2), w2.view(B, Hq, W2),
-                                   slen2.view(B, Hq, 1), sm_scale, soft_cap)
-            out, lse = self._merge(o, l2, o2, l22)
-            passes = 1
+                   fb, o_i, jbuf, idx, w, slen, idx2, w2, slen2, xfer, ints)
+        qc = q.contiguous()
+        o, l2 = self._decode(qc, idx.view(B, Hq, W1), w.view(B, Hq, W1), slen.view(B, Hq, 1),
+                             sm_scale, soft_cap)
+        o2, l22 = self._decode(qc, idx2.view(B, Hq, W2), w2.view(B, Hq, W2),
+                               slen2.view(B, Hq, 1), sm_scale, soft_cap)
+        out, lse = self._merge(o, l2, o2, l22)
         st.add_stats_kernel(rows["ctx_d"], Hq, kst, tsize, beta_k, Bt, nonmono, fb, scr, slen,
-                            xfer, keys_cnt, passes - 1)
-        self._dbg = dict(s_hat=s_hat, m=m, sure=sure, Tm=Tm, rank=rank, kst=kst, beta_k=beta_k,
-                         Bt=Bt, nonmono=nonmono, tsize=tsize, scr=scr, fb=fb, idx=idx, w=w,
-                         slen=slen) if _CUDA_DEBUG else None
+                            xfer, keys_cnt, 0)
         return out, lse
 
     def _chern(self, o_i, s_hat, r_l, slots_d, m, Tm, part, part_r, sure, kst, cap_k, beta_k, Bt,

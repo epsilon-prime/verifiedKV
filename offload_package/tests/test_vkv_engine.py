@@ -267,12 +267,26 @@ def _decoder(eng, store, path="fused"):
 
 @pytest.mark.parametrize("ci", range(len(CFGS)))
 @pytest.mark.parametrize("kernels", [True, False])
-@pytest.mark.parametrize("path", ["fused", "torch"])
-def test_decode_matches_harness(ci, kernels, path):
-    cfg = CFGS[ci]
+@pytest.mark.parametrize("path", ["fused", "torch", "cuda"])
+@pytest.mark.parametrize("compact", [True, False])
+def test_decode_matches_harness(ci, kernels, path, compact):
+    """Every decode path's output = the harness's softmax with Algorithm 2 (e)'s bias
+    (``reference.attention_bias``: 0 on exact / F / S cap T*, log 1/r on the other sampled
+    entries, -inf on the dropped ones), with and without compaction."""
+    from dataclasses import replace
+    cfg = replace(CFGS[ci], compact=compact)
+    if path == "cuda" and not (cfg.order == "grad" and cfg.check == "chern" and cfg.trunc):
+        pytest.skip("the CUDA decision implements the vkv_final defaults only")
+    if path != "fused" and not kernels:
+        pytest.skip("the staging kernels switch only matters to the fused path's fetch")
     eng, store, full, dirs, prompt = _world(cfg, seed=ci, kernels=kernels)
     s = eng.slot_of("r")
-    dec = _decoder(eng, store, path)
+    dec = _decoder(eng, store, "torch" if path == "torch" else "fused")
+    dec.cuda = path == "cuda"
+    calls = []
+    if dec.cuda:
+        orig = dec._layer_cuda
+        dec._layer_cuda = lambda *a, **k: calls.append(1) or orig(*a, **k)
     eng.set_decode_rows(["r"])
     g = torch.Generator(device="cuda").manual_seed(100 + ci)
 
@@ -310,14 +324,17 @@ def test_decode_matches_harness(ci, kernels, path):
             assert torch.allclose(out[0].float(), o_ref.float(), atol=3e-3, rtol=2e-2), \
                 (step, l, (out[0].float() - o_ref.float()).abs().max())
     assert total_k > 0, "the test must exercise fetches"
+    if dec.cuda:
+        assert len(calls) == 3 * L                           # every layer took the CUDA path
     assert torch.equal(st.r[:, s], r_after)                  # nothing persists
     rep = st.report()
     if cfg.shortlist:
         assert rep["keys_sum"] > 0                            # cold shortlist keys were read
-    # store invariants: owner <-> tok_slot bijection
-    flat = store.tok_slot.view(-1)
-    occ = (store.owner >= 0).nonzero().flatten()
-    assert torch.equal(flat[store.owner[occ]].long(), occ)
+    if cfg.compact:
+        # store invariants (compaction stages through the ring): owner <-> tok_slot bijection
+        flat = store.tok_slot.view(-1)
+        occ = (store.owner >= 0).nonzero().flatten()
+        assert torch.equal(flat[store.owner[occ]].long(), occ)
 
 
 def test_release_resets():

@@ -90,6 +90,14 @@ PROMPT_B = ('Quantum computing promises to reshape cryptography, optimization, '
 # BENCH_CUDAGRAPH=1: FULL decode CUDA graphs (cudagraph_mode=FULL_DECODE_ONLY,
 # no torch.compile) for every config, pq included -- like for like.
 CUDAGRAPH = os.environ.get('BENCH_CUDAGRAPH', '0') == '1'
+# BENCH_PIECEWISE=1 (vkv configs): torch.compile + PIECEWISE decode graphs for everything but
+# attention; with VKV_GRAPHS=1 the vkv decoder replays its own per-layer attention graphs.
+PIECEWISE = os.environ.get('BENCH_PIECEWISE', '0') == '1'
+# BENCH_EVICT_FULL=1 (kvzip-evict): FULL decode graphs like the other configs' BENCH_CUDAGRAPH
+# (attention through FlashAttention over the kept cells, captured with the rest).
+EVICT_FULL = os.environ.get('BENCH_EVICT_FULL', '0') == '1'
+if EVICT_FULL:
+    os.environ['VKV_FULL'] = '1'
 
 SPARSE_ENV = {
     'SKYLIGHT_SPARSE_TOPK': os.environ.get('BENCH_TOPK', '0.1'),
@@ -252,6 +260,30 @@ CONFIGS = {
                              scorer_type='paged_eviction',
                              fetch_granularity='per_layer_tokens'),
 
+    # Vkv (offload_package.vkv, the harness's vkv_final): Bernoulli residency
+    # sampled once from KVzip (or FastKVzip) scores, kappa of the cache kept
+    # including the 2-bit sketch, a 128-key exact shortlist and a Chernoff-
+    # certified fetch at decode, no persistence. Eager. vkv_* knobs from
+    # BENCH_VKV_<FIELD>. Staging = the per-layer fetch ring (BENCH_STAGING_SLOTS).
+    'vkv': dict(method='vkv', offload=True, staging_policy='fixed',
+                num_staging_slots=256, granularity='token', token_policy='vkv',
+                token_scorer='kvzip'),
+    # Plain KVzip at vkv's budget (kvpress KVzipPress, compression 1 - kappa): the top kappa
+    # of the context cells by KVzip score stay, decode attends to those only.
+    'kvzip-evict': dict(method='vkv', offload=True, staging_policy='fixed',
+                        num_staging_slots=256, granularity='token', token_policy='vkv',
+                        token_scorer='kvzip', vkv={'evict': True}),
+    # Dense + offload: vkv's draw fraction of the context goes to the CPU, and every decode step
+    # copies all of it back (no compaction: to their own cells; BENCH_VKV_COMPACT=1: to a staging
+    # buffer). Which cells does not matter (everything is recalled), so no KVzip pass: random
+    # scores.
+    'offload-recall': dict(method='vkv', offload=True, staging_policy='fixed',
+                           num_staging_slots=256, granularity='token', token_policy='vkv',
+                           token_scorer='random', vkv={'recall': True, 'compact': False}),
+    'vkv-fkvz': dict(method='vkv', offload=True, staging_policy='fixed',
+                     num_staging_slots=256, granularity='token', token_policy='vkv',
+                     token_scorer='fastkvzip'),
+
 }
 
 
@@ -272,12 +304,17 @@ def shutdown_llm(llm):
 def engine_kwargs(method, offload, fraction=0.5, staging_policy='auto',
                   num_staging_slots=None, scorer_type='paged_eviction',
                   fetch_granularity='per_layer_tokens', granularity='block',
-                  token_scorer='fastkvzip', budget_scope='global'):
+                  token_scorer='fastkvzip', budget_scope='global', token_policy='lowest',
+                  vkv=None):
     """Set the Skylight env for ``method`` and return the ``LLM(**kwargs)``
     of a config (CONFIGS entry); shared with LongBench/run_offload.py."""
     for k, v in SPARSE_ENV.items():
         os.environ[k] = v
     os.environ['SKYLIGHT_SPARSE_METHOD'] = method
+    if method == 'vkv':
+        # Not the FULL-cg slot path (no PQ / summary maintainer); eager decode.
+        os.environ.pop('SKYLIGHT_INCR_FULLCG', None)
+        os.environ.pop('SKYLIGHT_INCR_SLOT', None)
     if method == 'pq':
         # Skylight upstream (ak/pq): 'pq' is the pure-torch reference; the
         # production path is 'pq_optimized' with its slot-code maintainer,
@@ -304,6 +341,7 @@ def engine_kwargs(method, offload, fraction=0.5, staging_policy='auto',
         extra = {
             'enabled': True,
             'offload_fraction': fraction,
+            'token_policy': token_policy,
             'num_cpu_slots': 4096,
             'staging_policy': staging_policy,
             'interval_tokens': INTERVAL_TOKENS,
@@ -316,6 +354,12 @@ def engine_kwargs(method, offload, fraction=0.5, staging_policy='auto',
         }
         if num_staging_slots is not None:
             extra['num_staging_slots'] = num_staging_slots
+        if token_policy == 'vkv':
+            for k, v in (vkv or {}).items():
+                extra['vkv_' + k] = v
+            for k, v in os.environ.items():
+                if k.startswith('BENCH_VKV_'):
+                    extra['vkv_' + k[len('BENCH_VKV_'):].lower()] = v
         if os.environ.get('BENCH_NUM_CPU_TOKENS'):
             # CPU token-pool capacity (default max_num_seqs * max_model_len).
             extra['num_cpu_tokens'] = int(os.environ['BENCH_NUM_CPU_TOKENS'])
@@ -332,7 +376,7 @@ def engine_kwargs(method, offload, fraction=0.5, staging_policy='auto',
         dtype=os.environ.get('BENCH_DTYPE', 'float16'),
         max_model_len=MAX_MODEL_LEN,
         gpu_memory_utilization=float(os.environ.get('BENCH_GPU_UTIL', '0.20')),
-        enforce_eager=not CUDAGRAPH,
+        enforce_eager=not ((PIECEWISE or EVICT_FULL) if method == 'vkv' else CUDAGRAPH),
         tensor_parallel_size=1,
         max_num_seqs=1,
         disable_log_stats=True,
@@ -344,7 +388,10 @@ def engine_kwargs(method, offload, fraction=0.5, staging_policy='auto',
     )
     if kv is not None:
         kwargs['kv_transfer_config'] = kv
-    if CUDAGRAPH:
+    if PIECEWISE and method == 'vkv':
+        kwargs['compilation_config'] = {'cudagraph_mode': 'PIECEWISE',
+                                        'cudagraph_capture_sizes': [1]}
+    if (CUDAGRAPH and method != 'vkv') or (EVICT_FULL and method == 'vkv'):
         # Decode-only FULL graphs, no torch.compile (prefill stays eager).
         kwargs['compilation_config'] = {'mode': 0, 'cudagraph_mode': 'FULL_DECODE_ONLY',
                                         'cudagraph_capture_sizes': [1]}
@@ -369,11 +416,11 @@ def engine_kwargs(method, offload, fraction=0.5, staging_policy='auto',
 def run(name, method, offload, fraction=0.5, staging_policy='auto',
         num_staging_slots=None, scorer_type='paged_eviction',
         fetch_granularity='per_layer_tokens', granularity='block',
-        token_scorer='fastkvzip', budget_scope='global'):
+        token_scorer='fastkvzip', budget_scope='global', token_policy='lowest', vkv=None):
     print(f"\n{'=' * 70}\nCONFIG: {name}\n{'=' * 70}", flush=True)
     kwargs = engine_kwargs(method, offload, fraction, staging_policy, num_staging_slots,
                            scorer_type, fetch_granularity, granularity, token_scorer,
-                           budget_scope)
+                           budget_scope, token_policy, vkv)
     warmup = os.environ.get('BENCH_WARMUP') == '1'
     forced = os.environ.get('BENCH_FORCE_TOKENS')
     if forced:
@@ -463,6 +510,7 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
         _trace = os.environ.get('BENCH_PROFILE_TRACE', f'/tmp/trace_{name}.json')
         with profile(
             activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
+            with_stack=os.environ.get('BENCH_PROFILE_STACK') == '1',
             schedule=_psched(skip_first=_ps, wait=0, warmup=2, active=_pc, repeat=1),
             on_trace_ready=lambda p: p.export_chrome_trace(_trace),
         ) as prof:
@@ -509,6 +557,18 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
         _t = kv['t']
         with open(os.environ['BENCH_STEP_TIMES'], 'w') as _f:
             _json.dump([b - a for a, b in zip(_t, _t[1:])], _f)
+    if kv.get('t'):
+        # Split by engine step (schedule-to-schedule, so work done inside a
+        # step's schedule() -- e.g. the KVzip pass at the last prefill chunk --
+        # lands in that step): prefill steps schedule >1 token, decode steps 1.
+        _st = [(b - a, n) for a, b, n in zip(kv['t'], kv['t'][1:], kv['nt'])]
+        _pre = [x for x, n in _st if n > 1]
+        _dsteps = sorted(x for x, n in _st if n == 1)
+        if _pre and _dsteps:
+            print(f"  step TTFT (prefill steps): {sum(_pre) * 1000:.1f} ms; decode steps: "
+                  f"mean {sum(_dsteps) / len(_dsteps) * 1000:.2f} median "
+                  f"{_dsteps[len(_dsteps) // 2] * 1000:.2f} max {_dsteps[-1] * 1000:.0f} ms "
+                  f"({len(_dsteps)} steps)")
     if os.environ.get('BENCH_STEP_COUNTERS') and kv.get('ctr'):
         import json as _json
         with open(os.environ['BENCH_STEP_COUNTERS'], 'w') as _f:
@@ -543,6 +603,27 @@ def run(name, method, offload, fraction=0.5, staging_policy='auto',
         _final = _used[-1] if _used else 0
         print(f"  KV blocks in use: peak {_peak}, mean {_mean:.0f}, final {_final} "
               f"(+{_reserved} staging reserved, pool {_total})")
+    _vkv = getattr(getattr(_sk_builder._offload_orchestrator, 'token_offload', None), 'vkv', None)
+    if _vkv is not None:
+        _r = _vkv.report()
+        print(f"  vkv: decisions {_r['decisions']:.0f}, fetch_any {_r['fetch_any_frac']:.4f}, "
+              f"k mean {_r['k_mean']:.2f}, xfer mean {_r['xfer_mean']:.2f}, screened "
+              f"{_r['screened_frac']:.4f}, fallback {_r['fallback_frac']:.4f}, shortlist host "
+              f"keys/layer {_r['keys_per_layer']:.1f}, passes>1 {_r['chunked']:.0f}; "
+              f"rounds {_vkv.round_log[-3:]}")
+        print(f"  vkv raw stats: {_vkv.stats.tolist()}")
+        # CPU->GPU fetch volume: restore / recall count copied entries in vkv stats, compaction
+        # counts staging misses in the store (each entry = one token's K+V of one KV head).
+        _to = _sk_builder._offload_orchestrator.token_offload
+        _eb = _to.C2 * _to.kv_caches[0].element_size()
+        _ts = getattr(_sk_builder._offload_orchestrator, 'token_store', None)
+        _acc = getattr(_ts, '_ctr_acc', None)
+        _cp = _r['copied'] + (float(_acc[0]) if _acc is not None else 0.0)
+        _nd = max(out_tokens - 1, 1)
+        print(f"  fetch: requested {_r['xfer_sum']:.0f} entries (per q row), copied {_cp:.0f} "
+              f"entries = {_cp * _eb / 1e9:.3f} GB ({_cp * _eb / 1e6 / _nd:.2f} MB/step over "
+              f"{_nd:.0f} steps, {_eb} B/entry)"
+              + (f", staging hits {int(_acc[1])}, cold {int(_acc[3])}" if _acc is not None else ""))
     print(f"  out: {outputs[0].outputs[0].text[:110]!r}")
     print(f"  token_ids[:32]: {list(outputs[0].outputs[0].token_ids)[:32]}")
     if forced:

@@ -1,30 +1,3 @@
-// Vkv decode decision in CUDA: for one layer, a cluster of CS blocks per (decode row b, query
-// head) row computes everything ``decode.VkvDecoder.layer`` computes with ~30 Triton launches,
-// and a second kernel emits the attention list (A with Algorithm 2 (e) weights, then F's cold
-// entries restored from the CPU into their own cells). Same quantities and expressions as the
-// Triton kernels (``kernels.py``, ``topk.py``); float64 where they are float64, the Chernoff terms
-// in float32; compiled without FMA contraction (-fmad=false) like the reference's op-by-op
-// evaluation. Reductions and scans associate differently, so values can differ in the last bits;
-// the selections (top-K, ties by position) and decisions are the same procedures.
-//
-// vkv_decide: grid R * CS blocks in clusters of CS (one row per cluster, all resident). Block
-// rank c of a row sweeps the context segment c; values the row needs whole (maxima, sums, the
-// selected heads) are exchanged through distributed shared memory. The G rows of a KV head
-// meet at two barriers around the shortlist.
-//   1  exact logits over A (the KV head's attended list) -> sA / rA / pA / physA, max over r = 1
-//   2  sketch logits over the context [0, n) -> s_hat
-//   3  shortlist: top-M tail positions by the max sketch logit over the head's query heads
-//      (every row of the head selects the same set), their exact logits replace s_hat
-//   4  m, sure;  5  wh, jumps + partials;  6  top-t_max jumps (sorted), truncation walk -> T*
-//   7  totals -> dt/dV -> the "grad" fetch-order key;  8  top-k_max fetch order -> rank
-//   9  complement partials, the Bernstein screen, the Chernoff curve (the lambda grid split over
-//      the cluster; skipped for screened rows, whose k* is 0) -> k*, cap, statistics; capped
-//      rows listed for the fallback
-// Top-K (exact, ties by ascending position): radix select over the cluster's merged 8-bit
-// histograms, order-preserving compaction into the lead block, each block sorts a slice (CUB),
-// then every element's place = its slice rank + binary searches in the other slices.
-// vkv_emit (after the capped rows' fallback): A's weights, F's cold entries in fetch order,
-// restored in place (once per entry), listed after A (overflow list past W1).
 #include <torch/extension.h>
 #include <ATen/cuda/CUDAContext.h>
 #include <cooperative_groups.h>
@@ -62,8 +35,6 @@ __device__ __forceinline__ double okey_inv(uint64_t u) {
   return __longlong_as_double(b);
 }
 
-// ---- block primitives (``red`` holds 2 NW + 2 eight-byte slots) ---------------------------------
-
 template <typename T>
 __device__ __forceinline__ T warp_sum(T v) {
   for (int o = 16; o > 0; o >>= 1) v += __shfl_xor_sync(0xffffffffu, v, o);
@@ -80,7 +51,7 @@ __device__ __forceinline__ T warp_min(T v) {
   return v;
 }
 
-// op: 0 sum, 1 max, 2 min
+
 template <int NTH, typename T>
 __device__ T block_red(T v, int op, T ident, void* red_) {
   T* red = reinterpret_cast<T*>(red_);
@@ -104,7 +75,7 @@ __device__ T block_max(T v, T ident, void* red) { return block_red<NTH, T>(v, 1,
 template <int NTH, typename T>
 __device__ T block_min(T v, T ident, void* red) { return block_red<NTH, T>(v, 2, ident, red); }
 
-// Exclusive prefix sum of one int per thread; ``total`` = the block's sum.
+
 template <int NTH>
 __device__ int block_excl_scan(int v, int* red, int& total) {
   constexpr int W = NTH / 32;
@@ -314,7 +285,6 @@ struct TopkSmem {
   int* ired;        // >= 2 NW + 2 ints
   void* cub;        // CUB temp storage
   int* whist;       // [NW, 256] per-warp histograms
-  unsigned long long* tim;  // debug: stage timestamps of the fetch-order top-K (or null)
 };
 
 template <int CS, typename KeyF>
@@ -403,8 +373,6 @@ __device__ void topk(Row<CS>& rw, KeyF keyf, int p0, int p1, int K, bool sort, T
     done = (cd == krem);
     __syncthreads();
   }
-  if (t.tim != nullptr && threadIdx.x == 0) { unsigned long long _t; asm volatile("mov.u64 %0, %%globaltimer;" : "=l"(_t)); t.tim[0] = _t; }
-  if (t.tim != nullptr && threadIdx.x == 0) t.tim[4] = (unsigned long long)(8 - shift / 8);   // passes
   // Order-preserving compaction into the lead block: above the threshold class, then krem of its
   // equals by ascending position. Positions in order: block rank, then warp segment, then lane.
   const int G0 = K - krem;
@@ -467,7 +435,6 @@ __device__ void topk(Row<CS>& rw, KeyF keyf, int p0, int p1, int K, bool sort, T
     }
   }
   rw.sync();
-  if (t.tim != nullptr && threadIdx.x == 0) { unsigned long long _t; asm volatile("mov.u64 %0, %%globaltimer;" : "=l"(_t)); t.tim[1] = _t; }
   if (!sort) return;
   // Sort: block rank c sorts candidates [c SL, c SL + SL) (CUB, stable, descending: equal keys
   // keep the compaction's position order), then places each by binary search in the others.
@@ -493,7 +460,6 @@ __device__ void topk(Row<CS>& rw, KeyF keyf, int p0, int p1, int K, bool sort, T
     t.sk[threadIdx.x * IPT + j] = key[j];
     t.sp[threadIdx.x * IPT + j] = val[j];
   }
-  if (t.tim != nullptr && threadIdx.x == 0) { unsigned long long _t; asm volatile("mov.u64 %0, %%globaltimer;" : "=l"(_t)); t.tim[2] = _t; }
   const int mylen = max(0, min(SL, K - lo));
   if (CS == 1) {
     __syncthreads();
@@ -512,7 +478,6 @@ __device__ void topk(Row<CS>& rw, KeyF keyf, int p0, int p1, int K, bool sort, T
     for (int i = threadIdx.x; i < olen; i += NT) { allk[o * SL + i] = rk[i]; allp[o * SL + i] = rp[i]; }
   }
   __syncthreads();
-  if (t.tim != nullptr && threadIdx.x == 0) { unsigned long long _t; asm volatile("mov.u64 %0, %%globaltimer;" : "=l"(_t)); t.tim[3] = _t; }
   for (int i = threadIdx.x; i < mylen; i += NT) {
     const uint64_t ek = t.sk[i];
     const int32_t ep = t.sp[i];
@@ -588,16 +553,7 @@ struct Params {
   int32_t* fbl;             // [R + 1], fbl[R] zeroed
   int32_t* keys_cnt;        // [1] zeroed
   int32_t* bar;             // [B * H] zeroed
-  unsigned long long* tim;  // [R, 16] phase timestamps (ns) or null
 };
-
-__device__ __forceinline__ void stamp(unsigned long long* tim, int row, int ph, bool lead) {
-  if (tim != nullptr && lead && threadIdx.x == 0) {
-    unsigned long long t;
-    asm volatile("mov.u64 %0, %%globaltimer;" : "=l"(t));
-    tim[row * 16 + ph] = t;
-  }
-}
 
 __device__ __forceinline__ void unit_barrier(int32_t* bar, int target) {
   __syncthreads();
@@ -680,7 +636,6 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
   using BRS = cub::BlockRadixSort<uint64_t, NT, LY::SLICE / NT, int32_t>;
   static_assert(sizeof(typename BRS::TempStorage) <= KMAX * 16, "CUB temp storage");
   TopkSmem ts;
-  ts.tim = nullptr;
   ts.ck = reinterpret_cast<uint64_t*>(smem + LY::CK);
   ts.cp = reinterpret_cast<int32_t*>(smem + LY::CP);
   ts.sk = reinterpret_cast<uint64_t*>(smem + LY::SK);
@@ -718,7 +673,6 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
   const int seg = (((n + CS - 1) / CS) + 31) & ~31;
   const int p0 = min(n, cr * seg), p1 = min(n, p0 + seg);
 
-  stamp(p.tim, row, 0, lead);
   for (int d = tid; d < D; d += NT) qs[d] = to_f(qrow[d]) * p.sm_scale;
   __syncthreads();
   const int64_t* ch = p.channels + slot * p.ch_s + h * p.ch_h;
@@ -759,7 +713,6 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
   }
 
   // ---- 2 sketch logits: warp-sized groups of positions sharing zero / scale ----------------------
-  stamp(p.tim, row, 1, lead);
   {
     const uint8_t* cb = p.codes + slot * p.c_s + h * p.c_h;
     const __half* zb = p.zero + slot * p.z_s + h * p.z_h;
@@ -796,7 +749,6 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
   }
 
   // ---- 3 shortlist ---------------------------------------------------------------------------------
-  stamp(p.tim, row, 2, lead);
   int32_t* bar = p.bar + unit;
   if (p.M_sl > 0) {
     unit_barrier(bar, G * CS);                           // every query head's sketch logits
@@ -842,7 +794,6 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
   rw.sync();                                             // s_hat final everywhere
 
   // ---- 4 m, sure ---------------------------------------------------------------------------------
-  stamp(p.tim, row, 3, lead);
   float m_row;
   double sure;
   {
@@ -859,7 +810,6 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
   }
 
   // ---- 5 wh (cached), jumps, partials --------------------------------------------------------------
-  stamp(p.tim, row, 4, lead);
   double b0, s_wh;
   int npos, ntail;
   {
@@ -883,7 +833,6 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
   }
 
   // ---- 6 truncation walk over the top-M_t jumps -----------------------------------------------------
-  stamp(p.tim, row, 5, lead);
   bool cap_t;
   {
     // The walk over the top-1024 jumps first (their order is the full order's prefix); the full
@@ -924,7 +873,6 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
   rw.sync();                                             // T* written everywhere
 
   // ---- 7 totals, dt/dV, the "grad" key -----------------------------------------------------------------
-  stamp(p.tim, row, 6, lead);
   {
     double v[2] = {0.0, 0.0};
     const int op[2] = {0, 1};
@@ -948,11 +896,8 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
   }
 
   // ---- 8 fetch order: top-Kc by the key, ranks -------------------------------------------------------
-  stamp(p.tim, row, 7, lead);
   const int K = p.Kc;
-  ts.tim = (p.tim != nullptr && lead) ? p.tim + row * 16 + 11 : nullptr;
   topk<CS>(rw, [&](int pos) { return okey(J[pos]); }, p0, p1, K, true, ts);
-  ts.tim = nullptr;
   {
     const int KC = (K + CS - 1) / CS, k0 = min(K, cr * KC), k1 = min(K, k0 + KC);
     for (int i = k0 + tid; i < k1; i += NT) {
@@ -964,7 +909,6 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
   rw.sync();                                             // ranks written everywhere
 
   // ---- 9 complement partials; the head's terms (thread t owns k in [t C, t C + C)) ---------------------
-  stamp(p.tim, row, 8, lead);
   double Rb, RV, Rup, Rdn;
   int sT;
   {
@@ -1044,7 +988,6 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
   const double e0Bt = p.eps0 * Bt;
   const double beta0 = sb + Rb, V0h = sv + RV;
   const double up0 = fmax(hup, Rup), dn0 = fmax(hdn, Rdn);
-  stamp(p.tim, row, 9, lead);
   const bool screened = (tail1(e0Bt + beta0, V0h, up0) + tail1(e0Bt - beta0, V0h, dn0)) <= p.delta;
   int BK = 2;
   while (BK < K) BK <<= 1;
@@ -1142,7 +1085,6 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
   }
   kstar = min(kstar, (long long)ntail);
 #undef beta
-  stamp(p.tim, row, 10, lead);
   if (lead) {
     __shared__ double s_beta_at;
     if (tid == 0) s_beta_at = Rb;
@@ -1169,7 +1111,7 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
   if (CS > 1) rw.cl.sync();
 }
 
-// ---- emit: A's weights, F's cold entries restored and listed ------------------------------------------
+// ---- emit: A's weights, F's cold entries restored (or packed for staging) ----------------------------
 
 struct EParams {
   int H, G, R, n, WA, Kc, max_len, W1, W2, C2;
@@ -1415,7 +1357,7 @@ void decide(torch::Tensor q, double sm_scale, torch::Tensor slots, torch::Tensor
             torch::Tensor o_i, torch::Tensor m, torch::Tensor sure, torch::Tensor kst,
             torch::Tensor beta_k, torch::Tensor Bt, torch::Tensor nonmono, torch::Tensor tsize,
             torch::Tensor scr, torch::Tensor fb, torch::Tensor fbl, torch::Tensor keys_cnt,
-            torch::Tensor bar, c10::optional<torch::Tensor> tim) {
+            torch::Tensor bar) {
   // ints: B, H, G, n, WA, max_len, M_sl, M_t, Kc, bennett, NCH, PER, BITS, GROUP, CS
   Params p{};
   p.q = q.data_ptr();
@@ -1462,7 +1404,6 @@ void decide(torch::Tensor q, double sm_scale, torch::Tensor slots, torch::Tensor
   p.beta_k = PTR(beta_k, double); p.Bt = PTR(Bt, double); p.nonmono = PTR(nonmono, int8_t);
   p.tsize = PTR(tsize, double); p.scr = PTR(scr, int8_t); p.fb = PTR(fb, bool);
   p.fbl = PTR(fbl, int32_t); p.keys_cnt = PTR(keys_cnt, int32_t); p.bar = PTR(bar, int32_t);
-  p.tim = tim.has_value() ? reinterpret_cast<unsigned long long*>(tim->data_ptr()) : nullptr;
   cudaStream_t st = at::cuda::getCurrentCUDAStream();
   if (kv.scalar_type() == at::kBFloat16) launch_decide<__nv_bfloat16>(p, (int)q.size(-1), cs, st);
   else if (kv.scalar_type() == at::kHalf) launch_decide<__half>(p, (int)q.size(-1), cs, st);
@@ -1514,13 +1455,7 @@ void emit(torch::Tensor slots, torch::Tensor acnt, torch::Tensor cell, torch::Te
   C10_CUDA_KERNEL_LAUNCH_CHECK();
 }
 
-int64_t cluster_size(int64_t R, int64_t D, bool bf16, int64_t cs_max) {
-  if (bf16) return D == 128 ? pick_cs<__nv_bfloat16, 128>(R, cs_max) : pick_cs<__nv_bfloat16, 64>(R, cs_max);
-  return D == 128 ? pick_cs<__half, 128>(R, cs_max) : pick_cs<__half, 64>(R, cs_max);
-}
-
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
-  m.def("cluster_size", &cluster_size, "blocks per row the decide kernel uses");
   m.def("decide", &decide, "vkv decode decision (one layer)", py::arg("q"), py::arg("sm_scale"),
         py::arg("slots"), py::arg("r"), py::arg("cell"), py::arg("cpu_row"), py::arg("alist"),
         py::arg("acnt"), py::arg("kv"), py::arg("pool"), py::arg("codes"), py::arg("zero"),
@@ -1529,7 +1464,7 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
         py::arg("rA"), py::arg("pA"), py::arg("physA"), py::arg("o_i"), py::arg("m"),
         py::arg("sure"), py::arg("kst"), py::arg("beta_k"), py::arg("Bt"), py::arg("nonmono"),
         py::arg("tsize"), py::arg("scr"), py::arg("fb"), py::arg("fbl"), py::arg("keys_cnt"),
-        py::arg("bar"), py::arg("tim") = py::none());
+        py::arg("bar"));
   m.def("emit", &emit, "vkv attention list: A weights + F restored in place (or listed for "
         "the staging fetch)", py::arg("slots"), py::arg("acnt"), py::arg("cell"),
         py::arg("cpu_row"), py::arg("home"), py::arg("restored"), py::arg("pool"), py::arg("kv"),
