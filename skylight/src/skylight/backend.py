@@ -173,11 +173,17 @@ def _import_sparse_wrapper_cls():
             from sparse_oracle_topk_sink_local_optimized import (
                 BatchDecodeWithPagedKVCacheWrapper as cls,
             )
+        elif method == "vkv":
+            # Vkv1 (Bernoulli residency + certified sketch-guided fetch) over
+            # per-head token offloading: offload_package.vkv. Eager only.
+            from offload_package.vkv.wrapper import (
+                BatchDecodeWithPagedKVCacheWrapper as cls,
+            )
         else:
             raise ValueError(
                 f"SKYLIGHT_SPARSE_METHOD={method!r} not recognized "
                 "(expected 'oracle', 'block_minmax', 'pq', 'pqrs', 'pq_optimized', "
-                "'pqrs_optimized', 'pqis_optimized' or 'qis_optimized')."
+                "'pqrs_optimized', 'pqis_optimized', 'qis_optimized' or 'vkv')."
             )
     except ImportError as exc:
         raise ImportError(
@@ -576,10 +582,11 @@ class SkylightSparseMetadataBuilder(FlashInferMetadataBuilder):
         num_decodes = 0
         # Per-head token offload fetches without per-layer syncs; its sticky
         # error flag (missing CPU copy / no staging row) is checked here, once
-        # per step, so a violation still fails loudly (one step late).
+        # per step and without a sync, so a violation still fails loudly (a
+        # step or two late).
         _store = getattr(cls._offload_orchestrator, "token_store", None)
         if _store is not None and hasattr(_store, "check_errors"):
-            _store.check_errors()
+            _store.check_errors(wait=False)
         # reorder_batch_to_split_decodes_and_prefills has already run by now,
         # so req_ids[:num_decodes] is the true decode row order -- including
         # mixed batches, where the scheduler-side id order is not guaranteed
@@ -1105,6 +1112,12 @@ class SkylightSparseMetadataBuilder(FlashInferMetadataBuilder):
         kv_cache_spec: AttentionSpec,
     ) -> AttentionCGSupport:
         # FI-native decode forced, q_len_per_req == 1 → single-token decode CG.
+        # Vkv decodes with per-step host reads (list widths): never captured.
+        if os.environ.get("SKYLIGHT_SPARSE_METHOD", "").strip().lower() == "vkv":
+            # Except KVzip eviction (VKV_FULL=1): attend-only rows at fixed shapes.
+            if os.environ.get("VKV_FULL") == "1":
+                return AttentionCGSupport.UNIFORM_SINGLE_TOKEN_DECODE
+            return AttentionCGSupport.NEVER
         return AttentionCGSupport.UNIFORM_SINGLE_TOKEN_DECODE
 
 
