@@ -24,4 +24,5 @@ export VKV_VEC=1 VKV_LAMBDA_BLOCK=8              # the vectorised certificate (i
 export TOKENIZERS_PARALLELISM=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 export HF_HUB_OFFLINE="${HF_HUB_OFFLINE:-1}" HF_DATASETS_OFFLINE="${HF_DATASETS_OFFLINE:-1}"  # 0 only for download.sh
 # RULER and LOFT scorers import nltk -> sqlite3, which needs the env's libstdc++ (Prajna's is too old)
-[ -n "${CONDA_PREFIX:-}" ] && export LD_LIBRARY_PATH="$CONDA_PREFIX/lib:${LD_LIBRARY_PATH:-}"
+if [ -n "${CONDA_PREFIX:-}" ]; then export LD_LIBRARY_PATH="$CONDA_PREFIX/lib:${LD_LIBRARY_PATH:-}"; fi
+true  # sourcing must succeed (callers use set -e)

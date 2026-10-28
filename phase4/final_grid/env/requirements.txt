@@ -1,4 +1,5 @@
 # kvpress-final (Prajna) packages, pinned. Python 3.11; torch 2.11.0+cu128 (install torch first from the cu128 index).
+# pytest / pytest-dependency: for the tests in README section 4.
 # Not listed: kvpress itself (run_grid.py imports this repository's kvpress/), flash-attn (unused: every run is sdpa).
 accelerate==1.15.0
 aiohappyeyeballs==2.7.1
@@ -84,6 +85,8 @@ psutil==7.2.2
 pyarrow==25.0.1
 Pygments==2.21.0
 pyparsing==3.3.2
+pytest-dependency==0.6.1
+pytest==7.4.4
 python-dateutil==2.9.0.post0
 pytz==2026.3.post1
 PyYAML==6.0.3
@@ -104,8 +107,8 @@ torch==2.11.0+cu128
 tqdm==4.70.1
 transformers==5.2.0
 triton==3.6.0
-typer==0.27.2
 typer-slim==0.24.0
+typer==0.27.2
 types-PyYAML==6.0.12.20260906
 typing_extensions==4.16.0
 tzdata==2026.4
