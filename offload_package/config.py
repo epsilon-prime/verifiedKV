@@ -51,6 +51,10 @@ class OffloadConfig:
     # or "keydiff" (KeyDiff: evict keys most similar to the mean key; per-head only)
     kvzip_device: str | None = None   # GPU for KVzip's private HF model (None = worker's)
     kvzip_chunk: int = 2000           # context tokens per reconstruction chunk
+    # KVzip input convention: "offload" (sink = token_sink, chunks of kvzip_chunk)
+    # or "kvpress" (kvpress KVzipPress exactly: 4 sinks after the chat prefix,
+    # chunks of 2048, its prompt texts; the Vkv default, as the Vkv harness).
+    kvzip_style: str = "offload"
     token_sink: int = 64          # first tokens never offloaded
     token_window: int = 128       # most recent tokens never offloaded
     token_budget: int | None = None   # absolute per-layer keep count
@@ -63,6 +67,13 @@ class OffloadConfig:
     # tokens, the same count in every layer, per-layer staging.
     token_budget_scope: str = "global"
     num_cpu_tokens: int | None = None  # CPU token-pool capacity
+    # Which cells a token round offloads: "lowest" = the lowest-scored under
+    # the scope's budget (every round); "vkv" = Vkv1 (offload_package.vkv): one
+    # round per request samples the prompt's cells with probabilities from the
+    # scores (global budget kappa), and decode fetches what a sketch-guided
+    # certificate asks for (SKYLIGHT_SPARSE_METHOD=vkv). Per-head engine only.
+    token_policy: str = "lowest"
+    vkv_config: object | None = None   # offload_package.vkv.state.VkvConfig (token_policy="vkv")
     # Auto mode: cap staging at this fraction of the GPU KV pool.
     staging_max_pool_frac: float = 0.25
     # Auto mode: multiply the computed estimate by this headroom factor.
@@ -135,3 +146,18 @@ class OffloadConfig:
         if self.token_budget_scope not in ("shared", "global", "layer", "uniform", "cells_shared"):
             raise ValueError("token_budget_scope must be shared, global, layer, uniform "
                              "or cells_shared")
+        if self.kvzip_style not in ("offload", "kvpress"):
+            raise ValueError("kvzip_style must be 'offload' or 'kvpress'")
+        if self.token_policy not in ("lowest", "vkv"):
+            raise ValueError("token_policy must be 'lowest' or 'vkv'")
+        if self.token_policy == "vkv":
+            if self.offload_granularity != "token" or self.token_budget_scope in (
+                    "shared", "cells_shared"):
+                raise ValueError("token_policy='vkv' needs offload_granularity='token' and a "
+                                 "per-head token_budget_scope (e.g. 'global')")
+            if self.token_scorer in ("lru", "keydiff"):
+                raise ValueError("token_policy='vkv' samples from keep scores written before "
+                                 "its round: token_scorer must be fastkvzip, kvzip or random")
+            if self.vkv_config is None:
+                from offload_package.vkv.state import VkvConfig
+                object.__setattr__(self, "vkv_config", VkvConfig())

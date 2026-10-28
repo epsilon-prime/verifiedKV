@@ -113,14 +113,36 @@ class TokenStagingStore:
                                          device=self.dev)
         self._frozen = True
 
-    def check_errors(self) -> None:
+    def check_errors(self, wait: bool = True) -> None:
         """Cell mode: raise if any fetch since the last check hit a missing
         CPU copy or ran out of staging (sticky device flag). Called once per
-        step, eagerly, by the attention backend -- the one host read of it."""
+        step, eagerly, by the attention backend. ``wait=False`` (the backend)
+        does not sync: the flag is copied to pinned memory behind an event
+        and the previous copy is read once its event has completed, so a
+        violation fails loudly a step or two late."""
         if getattr(self, "_tick_d", None) is None or getattr(self, "_ctr", None) is None:
             return
-        if int(self._ctr[2]):
-            self._ctr[2] = 0                  # reported once
+        if wait:
+            err = int(self._ctr[2])
+        else:
+            if torch.cuda.is_current_stream_capturing():
+                return
+            ev = getattr(self, "_err_ev", None)
+            if ev is None:
+                self._err_host = torch.zeros(1, dtype=torch.int32, pin_memory=True)
+                self._err_ev = torch.cuda.Event()
+                err = 0
+            elif not ev.query():
+                return                            # previous copy still in flight
+            else:
+                err = int(self._err_host[0])
+            self._err_host.copy_(self._ctr[2:3], non_blocking=True)
+            self._err_ev.record()
+        if err:
+            self._ctr[2] = 0                      # reported once
+            if not wait:
+                self._err_host.zero_()
+                self._err_ev = None
             raise RuntimeError(
                 "token fetch: a selected token had no CPU copy or no free staging "
                 "row (staging below the capacity check?)")
@@ -435,6 +457,46 @@ class TokenStagingStore:
                             eng.HP, self._ctr)
         _timing.end("wrap.fetch")
         return key, cold, phys_pos, None
+
+    def stage_packed(self, layer: int, posc: torch.Tensor, ncold: torch.Tensor,
+                     rows: torch.Tensor, group: int, base: torch.Tensor, idx, w, slen,
+                     idx2, w2, slen2) -> None:
+        """Cell mode, packed cold lists (vkv with compaction): query row r's first ``ncold[r]``
+        entries of ``posc`` [R, W] are its cold positions (r = (b, q head), KV head
+        (r / group) % H). Stages them (discover, then the in-kernel-allocating fill) and writes
+        their staged cells after each row's live prefix ``base`` [R] int32: into idx / w
+        [R, W1] while there is room, the rest into idx2 / w2 [R, W2]; slen / slen2 = the lists'
+        live counts. Three launches, work proportional to the cold entries."""
+        kern = self._kernels()
+        if kern is None or not self.heads:
+            raise RuntimeError("packed staging needs the cell-mode CUDA token kernels")
+        eng = self.res.engine
+        if torch.cuda.is_current_stream_capturing() and not self._frozen:
+            raise RuntimeError("token staging captured before prepare_graphs()")
+        if not self._frozen:
+            self._ensure()
+        R, W = posc.shape
+        if self._need.numel() < R * W:
+            if self._frozen:
+                raise RuntimeError(f"token staging: {R * W} entries > the "
+                                   f"{self._need.numel()} reserved for CUDA graphs")
+            self._need = torch.empty(R * W, dtype=torch.int64, device=self.dev)
+        rows = rows.reshape(-1).contiguous()
+        self._tick_d.add_(1)
+        kern.tok_discover_packed(posc, ncold, rows, group, self.Hm, eng.cpu_row[layer],
+                                 self.tok_slot[layer].view(-1), self.last_use,
+                                 self.seen[layer].view(-1), self._tick_d, self.mbp,
+                                 self._need, self._ctr)
+        self._ctr_acc[:4].add_(self._ctr)
+        self._ctr_acc[4:].add_(self._ctr[3:4])
+        kern.tok_fill_cells(self._need, self.owner, self.tok_slot.view(-1),
+                            layer * self._S * self.kps, self.last_use, self._tick_d,
+                            self._fill_warps, self._hand_d, eng.cpu_row[layer], self.mbp,
+                            eng.cpu_pool, self._pool_dev, eng.kv_rows, self._stage_units,
+                            eng.HP, self._ctr)
+        kern.tok_place_packed(posc, ncold, rows, group, self.Hm, self.mbp,
+                              self.tok_slot[layer].view(-1), self._stage_units, eng.HP, base,
+                              idx, w, slen, idx2, w2, slen2)
 
     def phys_tokens(self, layer, key, cold, phys_pos, indptr, indices) -> torch.Tensor:
         """Physical address per position in token-engine mode: resident

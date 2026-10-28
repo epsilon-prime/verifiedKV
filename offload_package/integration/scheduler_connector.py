@@ -51,7 +51,7 @@ def token_graphs_ok(vllm_config) -> bool:
     return str(cg).upper() == "FULL_DECODE_ONLY" and str(mode).upper() in ("NONE", "0")
 
 
-def check_token_mode_env(vllm_config, per_head: bool = False) -> None:
+def check_token_mode_env(vllm_config, per_head: bool = False, vkv: bool = False) -> None:
     """Token-level offloading compacts KV pages inside ``schedule()`` and
     reaches the worker's engine through the shared connector object: the
     scheduler and the worker must live in ONE process, scheduled
@@ -64,7 +64,8 @@ def check_token_mode_env(vllm_config, per_head: bool = False) -> None:
     CUDA graphs: only the per-head engine, on FULL decode graphs without
     torch.compile (``token_graphs_ok``) -- its decode-time fetch is
     sync-free and every buffer it reads is persistent; the shared engine
-    syncs per layer and stays eager. Refuse anything else instead of
+    syncs per layer and stays eager. Vkv (``vkv``): eager or PIECEWISE graphs (its attention
+    runs outside vLLM's graphs; the worker refuses FULL). Refuse anything else instead of
     silently doing nothing or racing the in-flight forward."""
     _async, _mp, _world, _graphs = runtime_env(vllm_config)
     _backend = getattr(vllm_config.parallel_config, "distributed_executor_backend", None)
@@ -76,7 +77,7 @@ def check_token_mode_env(vllm_config, per_head: bool = False) -> None:
         (f"world_size={_world}", _world != 1),
         ("CUDA graphs (use enforce_eager, or per-head scope with "
          "cudagraph_mode=FULL_DECODE_ONLY and compilation mode NONE)",
-         _graphs and not (per_head and token_graphs_ok(vllm_config))),
+         _graphs and not (per_head and (vkv or token_graphs_ok(vllm_config)))),
     ) if on]
     if bad:
         raise RuntimeError("token-level offloading (offload_granularity='token') "

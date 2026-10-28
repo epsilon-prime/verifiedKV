@@ -293,22 +293,32 @@ class OffloadPackageWorker(KVConnectorBase_V1):
             gates = [DefaultScoreGate(batched, i) for i in range(nl)]
             holder = {}
 
-            def prompt_scorer(rid, prompt_ids, engine=engine, batched=batched):
+            def prompt_scorer(rid, prompt_ids):
                 sc = holder.get("scorer")
                 if sc is None:      # lazy: after vLLM has sized its KV cache
                     sc = holder["scorer"] = KVzipScorer(
                         vc.model_config.model, cfg.kvzip_device or kv_cache_view.device,
                         dtype=vc.model_config.dtype, sink=cfg.token_sink,
-                        chunk_size=cfg.kvzip_chunk)
-                scores = sc.score(prompt_ids)
+                        chunk_size=cfg.kvzip_chunk, style=cfg.kvzip_style)
+                return sc.score(prompt_ids)
+
+            def install_prompt_scores(rid, scores, engine=engine, batched=batched):
                 write_prompt_scores(engine, engine.slot_of(rid), scores)
                 batched.set_default(scores[..., cfg.token_sink:])
             engine.prompt_scorer = prompt_scorer
+            engine.install_prompt_scores = install_prompt_scores
         else:
             gates = load_fastkvzip_gates(
                 vc.model_config.model, hf.num_attention_heads, hf.num_key_value_heads,
                 kv_cache_view.device)
             batched = BatchedFastKVzipGates(gates, per_head=per_head).to(kv_cache_view.device)
+        from offload_package.integration.scheduler_connector import runtime_env
+        if cfg.token_policy == "vkv" and runtime_env(vc)[3]:
+            # Vkv under piecewise graphs (torch.compile cannot trace the Python score hooks):
+            # no hooks. Vkv reads scores only at its round, which runs at the end of prefill on
+            # the prompt's KVzip scores (install_prompt_scores), so the hooks' default scores
+            # are never read.
+            gates = None
         for h in getattr(self, "_token_hooks", []):
             h.remove()
         self._token_hooks = ([] if gates is None else
@@ -318,7 +328,34 @@ class OffloadPackageWorker(KVConnectorBase_V1):
         self._orchestrator.token_offload = engine
         self._orchestrator.token_store = TokenStagingStore.for_token_engine(
             self._orchestrator.staging_pool, engine)
-        if per_head:
+        if cfg.token_policy == "vkv":
+            # Vkv: Bernoulli residency + sketch-guided certified fetch (decode through
+            # SKYLIGHT_SPARSE_METHOD=vkv). Eager decode; the whole staging pool is the
+            # per-layer fetch ring (a layer's fetch is split into ring-sized passes, so no
+            # top-k capacity check). Fetched entries serve one forward only.
+            from offload_package.integration.scheduler_connector import (
+                runtime_env, token_graphs_ok)
+            from offload_package.vkv.state import VkvState
+            cg = getattr(getattr(vc.compilation_config, "cudagraph_mode", None), "name", "")
+            full = runtime_env(vc)[3] and "FULL" in str(cg).upper()
+            if full and not (cfg.vkv_config.evict and token_graphs_ok(vc)
+                             and os.environ.get("VKV_FULL") == "1"):
+                raise RuntimeError("token_policy='vkv' runs in FULL CUDA graphs only for KVzip "
+                                   "eviction (vkv_evict, VKV_FULL=1, FULL_DECODE_ONLY without "
+                                   "torch.compile); otherwise use enforce_eager or "
+                                   "cudagraph_mode=PIECEWISE (VKV_GRAPHS=1 graphs attention)")
+            engine.vkv = VkvState(engine, cfg.vkv_config)
+            cc = vc.compilation_config
+            engine.alloc_decode_rows(max(max_seqs, int(getattr(
+                cc, "max_cudagraph_capture_size", 0) or 0)) if full else max_seqs)
+            if full:
+                # The captured decode reads the per-slot maps at fixed addresses: no growth.
+                engine.frozen = True
+            st = self._orchestrator.token_store
+            print(f"[VKV] {cfg.vkv_config}; draw keeps "
+                  f"{cfg.vkv_config.draw_frac(engine.vkv.D):.4f}; staging rows {st.C}"
+                  f"; vkv maps {engine.vkv.nbytes() / 2**30:.3f} GiB", flush=True)
+        elif per_head:
             # The sync-free cell fetch has no over-capacity fallback: the
             # shared staging pool must hold one layer's worst-case cold set.
             _e = os.environ

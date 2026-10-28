@@ -214,9 +214,16 @@ def build_offload_config(
         staging_store=extra_config.get(
             "staging_store", _os.getenv("OFFLOAD_PACKAGE_STAGING_STORE") or None),
         offload_granularity=extra_config.get("offload_granularity", "block"),
-        token_scorer=extra_config.get("token_scorer", "fastkvzip"),
+        # Vkv samples from KVzip scores (the harness's CachedKVzipPress) unless told otherwise.
+        token_scorer=extra_config.get(
+            "token_scorer",
+            "kvzip" if extra_config.get("token_policy", "lowest") == "vkv" else "fastkvzip"),
         kvzip_device=extra_config.get("kvzip_device", _os.getenv("OFFLOAD_PACKAGE_KVZIP_DEVICE")),
         kvzip_chunk=int(extra_config.get("kvzip_chunk", 2000)),
+        # Vkv scores like the harness's KVzipPress unless told otherwise.
+        kvzip_style=extra_config.get(
+            "kvzip_style",
+            "kvpress" if extra_config.get("token_policy", "lowest") == "vkv" else "offload"),
         token_budget_scope=extra_config.get("token_budget_scope", "global"),
         token_sink=int(extra_config.get("token_sink", 64)),
         token_window=int(extra_config.get("token_window", 128)),
@@ -224,7 +231,17 @@ def build_offload_config(
                       if extra_config.get("token_budget") is not None else None),
         num_cpu_tokens=(int(extra_config["num_cpu_tokens"])
                         if extra_config.get("num_cpu_tokens") is not None else None),
+        token_policy=extra_config.get("token_policy", "lowest"),
+        vkv_config=_vkv_config(extra_config),
     )
+
+
+def _vkv_config(extra_config: dict):
+    """``VkvConfig`` from the ``vkv_*`` keys when token_policy='vkv', else None."""
+    if extra_config.get("token_policy", "lowest") != "vkv":
+        return None
+    from offload_package.vkv.state import VkvConfig
+    return VkvConfig.from_extra(extra_config)
 
 
 class OffloadPackageConnector(KVConnectorBase_V1):
@@ -349,7 +366,8 @@ class OffloadPackageConnector(KVConnectorBase_V1):
             from offload_package.integration.token_mode import TokenModeScheduler
             check_token_mode_env(
                 self._vllm_config,
-                per_head=self.offload_config.token_budget_scope != "shared")
+                per_head=self.offload_config.token_budget_scope != "shared",
+                vkv=self.offload_config.token_policy == "vkv")
             ts = self._token_sched = TokenModeScheduler(
                 interval_tokens=self.offload_config.interval_tokens,
                 engine_getter=lambda: getattr(self._worker_handler, "_token_engine", None),

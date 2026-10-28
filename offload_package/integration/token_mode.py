@@ -301,12 +301,31 @@ class TokenModeScheduler:
         # (re)admitted: the backend builds a request's PQ codes from its pages
         # at its first decode step, so no round may compact it before then.
         self._decoded: set[str] = set()
+        # Reconstruction-scorer (KVzip) scores computed when a request's last
+        # prefill chunk is scheduled -- before that forward, so the pass counts
+        # toward TTFT -- and installed at its first round.
+        self._prompt_scores: dict = {}
+        # Requests whose round ran in ``after_step``: their next step's
+        # allocation must reach the runner's (replaced) page list.
+        self._post_round: set[str] = set()
 
     def bind(self, *, scheduler=None, kv_cache_manager=None) -> None:
         if scheduler is not None:
             self.sched = scheduler
             assert not scheduler.cache_config.enable_prefix_caching, (
                 "token-level offloading requires enable_prefix_caching=False")
+            if hasattr(scheduler, "update_from_output") and \
+                    getattr(scheduler, "_token_after_step", None) is not self:
+                orig = scheduler.update_from_output
+
+                def update_from_output(so, out, _orig=orig):
+                    res = _orig(so, out)
+                    self.after_step(so)
+                    return res
+                # Runs after the step's forward and before its outputs (the
+                # first token, for a request whose prefill just ended) return.
+                scheduler.update_from_output = update_from_output
+                scheduler._token_after_step = self
         if kv_cache_manager is not None:
             self.kv_mgr = kv_cache_manager
 
@@ -322,12 +341,27 @@ class TokenModeScheduler:
             eng.release(rid)
         self._last_round.pop(rid, None)
         self._decoded.discard(rid)
+        self._post_round.discard(rid)
         if self.sched is not None and rid in self.sched.requests:
             self.sched.requests[rid].num_offloaded_tokens = 0
 
     def request_finished(self, rid: str) -> None:
         self.forget(rid)
         self._prompt_len.pop(rid, None)
+        self._prompt_scores.pop(rid, None)
+
+    def _prescore(self, eng, rid: str, num_computed: int, n_sched: int) -> None:
+        """Run the prompt scorer when this step schedules the chunk that ends
+        the prompt. It only needs the token ids (it runs its own model); the
+        scores are installed later because this step's forward still writes
+        the gates' default scores over the chunk."""
+        if getattr(eng, "prompt_scorer", None) is None or rid in self._prompt_scores:
+            return
+        prompt = self._prompt_len.get(rid, 0)
+        req = self.sched.requests.get(rid) if self.sched is not None else None
+        if req is None or not (num_computed < prompt <= num_computed + n_sched):
+            return
+        self._prompt_scores[rid] = eng.prompt_scorer(rid, list(req.prompt_token_ids))
 
     def build_connector_meta(self, so) -> None:
         eng = self._engine()
@@ -344,6 +378,7 @@ class TokenModeScheduler:
             eng.add_request(rid)
             eng.set_pages(rid, self._pages(rid))
             eng.on_step(rid, int(nr.num_computed_tokens), int(sched_tokens.get(rid, 0)))
+            self._prescore(eng, rid, int(nr.num_computed_tokens), int(sched_tokens.get(rid, 0)))
         cached = so.scheduled_cached_reqs
         for rid, num_computed in zip(cached.req_ids, cached.num_computed_tokens):
             n_sched = int(sched_tokens.get(rid, 0))
@@ -351,6 +386,9 @@ class TokenModeScheduler:
             if not eng.has(rid):          # resumed after preemption
                 eng.add_request(rid)
             eng.set_pages(rid, self._pages(rid))
+            if rid in self._post_round:
+                self._post_round.discard(rid)
+                eng.refresh_row_update(rid, self._pages(rid))
             eng.on_step(rid, num_computed, 0)
             prompt = self._prompt_len.get(rid, 0)
             last = self._last_round.get(rid)
@@ -364,29 +402,71 @@ class TokenModeScheduler:
             # A request resumed after preemption is far past its prompt at its
             # first decode step; without the _decoded check it would compact
             # before the backend encoded its (recomputed) pages.
-            due = (prompt > 0 and num_computed > prompt and decoding
-                   and rid in self._decoded
+            # Vkv's decoder builds nothing at the first decode step, so its
+            # first round runs as soon as the prompt's KV is written (the
+            # schedule right after the last prefill chunk).
+            vkv = getattr(eng, "vkv", None) is not None
+            due = (prompt > 0 and decoding
+                   and (num_computed >= prompt if vkv else
+                        num_computed > prompt and rid in self._decoded)
                    and (last is None or num_computed - last >= self.W))
             if decoding:
                 self._decoded.add(rid)
             if due:
-                if last is None and getattr(eng, "prompt_scorer", None) is not None \
-                        and req is not None:
-                    # Reconstruction scorers (KVzip) rank the finished prompt
-                    # once, just before its first round.
-                    eng.prompt_scorer(rid, list(req.prompt_token_ids))
-                self._last_round[rid] = num_computed
-                freed = eng.run_round(rid, extra_tokens=n_sched)
-                if freed:
-                    blocks = self._mgr().req_to_blocks[rid]
-                    keep = len(eng.pages(rid))
-                    tail = blocks[keep:]
-                    assert [b.block_id for b in tail] == freed, "page list out of sync"
-                    del blocks[keep:]
-                    self.kv_mgr.block_pool.free_blocks(reversed(tail))
-                if self.sched is not None and rid in self.sched.requests:
-                    self.sched.requests[rid].num_offloaded_tokens = eng.offset(rid)
+                self._round(eng, rid, req, num_computed, n_sched, last)
             eng.on_step(rid, num_computed, n_sched)
+            self._prescore(eng, rid, num_computed, n_sched)
+
+    def after_step(self, so) -> None:
+        """Vkv's first round at the end of the step that finishes the prompt:
+        its KV is written (synchronous scheduling) and the first token is not
+        yet returned, so the round counts toward TTFT, and every decode step
+        attends over the sampled cache. ``build_connector_meta`` still runs it
+        at the next schedule for a request this missed."""
+        eng = self._engine()
+        if eng is None or self.kv_mgr is None or getattr(eng, "vkv", None) is None:
+            return
+        for rid in so.num_scheduled_tokens:
+            req = self.sched.requests.get(rid)
+            prompt = self._prompt_len.get(rid, 0)
+            if (req is None or req.is_finished() or not eng.has(rid) or prompt <= 0
+                    or rid in self._last_round):
+                continue
+            num_computed = int(req.num_computed_tokens)
+            if num_computed < prompt or num_computed < req.num_tokens - 1:
+                continue                  # mid-prefill (or mid-recompute)
+            eng.set_pages(rid, self._pages(rid))
+            eng.on_step(rid, num_computed, 0)
+            self._round(eng, rid, req, num_computed, 0, None)
+            self._decoded.add(rid)
+            self._post_round.add(rid)
+
+    def _round(self, eng, rid: str, req, num_computed: int, n_sched: int, last) -> None:
+        if last is None and getattr(eng, "prompt_scorer", None) is not None \
+                and req is not None:
+            # Reconstruction scorers (KVzip) rank the finished prompt
+            # once; the scores were computed with its last prefill chunk.
+            scores = self._prompt_scores.pop(rid, None)
+            if scores is None:
+                scores = eng.prompt_scorer(rid, list(req.prompt_token_ids))
+            eng.install_prompt_scores(rid, scores)
+        if last is None and getattr(eng, "vkv", None) is not None:
+            # Vkv samples the prompt (context) once; its token ids
+            # bound the context and key the Bernoulli draw.
+            if req is None:
+                raise RuntimeError(f"vkv: no scheduler request for {rid}")
+            eng.vkv.set_prompt(rid, req.prompt_token_ids)
+        self._last_round[rid] = num_computed
+        freed = eng.run_round(rid, extra_tokens=n_sched)
+        if freed:
+            blocks = self._mgr().req_to_blocks[rid]
+            keep = len(eng.pages(rid))
+            tail = blocks[keep:]
+            assert [b.block_id for b in tail] == freed, "page list out of sync"
+            del blocks[keep:]
+            self.kv_mgr.block_pool.free_blocks(reversed(tail))
+        if self.sched is not None and rid in self.sched.requests:
+            self.sched.requests[rid].num_offloaded_tokens = eng.offset(rid)
 
 
 def _decoder_layers(model):

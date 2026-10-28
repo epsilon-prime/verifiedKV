@@ -228,6 +228,68 @@ __global__ void tok_phys_cells_kernel(
   }
 }
 
+// Packed cell mode (vkv with compaction): each query row's cold entries are packed at the front
+// of its list, ``ncold[r]`` of them (posc [R, W] positions); rows r = (b, q head), KV head
+// (r / group) % H. Discover = tok_discover on those entries only (every one is cold); after
+// tok_fill_cells, place writes their staged cells after the row's live prefix ``base[r]``.
+__global__ void tok_discover_packed_kernel(
+    const int64_t* __restrict__ posc, const int32_t* __restrict__ ncold, int64_t W,
+    const int64_t* __restrict__ rows, int64_t HG, int64_t group, int64_t H,
+    const int32_t* __restrict__ cpu, int64_t max_len, const int32_t* __restrict__ tok_slot,
+    int64_t* __restrict__ last_use, int64_t* __restrict__ seen,
+    const int64_t* __restrict__ tick_ptr, int64_t mbp,
+    int64_t* __restrict__ need, int32_t* __restrict__ counters) {
+  const int64_t r = blockIdx.x;
+  const int64_t tick = *tick_ptr;
+  const int64_t b = r / HG, kvh = (r / group) % H;
+  const int64_t row = rows[b];
+  const int nc = row < 0 ? 0 : (int)min((int64_t)ncold[r], W);
+  if (threadIdx.x == 0 && nc) atomicAdd(counters + 3, nc);
+  for (int i = threadIdx.x; i < nc; i += blockDim.x) {
+    const int64_t pos = posc[r * W + i];
+    const int64_t key = (row * H + kvh) * mbp + pos;
+    const int32_t s = tok_slot[key];
+    if (s >= 0) {
+      if ((int64_t)atomicExch(reinterpret_cast<ull*>(last_use + s), (ull)tick) != tick)
+        atomicAdd(counters + 1, 1);
+    } else if ((int64_t)atomicExch(reinterpret_cast<ull*>(seen + key), (ull)tick) != tick) {
+      if (cpu[(row * max_len + pos) * H + kvh] < 0) atomicExch(counters + 2, 1);
+      need[atomicAdd(counters, 1)] = key;
+    }
+  }
+}
+
+__global__ void tok_place_packed_kernel(
+    const int64_t* __restrict__ posc, const int32_t* __restrict__ ncold, int64_t W,
+    const int64_t* __restrict__ rows, int64_t HG, int64_t group, int64_t H, int64_t mbp,
+    const int32_t* __restrict__ tok_slot, const int64_t* __restrict__ stage_units, int64_t HP,
+    const int32_t* __restrict__ base, int64_t* __restrict__ idx, float* __restrict__ w,
+    int32_t* __restrict__ slen, int64_t W1, int64_t* __restrict__ idx2, float* __restrict__ w2,
+    int32_t* __restrict__ slen2, int64_t W2) {
+  const int64_t r = blockIdx.x;
+  const int64_t b = r / HG, kvh = (r / group) % H;
+  const int64_t row = rows[b];
+  const int nc = row < 0 ? 0 : (int)min((int64_t)ncold[r], W);
+  const int64_t off = base[r];
+  for (int i = threadIdx.x; i < nc; i += blockDim.x) {
+    const int64_t key = (row * H + kvh) * mbp + posc[r * W + i];
+    const int64_t s = tok_slot[key];
+    const int64_t cell = s >= 0 ? stage_units[s / HP] * HP + s % HP : 0;
+    const int64_t d = off + i;
+    if (d < W1) {
+      idx[r * W1 + d] = cell;
+      w[r * W1 + d] = 1.0f;
+    } else if (d - W1 < W2) {
+      idx2[r * W2 + d - W1] = cell;
+      w2[r * W2 + d - W1] = 1.0f;
+    }
+  }
+  if (threadIdx.x == 0) {
+    slen[r] = (int32_t)min(off + nc, W1);
+    slen2[r] = (int32_t)min(max(off + nc - W1, (int64_t)0), W2);
+  }
+}
+
 constexpr int kThreads = 256;
 
 void check_cuda(const torch::Tensor& t, const char* name, at::ScalarType dt) {
@@ -448,6 +510,53 @@ torch::Tensor tok_phys_cells(torch::Tensor cell, torch::Tensor key, torch::Tenso
   return out;
 }
 
+void tok_discover_packed(torch::Tensor posc, torch::Tensor ncold, torch::Tensor rows,
+                         int64_t group, int64_t H, torch::Tensor cpu, torch::Tensor tok_slot,
+                         torch::Tensor last_use, torch::Tensor seen, torch::Tensor tick_d,
+                         int64_t mbp, torch::Tensor need, torch::Tensor counters) {
+  check_cuda(posc, "posc", at::kLong);
+  check_cuda(ncold, "ncold", at::kInt);
+  check_cuda(rows, "rows", at::kLong);
+  check_cuda(cpu, "cpu_row", at::kInt);
+  check_cuda(tok_slot, "tok_slot", at::kInt);
+  check_cuda(counters, "counters", at::kInt);
+  const int64_t R = posc.size(0), W = posc.size(1);
+  TORCH_CHECK(cpu.dim() == 3 && cpu.size(2) == H && R % (H * group) == 0, "packed discover shapes");
+  TORCH_CHECK(need.numel() >= R * W, "need buffer too small");
+  const at::cuda::CUDAGuard guard(posc.device());
+  auto stream = at::cuda::getCurrentCUDAStream();
+  C10_CUDA_CHECK(cudaMemsetAsync(counters.data_ptr<int32_t>(), 0, 2 * sizeof(int32_t), stream));
+  C10_CUDA_CHECK(cudaMemsetAsync(counters.data_ptr<int32_t>() + 3, 0, sizeof(int32_t), stream));
+  if (R == 0) return;
+  tok_discover_packed_kernel<<<(unsigned)R, kThreads, 0, stream>>>(
+      posc.data_ptr<int64_t>(), ncold.data_ptr<int32_t>(), W, rows.data_ptr<int64_t>(),
+      H * group, group, H, cpu.data_ptr<int32_t>(), cpu.size(1), tok_slot.data_ptr<int32_t>(),
+      last_use.data_ptr<int64_t>(), seen.data_ptr<int64_t>(), tick_d.data_ptr<int64_t>(), mbp,
+      need.data_ptr<int64_t>(), counters.data_ptr<int32_t>());
+  C10_CUDA_KERNEL_LAUNCH_CHECK();
+}
+
+void tok_place_packed(torch::Tensor posc, torch::Tensor ncold, torch::Tensor rows,
+                      int64_t group, int64_t H, int64_t mbp, torch::Tensor tok_slot,
+                      torch::Tensor stage_units, int64_t HP, torch::Tensor base,
+                      torch::Tensor idx, torch::Tensor w, torch::Tensor slen,
+                      torch::Tensor idx2, torch::Tensor w2, torch::Tensor slen2) {
+  check_cuda(base, "base", at::kInt);
+  check_cuda(idx, "idx", at::kLong);
+  check_cuda(idx2, "idx2", at::kLong);
+  const int64_t R = posc.size(0), W = posc.size(1);
+  if (R == 0) return;
+  const at::cuda::CUDAGuard guard(posc.device());
+  auto stream = at::cuda::getCurrentCUDAStream();
+  tok_place_packed_kernel<<<(unsigned)R, kThreads, 0, stream>>>(
+      posc.data_ptr<int64_t>(), ncold.data_ptr<int32_t>(), W, rows.data_ptr<int64_t>(),
+      H * group, group, H, mbp, tok_slot.data_ptr<int32_t>(), stage_units.data_ptr<int64_t>(),
+      HP, base.data_ptr<int32_t>(), idx.data_ptr<int64_t>(), w.data_ptr<float>(),
+      slen.data_ptr<int32_t>(), idx.size(-1), idx2.data_ptr<int64_t>(), w2.data_ptr<float>(),
+      slen2.data_ptr<int32_t>(), idx2.size(-1));
+  C10_CUDA_KERNEL_LAUNCH_CHECK();
+}
+
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
   m.def("tok_discover", &tok_discover, "classify + LRU-stamp + dedup missing keys");
   m.def("tok_fill", &tok_fill, "map update + zero-copy host->staging copy");
@@ -455,5 +564,9 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
   m.def("tok_fill_cells", &tok_fill_cells,
         "cell mode: in-kernel staging-row allocation + map update + zero-copy row fill");
   m.def("tok_phys_cells", &tok_phys_cells, "cell mode: global cell per selected position");
+  m.def("tok_discover_packed", &tok_discover_packed,
+        "cell mode, packed cold lists: classify + stamp + dedup missing keys");
+  m.def("tok_place_packed", &tok_place_packed,
+        "cell mode, packed cold lists: staged cells into the attention lists");
   m.def("device_alias", &device_alias, "device pointer of a pinned host tensor (0 if none)");
 }

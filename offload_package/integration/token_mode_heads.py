@@ -55,6 +55,7 @@ class _Req:
     mapped: int = 0           # logical tokens with a cell assigned
     offset: int = 0           # logical - physical length (vLLM's view)
     remapped: bool = False    # a round has packed this request's cells
+    vkv_done: bool = False    # the request's (single) Vkv round has run
     cpu_rows: list[torch.Tensor] = field(default_factory=list)
 
 
@@ -145,6 +146,7 @@ class HeadTokenOffloadEngine:
         self.frozen = False
         self.lru = False                        # score = latest selection tick (LRU scorer)
         self.keydiff = False                    # score = KeyDiff key distinctiveness, at rounds
+        self.vkv = None                         # VkvState: Bernoulli residency (offload_package.vkv)
         self.decode_rows_d = None               # see set_decode_rows
         self._grow(max(1, int(num_req_slots)))
         n_rows = self.L * self.H * int(num_cpu_tokens)
@@ -176,6 +178,8 @@ class HeadTokenOffloadEngine:
         self.score, self.cell, self.cpu_row = score, cell, cpu
         self._free_req_slots.extend(range(n - 1, self.S - 1, -1))
         self.S = n
+        if getattr(self, "vkv", None) is not None:
+            self.vkv.grow(n)
 
     def alloc_decode_rows(self, n: int) -> None:
         """Persistent decode-row -> request-slot map, read by the captured
@@ -254,6 +258,12 @@ class HeadTokenOffloadEngine:
     def take_row_update(self, req_id: str) -> list[int] | None:
         return self._row_updates.pop(req_id, None)
 
+    def refresh_row_update(self, req_id: str, pages: list[int]) -> None:
+        """A round that ran between steps truncated the page list before the
+        next step's allocation: hand the runner the list as allocated."""
+        if req_id in self._row_updates:
+            self._row_updates[req_id] = list(pages)
+
     def _free_cpu_rows(self, rows: torch.Tensor) -> None:
         n = int(rows.numel())
         self._free_rows[self._top:self._top + n] = rows
@@ -261,6 +271,8 @@ class HeadTokenOffloadEngine:
 
     def release(self, req_id: str) -> None:
         self._row_updates.pop(req_id, None)
+        if self.vkv is not None:
+            self.vkv.forget(req_id)
         r = self._reqs.pop(req_id, None)
         if r is None:
             return
@@ -391,6 +403,8 @@ class HeadTokenOffloadEngine:
                                f"(mapped={r.mapped}, written={Lg})")
         if Lg <= 0:
             return []
+        if self.vkv is not None:
+            return self._run_vkv_round(req_id, r, extra_tokens)
         K = max(self.keep_count(Lg), self._n_protected(Lg))
         cells = self.cell[:, s, :Lg]                                       # [L, Lg, H]
         resid = cells >= 0
@@ -401,6 +415,40 @@ class HeadTokenOffloadEngine:
         sc = (self.score[:, s, :Lg].masked_fill(protect, float("inf"))
               .masked_fill(~resid, float("inf")))
         evict = self._select(sc, resid, K) & resid
+        return self._apply_round(req_id, r, cells, resid, evict, extra_tokens, K)
+
+    def _run_vkv_round(self, req_id: str, r: _Req, extra_tokens: int) -> list[int]:
+        """Algorithm 1, once per request: offload the context cells the Bernoulli draw drops
+        (``VkvState.prefill_round``); r = 1 entries and generated tokens are never offloaded.
+        Unlike a budget round it is applied even if packing would free no page (the draw, r
+        and the sketch must exist for decode): the cells are then offloaded in place."""
+        if r.vkv_done:
+            return []
+        Lg, s = r.written, r.slot
+        keep = self.vkv.prefill_round(req_id, s, Lg)                       # [L, ctx, H]
+        r.vkv_done = True
+        cells = self.cell[:, s, :Lg]
+        if self.vkv.home is not None:
+            # No compaction: every entry keeps its cell; offloaded ones are restored there.
+            self.vkv.home[:, s, :Lg] = cells
+            self.vkv.restored[:, s].zero_()
+        resid = cells >= 0
+        evict = torch.zeros_like(resid)
+        evict[:, :keep.shape[1]] = ~keep
+        freed = self._apply_round(req_id, r, cells, resid, evict & resid, extra_tokens, None,
+                                  pack_optional=True, pack=self.vkv.cfg.compact)
+        self.vkv.rebuild_alist(s, Lg)
+        if self.vkv.cfg.recall:
+            self.vkv.build_recall(s, Lg)
+        return freed
+
+    def _apply_round(self, req_id: str, r: _Req, cells: torch.Tensor, resid: torch.Tensor,
+                     evict: torch.Tensor, extra_tokens: int, K: int | None,
+                     pack_optional: bool = False, pack: bool = True) -> list[int]:
+        """Offload the ``evict`` cells [L, Lg, H] of request ``r`` (D2H into CPU rows) and pack
+        the survivors into its first blocks (``pack`` False, with ``pack_optional``: leave them
+        in place); returns the freed tail page ids."""
+        Lg, s = r.written, r.slot
         ev = evict.nonzero()                                               # [E, 3] (l, p, h)
         E = int(ev.shape[0])
         if E == 0:
@@ -410,7 +458,8 @@ class HeadTokenOffloadEngine:
         # offset > 0 and the next token a page at physical nb * P.
         T = int(resid.sum()) - E
         nb = -(-T // (self.L * self.HP))
-        if Lg - nb * self.P <= 0:
+        pack = pack and Lg - nb * self.P > 0
+        if not pack and not pack_optional:
             return []
         if E > self._top:
             raise RuntimeError(f"CPU token pool exhausted: need {E} rows, free {self._top}")
@@ -431,6 +480,13 @@ class HeadTokenOffloadEngine:
             stream.synchronize()
             self.cpu_pool.index_copy_(0, rows[a:b], self._d2h[: b - a])
         self.cpu_row[:, s][ev[:, 0], ev[:, 1], ev[:, 2]] = rows.to(self.dev, torch.int32)
+        if not pack:
+            # Offload in place (pack_optional): the cells stay where they are, unused.
+            self.cell[:, s][ev[:, 0], ev[:, 1], ev[:, 2]] = -1
+            self.stats["rounds"] += 1
+            self.stats["offloaded"] += E
+            _timing.end("tok.round")
+            return []
 
         # 2) Pack survivors layer-major, head-major, in logical order into the
         #    units (layer-major) of the request's first nb blocks.
@@ -467,6 +523,6 @@ class HeadTokenOffloadEngine:
             print(f"[TOKEN HEADS] round {self.stats['rounds']} scope={self.scope}: "
                   f"kept tokens/layer (avg over heads) min {self.layer_keep_log[-1][0]:.0f} "
                   f"mean {self.layer_keep_log[-1][1]:.0f} max {self.layer_keep_log[-1][2]:.0f}"
-                  f" (uniform budget {K}); blocks {nb}", flush=True)
+                  f" ({'vkv' if K is None else f'uniform budget {K}'}); blocks {nb}", flush=True)
         _timing.end("tok.round")
         return freed
