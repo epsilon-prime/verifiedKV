@@ -1,0 +1,162 @@
+question,predicted_answer,answer_prefix,max_new_tokens,compression_ratio,split,answers,task
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when does monday night raw come on hulu
+"," ['WWE Raw']
+
+TITLE: WWE Raw | ID: 27
+The document states that Hulu Plus signed a multi-year deal with WWE to stream all of WWE’s TV shows, including Raw, with episodes available for viewing the following day. However, it does not specify the exact day of the week for the broadcast. Based on general knowledge, WWE Raw typically airs on Mondays.",Final Answer: ,256,0.96875,test,['the following day'],nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who did puerto rico belong to before the u.s
+"," ['Spain']
+
+TITLE: Puerto Rico | ID: 82",Final Answer: ,256,0.96875,test,['Spain' 'Taíno' 'indigenous Taíno people'],nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when did season 4 of glee come out
+"," ['September 13, 2012']
+
+TITLE: Glee (season 4) | ID: 25",Final Answer: ,256,0.96875,test,"['September 13, 2012']",nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what is the genus of a bald eagle
+"," ['Haliaeetus']
+
+TITLE: Bald eagle | ID: 51",Final Answer: ,256,0.96875,test,['Haliaeetus'],nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when does boomer find out she a cylon
+"," ['In the episode ""Kobol's Last Gleaming"" of Battlestar Galactica']
+
+TITLE: Number Eight (Battlestar Galactica) | ID: 76
+The revelation that Boomer is a Cylon occurs during the episode ""Kobol's Last Gleaming"" when she encounters multiple copies of herself on the basestar orbiting Kobol. She initially refuses to accept her true nature but ultimately does so after her hidden programming takes over.",Final Answer: ,256,0.96875,test,"[""Kobol's Last Gleaming""]",nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what is the female lion called in lion king
+"," ['Nala']
+
+TITLE: List of The Lion King characters | ID: 38",Final Answer: ,256,0.96875,test,['Nala'],nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who plays the woodsman in over the garden wall
+"," ['Christopher Lloyd']
+
+TITLE: Over the Garden Wall | ID: 58",Final Answer: ,256,0.96875,test,['Christopher Lloyd'],nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who introduced the first chrismas tree to the uk
+"," ['Queen Charlotte of Mecklenburg-Strelitz']
+
+TITLE: Christmas tree | ID: 61",Final Answer: ,256,0.96875,test,['Charlotte of Mecklenburg-Strelitz'],nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who played cruella de vil in 101 dalmatians
+"," ['Glenn Close']
+
+TITLE: 101 Dalmatians (1996) | ID: 96",Final Answer: ,256,0.96875,test,['Glenn Close'],nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who sang the song i wanna be sedated
+"," ['the Ramones']
+
+TITLE: I Wanna Be Sedated | ID: 47",Final Answer: ,256,0.96875,test,['the Ramones'],nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: how many players on the line of scrimmage in american football
+","7
+
+TITLE: Eligible receiver | ID: 88
+TITLE: National Football League | ID: 81 (implied by the context of the rules regarding eligible receivers)",Final Answer: ,256,0.96875,test,['at least seven' 'at least seven players' 'seven'],nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when did the tv show the waltons first air
+"," ['The Waltons', 'September 1972']
+
+TITLE: The Waltons | ID: 59",Final Answer: ,256,0.96875,test,['September 1972'],nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who is emma dating in once upon a time
+"," ['Hook']
+
+**TITLE and ID:**
+- **Once Upon a Time (ID: 102)** - This document mentions Emma Swan's relationship with Hook, stating that she begins a relationship with him after returning to Storybrooke.",Final Answer: ,256,0.96875,test,['Hook'],nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when was the last time giants won superbowl
+"," ['Super Bowl XLVI (2011)']
+
+TITLE: New York Giants | ID: 81",Final Answer: ,256,0.96875,test,['2011'],nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: where does the sun hit the us first
+"," ['Cadillac Mountain, Acadia National Park, Maine']
+
+**TITLE and ID of the relevant document:**
+- **Cadillac Mountain** | ID: 48
+
+**Explanation:**
+The document on Cadillac Mountain (ID: 48) states that driving or hiking to the summit of Cadillac Mountain is a popular activity among visitors of Acadia National Park, and it is known for seeing the ""nation's first sunrise."" However, it clarifies that Cadillac Mountain only sees the first sunrise during the fall and winter months when the sun rises south of due east. During most of the spring and summer, the sun rises first at Mars Hill, 150 miles northeast of Cadillac Mountain. For a few weeks around the equinoxes, the sun rises first at West Quoddy Head in Lubec, Maine. Thus, the sun hits the contiguous United States first at West Quoddy Head, Maine, during the equinox period.",Final Answer: ,256,0.96875,test,['the summit of Cadillac Mountain'],nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who is the authority or governing body of mca
+"," ['Ministry of Corporate Affairs']
+
+TITLE: Ministry of Corporate Affairs | ID: 56",Final Answer: ,256,0.96875,test,['Indian government'],nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: where does prime rib come from on a cow
+"," ['beef brisket']
+
+TITLE: Standing rib roast | ID: 20",Final Answer: ,256,0.96875,test,['the primal rib'],nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who plays joker in batman the dark knight
+"," ['The Joker in *The Dark Knight* is played by Heath Ledger']
+
+**TITLE:** Heath Ledger
+**ID:** 86",Final Answer: ,256,0.96875,test,['Ledger'],nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what is the common name for gravitational force
+"," ['Gravity']
+
+TITLE: Gravity | ID: 72",Final Answer: ,256,0.96875,test,"['Gravity' 'Gravity, or gravitation']",nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: fast and furious 7 red car abu dhabi
+"," ['Lykan HyperSport']
+
+TITLE: Lykan HyperSport | ID: 77",Final Answer: ,256,0.96875,test,['The Lykan Hypersport'],nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who played the original steve mcgarrett on hawaii five-o
+"," ['Jack Lord']
+
+TITLE: Jack Lord | ID: 24",Final Answer: ,256,0.96875,test,['Jack Lord' 'John Joseph Patrick Ryan'],nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: is aluminium a ferrous or non ferrous metal
+"," ['non-ferrous metal']
+
+TITLE: Non-ferrous metal | ID: 33",Final Answer: ,256,0.96875,test,['non-ferrous'],nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who has a ring of power in lotr
+"," ['Sauron', 'Elves']
+
+**TITLE and ID of the documents used:**
+- **TITLE: Sauron | ID: 60**
+- **Context:** The document mentions that Sauron assisted in the forging of the Rings of Power by the Elves, which conferred great power on their bearers. It also states that Sauron secretly forged the One Ring in Mount Doom, which had the power to dominate the other Rings and enslave their wearers to Sauron's will. This implies that Sauron had a significant role in the creation and control of the Rings of Power.",Final Answer: ,256,0.96875,test,['Sauron'],nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: the era of the great mughals began with the accession of
+"," ['Babur']
+
+TITLE: Mughal Empire | ID: 100",Final Answer: ,256,0.96875,test,['Akbar the Great' 'Babur'],nq_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when did hyderabad became a part of india
+"," ['November 24, 1949']
+
+TITLE: Hyderabad State (1948–56) | ID: 11",Final Answer: ,256,0.96875,test,['24 November 1949'],nq_32k

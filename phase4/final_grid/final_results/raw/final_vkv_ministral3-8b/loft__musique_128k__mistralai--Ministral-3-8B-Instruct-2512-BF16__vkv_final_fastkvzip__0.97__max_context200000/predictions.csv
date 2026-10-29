@@ -1,0 +1,176 @@
+question,predicted_answer,answer_prefix,max_new_tokens,compression_ratio,split,answers,task
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What is the great mosque constructed at the site of the old temple in the city originating christianity in Rome, Egypt, Judea and the country for Vasilopita?
+"," ['Al-Aqsa Mosque', '410']
+
+The great mosque constructed at the site of the old temple in Jerusalem (the city originating Christianity) is the Al-Aqsa Mosque, which is located in the country of Israel (Judea). The Vasilopita is associated with the celebration of New Year's Day in Greece, which is not directly related to the Al-Aqsa Mosque, but the question seems to be asking about the broader context of Jerusalem and the Al-Aqsa Mosque in relation to the city of origin of Christianity.
+
+The relevant documents are:
+- TITLE: Al-Aqsa Mosque | ID: 410
+- TITLE: Israel | ID: 31 (for the context of Judea)",Final Answer: ,256,0.96875,test,['Al - Aqsa Mosque'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What label was bought in the UK by the other major New York broadcast that is in addition to ABC, and the one who released Stand Against Fear?
+"," ['Warner Music Group', 'Warner Bros. Records']
+
+(TITLE: Warner Music, ID: 54; TITLE: Warner Bros. Records, ID: 54)",Final Answer: ,256,0.96875,test,['Oriole Records.'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: When did the rx 350 model of the luxury division of the company that built Daihatsu boon change body style?
+"," ['2013']
+
+(TITLE: Acura RLX, ID: 25)
+(TITLE: Lexus RX, ID: 233)",Final Answer: ,256,0.96875,test,['Sales began worldwide in April 2012'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What year did the Governor of the city where the basilica named after the same saint as the one that Mantua Cathedral is dedicated to die?
+"," ['1957']
+
+(TITLE: Savitri Jindal Airport | ID: 9)
+(TITLE: Basilica of Saint Peter in Chains | ID: 200)",Final Answer: ,256,0.96875,test,['1952'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What UK label was bought by the company which, along with ABC and the network which broadcasted Hello, Larry, is the other major broadcaster based in NY?
+"," ['Warner Music Group', 'Hello, Larry']
+
+TITLE: Warner Records | ID: 54
+TITLE: Hello, Larry | ID: 39",Final Answer: ,256,0.96875,test,['Oriole Records.'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What year did the country where Siddhi Savetsila was born form an alliance with Japan?
+"," ['1941'] (The alliance refers to the Tripartite Pact signed by Thailand, Japan, and Germany in 1941, and Siddhi Savetsila was born in Bangkok, Thailand.)
+
+TITLE: Siddhi Savetsila | ID: 108
+TITLE: Pacific War | ID: 221",Final Answer: ,256,0.96875,test,['1941'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: The Beach was filmed in what location of the country that contains the birth city of Siddhi Savetsila?
+", ['Koh Phi Phi'],Final Answer: ,256,0.96875,test,['island Koh Phi Phi'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Arie Supriyatna's birth country was one participant in a Commission of Truth and Friendship. Who is the president of the other country that participated?
+"," ['Timor-Leste']
+
+TITLE: East Timor | ID: 45
+TITLE: Indonesia–Timor Leste Commission of Truth and Friendship | ID: 598",Final Answer: ,256,0.96875,test,['Francisco Guterres'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What is the meaning of the word that is also a majority religion in the area that became India when the country that withdrew its forces was created in the Arabic dictionary?
+"," ['Islam']
+
+(TITLE: Islam arrived in Zhejiang | ID: 14)
+(TITLE: Islam | ID: 14)",Final Answer: ,256,0.96875,test,['the country of India'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Widely practiced in the region having the second largest rain-forest in the world, how long ago did this religion arrive in Zhejiang?
+","1,400 years ago
+
+(TITLE: Islam arrived in Zhejiang | ID: 14)",Final Answer: ,256,0.96875,test,"['1,400 years']",musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What is the name of the famous bridge in the city where the composer of La Silvia was born?
+"," ['The Walt Whitman Bridge']
+
+TITLE: Othmar Ammann | ID: 46
+TITLE: Delaware Memorial Bridge | ID: 46
+TITLE: Antonio Vivaldi | ID: 809",Final Answer: ,256,0.96875,test,['Rialto Bridge'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: When did the merchant of the city where the composer of Al gran sole carico d'amore takes place?
+","1714
+
+(TITLE: Orlando furioso (Vivaldi, 1714) | ID: 644)",Final Answer: ,256,0.96875,test,['16th - century'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Who is the president of the newly declared independent country that formed the Timor Leste Commission of Truth and Friendship with the country where Pantar is found?
+"," ['Francisco Guterres']
+
+TITLE: East Timor | ID: 45
+TITLE: Indonesia | ID: 32
+TITLE: Blagar language | ID: 314",Final Answer: ,256,0.96875,test,['Francisco Guterres'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What is the name of the famous bridge in the place of birth of who composed the Concerto in C Major Op 3 6?
+"," ['Rialto Bridge']
+
+(TITLE: Rialto Bridge | ID: 420)",Final Answer: ,256,0.96875,test,['Rialto Bridge'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Where do greyhound buses leave from the in the city where the headquarters of the production company which produced A Cosmic Christmas is located?
+", ['The city of Los Angeles'],Final Answer: ,256,0.96875,test,['Toronto Coach Terminal'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Who was a prominent figure at the radio division of the network that created the version of The Biggest Loser set in the country where Seria is?
+"," ['Multicultural Broadcasting, Inc.']
+
+TITLE: Seria, Belait | ID: 394
+TITLE: WEKL | ID: 86",Final Answer: ,256,0.96875,test,['Walter Sabo'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What were the Genesis's advantages over the platform that plays Drac's Night Out?
+"," ['The Nintendo Entertainment System (NES) had several advantages over the platform that plays ""Drac's Night Out"" (which is based on the unreleased game for the NES). The NES was a commercially successful and widely available system with a vast library of games, including many popular titles that helped establish it as a dominant force in the gaming industry. The NES also had a robust and supportive developer community, which contributed to its success.']
+
+TITLE: Sunman | ID: 88
+TITLE: Nintendo Entertainment System | ID: 275",Final Answer: ,256,0.96875,test,['built on 16-bit architectures and offered improved graphics and sound'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: When was the Palau de la Generalitat constructed in the city where Martin of the place where Castiliscar is located died?
+"," ['14th century']
+
+(TITLE: Castiliscar | ID: 461)
+(TITLE: Martin of Aragon | ID: 417)
+
+The city where Castiliscar is located is Zaragoza, Spain. Martin of Aragon, also known as Martin the Humane, died in 1410 in Zaragoza. The Palau de la Generalitat, a historic building in Barcelona, was constructed in the 14th century, which is the closest relevant timeframe to the period of Martin of Aragon's reign and the historical context of the city of Zaragoza. However, the Palau de la Generalitat is in Barcelona, not Zaragoza.
+
+Since the question specifically asks for the construction date of a building in the city where Martin of Aragon died, and there is no specific building mentioned in the documents that fits this description, the closest relevant historical context is the 14th century, which is the period when significant architectural developments occurred in the region.",Final Answer: ,256,0.96875,test,['built in the 15th century'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: When did the U.S. and the country in effective control of political and military functions of the group the People's Socialist Republic of Albania was a member of become allies?
+"," ['1955']
+
+(TITLE: Allies of World War II | ID: 673)
+(TITLE: Iran | ID: 296)",Final Answer: ,256,0.96875,test,['June 1941'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What team does the person who hit the first home run at the new stadium in South Bronx play for?
+"," ['New York Yankees']
+
+TITLE: Yankee Stadium | ID: 216
+TITLE: New York Yankees | ID: 470",Final Answer: ,256,0.96875,test,['New York Yankees'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: When did the Governorship end of the city where the author of Paenitentiam Agere died?
+"," ['1952']
+
+(TITLE: Governor of Vatican City | ID: 19)",Final Answer: ,256,0.96875,test,['1952'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What is the name of the famous bridge in the birth city of the composer of Scanderbeg?
+"," ['Rialto Bridge']
+
+TITLE: Rialto Bridge | ID: 420
+TITLE: Scanderbeg (opera) | ID: 649",Final Answer: ,256,0.96875,test,['Rialto Bridge'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What year did the country where Ercole Manfredi was born form an alliance with Japan?
+"," []
+
+The documents provided do not contain any information about the year when the country where Ercole Manfredi was born formed an alliance with Japan. Ercole Manfredi is mentioned in the document ""Ercole Manfredi"" (ID: 667), but it does not provide any details about his country of birth or any alliances formed by that country.",Final Answer: ,256,0.96875,test,['1941'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What year did the country that includes the birth city of Bodindecha form an alliance with Japan?
+"," ['1941'] (Based on the documents provided, there is no direct information about the country that includes the birth city of Bodindecha forming an alliance with Japan. However, the document ""Sino-Tibetan relations during the Ming dynasty"" (ID: 407) and ""Sino-Tibetan relations during the Ming dynasty"" (ID: 1) mention historical relations between China and Tibet, but not with Japan.
+
+The closest relevant document is ""Pacific War"" (ID: 221), which mentions the involvement of Thailand in the Pacific War, but it does not provide a specific year of alliance formation with Japan.
+
+Since Bodindecha was a prominent figure in Siam (now Thailand), and Thailand did not form an alliance with Japan in the context of the documents provided, there is no clear answer to the query based on the available documents.)
+
+Since the query cannot be answered with the provided documents, I will not provide a final answer.",Final Answer: ,256,0.96875,test,['1941'],musique_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What was Nintendo's limit on games per developer per year for the platform with an abbreviated name that had the game Sunman?
+"," ['5']
+
+TITLE: Super Nintendo Entertainment System | ID: 330
+TITLE: Sunman (video game) | ID: 88",Final Answer: ,256,0.96875,test,['five'],musique_128k

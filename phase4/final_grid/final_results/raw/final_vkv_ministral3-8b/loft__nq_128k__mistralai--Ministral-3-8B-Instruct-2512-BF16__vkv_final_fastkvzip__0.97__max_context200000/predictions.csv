@@ -1,0 +1,144 @@
+question,predicted_answer,answer_prefix,max_new_tokens,compression_ratio,split,answers,task
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when does monday night raw come on hulu
+"," ['WWE Raw', 'ID: 583']",Final Answer: ,256,0.96875,test,['the following day'],nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who did puerto rico belong to before the u.s
+"," ['Spain', 'Puerto Rico']
+
+**TITLE:** Puerto Rico
+**ID:** 135
+
+**TITLE:** History of Spain
+*(Note: While not explicitly mentioned in the provided documents, the historical context of Puerto Rico being a Spanish colony before U.S. acquisition is well-documented in broader historical knowledge and is implied in the document about Puerto Rico.)*
+
+The provided document on Puerto Rico (ID: 135) states that Puerto Rico was originally populated by the Taíno people and later claimed by Spain in 1493 during Christopher Columbus's second voyage. This indicates that Puerto Rico belonged to Spain before it was acquired by the United States.",Final Answer: ,256,0.96875,test,['Spain' 'Taíno' 'indigenous Taíno people'],nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when did season 4 of glee come out
+"," ['September 13, 2012']
+
+**TITLE:** Glee (season 4) | **ID:** 252",Final Answer: ,256,0.96875,test,"['September 13, 2012']",nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what is the genus of a bald eagle
+"," ['Bald eagle belongs to the genus Haliaeetus', 'Bald Eagle (Haliaeetus leucocephalus)']
+
+**TITLE:** Bald eagle | **ID:** 283",Final Answer: ,256,0.96875,test,['Haliaeetus'],nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when does boomer find out she a cylon
+"," ['The pilot episode of *Battlestar Galactica* (2004)']
+
+**TITLE:** Number Eight (Battlestar Galactica) | **ID:** 763
+
+In the episode titled **""Number Eight""** (Season 1, Episode 1), Boomer discovers that she is a Cylon. This revelation occurs when she is exposed to a Cylon signal that triggers her hidden programming, leading to her transformation and subsequent actions.",Final Answer: ,256,0.96875,test,"[""Kobol's Last Gleaming""]",nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what is the female lion called in lion king
+"," ['Tia Dalma'] (from **TITLE: The Lion King (1994 film)**, **ID: 115**)
+
+The female lion in *The Lion King* is referred to as **Tia Dalma** in the context of the film's background lore, but the primary female lion character in the main story is **Nala**. If you are referring to the character in the film itself, Nala is the female lioness. Here is the relevant document:
+
+**TITLE: The Lion King (1994 film)**, **ID: 115**
+- Nala is the main female lion character in the film.",Final Answer: ,256,0.96875,test,['Nala'],nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who plays the woodsman in over the garden wall
+"," ['Over the Garden Wall', '270']",Final Answer: ,256,0.96875,test,['Christopher Lloyd'],nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who introduced the first chrismas tree to the uk
+", ['Queen Victoria'],Final Answer: ,256,0.96875,test,['Charlotte of Mecklenburg-Strelitz'],nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who played cruella de vil in 101 dalmatians
+", ['Glenn Close'],Final Answer: ,256,0.96875,test,['Glenn Close'],nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who sang the song i wanna be sedated
+", ['I Wanna Be Sedated' by the Ramones],Final Answer: ,256,0.96875,test,['the Ramones'],nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: how many players on the line of scrimmage in american football
+"," ['ID: 64', 'ID: 646']
+
+TITLE: Eligible receiver | ID: 64
+TITLE: Competition | ID: 646
+
+In American football, **seven players** are required to be on the line of scrimmage. This is explicitly mentioned in ID: 64 under the section discussing the offensive team's setup. Additionally, ID: 646 mentions that competition in sports, including football, involves a set number of players on each side, reinforcing the structured nature of the game.",Final Answer: ,256,0.96875,test,['at least seven' 'at least seven players' 'seven'],nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when did the tv show the waltons first air
+"," ['The Waltons', '1971']",Final Answer: ,256,0.96875,test,['September 1972'],nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who is emma dating in once upon a time
+", ['Emma Swan is dating Hook in Once Upon a Time'],Final Answer: ,256,0.96875,test,['Hook'],nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when was the last time giants won superbowl
+"," ['Super Bowl XLII (2008)', 'Super Bowl XLVI (2012)']
+
+**TITLE:** New York Giants
+**ID:** 511
+
+**TITLE:** San Francisco 49ers
+**ID:** 400
+
+The New York Giants last won the Super Bowl in **Super Bowl XLVI (2012)**. The San Francisco 49ers last won the Super Bowl in **Super Bowl XLII (2008)**. The Giants won Super Bowl XLVI, while the 49ers won Super Bowl XLII.",Final Answer: ,256,0.96875,test,['2011'],nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: where does the sun hit the us first
+"," ['The sun hits the state of Hawaii first in the United States.']
+
+**Documents used:**
+- **TITLE: Hawaii | ID: 746**
+  - The document mentions Hawaii as the first state to be hit by the sun due to its geographical location in the Pacific Ocean.",Final Answer: ,256,0.96875,test,['the summit of Cadillac Mountain'],nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who is the authority or governing body of mca
+", ['Ministry of Corporate Affairs'],Final Answer: ,256,0.96875,test,['Indian government'],nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: where does prime rib come from on a cow
+", ['TITLE: Standing rib roast | ID: 408'],Final Answer: ,256,0.96875,test,['the primal rib'],nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who plays joker in batman the dark knight
+", ['Heath Ledger'],Final Answer: ,256,0.96875,test,['Ledger'],nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what is the common name for gravitational force
+", ['Gravity'],Final Answer: ,256,0.96875,test,"['Gravity' 'Gravity, or gravitation']",nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: fast and furious 7 red car abu dhabi
+", ['Lykan HyperSport'],Final Answer: ,256,0.96875,test,['The Lykan Hypersport'],nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who played the original steve mcgarrett on hawaii five-o
+"," ['TITLE: Edge (wrestler)', 'ID: 45']",Final Answer: ,256,0.96875,test,['Jack Lord' 'John Joseph Patrick Ryan'],nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: is aluminium a ferrous or non ferrous metal
+"," ['Non-ferrous metal']
+
+**TITLE and ID of the documents used:**
+- TITLE: Non-ferrous metal | ID: 39",Final Answer: ,256,0.96875,test,['non-ferrous'],nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who has a ring of power in lotr
+", ['Sauron'] (from **TITLE: Sauron | ID: 519**),Final Answer: ,256,0.96875,test,['Sauron'],nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: the era of the great mughals began with the accession of
+", ['Babur'],Final Answer: ,256,0.96875,test,['Akbar the Great' 'Babur'],nq_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when did hyderabad became a part of india
+"," ['The princely state of Hyderabad was formed into the Indian Union on 24 November 1949, and it existed as Hyderabad State from 1948 to 1956.']
+
+ID: 26 | TITLE: Hyderabad State (1948–56)",Final Answer: ,256,0.96875,test,['24 November 1949'],nq_128k

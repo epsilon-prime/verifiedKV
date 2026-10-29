@@ -1,0 +1,219 @@
+question,predicted_answer,answer_prefix,max_new_tokens,compression_ratio,split,answers,task
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which American professional poker player also starred in the 2015 movie ""Extraction""?
+"," ['Dan Bilzerian', 'Extraction (film)']
+
+**TITLE and ID:**
+- TITLE: Dan Bilzerian | ID: 25
+- TITLE: Extraction (film) | ID: 26",Final Answer: ,256,0.96875,test,['Dan Bilzerian'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which film was released first, Laura's Star or Wonder Woman?
+"," ['Laura's Star']
+
+TITLE: Laura's Star | ID: 75
+TITLE: Wonder Woman (2009 film) | ID: 76",Final Answer: ,256,0.96875,test,"[""Laura's Star""]",hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: In what year did construction begin on the stadium where the 2013 America East Men's Lacrosse Tournament was held?
+"," ['2000']
+
+---
+**TITLE and ID of the documents used:**
+- Kenneth P. LaValle Stadium | ID: 171",Final Answer: ,256,0.96875,test,['in 2000'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What is the birth name of the woman that ""A Woman Called Moses"" is based on?
+"," ['Harriet Tubman']
+
+---
+**TITLE and ID of the documents used:**
+- TITLE: A Woman Called Moses | ID: 149",Final Answer: ,256,0.96875,test,['Araminta Ross'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Arundel Castle was damaged during a war between which two groups?
+"," []
+
+I don't have any documents in the provided list that mention Arundel Castle or any wars involving it. Therefore, I cannot answer this query with the available information.",Final Answer: ,256,0.96875,test,"['Parliamentarians (""Roundheads"") and Royalists (""Cavaliers"")']",hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which one of Ricardo Rodríguez Saá's relatives would become governor from 1983 to 2001?
+"," ['Adolfo Rodríguez Saá']
+
+---
+**TITLE and ID of the documents used:**
+- TITLE: Ricardo Rodríguez Saá | ID: 65
+- TITLE: Adolfo Rodríguez Saá | ID: 66",Final Answer: ,256,0.96875,test,['Adolfo Rodríguez Saá'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What year did the largest convention center in the U.S. state of Georgia open?
+","2009
+
+---
+TITLE: Georgia World Congress Center | ID: 194
+TITLE: Georgia International Convention Center | ID: 193",Final Answer: ,256,0.96875,test,['1976'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: which board game has been around longer Obsession or Battle Sheep ?
+"," ['Obsession']
+
+TITLE: Obsession (board game) | ID: 44
+TITLE: Battle Sheep | ID: 45",Final Answer: ,256,0.96875,test,['Obsession'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which American film director and actor famous for his role as Donny ""The Bear Jew"" Donowitz wrote the 2012 film ""The Man with the Iron Fists""?
+"," ['Eli Raphael Roth', 'The Man with the Iron Fists']
+
+**Documents used:**
+- TITLE: Eli Roth | ID: 187
+- TITLE: The Man with the Iron Fists | ID: 188",Final Answer: ,256,0.96875,test,['Eli Roth'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: After coaching the red raiders to several winning seasons, where does Mike Leach currently coach at?
+"," ['Washington State University']
+
+---
+**TITLE and ID of the documents used:**
+- TITLE: Mike Leach (American football coach) | ID: 107",Final Answer: ,256,0.96875,test,['Washington State'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What was the lead single from Boys Like Girls album on which frontman, Martin Johnson co-wrote a song with Taylor Swift? A: Love Drunk
+"," ['""Two Is Better Than One""']
+
+---
+**TITLE and ID of the documents used:**
+- TITLE: Boys Like Girls | ID: (not explicitly mentioned, but inferred from context)
+- TITLE: Two Is Better Than One | ID: 158
+- TITLE: Love Drunk | ID: 157
+
+**Explanation:**
+The lead single from the Boys Like Girls album ""Love Drunk"" is not the one co-written by Martin Johnson and Taylor Swift. Instead, the song co-written by Martin Johnson and Taylor Swift is **""Two Is Better Than One""**, which features Taylor Swift and is the second official single from the album ""Love Drunk"". This is detailed in document ID: 158.",Final Answer: ,256,0.96875,test,['Love Drunk'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: When did the person who claimed that Fidel Castro was killed in the 26th July Movement but was proven wrong by Herbert Matthews first serve as President of Cuba?
+"," ['1940', '1956']
+
+---
+**TITLE and ID of the documents used:**
+- TITLE: Fulgencio Batista | CONTENT: [Fulgencio Batista biography] | ID: 186
+- TITLE: Herbert Matthews | CONTENT: [Herbert Matthews biography] | ID: 185
+
+---
+**Explanation:**
+The query asks about the person who claimed Fidel Castro was killed in the 26th July Movement but was later proven wrong by Herbert Matthews. The document **ID: 186** (Fulgencio Batista) states that Batista was the President of Cuba from 1940 to 1944 and again from 1952 to 1959. Since Batista was the one who publicly claimed Castro was dead, and he was President of Cuba during the time of the 26th July Movement, the relevant period for his first term as President is **1940**.
+
+The document **ID: 185** (Herbert Matthews) confirms that he was the reporter who exposed Batista's claim as false, but it does not provide a direct date of Batista's presidency. Therefore, the first term of Batista's presidency",Final Answer: ,256,0.96875,test,['1940'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which Avalanche happened first, Rigopiano avalanche or 1999 Galtür avalanche ?
+"," ['1999 Galtür avalanche']
+
+---
+**TITLE and ID of the documents used:**
+- TITLE: 1999 Galtür avalanche | ID: 181
+- TITLE: Rigopiano avalanche | ID: 182",Final Answer: ,256,0.96875,test,['The Galtür avalanche'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which man, Ibn Tufail or Ali Qushji, is best known for the development of astronomical physics independent from natural philosophy?
+"," ['Ali Qushji']
+
+**TITLE and ID:**
+- TITLE: Ali Qushji | ID: 178",Final Answer: ,256,0.96875,test,['Ali Qushji'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: When was the anthology, in which fisrt pages of The Incal"" were released, created?
+"," ['Métal hurlant', '1974']
+
+---
+**TITLE and ID of the documents used:**
+- TITLE: Métal hurlant | ID: 138
+- TITLE: The Incal | ID: 137",Final Answer: ,256,0.96875,test,['December 1974'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which internationl football team has had a player endorse the ""Nike Hypervenom"" football boot?
+"," ['Manchester United', 'England']
+
+---
+**TITLE and ID of the documents used:**
+- TITLE: Nike Hypervenom | ID: 56
+- TITLE: Marcus Rashford | ID: 55
+
+---
+**Explanation:**
+The ""Nike Hypervenom"" football boot is endorsed by several notable football players, including Marcus Rashford, who plays for Manchester United and the England national team. This information is found in the document titled ""Nike Hypervenom"" (ID: 56).",Final Answer: ,256,0.96875,test,['England'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Who was born first,  Morgan Llywelyn or Robert Jordan?
+"," ['Morgan Llywelyn']
+
+TITLE: Morgan Llywelyn | ID: 134
+TITLE: Robert Jordan | ID: 133",Final Answer: ,256,0.96875,test,['Morgan Llywelyn'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What Lithuanian producer is best known for a song that was one of the most popular songs in Ibiza in 2014?
+"," ['Ten Walls']
+
+---
+**TITLE and ID of the documents used:**
+- TITLE: Ten Walls | ID: 78
+- TITLE: Walking with Elephants | ID: 77",Final Answer: ,256,0.96875,test,['Ten Walls'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Former race car driver Jeff Wood made his CART debut at which 1983 Nissan/Datsun-sponsored race?
+"," ['Caesars Palace Grand Prix']
+
+---
+**TITLE and ID of the documents used:**
+- **Caesars Palace Grand Prix | ID: 206**",Final Answer: ,256,0.96875,test,['Caesars Palace Grand Prix'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Candace Flynn was voiced by the actress who achieved mainstream success on what show?
+"," ['The Suite Life of Zack & Cody']
+
+---
+**TITLE and ID of the documents used:**
+- TITLE: Candace Flynn | ID: 165
+- TITLE: Ashley Tisdale | ID: 166",Final Answer: ,256,0.96875,test,['The Suite Life of Zack & Cody'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Where did the architect of the Governor's House, located in Knutsford, graduate from college?
+"," ['Cambridge University']
+
+---
+**TITLE and ID of the documents used:**
+- TITLE: Edmund Sharpe | ID: 179",Final Answer: ,256,0.96875,test,['Cambridge University'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: A Big Daddy is a fictional character in a series that has sold more than how many copies?
+"," ['25 million copies']
+
+---
+**TITLE and ID of the documents used:**
+- **BioShock (series)** | ID: 40
+- **Big Daddy (BioShock)** | ID: 203",Final Answer: ,256,0.96875,test,['25 million copies'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which actress does this Netflix's project by Nick Bernardone and Tina Fey star in the title role?
+"," ['Ellie Kemper']
+
+---
+**TITLE and ID of the documents used:**
+- TITLE: Nick Bernardone | ID: 63
+- TITLE: Unbreakable Kimmy Schmidt | ID: 64",Final Answer: ,256,0.96875,test,['Ellie Kemper'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What drum machine was introduced in 1989 and allowed 32 notes to be played simultaneously?
+"," ['R-8 Human Rhythm Composer']
+
+---
+**TITLE and ID:**
+- TITLE: Roland R-8 | CONTENT: The R-8 Human Rhythm Composer is an electronic drum machine introduced in 1989 by Roland Corporation, using PCM voices. The R-8 features velocity- and pressure-sensitive trigger pads, and the ability to create loops of beats. The device has eight individual outputs, 32-voice polyphony, and four-part multitimbral MIDI.
+- ID: 48",Final Answer: ,256,0.96875,test,['The R-8 Human Rhythm Composer'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What is the name of the 1988 film starring Gene Bervoets that was based on the Dutch to English translated novel, ""The Vanishing""?
+"," ['The Vanishing (1988 film)', 'The Golden Egg']
+
+TITLE: The Vanishing (1988 film) | ID: 145
+TITLE: The Golden Egg | ID: 146",Final Answer: ,256,0.96875,test,['The Vanishing'],hotpotqa_32k

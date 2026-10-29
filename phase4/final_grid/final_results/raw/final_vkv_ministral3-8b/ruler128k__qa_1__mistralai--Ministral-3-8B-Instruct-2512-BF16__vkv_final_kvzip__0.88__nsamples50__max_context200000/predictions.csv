@@ -1,0 +1,159 @@
+answer,answer_prefix,compression_ratio,predicted_answer,max_new_tokens,task,context_length,question
+['third' 'third' 'third'],Answer:,0.875, 3rd,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Where does southern California's megalopolis standard in terms of population nationwide? "
+['Bethencourt' 'Bethencourt' 'Bethencourt'],Answer:,0.875, Jean de Bethencourt.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who became the King of the Canary Islands? "
+['very rare' 'very rare' 'very rare'],Answer:,0.875, Very rare.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: How frequent is snow in the Southwest of the state? "
+['complexity classes' 'complexity classes' 'complexity classes'],Answer:,0.875, Complexity classes.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Turing machines are commonly employed to define what?  "
+"['analysis of algorithms and computability theory'
+ 'analysis of algorithms and computability theory'
+ 'analysis of algorithms and computability theory']",Answer:,0.875, Analysis of algorithms and computability theory.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What two fields of theoretical computer science closely mirror computational complexity theory? "
+['2010' '2010' '2010'],Answer:,0.875, 2010,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Southern California had a population of 22,680,010 according to the census from which year? "
+['Pacific Ocean' 'Pacific Ocean' 'Pacific Ocean'],Answer:,0.875, Pacific Ocean,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: The region spans starting at islands found in which body of water? "
+['yes' 'yes' 'yes'],Answer:,0.875, yes or no.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What will the output be for a member of the language of a decision problem? "
+['Isaac Komnenos' 'Isaac' 'Isaac Komnenos'],Answer:,0.875, Richard the Lionhearted.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who ruled Cyprus in 1191? "
+['The Tech Coast' 'The Tech Coast' 'Tech Coast'],Answer:,0.875, Tech Coast,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What is the moniker that is being used to describe the region's diversified technology? "
+['9th century' '9th century' '9th century'],Answer:,0.875, 1081,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: When was the Latin version of the word Norman first recorded? "
+"['chosen machine model' 'the chosen machine model'
+ 'the chosen machine model']",Answer:,0.875, The chosen machine model.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Concrete bounding of computation time frequently produces complexity classes contingent upon what? "
+['twelve' 'twelve' 'twelve'],Answer:,0.875, 12,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: How many cities in southern California have over 200,000 residents? "
+['dukes' 'the dukes' 'dukes'],Answer:,0.875, The Normans.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who used the church to unify themselves? "
+['Mediterranean' 'a Mediterranean climate' 'Mediterranean'],Answer:,0.875," Southern California has a Mediterranean climate, with infrequent rain and many sunny days. Summers are hot and dry, while winters are mild and wet.",32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What kind of climate does southern California maintain? "
+['Puente Hills' 'the Puente Hills Fault' 'Puente Hills Fault'],Answer:,0.875, Puente Hills Fault,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Other than the San Jacinto Fault, and the Elsinore Fault, name one other fault. "
+['BSkyB' 'BSkyB' 'BSkyB'],Answer:,0.875, BSkyB,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who has design authority over all of the digital satellite receivers that are capable of using their service? "
+['Deabolis' 'the river Deabolis' 'Deabolis'],Answer:,0.875, Deabolis,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What river was Petrela located by? "
+['south' 'south'],Answer:,0.875, South,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: In which cardinal direction from Los Angeles is San Diego? "
+['Riverside' 'Riverside' 'Riverside'],Answer:,0.875, Riverside.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Other than San Bernardino, which other developed southern Californian city is not in close proximity to the coast? "
+['January 2010' 'In January 2010' 'February 2011'],Answer:,0.875, February 2011,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: When did BSkyB discontinue the Sky+ Box? "
+['Sky+HD Box' 'Sky+HD Box' 'Sky+HD Box'],Answer:,0.875, Sky+HD Box,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What replaced the Sky+Box? "
+"['Juris Hartmanis and Richard Stearns'
+ 'Juris Hartmanis and Richard Stearns'
+ 'Juris Hartmanis and Richard Stearns']",Answer:,0.875, Juris Hartmanis and Richard Stearns,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What individuals were responsible for authoring ""On the Computational Complexity of Algorithms""? "
+['regional tourism groups' 'regional tourism groups' 'AAA Auto Clubs'],Answer:,0.875, The European Union.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Which organizations most commonly divide and promote the state? "
+['Channel Islands' 'the Channel Islands' 'the Channel Islands'],Answer:,0.875, Normandy.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Where are Jersey and Guernsey "
+['two' 'two' 'two'],Answer:,0.875, 2.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: How many teams did Los Angeles used to have? "
+['2007' '2007' '2007'],Answer:,0.875, 2007.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What year did BSkyB and Virgin Media have a dispute over the carriage of Sky Channels on cable TV? "
+['quantitative statements' 'quantitative' 'quantitative'],Answer:,0.875, The time and space hierarchy theorems.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What kind of statement is made in the effort of establishing the time and space requirements needed to enhance the ultimate number of problems solved? "
+['time and storage' 'time and storage' 'time and storage'],Answer:,0.875, Time and space.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What are two basic primary resources used to guage complexity? "
+['southern' 'the desert' 'southern'],Answer:,0.875, Southern California,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Which region of California is Palm Springs located in? "
+['2014' '2014' '2014'],Answer:,0.875, 2014,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What year did BSkyB acquire Sky Italia? "
+"['37° 9\' 58.23""' '37° 9\' 58.23""' '37° 9\' 58.23""']",Answer:,0.875," Exactly 37° 9' 58.23"" latitude, around 11 miles (18 km) south of San Jose",32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Geographically speaking, where is California's north - south midway point in terms of latitude? "
+['third' 'third' 'third'],Answer:,0.875, 3rd,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What ranking in terms of busiest airports from international passenger volume is the Los Angeles International Airport? "
+['Complexity measures' 'complexity measures' 'complexity'],Answer:,0.875, **Communication complexity** is an example of a **complexity measure**.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Communication complexity is an example of what type of measure? "
+"['Denmark, Iceland and Norway' 'Denmark, Iceland and Norway'
+ 'Denmark, Iceland and Norway' 'Denmark, Iceland and Norway']",Answer:,0.875, Scandinavia and northern Europe.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: From which countries did the Norse originate? "
+['beaches' 'for its popular beaches' 'beaches'],Answer:,0.875, **beaches**,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Other than the desert city why do many locals and tourists frequent southern California? "
+['petroleum' 'petroleum' 'petroleum'],Answer:,0.875, petroleum,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What resource is the economy of southern California depedent on? "
+['silver' 'silver' 'silver'],Answer:,0.875, Silver.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What were Isaac's chains made out of? "
+"['time and space hierarchy theorems' 'time and space hierarchy theorems'
+ 'time and space hierarchy theorems']",Answer:,0.875, The time hierarchy theorem and the space hierarchy theorem.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What theorems are responsible for determining questions of time and space requirements? "
+['Jerusalem' 'Jerusalem' 'Jerusalem'],Answer:,0.875, The conquest of Jerusalem.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What major conquest did Tancred play a roll in? "
+['property damage' 'property damage'],Answer:,0.875, Structural collapses.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What kind of destruction did the 1994 earthquake cause the most of in US history? "
+"[""Latin monastery at Sant'Eufemia."" ""a Latin monastery at Sant'Eufemia""
+ ""Sant'Eufemia""]",Answer:,0.875, Sant'Eufemia.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What monastery did the Saint-Evroul monks establish in Italy? "
+['Sky Three' 'Sky Three' 'Sky Three'],Answer:,0.875, Pick TV,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What channel replaced Sky Travel? "
+['upper bound' 'upper and lower bounds' 'upper bound'],Answer:,0.875, **Worst-case time complexity**,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: A specific algorithm demonstrating T(n) represents what measure of time complexity? "
+['the Adriatic' 'the Adriatic' 'Adriatic'],Answer:,0.875, Dyrrachium was located in Albania.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Where was Dyrrachium located? "
+['two' 'two' 'two'],Answer:,0.875, 2.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: How many customaries does Norman customary law have? "
+['France' 'France' 'France' 'France'],Answer:,0.875, France,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: In what country is Normandy located? "
+['King Charles III' 'King Charles III' 'King Charles III'],Answer:,0.875, King Charles III of West Francia.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who did Rollo sign the treaty of Saint-Clair-sur-Epte with? "
+['richest' 'rich' 'one of the richest'],Answer:,0.875, Mediterranean climate,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What characteristic best describes the agricultural regions that could be found? "
+['Oursel' 'Oursel' 'Oursel'],Answer:,0.875, Bohemond I.,32,qa_1,131072,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who was the leader when the Franks entered the Euphrates valley? "

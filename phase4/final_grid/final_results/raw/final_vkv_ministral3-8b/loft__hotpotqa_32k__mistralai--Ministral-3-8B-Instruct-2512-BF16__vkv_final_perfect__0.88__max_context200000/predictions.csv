@@ -1,0 +1,200 @@
+question,predicted_answer,answer_prefix,max_new_tokens,compression_ratio,split,answers,task
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which American professional poker player also starred in the 2015 movie ""Extraction""?
+"," ['Dan Bilzerian', 'Extraction (film)']
+
+**TITLE and ID:**
+- TITLE: Dan Bilzerian | ID: 25
+- TITLE: Extraction (film) | ID: 26",Final Answer: ,256,0.875,test,['Dan Bilzerian'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which film was released first, Laura's Star or Wonder Woman?
+"," ['Laura's Star']
+
+TITLE: Laura's Star | ID: 75
+TITLE: Wonder Woman (2009 film) | ID: 76",Final Answer: ,256,0.875,test,"[""Laura's Star""]",hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: In what year did construction begin on the stadium where the 2013 America East Men's Lacrosse Tournament was held?
+","2000
+
+---
+TITLE: Kenneth P. LaValle Stadium | ID: 171
+TITLE: 2013 America East Men's Lacrosse Tournament | ID: 172",Final Answer: ,256,0.875,test,['in 2000'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What is the birth name of the woman that ""A Woman Called Moses"" is based on?
+"," ['Harriet Tubman']
+
+---
+**TITLE and ID of the documents used:**
+- TITLE: Harriet Tubman | ID: 150
+- TITLE: A Woman Called Moses | ID: 149",Final Answer: ,256,0.875,test,['Araminta Ross'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Arundel Castle was damaged during a war between which two groups?
+"," **['English Civil War', 'Roundheads', 'Royalists']**
+
+---
+**TITLE and ID of the documents used:**
+- **TITLE: English Civil War | ID: 35**
+  - This document describes the conflict between Parliamentarians (""Roundheads"") and Royalists (""Cavaliers"") during the English Civil War (1642–1651).
+
+---
+*Note:* While the document does not explicitly mention **Arundel Castle**, it provides the broader historical context of the war between the **Roundheads** (Parliamentarians) and **Royalists** (Cavaliers), which included conflicts and damage to many castles and properties in England, including Arundel Castle. The English Civil War was a period of significant destruction and sieges, including at Arundel Castle, which was occupied by Royalist forces and later damaged during the conflict.",Final Answer: ,256,0.875,test,"['Parliamentarians (""Roundheads"") and Royalists (""Cavaliers"")']",hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which one of Ricardo Rodríguez Saá's relatives would become governor from 1983 to 2001?
+"," ['Adolfo Rodríguez Saá']
+
+---
+**TITLE:** Ricardo Rodríguez Saá | **ID: 65**
+**TITLE:** Adolfo Rodríguez Saá | **ID: 66**",Final Answer: ,256,0.875,test,['Adolfo Rodríguez Saá'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What year did the largest convention center in the U.S. state of Georgia open?
+"," ['2009']
+
+---
+**TITLE and ID of the documents used:**
+- TITLE: Georgia World Congress Center | ID: 194
+- TITLE: Georgia International Convention Center | ID: 193",Final Answer: ,256,0.875,test,['1976'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: which board game has been around longer Obsession or Battle Sheep ?
+"," ['Obsession']
+
+TITLE: Obsession (board game) | ID: 44
+TITLE: Battle Sheep | ID: 45",Final Answer: ,256,0.875,test,['Obsession'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which American film director and actor famous for his role as Donny ""The Bear Jew"" Donowitz wrote the 2012 film ""The Man with the Iron Fists""?
+"," ['Eli Roth', 'The Man with the Iron Fists']
+
+**TITLE and ID:**
+- TITLE: Eli Roth | ID: 187
+- TITLE: The Man with the Iron Fists | ID: 188",Final Answer: ,256,0.875,test,['Eli Roth'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: After coaching the red raiders to several winning seasons, where does Mike Leach currently coach at?
+"," ['Washington State Cougars']
+
+**TITLE and ID:**
+- TITLE: Mike Leach (American football coach) | ID: 107
+- TITLE: 2012 Washington State Cougars football team | ID: 108",Final Answer: ,256,0.875,test,['Washington State'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What was the lead single from Boys Like Girls album on which frontman, Martin Johnson co-wrote a song with Taylor Swift? A: Love Drunk
+"," ['""Two Is Better Than One""']
+
+TITLE: Love Drunk | ID: 157
+TITLE: Two Is Better Than One | ID: 158",Final Answer: ,256,0.875,test,['Love Drunk'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: When did the person who claimed that Fidel Castro was killed in the 26th July Movement but was proven wrong by Herbert Matthews first serve as President of Cuba?
+"," ['1940']
+
+---
+**TITLE:** United States presidential election in Florida, 1956 | ID: 228
+**TITLE:** Fulgencio Batista | ID: 186
+
+**Explanation:**
+The query asks about the person who claimed Fidel Castro was killed but was proven wrong by Herbert Matthews (ID: 185). The document on Fulgencio Batista (ID: 186) states that he was President of Cuba from 1940 to 1944 and again from 1952 to 1959. Herbert Matthews (ID: 185) exposed Batista's claim that Fidel Castro was dead, which aligns with Batista's presidency from 1940 onward. Therefore, the first time Batista served as President of Cuba was in 1940.",Final Answer: ,256,0.875,test,['1940'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which Avalanche happened first, Rigopiano avalanche or 1999 Galtür avalanche ?
+"," ['1999 Galtür avalanche']
+
+TITLE: 1999 Galtür avalanche | ID: 181
+TITLE: Rigopiano avalanche | ID: 182",Final Answer: ,256,0.875,test,['The Galtür avalanche'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which man, Ibn Tufail or Ali Qushji, is best known for the development of astronomical physics independent from natural philosophy?
+"," ['Ali Qushji']
+
+TITLE: Ibn Tufail | ID: 177
+TITLE: Ali Qushji | ID: 178",Final Answer: ,256,0.875,test,['Ali Qushji'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: When was the anthology, in which fisrt pages of The Incal"" were released, created?
+"," ['Métal hurlant', '1974']
+
+**TITLE and ID:**
+- TITLE: Métal hurlant | ID: 138",Final Answer: ,256,0.875,test,['December 1974'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which internationl football team has had a player endorse the ""Nike Hypervenom"" football boot?
+"," ['Manchester United', 'England']
+
+**TITLE and ID of the documents used:**
+- TITLE: Marcus Rashford | ID: 55
+- TITLE: Nike Hypervenom | ID: 56",Final Answer: ,256,0.875,test,['England'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Who was born first,  Morgan Llywelyn or Robert Jordan?
+"," ['Morgan Llywelyn']
+
+TITLE: Morgan Llywelyn | ID: 134
+TITLE: Robert Jordan | ID: 133",Final Answer: ,256,0.875,test,['Morgan Llywelyn'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What Lithuanian producer is best known for a song that was one of the most popular songs in Ibiza in 2014?
+"," ['Ten Walls']
+
+TITLE: Ten Walls | ID: 78
+TITLE: Walking with Elephants | ID: 77",Final Answer: ,256,0.875,test,['Ten Walls'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Former race car driver Jeff Wood made his CART debut at which 1983 Nissan/Datsun-sponsored race?
+"," ['Caesars Palace Grand Prix', '1983']
+
+**TITLE and ID:**
+- TITLE: Caesars Palace Grand Prix | ID: 206
+- TITLE: Jeff Wood (racing driver) | ID: 205",Final Answer: ,256,0.875,test,['Caesars Palace Grand Prix'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Candace Flynn was voiced by the actress who achieved mainstream success on what show?
+"," ['The Suite Life of Zack & Cody']
+
+**TITLE and ID:**
+- TITLE: Candace Flynn | ID: 165
+- TITLE: Ashley Tisdale | ID: 166",Final Answer: ,256,0.875,test,['The Suite Life of Zack & Cody'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Where did the architect of the Governor's House, located in Knutsford, graduate from college?
+"," ['Cambridge University']
+
+---
+**TITLE and ID of the documents used:**
+- TITLE: Edmund Sharpe | ID: 179
+- TITLE: Governor's House, Knutsford | ID: 180",Final Answer: ,256,0.875,test,['Cambridge University'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: A Big Daddy is a fictional character in a series that has sold more than how many copies?
+"," ['25 million copies']
+
+TITLE: BioShock (series) | ID: 204",Final Answer: ,256,0.875,test,['25 million copies'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which actress does this Netflix's project by Nick Bernardone and Tina Fey star in the title role?
+"," ['Ellie Kemper']
+
+---
+**TITLE and ID of the documents used:**
+- TITLE: Unbreakable Kimmy Schmidt | ID: 64
+- TITLE: Nick Bernardone | ID: 63",Final Answer: ,256,0.875,test,['Ellie Kemper'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What drum machine was introduced in 1989 and allowed 32 notes to be played simultaneously?
+"," ['Roland R-8']
+
+**TITLE and ID:**
+- TITLE: Roland R-8 | ID: 48",Final Answer: ,256,0.875,test,['The R-8 Human Rhythm Composer'],hotpotqa_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What is the name of the 1988 film starring Gene Bervoets that was based on the Dutch to English translated novel, ""The Vanishing""?
+"," ['The Vanishing (1988 film)', 'The Golden Egg']
+
+TITLE: The Vanishing (1988 film) | ID: 145
+TITLE: The Golden Egg | ID: 146",Final Answer: ,256,0.875,test,['The Vanishing'],hotpotqa_32k

@@ -1,0 +1,166 @@
+answer,answer_prefix,compression_ratio,predicted_answer,max_new_tokens,task,context_length,question
+['singing' 'singing' 'singing'],Answer:,0.9375, The Saint-Evroul monks were known for a tradition of singing.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What tradition were the Saint-Evroul monks known for? "
+['north' 'the north' 'north'],Answer:,0.9375, The Normans were located in the region of Normandy in France.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What part of France were the Normans located? "
+['Deabolis' 'the river Deabolis' 'Deabolis'],Answer:,0.9375, Petrela was located by the river Deabolis.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What river was Petrela located by? "
+"['random access machines' 'random access machines'
+ 'random access machines']",Answer:,0.9375, A probabilistic Turing machine is an example of a machine model that deviates from a generally accepted multi-tape Turing machine.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What is an example of a machine model that deviates from a generally accepted multi-tape Turing machine? "
+"['how graphs are encoded as binary strings'
+ 'how graphs are encoded as binary strings'
+ 'how graphs are encoded as binary strings']",Answer:,0.9375," The encoding of graphs, such as using adjacency matrices or adjacency lists in binary, needs to be made to determine an exact definition of the formal language.",32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What encoding decision needs to be made in order to determine an exact definition of the formal language? "
+"['computational problems' 'computational problems'
+ 'computational problems']",Answer:,0.9375, Computational complexity theory most specifically seeks to answer the inherent difficulty of computational problems by classifying them based on the resources (such as time and space) required to solve,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What does computational complexity theory most specifically seek to answer?  "
+['Conrad of Montferrat' 'Conrad of Montferrat' 'Conrad of Montferrat'],Answer:,0.9375, Conrad of Montferrat.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who was Guy's Rival? "
+['complexity resources' 'complexity resources' 'complexity'],Answer:,0.9375, Time and space are both examples of computational resources.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Time and space are both examples of what type of resource? "
+['Complexity measures' 'complexity measures' 'complexity'],Answer:,0.9375, Decision tree complexity,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Decision tree is an example of what type of measure? "
+['Modern English' 'Modern English' 'Modern English'],Answer:,0.9375," The Anglo-Norman language was eventually absorbed into the Anglo-Saxon language of their subjects (see Old English) and influenced it, helping (along with the Norse",32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What was the Anglo-Norman language's final form? "
+['Berengaria' 'Berengaria' 'Berengaria'],Answer:,0.9375, Richard's fiancée was Berengaria.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who was Richard's fiancee? "
+"['the most efficient algorithm' 'the most efficient algorithm'
+ 'the most efficient algorithm solving a given problem']",Answer:,0.9375, the most efficient algorithm solving a given problem,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Classification of resources is contingent on determining the upper and lower bounds of minimum time required by what?   "
+['time' 'non-deterministic time' 'non-deterministic time'],Answer:,0.9375," The most critical resource in the analysis of computational problems associated with non-deterministic Turing machines is the non-determinism itself, which allows the machine to branch",32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What is the most critical resource in the analysis of computational problems associated with non-deterministic Turing machines? "
+['Romanesque' 'Romanesque' 'Romanesque'],Answer:,0.9375," The Norman architecture idiom is characterized by rounded arches, particularly over windows and doorways, and massive proportions. It spread a unique Romanesque idiom",32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What is the Norman architecture idiom? "
+"['all possible algorithms' 'all possible algorithms'
+ 'all possible algorithms']",Answer:,0.9375," The colloquial phrase used to convey the continuum of algorithms with unlimited availability irrespective of time is not explicitly mentioned in the provided documents. Therefore, based on the",32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What is the colloquial phrase used to convey the continuum of algorithms with unlimited availability irrespective of time?  "
+['time' 'time complexity' 'time complexity'],Answer:,0.9375, One common example of a critical complexity measure is time complexity.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What is one common example of a critical complexity measure? "
+['the Welsh' 'the Welsh' 'the Welsh'],Answer:,0.9375, Ralph was in charge of defending the Marches and warring with the Welsh.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who was Ralph in charge of being at war with? "
+"['A probabilistic Turing machine' 'probabilistic'
+ 'probabilistic Turing machine']",Answer:,0.9375, A probabilistic Turing machine.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What is the term used to identify a deterministic Turing machine that has additional random bits? "
+['Sicily' 'Sicily' 'Kingdom of Sicily'],Answer:,0.9375, The Kingdom of Sicily.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What place had the Norman Arab architectural style? "
+['Isaac Komnenos' 'Isaac' 'Isaac Komnenos'],Answer:,0.9375, Richard the Lion-hearted ruled Cyprus in 1191.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who ruled Cyprus in 1191? "
+['yes' 'yes' 'yes'],Answer:,0.9375," The output for a member of the language of a decision problem will be ""yes"".",32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What will the output be for a member of the language of a decision problem? "
+['fighting horsemen' 'fighting horsemen' 'fighting horsemen'],Answer:,0.9375, Fighting horsemen,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What was one of the Norman's major exports? "
+['the Turing machine' 'the Turing machine' 'Turing machine'],Answer:,0.9375, The most commonplace model utilized in complexity theory is the Turing machine.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What is the most commonplace model utilized in complexity theory? "
+"[""Latin monastery at Sant'Eufemia."" ""a Latin monastery at Sant'Eufemia""
+ ""Sant'Eufemia""]",Answer:,0.9375, The Saint-Evroul monks established a Latin monastery at Sant'Eufemia in southern Italy.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What monastery did the Saint-Evroul monks establish in Italy? "
+['a storm' 'a storm' 'a storm'],Answer:,0.9375," A storm dispersed Richard's fleet, which prevented him from reaching Acre.",32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What ruined Richard's plans to reach Acre? "
+['William of Montreuil' 'William of Montreuil' 'William of Montreuil'],Answer:,0.9375, William of Montreuil was in charge of the papal army in the War of Barbastro.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who was in charge of the papal army in the War of Barbastro? "
+['dukes' 'the dukes' 'dukes'],Answer:,0.9375, The dukes of Normandy used the church as a unifying force for their disparate duchy.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who used the church to unify themselves? "
+['1191' '1191' '1191'],Answer:,0.9375, The storm hit Richard's fleet in 1191.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What year did the storm hit Richard's fleet? "
+['yes' 'yes' 'yes'],Answer:,0.9375, The algorithm is said to accept the input string.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What answer denotes that an algorithm has accepted an input string? "
+"['the integer factorization problem' 'integer factorization'
+ 'integer factorization problem']",Answer:,0.9375, Another example of a function problem is the integer factorization problem.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: In addition to the traveling salesman problem, what is another example of a function problem? "
+['9th century' '9th century' '9th century'],Answer:,0.9375," The Latin version of the word Norman was first recorded in the 9th century as Nortmannus, Normannus, or Nordmannus.",32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: When was the Latin version of the word Norman first recorded? "
+['1050s' 'in the 1050s' 'in the 1050s'],Answer:,0.9375," The documents do not specify the exact date when Herve served as a Byzantine general. However, one document (Document 49) states: ""One",32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: When did Herve serve as a Byzantine general? "
+['Hereford' 'Hereford' 'Hereford'],Answer:,0.9375, Ralph was earl of Hereford.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Where was Ralph earl of? "
+['Maciot de Bethencourt' 'Maciot de Bethencourt' 'Maciot de Bethencourt'],Answer:,0.9375," Maciot de Bethencourt sold the rights to the islands to Enrique Pérez de Guzmán, 2nd Count de Niebla.",32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who sold the rights? "
+"['A deterministic Turing machine' 'deterministic'
+ 'deterministic Turing machine']",Answer:,0.9375, The most basic iteration of a Turing machine is the deterministic Turing machine.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What is generally considered to be the most basic iteration of a Turing machine? "
+"['analysis of algorithms and computability theory'
+ 'analysis of algorithms and computability theory'
+ 'analysis of algorithms and computability theory']",Answer:,0.9375, The two fields of theoretical computer science that closely mirror computational complexity theory are analysis of algorithms and computability theory.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What two fields of theoretical computer science closely mirror computational complexity theory? "
+"['set of triples' 'triple'
+ 'the set of triples (a, b, c) such that the relation a × b = c holds']",Answer:,0.9375, The expression set is called a function problem.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: If two integers are multiplied and output a value, what is this expression set called? "
+['the instance' 'the instance' 'the size of the instance'],Answer:,0.9375, The size of the input.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What is one variable on which the running time may be contingent? "
+['mathematical models' 'mathematical models' 'branching'],Answer:,0.9375," A non-deterministic Turing machine has the ability to capture many of the mathematical models we want to analyze, so that non-deterministic time is a very",32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: A non-deterministic Turing machine has the ability to capture what facet of useful analysis? "
+['Channel Islands' 'the Channel Islands' 'the Channel Islands'],Answer:,0.9375, Jersey and Guernsey are Channel Islands.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Where are Jersey and Guernsey "
+['rounded' 'rounded' 'rounded'],Answer:,0.9375," Norman architecture typically has rounded arches, particularly over windows and doorways.",32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What kind of arches does Norman architecture have? "
+['Cobham-Edmonds thesis' 'Cobham-Edmonds' 'Cobham-Edmonds thesis'],Answer:,0.9375, Cobham-Edmonds thesis,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What thesis specifies that a polynomial relationship exists within time complexities in a computational model?  "
+['Harthacnut' 'Harthacnut' 'Harthacnut'],Answer:,0.9375, Harthacnut.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who was Edward the Confessor's half-brother? "
+"['Norman mercenary' 'an Italo-Norman named Raoul'
+ 'descended from an Italo-Norman named Raoul']",Answer:,0.9375, The Raouliii family were descended from an Italo-Norman named Raoul.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What were the origins of the Raouliii family? "
+['yes or no' 'yes or no' 'yes or no'],Answer:,0.9375, yes or no,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What are the two simple word responses to a decision problem? "
+['linear time' 'linear' 'linear'],Answer:,0.9375, A multi-tape Turing machine requires polynomial time for a solution.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: A multi-tape Turing machine requires what type of time for a solution? "
+['Bohemond' 'Bohemond' 'Bohemond'],Answer:,0.9375, Bohemond.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who was Robert's son? "
+['1060s' 'In the 1060s' 'In the 1060s'],Answer:,0.9375," The documents do not specify the exact year when Robert Crispin went up against the Turks. However, they mention that in the 1060s",32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: When did Robert Crispin go up against the Turks? "
+"['worst-case time complexity' 'worst-case time complexity'
+ 'the worst-case time complexity']",Answer:,0.9375, The term that corresponds to the maximum measurement of time across all functions of n is the worst-case time complexity.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What term corresponds to the maximum measurement of time across all functions of n?  "
+['embroidery' 'embroidery' 'embroidery'],Answer:,0.9375," The Bayeux Tapestry was created using embroidery, not tapestry.",32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What kind of needlework was used in the creation of the Bayeux Tapestry? "

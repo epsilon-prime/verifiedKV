@@ -1,0 +1,313 @@
+question,predicted_answer,answer_prefix,max_new_tokens,compression_ratio,split,answers,task
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What is the great mosque constructed at the site of the old temple in the city originating christianity in Rome, Egypt, Judea and the country for Vasilopita?
+"," ['Vatican City']
+
+---
+**TITLE and ID of the documents used:**
+- **TITLE: Al-Aqsa Mosque | ID: 204**
+- **TITLE: Early centers of Christianity | ID: 205**
+- **TITLE: Vasilopita | ID: 206**
+- **TITLE: Israel | ID: 208**
+
+---
+**Explanation:**
+1. **Al-Aqsa Mosque (ID: 204)** provides context on the significance of Jerusalem and the Noble Sanctuary (Temple Mount), where the Dome of the Rock and Al-Aqsa Mosque are located. This is the site of the old Jewish Temple, later becoming a significant Islamic holy site.
+
+2. **Early centers of Christianity (ID: 205)** confirms that Jerusalem is one of the earliest centers of Christianity, where Jesus is believed to have lived and taught.
+
+3. **Vasilopita (ID: 206)** connects to the cultural and religious traditions of Greece, where Vasilopita is celebrated on New Year's Day, often associated with the Greek Orthodox tradition. Vasilopita is a New Year's bread or cake containing a hidden coin, symbolizing good",Final Answer: ,256,0.9375,test,['Al - Aqsa Mosque'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What label was bought in the UK by the other major New York broadcast that is in addition to ABC, and the one who released Stand Against Fear?
+"," ['EMI']
+
+---
+**TITLE and ID of the documents used:**
+- **TITLE: Sony Music | ID: 107**
+- **TITLE: Who Wants to Be a Millionaire (American game show) | ID: 42**
+
+---
+**Explanation:**
+- The query asks about the label bought in the UK by the other major New York broadcast network besides ABC, which also released the album *Stand Against Fear*.
+- **Sony Music** (ID: 107) is the label that released *Stand Against Fear* by the band Papa Roach.
+- The document **Who Wants to Be a Millionaire (American game show)** (ID: 42) mentions that Sony Music was involved in the distribution of the show's music, which is indirectly related to Sony's broader presence in the music industry, including EMI, which was acquired by Sony in 2004.
+- The question specifically refers to the UK acquisition of a label by the other major New York broadcast network, which is NBC. NBC's parent company, NBCUniversal, owns EMI, a major music label in the UK. This is the only relevant connection to the query.",Final Answer: ,256,0.9375,test,['Oriole Records.'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: When did the rx 350 model of the luxury division of the company that built Daihatsu boon change body style?
+"," ['2012']
+
+---
+**TITLE and ID of the documents used:**
+- **TITLE: Lexus RX | ID: 29**
+- **TITLE: Daihatsu Boon | ID: 30** (Indirectly referenced as Daihatsu is the manufacturer of the Boon, which is sold under the Toyota Corolla Store, and Lexus is a luxury division of Toyota)
+
+---
+**Explanation:**
+The **Lexus RX 350** is a luxury sedan manufactured by **Honda** under its **Acura** division, not Toyota. However, the **Lexus RX** is part of the **Toyota Group**, which also owns **Daihatsu**. The **RX 350** underwent a **facelift in 2012**, which included changes in body style, wheels, interior colors, head and tail lamps, and new grilles.
+
+The **Daihatsu Boon** is unrelated to the Lexus RX, but since the question mentions Daihatsu and the luxury division of the company that built it (Toyota), the **Lexus RX** is the closest relevant model. The **RX 350** received its updated body style in",Final Answer: ,256,0.9375,test,['Sales began worldwide in April 2012'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What year did the Governor of the city where the basilica named after the same saint as the one that Mantua Cathedral is dedicated to die?
+"," ['1952']
+
+---
+**TITLE and ID of the documents used:**
+- **TITLE: Vatican City Governor | ID: 36**
+- **TITLE: St. Peter's Basilica | ID: 37**
+
+---
+**Explanation:**
+- The **Vatican City Governor** post was held by **Marchese Camillo Serafini** until his death in **1952**.
+- The **St. Peter's Basilica** in Vatican City is dedicated to **Saint Peter**, the same saint as the **Mantua Cathedral** (Basilica Palladiana), which is also dedicated to **Saint Peter**. This confirms the connection between the saint and the basilica in question.",Final Answer: ,256,0.9375,test,['1952'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What UK label was bought by the company which, along with ABC and the network which broadcasted Hello, Larry, is the other major broadcaster based in NY?
+"," ['Sony Music']
+
+---
+**TITLE and ID of the documents used:**
+- **TITLE: Sony Music | ID: 107**
+- **TITLE: New York City | ID: 26**
+- **TITLE: Hello, Larry | ID: 27**
+- **TITLE: ABC (network) | ID: 0** (implied by the context of the query, though not explicitly mentioned in the provided documents, ABC is referenced in the context of the query)
+
+---
+**Explanation:**
+The query asks about the UK label bought by the company that, along with ABC and the network that broadcasted *Hello, Larry*, is the other major broadcaster based in New York City.
+
+1. **New York City (ID: 26)** confirms that ABC and NBC are the two major broadcasters based in New York City.
+2. **Hello, Larry (ID: 27)** confirms that *Hello, Larry* was broadcast on NBC.
+3. **Sony Music (ID: 107)** provides the information that Sony Music Entertainment was originally founded as Columbia Records, which was acquired by Sony Corporation of Japan in 1987. This is the UK label (or the parent",Final Answer: ,256,0.9375,test,['Oriole Records.'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What year did the country where Siddhi Savetsila was born form an alliance with Japan?
+","1941
+
+---
+TITLE: Siddhi Savetsila | ID: 78
+TITLE: Pacific War | ID: 81",Final Answer: ,256,0.9375,test,['1941'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: The Beach was filmed in what location of the country that contains the birth city of Siddhi Savetsila?
+"," ['Koh Phi Phi']
+
+---
+**TITLE and ID of the documents used:**
+- **TITLE: The Beach (film)** | **ID: 79**
+- **TITLE: Siddhi Savetsila** | **ID: 78**",Final Answer: ,256,0.9375,test,['island Koh Phi Phi'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Arie Supriyatna's birth country was one participant in a Commission of Truth and Friendship. Who is the president of the other country that participated?
+"," ['Susilo Bambang Yudhoyono']
+
+---
+**TITLE and ID of the documents used:**
+- **TITLE: Indonesia–Timor Leste Commission of Truth and Friendship | ID: 220**
+- **TITLE: Arie Supriyatna | ID: 219**",Final Answer: ,256,0.9375,test,['Francisco Guterres'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What is the meaning of the word that is also a majority religion in the area that became India when the country that withdrew its forces was created in the Arabic dictionary?
+"," ['Hindu']
+
+---
+**TITLE and ID of the documents used:**
+- **TITLE: Hindus | ID: 230**
+- **TITLE: Partition of India | ID: 231**
+
+---
+**Explanation:**
+The word ""Hindu"" is derived from the Sanskrit word ""Sindhu,"" which refers to the Indus River. In the Arabic dictionary, the term ""Hindu"" was used to refer to the people living beyond the Indus River, which is the geographical origin of the region that later became India.
+
+The Partition of India in 1947 created the country of India, which is predominantly Hindu. The majority religion in India is Hinduism.",Final Answer: ,256,0.9375,test,['the country of India'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Widely practiced in the region having the second largest rain-forest in the world, how long ago did this religion arrive in Zhejiang?
+","1400 years ago
+
+---
+TITLE: Southeast Asia | ID: 156
+TITLE: Islam | ID: 158
+TITLE: Zhejiang | ID: 157",Final Answer: ,256,0.9375,test,"['1,400 years']",musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What is the name of the famous bridge in the city where the composer of La Silvia was born?
+"," ['Rialto Bridge']
+
+---
+**TITLE and ID of the documents used:**
+- **TITLE: Antonio Vivaldi | ID: Not explicitly mentioned in the provided documents**
+  *(Note: Antonio Vivaldi, the composer of *La Silvia*, was born in Venice, Italy.)*
+
+- **TITLE: Rialto Bridge | ID: 98**
+  *(The famous bridge in Venice, where Vivaldi was born.)*",Final Answer: ,256,0.9375,test,['Rialto Bridge'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: When did the merchant of the city where the composer of Al gran sole carico d'amore takes place?
+"," ['1975']
+
+---
+**TITLE and ID of the documents used:**
+- **TITLE: Al gran sole carico d'amore | ID: 196**
+- **TITLE: Venice | ID: (Not explicitly mentioned, but implied by the context of the opera's setting)**
+
+---
+**Explanation:**
+The opera *Al gran sole carico d'amore* by Luigi Nono was premiered at the **Teatro alla Scala** in **Venice, Italy**, on **4 April 1975**. Venice is the city where the opera takes place, and the document **ID: 196** explicitly states the premiere date and location. While Venice itself is not directly mentioned in the provided documents, it is widely known that the opera was set in Venice, and the document **ID: 196** confirms the year of its composition and premiere.",Final Answer: ,256,0.9375,test,['16th - century'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Who is the president of the newly declared independent country that formed the Timor Leste Commission of Truth and Friendship with the country where Pantar is found?
+"," ['Francisco Guterres', 'Indonesia']
+
+TITLE: East Timor | ID: 218
+TITLE: Indonesia–Timor Leste Commission of Truth and Friendship | ID: 220
+TITLE: Blagar language | ID: 221",Final Answer: ,256,0.9375,test,['Francisco Guterres'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What is the name of the famous bridge in the place of birth of who composed the Concerto in C Major Op 3 6?
+"," ['Rialto Bridge']
+
+---
+**TITLE and ID of the documents used:**
+- **TITLE: Mandolin | ID: 101**
+- **TITLE: Rialto Bridge | ID: 98**
+
+---
+**Explanation:**
+The **Concerto in C Major Op. 3 6** was composed by **Antonio Vivaldi**, who was born in **Venice, Italy**. The famous bridge in Venice is the **Rialto Bridge**.",Final Answer: ,256,0.9375,test,['Rialto Bridge'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Where do greyhound buses leave from the in the city where the headquarters of the production company which produced A Cosmic Christmas is located?
+"," ['Toronto Coach Terminal']
+
+---
+**TITLE and ID of the documents used:**
+- **TITLE: Toronto Coach Terminal | ID: 53**
+- **TITLE: Aaron Spelling | ID: 1** (Indirect reference to Aaron Spelling's production company, which produced *A Cosmic Christmas* as part of his extensive filmography, including *The Wild Women of Chastity Gulch* and other TV productions.)
+
+---
+**Explanation:**
+- The query references *A Cosmic Christmas*, a TV special produced by Aaron Spelling's production company (Aaron Spelling Productions).
+- The Toronto Coach Terminal is the central bus station for inter-city services in Toronto, Ontario, Canada, where greyhound buses leave from.
+- Aaron Spelling's production company was based in Los Angeles, but the question seems to imply a connection to Toronto (likely due to the Toronto Coach Terminal being a notable landmark for intercity travel). Since Toronto is the only city mentioned in the documents related to bus terminals, it is inferred as the location for the bus station.",Final Answer: ,256,0.9375,test,['Toronto Coach Terminal'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Who was a prominent figure at the radio division of the network that created the version of The Biggest Loser set in the country where Seria is?
+"," ['Walter Sabo']
+
+---
+**TITLE and ID of the documents used:**
+- **TITLE: The Biggest Loser Brunei: Lose It All | ID: 4**
+- **TITLE: Seria, Belait | ID: 24**
+- **TITLE: Adult contemporary music | ID: 5**
+
+---
+**Explanation:**
+- The version of *The Biggest Loser* set in Brunei is **The Biggest Loser Brunei: Lose It All** (ID: 4).
+- Seria is located in Brunei (ID: 24).
+- The network responsible for *The Biggest Loser* is NBC, and the document **Adult contemporary music (ID: 5)** mentions **Walter Sabo** as a prominent figure in the radio division of NBC, which was responsible for the Adult Contemporary format and helped monetize it. This aligns with the network that created the show.",Final Answer: ,256,0.9375,test,['Walter Sabo'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What were the Genesis's advantages over the platform that plays Drac's Night Out?
+"," ['16-bit architectures', 'improved graphics and sound']
+
+---
+**TITLE and ID of the documents used:**
+- **TITLE: Super Nintendo Entertainment System | ID: 126**
+- **TITLE: Drac's Night Out | ID: 125**
+
+---
+**Explanation:**
+The **Super Nintendo Entertainment System (SNES)** was introduced to compete with the **TurboGrafx-16** and **Mega Drive (Sega Genesis)**. The **Genesis** had advantages over the **NES** (the platform for *Drac's Night Out*), including its **16-bit architecture**, which provided **improved graphics and sound** compared to the 8-bit NES. The SNES, as a 16-bit system, also offered superior capabilities over the Genesis in some areas, but the question specifically asks about the Genesis's advantages over the NES, which is the platform for *Drac's Night Out*. Thus, the key advantage of the Genesis over the NES is its **16-bit architecture and improved graphics/sound**.",Final Answer: ,256,0.9375,test,['built on 16-bit architectures and offered improved graphics and sound'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: When was the Palau de la Generalitat constructed in the city where Martin of the place where Castiliscar is located died?
+"," ['15th century']
+
+TITLE: Gothic architecture | ID: 50
+TITLE: Martin of Aragon | ID: 51
+TITLE: Castiliscar | ID: 49",Final Answer: ,256,0.9375,test,['built in the 15th century'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: When did the U.S. and the country in effective control of political and military functions of the group the People's Socialist Republic of Albania was a member of become allies?
+"," ['1968']
+
+---
+**TITLE and ID of the documents used:**
+- **TITLE: Allies of World War II | ID: 192**
+- **TITLE: Warsaw Pact | ID: 193**
+- **TITLE: Hero of Socialist Labour (Albania) | ID: 194**
+
+---
+**Explanation:**
+The Warsaw Pact was a mutual defense treaty established in 1955 by the Soviet Union and its Eastern Bloc allies, including the People's Socialist Republic of Albania, during the Cold War. Albania, however, withdrew from the Warsaw Pact in 1968 due to ideological differences with the Soviet Union and China. The U.S. and Albania did not become allies during the Cold War, but the question seems to refer to the period when Albania was still part of the Warsaw Pact and the U.S. was in opposition to it.
+
+The Warsaw Pact was dissolved in 1991, but the question likely refers to the period when Albania was a member of the Warsaw Pact and the U.S. was in opposition to the Soviet bloc. The U.S. and Albania did not become allies until after the fall of communism in Albania in 1991.
+
+However,",Final Answer: ,256,0.9375,test,['June 1941'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What team does the person who hit the first home run at the new stadium in South Bronx play for?
+"," ['New York Yankees']
+
+---
+**TITLE and ID of the documents used:**
+- **TITLE: Yankee Stadium | ID: 189**
+- **TITLE: New York City | ID: 26**
+- **TITLE: The Bronx | ID: 190**
+- **TITLE: Jorge Posada | ID: 191**",Final Answer: ,256,0.9375,test,['New York Yankees'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: When did the Governorship end of the city where the author of Paenitentiam Agere died?
+"," ['1952']
+
+---
+**TITLE and ID of the documents used:**
+- **TITLE: Governor of Vatican City | ID: 36**
+- **TITLE: Paenitentiam agere | ID: 38**
+
+---
+**Explanation:**
+The document **TITLE: Governor of Vatican City | ID: 36** states that the post of Governor of Vatican City was held by Marchese Camillo Serafini from the foundation of the state in 1929 until his death in **1952**. The document **TITLE: Paenitentiam agere | ID: 38** mentions Pope John XXIII, who issued the encyclical *Paenitentiam agere* in 1962, but this does not directly relate to the Governorship of Vatican City. However, the question specifically asks about the Governorship ending in the city where the author of *Paenitentiam agere* died, which is Vatican City.
+
+Since the Governorship of Vatican City ended in **1952**, this is the relevant date for the query.",Final Answer: ,256,0.9375,test,['1952'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What is the name of the famous bridge in the birth city of the composer of Scanderbeg?
+"," ['Rialto Bridge']
+
+---
+**TITLE and ID of the documents used:**
+- **TITLE: Scanderbeg (opera)** | **ID: 100**
+- **TITLE: Rialto Bridge** | **ID: 98**
+
+---
+**Explanation:**
+The opera *Scanderbeg* (ID: 100) was composed by **Antonio Vivaldi**, who was born in **Venice, Italy**. The famous bridge in Venice is the **Rialto Bridge** (ID: 98).",Final Answer: ,256,0.9375,test,['Rialto Bridge'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What year did the country where Ercole Manfredi was born form an alliance with Japan?
+","1941
+
+---
+TITLE: Pacific War | ID: 81
+TITLE: Ercole Manfredi | ID: 83",Final Answer: ,256,0.9375,test,['1941'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What year did the country that includes the birth city of Bodindecha form an alliance with Japan?
+","1941
+
+---
+TITLE: Pacific War | ID: 81
+TITLE: Bodindecha | ID: 82",Final Answer: ,256,0.9375,test,['1941'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What was Nintendo's limit on games per developer per year for the platform with an abbreviated name that had the game Sunman?
+","5
+
+---
+TITLE: Super Nintendo Entertainment System | ID: 126
+TITLE: Sunman (video game) | ID: 127",Final Answer: ,256,0.9375,test,['five'],musique_32k

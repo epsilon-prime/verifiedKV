@@ -1,0 +1,41 @@
+dataset: ruler32k
+data_dir: qa_1
+model: mistralai/Ministral-3-8B-Instruct-2512-BF16
+device: null
+press_name: vkv_final_kvzip
+compression_ratio: 0.9375
+key_channel_compression_ratio: null
+fraction: 1.0
+n_samples: 50
+dataset_path: null
+max_new_tokens: null
+min_context_length: null
+max_context_length: 200000
+query_aware: false
+needle_depth: null
+compression_interval: null
+target_size: null
+hidden_states_buffer_size: null
+output_dir: /scratch/krishna/sky/vkv-grid/repo/phase4/vkv_final/out/fin32_mi/vkv_final:0.9375:0.05:0.1
+log_level: INFO
+enable_micro_metrics: false
+micro_metrics_max_records: null
+micro_metrics_sampling_factor: 1.0
+micro_metrics: null
+enable_head_stats: false
+head_stats_layer_stride: 1
+head_stats_step_stride: 1
+head_stats_question_stride: 1
+head_stats_max_rows: null
+model_kwargs:
+  attn_implementation: sdpa
+trust_remote_code: false
+press_init_command: 'ran as phase4/vkv_final/run_downstream_grid.py arm ''vkv_final:0.9375:0.05:0.1''
+  (press_grid.VkvGridPress); arms.py equivalent: VkvFinalGridPress(bern=BernoulliPress(press=CachedKVzipPress(compression_ratio=0.9542743538767395,
+  layerwise=False, n_sink=4, kvzip_plus_normalization=False, cache_dir=''/scratch/krishna/sky/vkv-grid/scores''),
+  seed=0), theta=0.01, theta_question=None, persist=False, reserve=0.0, reserve_entries=None,
+  bits=2, n_pairs=16, pairs_per_128_dims=True, group=128, head_dim=128, charge_overhead=True,
+  _total=0.9375, kept=None, eps0=0.05, delta=0.1, shortlist_head=128, plan_weights=''sketch'',
+  charge_sketch=True, fast=True, n_sink=64, window=64, fixed_charge=None)'
+seed: 42
+fp8: false

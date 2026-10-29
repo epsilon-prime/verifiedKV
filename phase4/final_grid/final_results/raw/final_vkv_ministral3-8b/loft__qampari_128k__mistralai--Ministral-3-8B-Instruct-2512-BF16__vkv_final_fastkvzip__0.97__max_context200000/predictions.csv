@@ -1,0 +1,185 @@
+question,predicted_answer,answer_prefix,max_new_tokens,compression_ratio,split,answers,task
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which competition did the tennis man Lloyd Harris win?
+"," ['2015 King Cup Final', '2019 Senior Open Championship', '2012 Senior Open Championship', '2018 Senior Open Championship', '2017 Senior Open Championship']
+
+TITLE: 2015 King Cup Final | ID: 75
+TITLE: 2019 Senior Open Championship | ID: 349
+TITLE: 2012 Senior Open Championship | ID: 152
+TITLE: 2018 Senior Open Championship | ID: 475
+TITLE: 2017 Senior Open Championship | ID: 152",Final Answer: ,256,0.96875,test,"[""2018 Kentucky Bank Tennis Championships – Men's Singles""
+ ""2018 Kunming Open – Men's Doubles""
+ ""2018 Stockton Challenger – Men's Singles""
+ ""2019 Burnie International – Men's Doubles""
+ ""2019 Launceston Tennis International – Men's Singles""]",qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What groups was Walter Schreifels a member of?
+"," ['Rival Schools', 'Walking Concert', 'Quicksand', 'Me First and the Gimme Gimmes', 'Gorilla Biscuits']",Final Answer: ,256,0.96875,test,"['Dead Heavens' 'Gorilla Biscuits' 'Quicksand' 'Rival Schools'
+ 'Walking Concert']",qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What does the Arab Satellite Communications Organization own?
+"," ['Arabsat-1A', 'Arabsat-1B', 'Arabsat-4B', 'Arabsat-5A']",Final Answer: ,256,0.96875,test,['Arabsat-1A' 'Arabsat-1B' 'Arabsat-5A' 'Badr-4' 'INSAT-2DT'],qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What are the existing wiki projects ?
+"," ['RationalWiki', 'Wiktionary', 'Uncyclopedia', 'Veropedia']",Final Answer: ,256,0.96875,test,['Diplopedia' 'RationalWiki' 'Uncyclopedia' 'Veropedia' 'Wiktionary'],qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Who was a notable triathlete ?
+"," ['Chris McCormack', 'Pete Jacobs', 'Gethin Jones']
+
+TITLE: Chris McCormack (triathlete) | ID: 281
+TITLE: Pete Jacobs (triathlete) | ID: 592
+TITLE: Gethin Jones | ID: 115",Final Answer: ,256,0.96875,test,"['Chris McCormack' 'Chrissie Wellington' 'Helen Jenkins' 'Magali Messmer'
+ 'Pete Jacobs']",qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What are the existing reagent compounds ?
+"," ['Estradiol benzoate/hydroxyprogesterone caproate', 'Estradiol cypionate/hydroxyprogesterone caproate', 'Estradiol dipropionate/hydroxyprogesterone caproate', 'Estradiol valerate/hydroxyprogesterone caproate', 'Estradiol benzoate/estradiol valerate/hydroxyprogesterone caproate']
+
+---
+TITLE: Estradiol benzoate/hydroxyprogesterone caproate | ID: 543
+TITLE: Estradiol cypionate/hydroxyprogesterone caproate | ID: 263
+TITLE: Estradiol dipropionate/hydroxyprogesterone caproate | ID: 247
+TITLE: Estradiol valerate/hydroxyprogesterone caproate | ID: 22
+TITLE: Estradiol benzoate/estradiol valerate/hydroxyprogesterone caproate | ID: 637",Final Answer: ,256,0.96875,test,['Ammonia' 'Collins reagent' 'Dimethylformamide' 'Ethanol' 'Sodium azide'],qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What are some of the notable seowons ?
+"," ['Oksan Seowon, Gyeongju', 'Sosu Seowon', 'Seoak Seowon', 'Dosan Seowon', 'Byeongsan Seowon', 'Sosu Seowon', 'Sosu Seowon, Gyeongju']
+
+TITLE: Oksan Seowon, Gyeongju | ID: 45
+TITLE: Seoak Seowon | ID: 47
+TITLE: Dosan Seowon | ID: 171
+TITLE: Byeongsan Seowon | ID: 219
+TITLE: Sosu Seowon | ID: 90",Final Answer: ,256,0.96875,test,"['Byeongsan Seowon' 'Dosan Seowon' 'Oksan Seowon' 'Seoak Seowon'
+ 'Sosu Seowon']",qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: In which sports competition did Reilly Opelka emerge victorious?
+"," ['2015 Città di Caltanissetta – Singles', '2016 Charlottesville Men’s Pro Challenger – Singles', '2017 Senior Open Championship', '2018 Kentucky Challenger – Singles', '2019 Launceston Tennis International – Men’s Singles', '2015 King Cup Final', '2016 Open Città della Disfida – Singles', '2017 Internazionali di Tennis del Friuli Venezia Giulia – Singles', '2018 Kunming Challenger – Men’s Doubles', '2019 Senior Open Championship']
+
+TITLE and ID of the documents used:
+- TITLE: 2015 Città di Caltanissetta – Singles | ID: 52
+- TITLE: 2016 Charlottesville Men’s Pro Challenger – Singles | ID: 58
+- TITLE: 2017 Senior Open Championship | ID: 152
+- TITLE: 2018 Kentucky Challenger – Singles | ID: 84
+- TITLE: 2019 Launceston Tennis International – Men’s Singles | ID: 98
+- TITLE: ",Final Answer: ,256,0.96875,test,"[""2015 Wimbledon Championships – Boys' Singles""
+ ""2016 Charlottesville Men's Pro Challenger – singles""
+ '2018 BNP Paribas Primrose Bordeaux – singles'
+ '2018 JSM Challenger of Champaign–Urbana – singles'
+ '2018 Knoxville Challenger – singles']",qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Who graduated from Middletown High School South?
+"," ['Jeffrey C. Janes', 'Jerry Janes', 'Jerry C. Janes', 'Jerry Janes']",Final Answer: ,256,0.96875,test,"['Christian Peter' 'Howard Barbieri' 'Jeff Kunkel' 'Knowshon Moreno'
+ 'Melanie McGuire']",qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What competition did Elias Ymer win?
+"," ['2015 Città di Caltanissetta – Singles', '2018 Kentucky Bank Tennis Championships – Men's Singles', '2016 Charlottesville Men's Pro Challenger – Singles', '2015 Launceston Tennis International – Men's Singles', '2019 Launceston Tennis International – Men's Singles', '2017 Senior Open Championship', '2016 Senior Open Championship', '2015 Senior Open Championship', '2014 Senior Open Championship', '2012 Senior Open Championship', '2010 Senior Open Championship', '2019 Senior Open Championship', '2018 Senior Open Championship', '2017 Internazionali di Tennis del Friuli Venezia Giulia – Singles', '2016 Stockholm Open – Doubles', '2015 Internazionali di Tennis del Friuli Venezia Giulia – Singles', '2015 King Cup Final', '2014 Senior Open Championship', '2012 Internazionali di Tennis del Friuli Venezia Giulia – Singles', '2012 Aircel Chennai Open – Singles', '2011 St. Petersburg Open – Singles', '2010",Final Answer: ,256,0.96875,test,"['2015 Città di Caltanissetta – singles'
+ '2016 Open Città della Disfida – singles' '2016 Stockholm Open – doubles'
+ '2017 Internationaux de Tennis de Vendée – singles'
+ '2017 Internazionali di Tennis del Friuli Venezia Giulia – singles']",qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Who are Tullahoma High School alumni?
+"," ['Jeff Kunkel', 'Dustin Lynch', 'Zachary James Lynch']",Final Answer: ,256,0.96875,test,"['Antonio London' 'Bryan Morris' 'Dewon Brazelton' 'Dustin Lynch'
+ 'Jordan Sheffield']",qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: For which motion picture was Hossein Shahabi responsible for production?
+"," ['The Traces of Light', 'The Sale', 'The Unicorn and the Wasp', 'The Perfect General', 'The Perfect General Internet Edition']",Final Answer: ,256,0.96875,test,"['Conditional release' 'Ghost' 'The Bright Day' 'The Sale'
+ 'The Traces of Light']",qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What lineback was drafted by the Chicago Bears?
+", ['Jerry Janes'],Final Answer: ,256,0.96875,test,['Ego Ferguson' 'Jerry Janes' 'Ron Rivera' 'Roquan Smith' 'Will Sutton'],qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Who habitated the Kingdom of Mysore?
+"," ['Krishnaraja Wadiyar II', 'Krishnaraja Wadiyar III', 'Krishnaraja Wadiyar X', 'Chamarajendra Wadiyar X', 'Chamarajendra Wadiyar II', 'Chamarajendra Wadiyar III', 'Chamarajendra Wadiyar IV', 'Chamarajendra Wadiyar V', 'Chamarajendra Wadiyar VI', 'Chamarajendra Wadiyar VII', 'Chamarajendra Wadiyar VIII', 'Chamarajendra Wadiyar IX', 'Chamarajendra Wadiyar X']
+
+---
+TITLE: Chamarajendra Wadiyar X | ID: 706
+TITLE: Krishnaraja Wadiyar II | ID: 652
+TITLE: Krishnaraja Wadiyar III | ID: 742
+TITLE: Krishnaraja Wadiyar X | ID: 706 (Note: This is the same as Chamarajendra Wadiyar X, so it is not repeated here for uniqueness)
+
+---
+The following documents provide information on the rulers of the Kingdom of Mys",Final Answer: ,256,0.96875,test,"['Chamarajendra Wadiyar X' 'Kanthirava Narasaraja I'
+ 'Kanthirava Narasaraja II' 'Krishnaraja Wadiyar II'
+ 'Krishnaraja Wadiyar III' 'Mir Ghulam Ali']",qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What is something that Gourdou-Leseurre produced?
+"," ['Gourdou-Leseurre GL.2', 'Gourdou-Leseurre GL-50', 'Gourdou-Leseurre GL.30', 'Gourdou-Leseurre GL.812 HY', 'Gourdou-Leseurre GL-32', 'Gourdou-Leseurre GL-31', 'Gourdou-Leseurre GL-32', 'Gourdou-Leseurre GL-322']
+
+TITLE: Gourdou-Leseurre GL.2 | ID: 44
+TITLE: Gourdou-Leseurre GL-50 | ID: 494
+TITLE: Gourdou-Leseurre GL.30 | ID: 569
+TITLE: Gourdou-Leseurre GL.812 HY | ID: 258
+TITLE: Gourdou-Leseurre GL-32 | ID: 332
+TITLE: Gourdou-Leseurre GL-31 | ID: 494
+TITLE: Gourdou-Leseurre GL-322 | ID: 332 (Note: This is a correction; GL",Final Answer: ,256,0.96875,test,"['Gourdou-Leseurre GL-812 HY' 'Gourdou-Leseurre GL-832 HY'
+ 'Gourdou-Leseurre GL.2' 'Gourdou-Leseurre GL.30' 'Gourdou-Leseurre GL.50']",qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Who spoke Sioux as their mother tongue?
+", ['Sitting Bull'],Final Answer: ,256,0.96875,test,['Charles Eastman' 'Little Crow' 'Sitting Bull' 'Spotted Elk' 'Zitkala-Sa'],qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Who is employed by the Houston Ballet?
+"," ['Houston Ballet']
+
+TITLE: Connor Walsh (ballet dancer) | ID: 455",Final Answer: ,256,0.96875,test,['Amy Fote' 'Connor Walsh' 'Jun Shuang Huang' 'Simon Ball' 'Stanton Welch'],qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Who provided coaching for the Boca Juniors athletic team?
+", ['Mario Fortunato'],Final Answer: ,256,0.96875,test,"['Carlos García Cambón' 'Gustavo Alfaro' 'Jorge José Benítez'
+ 'Mario Fortunato' 'Miguel Ángel Russo']",qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which ballet features dances were choreographed by Christopher Wheeldon?
+"," ['Liturgy (ballet)', 'After the Rain (ballet)', 'Alice's Adventures in Wonderland (ballet)', 'Carousel (ballet)', 'An American in Paris (ballet)']
+
+TITLE and ID of the documents used:
+- Liturgy (ballet) | ID: 278
+- After the Rain (ballet) | ID: 482
+- Alice's Adventures in Wonderland (ballet) | ID: 551
+- Carousel (ballet) | ID: 709
+- An American in Paris (ballet) | ID: 743",Final Answer: ,256,0.96875,test,"['After the Rain' ""Alice's Adventures in Wonderland""
+ 'An American in Paris' 'Carousel' 'Liturgy']",qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What famous person was remembered for serving in the Philippine Marine corps?
+"," ['Lolinato G. To-ong', 'Herminigildo J. Yurong', 'Tomas V. Campo Jr.', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Herminigildo J. Yurong', 'Herminigildo J. Yurong', 'Herminigildo J. Yurong', 'Dominic Del Rosario', 'Herminigildo J. Yurong', 'Herminigildo J. Yurong', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del Rosario', 'Dominic Del",Final Answer: ,256,0.96875,test,"['Custodio Parcon' 'Domingo Deluana' 'Herminigildo Yurong'
+ 'Lolinato To-ong' 'Tomas Campo Jr.']",qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Albert Uderzo illustrated what comic?
+"," ['Asterix and the Great Crossing', 'Asterix and the Chieftain's Shield', 'Asterix and Cleopatra', 'Asterix and the Great Crossing', 'Asterix and the Chieftain's Shield', 'Asterix and the Great Crossing', 'Obelix and Co.', 'Asterix and the Great Crossing', 'Asterix and the Chieftain's Shield', 'Asterix and the Great Crossing', 'Asterix and the Chieftain's Shield', 'Asterix and the Great Crossing', 'Asterix and the Chieftain's Shield', 'Asterix and the Great Crossing', 'Asterix and the Chieftain's Shield', 'Asterix and the Great Crossing', 'Asterix and the Chieftain's Shield', 'Asterix and the Great Crossing', 'Asterix and the Chieftain's Shield', 'Asterix and the Great Crossing', 'Asterix and the Chieftain's Shield', 'Asterix and the Great Crossing', 'Asterix and the Great Crossing', 'Asterix and the Great Crossing', 'Asterix and the Great",Final Answer: ,256,0.96875,test,"['Asterix and Cleopatra' ""Asterix and the Chieftain's Shield""
+ 'Asterix and the Great Crossing' 'Asterix in Belgium' 'Obelix and Co.']",qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Vince Gilligan was the executive producer of what television program?
+", ['The X-Files'],Final Answer: ,256,0.96875,test,"['Battle Creek' 'Better Call Saul' 'Breaking Bad' 'The Lone Gunmen'
+ 'The X-Files']",qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Eduard Čech was the doctoral advisor to whom?
+"," ['Věra Trnková', 'Zdeněk Frolík', 'Ján Nálepka', 'Petr Vopěnka', 'Jiri Dlab']",Final Answer: ,256,0.96875,test,"['Ivo Babuška' 'Petr Vopěnka' 'Vlastimil Dlab' 'Věra Trnková'
+ 'Zdeněk Frolík']",qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which vessels had a home port of Dover?
+"," ['MS Pride of Calais', 'MS Pride of Burgundy', 'MS Pride of Dover']",Final Answer: ,256,0.96875,test,"['MS European Seaway' 'MS Pride of Burgundy' 'MS Pride of Calais'
+ 'MS Pride of Dover' 'MS Spirit of France']",qampari_128k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What did WIlliam Ramsey discover?
+"," ['Neon', 'Argon', 'Helium']",Final Answer: ,256,0.96875,test,['argon' 'helium' 'krypton' 'neon' 'xenon'],qampari_128k

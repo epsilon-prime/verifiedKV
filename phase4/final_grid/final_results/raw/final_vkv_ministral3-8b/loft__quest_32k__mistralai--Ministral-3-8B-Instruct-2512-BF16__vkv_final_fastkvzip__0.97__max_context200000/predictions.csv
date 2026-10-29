@@ -1,0 +1,187 @@
+question,predicted_answer,answer_prefix,max_new_tokens,compression_ratio,split,answers,task
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Novels about families set in Boston and New England.
+"," ['We the Living']
+
+---
+**TITLE:** We the Living
+**ID:** 25
+
+---
+**Explanation:**
+The novel ""We the Living"" by Ayn Rand is set in post-revolutionary Russia, but it deals with themes of family dynamics and survival in a harsh environment, which can be compared to the struggles of families in Boston and New England during challenging times. However, it is important to note that the setting is not Boston or New England.
+
+Since none of the provided documents explicitly mention novels about families set in Boston or New England, I have included ""We the Living"" as it is the closest match in terms of family dynamics and survival themes, though it is not geographically set in Boston or New England.
+
+If you are looking strictly for novels set in Boston or New England, none of the documents provided seem to fit that criterion precisely. Here are the relevant documents that mention Boston:
+
+- **TITLE:** A Case of Need
+**ID:** 29
+  - This novel is set in Boston and involves family dynamics and medical mysteries, but it is not primarily about family life.
+
+If you need a more specific answer, please clarify the criteria further.",Final Answer: ,256,0.96875,test,['A Case of Need'],quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 2009 Indian, or by Chetan Bhagat, novels
+"," ['The 3 Mistakes of My Life', 'Five Point Someone', 'One Night @ the Call Center']
+
+TITLE: The 3 Mistakes of My Life | ID: 128
+TITLE: Five Point Someone | ID: 126
+TITLE: One Night @ the Call Center | ID: 127",Final Answer: ,256,0.96875,test,"['Five Point Someone' 'One Night @ the Call Center'
+ 'The 3 Mistakes of My Life']",quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Hispanic and Latino American novels set anywhere besides North America
+"," []
+
+No documents in the provided list mention Hispanic or Latino American novels set outside of North America. The available documents focus on films, novels, and other works primarily set in Europe, Asia, South America, and other regions, but none specifically identify Hispanic or Latino American novels set outside North America.",Final Answer: ,256,0.96875,test,['At Night We Walk in Circles' 'La reina de América' 'Lost City Radio'],quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Swiss Films about stalking
+"," []
+
+No documents in the provided list mention Swiss films about stalking. The available documents do not contain any relevant information on this topic.",Final Answer: ,256,0.96875,test,['One Way Trip 3D'],quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1971 British thriller novels
+"," []
+
+No documents in the provided list mention British thriller novels published in 1971. The available documents do not include any titles that match the criteria of being a British thriller novel from that year.",Final Answer: ,256,0.96875,test,['Firecrest (novel)' 'Lament for Leto'],quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Critical Jehovah's Witness books.
+"," ['Crisis of Conscience']
+
+TITLE: Crisis of Conscience | ID: 20",Final Answer: ,256,0.96875,test,['Crisis of Conscience'],quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Gene DeWeese novels
+"," ['The Peacekeepers', 'Chain of Attack', 'The Final Nexus']
+
+TITLE: The Peacekeepers | ID: 48
+TITLE: Chain of Attack | ID: 49
+TITLE: The Final Nexus | ID: 50",Final Answer: ,256,0.96875,test,['Chain of Attack' 'The Final Nexus' 'The Peacekeepers'],quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 2010s speculative fiction novels about Washington (state) and the United States.
+"," []
+
+No documents in the provided list mention speculative fiction novels set in Washington (state) or the United States from the 2010s. The available documents do not contain any relevant information to answer this query.",Final Answer: ,256,0.96875,test,['Seveneves'],quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1990's historical films about security and surveillance that are set in England
+"," []
+
+No documents from the provided list mention historical films from the 1990s that are set in England and focus on security or surveillance.",Final Answer: ,256,0.96875,test,['Elizabeth (film)'],quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1890s historical books and novels published by Harper & Brothers
+"," []
+
+No documents in the provided list mention books or novels published by Harper & Brothers from the 1890s. The only reference to Harper & Brothers is in ID: 31, but it pertains to the publication of a novel in 1896, not the 1890s.",Final Answer: ,256,0.96875,test,['Personal Recollections of Joan of Arc'],quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: History/Adventure books about France from 1933
+"," []
+
+No documents from the provided list match the query for **history/adventure books about France from 1933**. The available documents do not include any novels or books that fit this specific criteria.",Final Answer: ,256,0.96875,test,['The Way of the Scarlet Pimpernel'],quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Crime novels that are both American crime novels and 1932 novels
+"," ['The Waxworks Murder', 'Poison In Jest']
+
+TITLE: The Waxworks Murder | ID: 39
+TITLE: Poison In Jest | ID: 40",Final Answer: ,256,0.96875,test,['Poison in Jest' 'The Waxworks Murder'],quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Penal system documentary films that are not about law enforcement in the United States
+"," ['Waseskun']
+
+TITLE: Waseskun | ID: 43",Final Answer: ,256,0.96875,test,['P4W: Prison for Women' 'The Phantom (2021 film)' 'Waseskun'],quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1984 Fantasy novels about the United Kingdom
+"," []
+
+No documents in the provided list mention a **1984 fantasy novel set in the United Kingdom**. The closest entries related to fantasy or UK settings are:
+
+- **Mythago Wood** (ID: 61) – A fantasy novel set in Herefordshire, England, but published in **1984** (not explicitly stated as a fantasy novel in the provided content).
+- **The Gate to Women's Country** (ID: 59) – A post-apocalyptic novel, not fantasy, and set in a future matriarchal society.
+
+If you meant **1984 as a year of publication** (not necessarily the setting), none of the listed documents explicitly describe a **UK-based fantasy novel** from that year. If you clarify further (e.g., specific themes, authors, or settings), I can refine the search.",Final Answer: ,256,0.96875,test,['Mythago Wood' 'Nights at the Circus'],quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Novels published by Hutchinson about film director and producers
+"," []
+
+No documents in the provided list mention novels published by Hutchinson about film directors and producers. The available documents focus on various films, novels, and other media, but none specifically address the query about novels published by Hutchinson on this topic.",Final Answer: ,256,0.96875,test,['Laughing Gas (novel)'],quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Canadian documentaries about homelessness and LGBT
+"," []
+
+No documents in the provided list explicitly address both **homelessness** and **LGBT** themes in the context of **Canadian documentaries**. The available documents focus on a wide range of topics, including films, novels, and historical accounts, but none specifically center on Canadian documentaries about homelessness and LGBT issues.",Final Answer: ,256,0.96875,test,['Ryan (film)'],quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Films set in Italy that are 1982 television films
+"," []
+
+No films set in Italy that are specifically 1982 television films are mentioned in the provided documents.",Final Answer: ,256,0.96875,test,"['Cavalleria rusticana (1982 film)' 'The Deadly Game (1982 film)'
+ 'The Life of Verdi (miniseries)']",quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Erico Verissimo works adapted into films
+"," ['Time and the Wind']
+
+TITLE: Time and the Wind | ID: 15",Final Answer: ,256,0.96875,test,['Time and the Wind'],quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Young adult novels set in Oceania that are not Australian or for children
+"," []
+
+No documents in the provided list match the criteria of young adult novels set in Oceania that are not Australian or for children. The available documents do not include any novels that fit these specific criteria.",Final Answer: ,256,0.96875,test,['Boy at War' 'The Changeover' 'The Firebird Rocket'],quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Iranian novels or books by Sadegh Hedayat
+"," ['The Blind Owl']
+
+TITLE: The Blind Owl | ID: 117",Final Answer: ,256,0.96875,test,['My Uncle Napoleon' 'Savushun' 'The Blind Owl'],quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Propaganda films that are epic and based on actual events.
+"," ['Victory at Entebbe']
+
+TITLE: Victory at Entebbe | ID: 18
+---
+This film is an epic drama based on the actual event of Operation Entebbe, the raid on Entebbe Airport in Uganda and the freeing of Israeli hostages in 1976. It is a made-for-TV film that depicts a significant historical event and includes elements of propaganda by portraying the heroic actions of the Israeli forces.",Final Answer: ,256,0.96875,test,['Doctor Zhivago (film)'],quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1960 Catholic fiction books
+"," ['The Picturegoers']
+
+TITLE: The Picturegoers | ID: 42",Final Answer: ,256,0.96875,test,['The Picturegoers' 'The Violent Bear It Away'],quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: NBC network original films about ideologies that are set in outer space.
+"," []
+
+No documents in the provided list mention NBC network original films about ideologies set in outer space. The available documents do not contain any relevant information on this topic.",Final Answer: ,256,0.96875,test,['Undercover with the KKK'],quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1930 non american crime films
+"," ['The Copper (1930 film)', 'An Obvious Situation']
+
+TITLE: The Copper (1930 film) | ID: 109
+TITLE: An Obvious Situation | ID: 108",Final Answer: ,256,0.96875,test,"['An Obvious Situation' ""That Night's Wife"" 'The Copper (1930 film)']",quest_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 2010s legal mystery drama films
+"," []
+
+No documents in the provided list mention films from the 2010s that are specifically categorized as **legal mystery drama films**. The closest entries related to legal or mystery themes are:
+
+- **Ace Attorney (film)** (2012) (ID: 62) – A legal comedy-drama based on a video game series, but not a mystery drama.
+- **The Deadly Game** (1982 film) (ID: 111) – A thriller, not a legal mystery drama.
+
+No other films from the 2010s in the provided list fit the criteria.",Final Answer: ,256,0.96875,test,['Ace Attorney (film)' 'True Story (film)'],quest_32k

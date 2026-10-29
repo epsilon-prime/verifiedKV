@@ -1,0 +1,127 @@
+question,predicted_answer,answer_prefix,max_new_tokens,compression_ratio,split,answers,task
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which competition did the tennis man Lloyd Harris win?
+"," ['2014 Launceston Tennis International – Men's Singles', '2018 Burnie International – Men's Doubles', '2018 Knoxville Challenger – Singles', '2018 JSM Challenger of Champaign–Urbana – Singles', '2010 PBZ Zagreb Indoors – Singles', '2011 St. Petersburg Open – Singles', '2018 Kunming Open – Men's Doubles', '2018 Kentucky Bank Tennis Championships – Men's Singles', '2019 Burnie International – Men's Doubles', '2019 Launceston Tennis International – Men's Singles']",Final Answer: ,256,0.875,test,"[""2018 Kentucky Bank Tennis Championships – Men's Singles""
+ ""2018 Kunming Open – Men's Doubles""
+ ""2018 Stockton Challenger – Men's Singles""
+ ""2019 Burnie International – Men's Doubles""
+ ""2019 Launceston Tennis International – Men's Singles""]",qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What groups was Walter Schreifels a member of?
+"," ['Gorilla Biscuits', 'Quicksand', 'Rival Schools', 'Dead Heavens', 'Walking Concert']",Final Answer: ,256,0.875,test,"['Dead Heavens' 'Gorilla Biscuits' 'Quicksand' 'Rival Schools'
+ 'Walking Concert']",qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What does the Arab Satellite Communications Organization own?
+"," ['Arabsat-1A', 'Arabsat-1B', 'Arabsat-5A', 'Badr-4', 'INSAT-2DT']",Final Answer: ,256,0.875,test,['Arabsat-1A' 'Arabsat-1B' 'Arabsat-5A' 'Badr-4' 'INSAT-2DT'],qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What are the existing wiki projects ?
+", [],Final Answer: ,256,0.875,test,['Diplopedia' 'RationalWiki' 'Uncyclopedia' 'Veropedia' 'Wiktionary'],qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What are some of the notable seowons ?
+"," ['Sosu Seowon', 'Oksan Seowon, Gyeongju', 'Seoak Seowon', 'Byeongsan Seowon', 'Dosan Seowon']",Final Answer: ,256,0.875,test,"['Byeongsan Seowon' 'Dosan Seowon' 'Oksan Seowon' 'Seoak Seowon'
+ 'Sosu Seowon']",qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: In which sports competition did Reilly Opelka emerge victorious?
+"," ['2015 Wimbledon Championships – Boys' Singles', '2016 Charlottesville Men's Pro Challenger – Singles', '2018 BNP Paribas Primrose Bordeaux – Singles', '2018 Knoxville Challenger – Singles', '2018 JSM Challenger of Champaign–Urbana – Singles']",Final Answer: ,256,0.875,test,"[""2015 Wimbledon Championships – Boys' Singles""
+ ""2016 Charlottesville Men's Pro Challenger – singles""
+ '2018 BNP Paribas Primrose Bordeaux – singles'
+ '2018 JSM Challenger of Champaign–Urbana – singles'
+ '2018 Knoxville Challenger – singles']",qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Who graduated from Middletown High School South?
+"," ['Jeff Kunkel', 'Knowshon Moreno', 'Howard Barbieri', 'Christian Peter', 'Melanie McGuire']",Final Answer: ,256,0.875,test,"['Christian Peter' 'Howard Barbieri' 'Jeff Kunkel' 'Knowshon Moreno'
+ 'Melanie McGuire']",qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What competition did Elias Ymer win?
+"," ['2015 Città di Caltanissetta – Singles', '2016 Open Città della Disfida – Singles', '2017 Internazionali di Tennis del Friuli Venezia Giulia – Singles', '2017 Internationaux de Tennis de Vendée – Singles']",Final Answer: ,256,0.875,test,"['2015 Città di Caltanissetta – singles'
+ '2016 Open Città della Disfida – singles' '2016 Stockholm Open – doubles'
+ '2017 Internationaux de Tennis de Vendée – singles'
+ '2017 Internazionali di Tennis del Friuli Venezia Giulia – singles']",qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Who are Tullahoma High School alumni?
+"," ['Dewon Brazelton', 'Dustin Lynch', 'Jordan Sheffield', 'Mick Walker (footballer, born 1940)', 'Knowshon Moreno', 'Howard Barbieri', 'Christian Peter']",Final Answer: ,256,0.875,test,"['Antonio London' 'Bryan Morris' 'Dewon Brazelton' 'Dustin Lynch'
+ 'Jordan Sheffield']",qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: For which motion picture was Hossein Shahabi responsible for production?
+", [],Final Answer: ,256,0.875,test,"['Conditional release' 'Ghost' 'The Bright Day' 'The Sale'
+ 'The Traces of Light']",qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What lineback was drafted by the Chicago Bears?
+"," ['Ego Ferguson', 'Roquan Smith']",Final Answer: ,256,0.875,test,['Ego Ferguson' 'Jerry Janes' 'Ron Rivera' 'Roquan Smith' 'Will Sutton'],qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Who is employed by the Houston Ballet?
+"," ['Connor Walsh (ballet dancer)', 'Stanton Welch', 'Simon Ball', 'Jun Shuang Huang', 'Amy Fote']",Final Answer: ,256,0.875,test,['Amy Fote' 'Connor Walsh' 'Jun Shuang Huang' 'Simon Ball' 'Stanton Welch'],qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which ballet features dances were choreographed by Christopher Wheeldon?
+"," ['Carousel (A Dance)', 'After the Rain', 'An American in Paris', 'Alice's Adventures in Wonderland', 'Liturgy']",Final Answer: ,256,0.875,test,"['After the Rain' ""Alice's Adventures in Wonderland""
+ 'An American in Paris' 'Carousel' 'Liturgy']",qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Albert Uderzo illustrated what comic?
+"," ['Asterix and the Chieftain's Shield', 'Asterix and Cleopatra', 'Asterix in Belgium', 'Obelix and Co.', 'Asterix and the Great Crossing']",Final Answer: ,256,0.875,test,"['Asterix and Cleopatra' ""Asterix and the Chieftain's Shield""
+ 'Asterix and the Great Crossing' 'Asterix in Belgium' 'Obelix and Co.']",qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Vince Gilligan was the executive producer of what television program?
+"," ['Battle Creek', 'Better Call Saul', 'The Lone Gunmen', 'Breaking Bad']",Final Answer: ,256,0.875,test,"['Battle Creek' 'Better Call Saul' 'Breaking Bad' 'The Lone Gunmen'
+ 'The X-Files']",qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which vessels had a home port of Dover?
+"," ['MS Spirit of France', 'MS Pride of Dover', 'MS Pride of Calais', 'MS European Seaway', 'MS Pride of Burgundy']",Final Answer: ,256,0.875,test,"['MS European Seaway' 'MS Pride of Burgundy' 'MS Pride of Calais'
+ 'MS Pride of Dover' 'MS Spirit of France']",qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What did WIlliam Ramsey discover?
+", ['Krypton'],Final Answer: ,256,0.875,test,['argon' 'helium' 'krypton' 'neon' 'xenon'],qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What group or person identifies itself as Hutterite?
+"," ['Elmendorf Christian Community', 'Schmiedeleut', 'Owa Hutterite Colony', 'Detention River Christian Community', 'Milltown Hutterite Colony']",Final Answer: ,256,0.875,test,"['Detention River Christian Community' 'Elmendorf Christian Community'
+ 'Milltown Hutterite Colony' 'Owa Hutterite Colony' 'Schmiedeleut']",qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Marin Čilić was the victor of which competition?
+"," ['2008 Pilot Pen Tennis – Men's Singles', '2009 Chennai Open – Singles', '2010 Aircel Chennai Open – Singles', '2010 PBZ Zagreb Indoors – Singles', '2011 St. Petersburg Open – Singles']",Final Answer: ,256,0.875,test,"[""2008 Pilot Pen Tennis – Men's Singles"" '2009 Chennai Open – singles'
+ '2010 Aircel Chennai Open – singles' '2010 PBZ Zagreb Indoors – singles'
+ '2011 St. Petersburg Open – singles']",qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Who is a former student from Bareilly College?
+"," ['Mukund Lal Agrawal', 'Mithlesh Kumar', 'Virendra Singh', 'Agys Ramsaran Verma']",Final Answer: ,256,0.875,test,"['Agys Ramsaran Verma' 'Lokendra Singh' 'Mithlesh Kumar'
+ 'Mukund Lal Agrawal' 'Virendra Singh']",qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What TV show originally was broadcast by Studio 23?
+"," ['Breakfast', 'Rush TV', 'Us Girls', 'Wazzup Wazzup', 'Y Speak']",Final Answer: ,256,0.875,test,['Breakfast' 'Rush TV' 'Us Girls' 'Wazzup Wazzup' 'Y Speak'],qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: The Society of Artists has which person as a member?
+"," ['William Wynne Ryland', 'William Pether', 'Edward Kennion', 'Theodora Cowan', 'Eleanor Coade']",Final Answer: ,256,0.875,test,"['Edward Kennion' 'Eleanor Coade' 'Theodora Cowan' 'William Pether'
+ 'William Wynne Ryland']",qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which movie originally had dialogue spoken in Tulu?
+", [],Final Answer: ,256,0.875,test,['Nirel' 'Oriyardori Asal' 'Rang' 'Sompa' 'Suddha'],qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Which contests did Al-Nassr take part in?
+", [],Final Answer: ,256,0.875,test,"['1998 Asian Super Cup' '2015 King Cup Final' '2015 Saudi Super Cup'
+ '2016 King Cup Final' '2017–18 Saudi Professional League']",qampari_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What person was in charge of Burton Albion F.C.?
+"," ['Harold Bodle', 'John Barton (footballer, born 1953)', 'Mick Walker (footballer, born 1940)', 'Bobby Hope']",Final Answer: ,256,0.875,test,['Bobby Hope' 'Harold Bodle' 'John Barton' 'Kevin Poole' 'Mick Walker'],qampari_32k

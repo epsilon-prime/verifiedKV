@@ -1,0 +1,552 @@
+answer,answer_prefix,compression_ratio,predicted_answer,max_new_tokens,task,context_length,question
+"['crewmate' 'tie' 'invincible' 'grade' 'camera' 'id' 'airmail'
+ 'correspondence' 'folder' 'codpiece']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. airmail
+2. folder
+3. camera
+4. tie
+5. step-daughter
+6. step-son
+7. step-grandmother
+8. step-grandfather
+9. step-aunt
+10. step-uncle",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['kill' 'expand' 'wealth' 'puny' 'savage' 'evolution' 'leverage' 'set'
+ 'normalization' 'packet']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **housewife** (155 occurrences)
+2. **intensify** (100 occurrences)
+3. **main** (99 occurrences)
+4. **interchange** (89 occurrences)
+5. **mud** (88 occurrences)
+6. **decision-making** (87 occurrences)
+7. **yesterday** (86 occurrences)
+8. **puncture** (85 occurrences)
+9. **withstand** (84 occurrences)
+10. **house** (83 occurrences)",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['storage' 'moldy' 'brave' 'role' 'dew' 'tempo' 'builder' 'detention'
+ 'dust' 'plenty']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **the**
+2. **of**
+3. **and**
+4. **a**
+5. **in**
+6. **to**
+7. **is**
+8. **it**
+9. **for**
+10. **that**
+
+However, since the list provided is a list of words rather than a text with common English words, the most frequent words in the list itself are:
+
+1. **dust**
+2. **bag**
+3. **candle**
+4. **transport**
+5. **objective**
+6. **wisdom**
+7. **",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['mattock' 'accordion' 'elegant' 'password' 'fix' 'infarction' 'freelance'
+ 'clearing' 'quaint' 'validate']",Answer: The top 10 words that appear most often in the list are:,0.9375," **1. word 2. the 3. and 4. of 5. a 6. to 7. in 8. is 9. it 10. that**
+
+*(Note: Since the list contains only words without context or grammatical structure, the most frequent words are basic function words and common nouns.)*
+
+Here are the actual top 10 most frequent words from the list provided:
+
+1. **word** (appears 10 times)
+2. **the** (appears 10 times)
+3. **and** (appears",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['recorder' 'counterterrorism' 'severity' 'treat' 'stepdaughter'
+ 'forehead' 'margin' 'solitaire' 'radiator' 'confidentiality']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **word** (appears 15000 times)
+2. **the** (appears 14999 times)
+3. **of** (appears 14998 times)
+4. **and** (appears 14997 times)
+5. **a** (appears 14996 times)
+6. **in** (appears 14995 times)
+7. **to** (appears 14994 times)
+8. **is** (appe",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['sugar' 'government' 'pocket' 'research' 'madly' 'liquid' 'uniform'
+ 'downfall' 'tailor' 'sycamore']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **sugar** 2. **water** 3. **sweet** 4. **sweet** (appears multiple times) 5. **sweet** (appears multiple times) 6. **sweet** (appears multiple times) 7. **sweet** (appears multiple times) 8. **sweet** (appears multiple times) 9. **sweet** (appears multiple times) 10. **sweet** (appears multiple times)
+
+Upon closer inspection, the most frequent words",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['dibble' 'brain' 'cabinet' 'swamp' 'zip' 'tune-up' 'comic' 'receptive'
+ 'gutter' 'federation']",Answer: The top 10 words that appear most often in the list are:,0.9375, 1. **word** 2. **the** 3. **and** 4. **of** 5. **a** 6. **in** 7. **to** 8. **is** 9. **it** 10. **that**,120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['hail' 'castanet' 'trellis' 'protect' 'alteration' 'cowbell' 'gadget'
+ 'likeable' 'pen' 'reward']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **pen** (193 occurrences)
+2. **gadget** (100 occurrences)
+3. **likeable** (96 occurrences)
+4. **heart-throb** (50 occurrences)
+5. **snow** (49 occurrences)
+6. **notepad** (48 occurrences)
+7. **teaching** (47 occurrences)
+8. **amuse** (46 occurrences)
+9. **gavel** (45 occurrences)
+10. **shining** (not present in the list, but ""shine",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['pheasant' 'revenant' 'prove' 'magenta' 'billion' 'ark' 'sari'
+ 'reflection' 'buy' 'galoshes']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **sari**
+2. **pheasant**
+3. **galoshes**
+4. **nightclub**
+5. **magenta**
+6. **surgery**
+7. **snowstorm**
+8. **snowman**
+9. **snowmobiling**
+10. **snowboarding**",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['mushroom' 'building' 'loggia' 'compassion' 'checking' 'mineral'
+ 'questionable' 'summary' 'nebulous' 'astrology']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **mineral** 2. **word** 3. **minion** 4. **minute** 5. **minnow** 6. **minimalism** 7. **minibus** 8. **minion** 9. **minute** 10. **mineral** (Note: ""mineral"" appears most frequently, followed by ""word"" and ""minute"" with several occurrences each).
+
+Upon closer inspection, the most common words are:
+
+1. **mineral** (appears 138",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['slump' 'keyboard' 'winter' 'morphology' 'heating' 'illusion' 'cube'
+ 'syndrome' 'zipper' 'fun']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **usage**
+2. **editorial**
+3. **editing**
+4. **youth**
+5. **youthful**
+6. **youthful**
+7. **youth**
+8. **youthful**
+9. **youth**
+10. **youthful**
+
+However, after a more precise count, the top 10 most common words are:
+
+1. **usage**
+2. **editing**
+3. **youth**
+4. **youthful**
+5. **editorial**
+6. **youthful**
+",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['embarrassed' 'clear' 'produce' 'modification' 'jellyfish' 'coordination'
+ 'genre' 'dart' 'cirrus' 'attainment']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **the** (not present in the list, so we'll skip it)
+2. **in** (not present in the list)
+3. **and** (not present in the list)
+4. **of** (not present in the list)
+5. **a** (not present in the list)
+6. **to** (not present in the list)
+7. **is** (not present in the list)
+8. **it** (not present in the list)
+9. **that** (not present in the list)
+10. **for",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['clogs' 'hot' 'amenity' 'assessment' 'inspire' 'reach' 'veal' 'finer'
+ 'foodstuffs' 'legging']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **foodstuffs** (170 times)
+2. **legging** (149 times)
+3. **valentine** (10 times)
+4. **ethereal** (10 times)
+5. **garage** (10 times)
+6. **completion** (9 times)
+7. **missile** (9 times)
+8. **noxious** (9 times)
+9. **kick-off** (9 times)
+10. **ethical** (not present in the list, but the next",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['boundless' 'circumstance' 'unibody' 'registry' 'semester' 'express'
+ 'hesitant' 'beggar' 'whorl' 'actress']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **semester**
+2. **registry**
+3. **counselor**
+4. **neighbor**
+5. **factory**
+6. **inflammation**
+7. **bestseller**
+8. **lifestyle**
+9. **factory**
+10. **neighbor** (Note: ""neighbor"" appears multiple times, but ""semester"" and ""registry"" are the most frequent unique words).
+
+Upon closer inspection, the most frequent words are:
+
+1. **semester** (appears 176 times)
+2. **registry** (",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['film' 'linkage' 'passion' 'mare' 'armour' 'dioxide' 'calico' 'sultan'
+ 'driveway' 'strait']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **dirt** 2. **port** 3. **estimate** 4. **eve** 5. **chastity** 6. **port** 7. **decency** 8. **chastity** 9. **port** 10. **port** (Note: ""port"" appears multiple times, but it is the most frequent word overall.)
+
+Here is the corrected list of the top 10 most common words:
+
+1. **port**
+2. **dirt**
+3. **eve**
+4. **",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['graduate' 'awful' 'molding' 'ethyl' 'characteristic' 'sanction' 'brow'
+ 'tomography' 'change' 'ground']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **the** 2. **of** 3. **and** 4. **a** 5. **in** 6. **to** 7. **is** 8. **it** 9. **that** 10. **for**
+
+*(Note: The words ""the,"" ""of,"" ""and,"" ""a,"" ""in,"" ""to,"" ""is,"" ""it,"" ""that,"" and ""for"" are the most frequent in English and appear frequently in any large text.)*
+
+However, if we are to focus strictly",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['video' 'obsidian' 'sherry' 'logo' 'steamroller' 'gondola' 'leaf'
+ 'literature' 'permit' 'prove']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **seminar**
+2. **watercress**
+3. **endothelium**
+4. **crystal**
+5. **chime**
+6. **understood**
+7. **relax**
+8. **beef**
+9. **relaxation**
+10. **relaxed**",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['prow' 'reparation' 'read' 'waffle' 'licensing' 'simplicity' 'behold'
+ 'rosemary' 'verdant' 'enthusiastic']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **bout** 2. **boutique** 3. **bout** 4. **pork** 5. **multiply** 6. **month** 7. **application** 8. **fight** 9. **racer** 10. **bout**
+
+However, after a more detailed count, the most frequent words are:
+
+1. **bout** (appears 15 times)
+2. **boutique** (appears 10 times)
+3. **multiply** (appe",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['nucleotide' 'law' 'deed' 'mezzanine' 'destiny' 'bidet' 'allergist'
+ 'witch-hunt' 'queue' 'sexuality']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **word** (appears 1000 times)
+2. **the** (appears 1000 times)
+3. **and** (appears 1000 times)
+4. **of** (appears 1000 times)
+5. **a** (appears 1000 times)
+6. **in** (appears 1000 times)
+7. **to** (appears 1000 times)
+8. **is** (appears 1000 times",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['selfish' 'parchment' 'thunder' 'dispatch' 'station' 'pudding' 'comic'
+ 'issue' 'market' 'swift']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. market 2. market 3. market 4. market 5. market 6. market 7. market 8. market 9. market 10. market
+
+Upon closer inspection, the most common words are:
+
+1. market
+2. market
+3. market
+4. market
+5. market
+6. market
+7. market
+8. market
+9. market
+10. market
+
+However, this is due to the repeated entries of ""market"" in the list. Here are the actual top 10 most common",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['furnace' 'drawing' 'feedback' 'highland' 'subset' 'activate' 'clothe'
+ 'prow' 'collagen' 'screeching']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **the** (not present in the list, so we'll skip it)
+2. **of** (not present in the list)
+3. **and** (not present in the list)
+4. **a** (not present in the list)
+5. **in** (not present in the list)
+6. **to** (not present in the list)
+7. **is** (not present in the list)
+8. **it** (not present in the list)
+9. **that** (not present in the list)
+10. **for",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['belligerent' 'pith' 'economic' 'commandment' 'testimonial' 'area'
+ 'brief' 'message' 'assess' 'disposal']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **word** (appears 1000 times)
+2. **the** (appears 1000 times)
+3. **and** (appears 1000 times)
+4. **of** (appears 1000 times)
+5. **a** (appears 1000 times)
+6. **in** (appears 1000 times)
+7. **to** (appears 1000 times)
+8. **is** (appears 1000 times",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['management' 'grain' 'policy' 'hyphenation' 'formal' 'integration'
+ 'puppet' 'colonisation' 'receptive' 'might']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **name** (18 times)
+2. **somebody** (10 times)
+3. **spill** (9 times)
+4. **gazelle** (9 times)
+5. **saw** (8 times)
+6. **middleman** (7 times)
+7. **prevalence** (7 times)
+8. **pricing** (7 times)
+9. **ownership** (7 times)
+10. **something** (6 times)",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['slang' 'smoke' 'disagreement' 'blood' 'jerk' 'eternity' 'top' 'meme'
+ 'protocol' 'elbow']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **the** (not present in the list, so we'll skip it)
+2. **of** (not present in the list)
+3. **and** (not present in the list)
+4. **a** (not present in the list)
+5. **in** (not present in the list)
+6. **to** (not present in the list)
+7. **is** (not present in the list)
+8. **it** (not present in the list)
+9. **that** (not present in the list)
+10. **for",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['aluminum' 'somersault' 'gazebo' 'pennant' 'full' 'former' 'clearing'
+ 'speakerphone' 'eat' 'lace']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **eat**
+2. **reader**
+3. **quadrant**
+4. **sir**
+5. **fisting**
+6. **directory**
+7. **garbage**
+8. **manufacture**
+9. **quadrant**
+10. **providence** (Note: ""quadrant"" appears twice in the top 10 due to its frequency, but it is the same word.)
+
+Here is the corrected list of the top 10 most common words:
+
+1. **eat**
+2. **reader**
+3. **quadrant**
+4",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['open' 'bran' 'teepee' 'floor' 'teller' 'deposition' 'utility'
+ 'creationist' 'swordfish' 'congress']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **the** (not present in the list, so we'll skip it)
+2. **secretariat**
+3. **garbage**
+4. **noisy**
+5. **applaud**
+6. **bathhouse**
+7. **moonshine**
+8. **separation**
+9. **piano**
+10. **radiate**
+
+Given the list provided, the most frequent words are:
+
+1. **the** (not present in the list)
+2. **secretariat** (appears 159 times)
+3. **garbage",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['wisteria' 'robot' 'supervise' 'codling' 'stale' 'overexertion' 'fruit'
+ 'insurrection' 'envy' 'bring']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **word** 2. **the** 3. **and** 4. **of** 5. **a** 6. **in** 7. **to** 8. **is** 9. **it** 10. **that**
+
+However, since the list provided is a list of words rather than a text, the most frequent words are:
+
+1. **word**
+2. **the**
+3. **and**
+4. **a**
+5. **in**
+6. **to**
+7. **is**
+8.",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['bulldozer' 'employee' 'generate' 'drapes' 'lifetime' 'exclamation'
+ 'indigence' 'undergo' 'equipment' 'snowflake']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **the** (not present in the list, but if we consider the words themselves without excluding any, the most frequent words are):
+
+Given the list provided, here are the top 10 most common words:
+
+1. **word** (appears 10 times)
+2. **jerk** (appears 10 times)
+3. **flintlock** (appears 10 times)
+4. **change** (appears 10 times)
+5. **difference** (appears 10 times)
+6. **jerk",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['punishment' 'ride' 'school' 'blush' 'defeated' 'tearful' 'fact' 'refuse'
+ 'abortion' 'cricketer']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **houseboat** 2. **house** 3. **housework** 4. **housewife** 5. **household** 6. **home** 7. **homeownership** 8. **home** (appears again) 9. **home** (appears again) 10. **home** (appears again)
+
+However, upon a more detailed count, the actual top 10 most common words are:
+
+1. **house**
+2. **home**
+3. **housework**
+4.",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['belong' 'breastplate' 'absent' 'stump' 'excursion' 'continue'
+ 'chromolithograph' 'kit' 'block' 'shingle']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **the** (not present in the list)
+Since the list provided does not contain the word ""the,"" I will provide the top 10 most common words from the list based on frequency:
+
+1. **excursion**
+2. **marriage**
+3. **marriage**
+4. **marriage**
+5. **marriage**
+6. **marriage**
+7. **marriage**
+8. **marriage**
+9. **marriage**
+10. **marriage**
+
+Upon closer inspection, it seems there is a mistake in my previous response. Here",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['alpenglow' 'ringworm' 'estuary' 'compulsion' 'bee' 'clap' 'fasten'
+ 'high' 'fiesta' 'nick']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **fiesta**
+2. **ringworm**
+3. **fasten**
+4. **fast**
+5. **independent**
+6. **fiberglass**
+7. **fingerling**
+8. **favorite** (Note: ""favorite"" is not present, so it is replaced by)
+9. **favorite** (not present, so replaced by)
+10. **favorite** (not present, so replaced by)
+
+Upon re-evaluation, here are the actual top 10 most common words:
+
+1. **fiesta**",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['define' 'router' 'preservation' 'hospice' 'dew' 'vengeful' 'church'
+ 'bellows' 'modern' 'propaganda']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **church** (180 times)
+2. **modern** (179 times)
+3. **hospital** (160 times)
+4. **wife** (158 times)
+5. **women** (157 times)
+6. **women** (156 times)
+7. **women** (155 times)
+8. **women** (154 times)
+9. **women** (153 times)
+10. **women** (152 times)
+
+*Note",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['loafer' 'surge' 'reunion' 'residence' 'energy' 'hare' 'sprag' 'debris'
+ 'gamma-ray' 'transparency']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **loafer**
+2. **pathway**
+3. **moat**
+4. **renaissance**
+5. **polarisation**
+6. **deodorant**
+7. **significance**
+8. **foresee**
+9. **gentleman**
+10. **moon**",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['coral' 'crewmen' 'scientific' 'trinket' 'underweight' 'tassel' 'yew'
+ 'caramel' 'magazine' 'campus']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **magazine** (1900+ occurrences)
+2. **campus** (1000+ occurrences)
+3. **word** (1000+ occurrences)
+4. **colloquy** (1000+ occurrences)
+5. **madam** (1000+ occurrences)
+6. **hear** (1000+ occurrences)
+7. **casserole** (1000+ occurrences)
+8. **safe** (1000+ occurrences)
+9. **laparoscope",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['uniform' 'helmet' 'scallion' 'sledge' 'reorganization' 'pause'
+ 'testimony' 'research' 'lawn' 'tutu']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **lawn**
+2. **souvenir**
+3. **psychology**
+4. **lesson**
+5. **paw**
+6. **subtitle**
+7. **psychiatry**
+8. **souvenir**
+9. **souvenir**
+10. **souvenir**
+
+Upon closer inspection, the most frequent words are:
+
+1. **lawn** (appears 190 times)
+2. **souvenir** (appears 161 times)
+3. **psychology** (appears 140",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['jalapeño' 'garb' 'consolidate' 'veneer' 'recommend' 'yak' 'pink' 'mushy'
+ 'road' 'hotdog']",Answer: The top 10 words that appear most often in the list are:,0.9375," **1. road, 2. word, 3. word, 4. word, 5. word, 6. word, 7. word, 8. word, 9. word, 10. word**
+
+*(Note: Upon closer inspection, the word ""word"" appears frequently in the list, but it seems like a mistake or typo in the list itself. The actual most common words, excluding ""word,"" are:)*
+
+Here are the top 10 most common words in the list (excluding ""word"" and other potential errors):
+
+1.",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['eliminate' 'boyfriend' 'diagram' 'pajamas' 'attenuation' 'funny'
+ 'cloakroom' 'pollutant' 'flame' 'month']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **seafood**
+2. **marketing**
+3. **lackadaisical**
+4. **chutney**
+5. **chopstick**
+6. **chopsticks**
+7. **chopstick**
+8. **chopstick**
+9. **chopstick**
+10. **chopstick**
+
+Upon closer inspection, it appears that the word ""chopstick"" and its variations (including ""chopsticks"") are the most frequent, but if we exclude these and focus on other words, the top 10 most common",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['inlay' 'judicious' 'library' 'tendency' 'commercial' 'rationale'
+ 'blueberry' 'goddess' 'electronics' 'accomplish']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **luxuriant** (168 occurrences)
+2. **fork** (109 occurrences)
+3. **athletics** (108 occurrences)
+4. **buyer** (107 occurrences)
+5. **guide** (106 occurrences)
+6. **convection** (105 occurrences)
+7. **validity** (104 occurrences)
+8. **touch** (103 occurrences)
+9. **drummer** (102 occurrences)
+10. **piracy** (101",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['supplier' 'solid' 'sphere' 'separation' 'ray' 'captor' 'clergyman'
+ 'tongue' 'yawn' 'mutt']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **word** 2. **class** 3. **weekender** 4. **sick** 5. **tsunami** 6. **crush** 7. **classmate** 8. **doorway** 9. **classroom** 10. **classmate** (Note: ""classmate"" appears frequently, but ""class"" is the most common single word.) Here is the corrected list of the top 10 most common words:
+
+1. **class**
+2. **word**
+3. **weekender",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['gorgeous' 'randomization' 'learning' 'blackness' 'crust' 'cold' 'bomb'
+ 'drill' 'wingtip' 'enrollment']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **word** (1)
+2. **the** (not present in the list)
+3. **and** (not present in the list)
+4. **of** (not present in the list)
+5. **a** (not present in the list)
+6. **to** (not present in the list)
+7. **in** (not present in the list)
+8. **is** (not present in the list)
+9. **it** (not present in the list)
+10. **that** (not present in the list)
+
+Given the",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['referendum' 'careful' 'farmer' 'withstand' 'snatch' 'horse' 'interject'
+ 'songbird' 'riverbed' 'leaver']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **sweat**, 2. **sweatshirt**, 3. **sweatsuit**, 4. **sweater**, 5. **sweatshop**, 6. **sweat**, 7. **sweat**, 8. **sweat**, 9. **sweat**, 10. **sweat**.
+
+Upon closer inspection, it appears that the word ""sweat"" is the most frequent word, appearing multiple times. Here are the top 10 most common words",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['chug' 'ephemeris' 'bag' 'mud' 'sidecar' 'integration' 'chalk' 'coverall'
+ 'upstairs' 'oar']",Answer: The top 10 words that appear most often in the list are:,0.9375, 1. **professor** 2. **elegant** 3. **ham** 4. **dirt** 5. **freon** 6. **angstrom** 7. **hapless** 8. **disability** 9. **trinket** 10. **greatness**,120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['calibre' 'tortellini' 'building' 'allegation' 'reality' 'silk'
+ 'posterior' 'furniture' 'chow' 'present']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **chow** 2. **gospip** 3. **doggie** 4. **lettuce** 5. **wrench** 6. **satisfying** 7. **sidestream** 8. **exhibit** 9. **landform** 10. **glut**
+
+Upon closer inspection, it appears there was a mistake in the previous response. The correct top 10 most common words are:
+
+1. **chow**
+2. **lettuce**
+3. **doggie**
+4.",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['attorney' 'loss' 'highway' 'obeisant' 'pupa' 'cross-stitch' 'off-ramp'
+ 'guarded' 'sabre' 'leeway']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **company** (15 occurrences)
+2. **video** (14 occurrences)
+3. **crew** (13 occurrences)
+4. **breathe** (12 occurrences)
+5. **tract** (12 occurrences)
+6. **verdant** (12 occurrences)
+7. **fall** (11 occurrences)
+8. **ashram** (11 occurrences)
+9. **company** (already counted)
+10. **video** (already counted)
+
+Since ""company"" and ""video"" are tied for the top spots,",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['undesirable' 'sheet' 'universe' 'smoking' 'squid' 'opportunity' 'facet'
+ 'scale' 'pavement' 'laborer']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **word** (15000+ occurrences)
+2. **the** (not present in the list, but if we consider the list as a whole, it would be the most frequent)
+3. **of** (not present in the list)
+4. **and** (not present in the list)
+5. **a** (not present in the list)
+6. **in** (not present in the list)
+7. **to** (not present in the list)
+8. **is** (not present in the list)
+9. **it",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['nectar' 'mozzarella' 'province' 'garb' 'pearl' 'beef' 'catacomb'
+ 'interloper' 'puncture' 'counterpart']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **mozzarella**
+2. **garb**
+3. **step-daughter**
+4. **step-grandmother**
+5. **step-son**
+6. **step-aunt**
+7. **step-uncle**
+8. **step-mother**
+9. **step-father**
+10. **step-sister**",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['meal' 'stallion' 'intent' 'perform' 'silver' 'leader' 'entrepreneur'
+ 'poultry' 'fingerling' 'default']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **balloon** 2. **marxism** 3. **gliding** 4. **fairy** 5. **hyphenation** 6. **shoelace** 7. **shoehorn** 8. **shoestring** 9. **shoe** 10. **shoat**
+
+However, upon closer inspection and a more accurate count, the top 10 most common words are:
+
+1. **balloon**
+2. **marxism**
+3. **gliding**
+",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['avocado' 'package' 'gymnast' 'hospitable' 'alliance' 'worry' 'yarmulke'
+ 'loft' 'null' 'gauge']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **word** (appears 1000 times)
+2. **the** (appears 1000 times)
+3. **a** (appears 1000 times)
+4. **and** (appears 1000 times)
+5. **of** (appears 1000 times)
+6. **in** (appears 1000 times)
+7. **to** (appears 1000 times)
+8. **is** (appears 1000 times",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['advocate' 'forgery' 'formal' 'be' 'kick' 'cigarette' 'foodstuffs'
+ 'swanky' 'beak' 'legging']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **be** 2. **the** 3. **and** 4. **of** 5. **a** 6. **in** 7. **to** 8. **is** 9. **it** 10. **for**
+
+*(Note: The list provided is not a typical English text, but rather a list of random words. The most frequent words are likely to be common English words like ""be,"" ""the,"" ""and,"" etc.)*
+
+However, if we consider the actual frequency of words in the provided list",120,cwe,131072,Question: What are the 10 most common words in the above list? 
+"['sofa' 'nervous' 'stew' 'recondite' 'downgrade' 'peacoat' 'bush' 'start'
+ 'locomotive' 'bid']",Answer: The top 10 words that appear most often in the list are:,0.9375," 1. **sofa**
+2. **therapist**
+3. **therapy**
+4. **therapeutic**
+5. **therapies**
+6. **therapist**
+7. **therapist**
+8. **therapist**
+9. **therapist**
+10. **therapist**
+
+However, after a more detailed analysis, the top 10 most common words are:
+
+1. **sofa**
+2. **therapist**
+3. **therapy**
+4. **therapeutic**
+5. **therapist**
+6",120,cwe,131072,Question: What are the 10 most common words in the above list? 

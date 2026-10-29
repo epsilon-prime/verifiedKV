@@ -1,0 +1,248 @@
+question,predicted_answer,answer_prefix,max_new_tokens,compression_ratio,split,answers,task
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What is the great mosque constructed at the site of the old temple in the city originating christianity in Rome, Egypt, Judea and the country for Vasilopita?
+"," ['Al-Aqsa Mosque', 'Israel']
+
+TITLE: Al-Aqsa Mosque | ID: 204
+TITLE: Israel | ID: 208",Final Answer: ,256,0.96875,test,['Al - Aqsa Mosque'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What label was bought in the UK by the other major New York broadcast that is in addition to ABC, and the one who released Stand Against Fear?
+"," ['CBS', 'Sony Music']
+
+**TITLE and ID of the documents used:**
+- TITLE: Sony Music | ID: 107
+- TITLE: The Biggest Loser Brunei: Lose It All | ID: 4 (for context of Sony Music's involvement in music distribution, though not directly related to the query, it is relevant to Sony's broader role in music industry)
+
+**Explanation:**
+- The query asks about the label that was bought in the UK by another major New York broadcast network besides ABC and the label that released ""Stand Against Fear.""
+- The document titled ""Sony Music"" (ID: 107) mentions that CBS initially established its UK distribution through the acquisition of Oriole Records and later merged with Columbia Records, which was owned by CBS.
+- The document titled ""Sony Music"" (ID: 107) also mentions that Sony Music Entertainment is a major music corporation, and it was formed after the acquisition of CBS's music division by Sony Corporation of Japan.
+- ""Stand Against Fear"" is not mentioned in the provided documents, but it is known that Sony Music is a major label that releases a wide range of music, including albums by artists such as Bruce Springsteen, whose",Final Answer: ,256,0.96875,test,['Oriole Records.'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: When did the rx 350 model of the luxury division of the company that built Daihatsu boon change body style?
+"," ['Super Nintendo Entertainment System', '129']
+
+TITLE: Super Nintendo Entertainment System | ID: 126
+TITLE: Pinball Quest | ID: 129
+
+---
+**Explanation:**
+The question asks about the **RX 350 model** of the luxury division of the company that built the **Daihatsu Boon**. The **Daihatsu Boon** is produced by **Daihatsu**, which is a subsidiary of **Toyota**. The luxury division of Toyota is **Lexus**.
+
+The **Lexus RX 350** is mentioned in the document **Super Nintendo Entertainment System (ID: 126)**, but the relevant document for the **RX 350 model** and its body style change is **Scion xB (ID: 31)** and **Acura RLX (ID: 17)**. However, the **Lexus RX 350** is not directly mentioned in the provided documents.
+
+Upon reviewing the documents, the **Lexus RX 350** is not explicitly mentioned, but the **Lexus RX** facelift is described in **Lexus RX (ID: 29)**. The RX ",Final Answer: ,256,0.96875,test,['Sales began worldwide in April 2012'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What year did the Governor of the city where the basilica named after the same saint as the one that Mantua Cathedral is dedicated to die?
+"," ['Governator of Vatican City', '36']
+
+**TITLE and ID of the documents used:**
+- TITLE: Governor of Vatican City | ID: 36
+- TITLE: St. Peter's Basilica | ID: 37
+
+**Explanation:**
+The Mantua Cathedral is dedicated to Saint Andrew (San Andrea), but the basilica in Vatican City named after the same saint is St. Peter's Basilica (Basilica di San Pietro), dedicated to Saint Peter. The Governor of Vatican City, Camillo Serafini, died in 1952, not 1958 as previously mentioned in the example context.
+
+However, the question seems to be asking for the year the Governor of Vatican City died, which is not directly related to the basilica. The Governor of Vatican City, Camillo Serafini, died in 1952.
+
+Since the question specifically asks for the year the Governor of Vatican City died, and the only document mentioning the Governor of Vatican City is ID: 36, the year of his death is not explicitly stated in the document provided.
+
+Given the context of the question and the documents, it seems there might be a misunderstanding. The closest relevant information is that the post",Final Answer: ,256,0.96875,test,['1952'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What UK label was bought by the company which, along with ABC and the network which broadcasted Hello, Larry, is the other major broadcaster based in NY?
+"," ['TITLE: Sony Music | ID: 107', 'TITLE: New York City | ID: 26']
+
+The UK label bought by the company (Sony Music) is part of Sony Corporation of America, which is the parent company of Sony Music Entertainment. The other major broadcaster based in New York is NBC, which is mentioned in the context of the network that broadcasted ""Hello, Larry"" along with ABC.",Final Answer: ,256,0.96875,test,['Oriole Records.'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What year did the country where Siddhi Savetsila was born form an alliance with Japan?
+","1613
+
+TITLE: Pacific War | ID: 81
+TITLE: Siddhi Savetsila | ID: 78",Final Answer: ,256,0.96875,test,['1941'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: The Beach was filmed in what location of the country that contains the birth city of Siddhi Savetsila?
+"," ['Koh Phi Phi']
+
+TITLE: The Beach (film) | ID: 79
+TITLE: Siddhi Savetsila | ID: 78",Final Answer: ,256,0.96875,test,['island Koh Phi Phi'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Arie Supriyatna's birth country was one participant in a Commission of Truth and Friendship. Who is the president of the other country that participated?
+"," ['Susilo Bambang Yudhoyono']
+
+TITLE: Indonesia–Timor Leste Commission of Truth and Friendship | ID: 220
+TITLE: Arie Supriyatna | ID: 219",Final Answer: ,256,0.96875,test,['Francisco Guterres'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What is the meaning of the word that is also a majority religion in the area that became India when the country that withdrew its forces was created in the Arabic dictionary?
+"," ['Hindu']
+
+TITLE: Hindus | ID: 230
+TITLE: Partition of India | ID: 231",Final Answer: ,256,0.96875,test,['the country of India'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Widely practiced in the region having the second largest rain-forest in the world, how long ago did this religion arrive in Zhejiang?
+","1400 years ago
+
+TITLE: Southeast Asia | ID: 156
+TITLE: Zhejiang | ID: 157",Final Answer: ,256,0.96875,test,"['1,400 years']",musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What is the name of the famous bridge in the city where the composer of La Silvia was born?
+"," ['Rialto Bridge']
+
+TITLE: Antonio Vivaldi | ID: (Not explicitly mentioned in the documents, but inferred from the context of the opera ""La Silvia"" and the city of Venice)
+TITLE: Rialto Bridge | ID: 98
+
+Since the document does not explicitly mention the city where Antonio Vivaldi was born, but ""La Silvia"" is an opera by Vivaldi, and Venice is the city most closely associated with him, the Rialto Bridge in Venice is the famous bridge in question.",Final Answer: ,256,0.96875,test,['Rialto Bridge'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: When did the merchant of the city where the composer of Al gran sole carico d'amore takes place?
+"," ['The Beach (film)', '1996']
+
+---
+**TITLE and ID of the documents used:**
+- **TITLE:** The Beach (film) | **ID:** 79
+
+---
+**Explanation:**
+The film *The Beach* (2000), which is based on the novel of the same name by Alex Garland, was filmed on the Thai island of **Koh Phi Phi**. The novel and film are set in Thailand, where the composer of the opera *Al gran sole carico d'amore*, Luigi Nono, was active. However, the opera itself was composed in the 1970s, and the film *The Beach* was released in 2000, which is the closest relevant date tied to Thailand in the provided documents.
+
+Since the question specifically asks for the year related to the city where the composer of *Al gran sole carico d'amore* takes place, and the only document that mentions Thailand is *The Beach (film)*, which was released in 2000, it is inferred that the year associated with the city in Thailand (Koh Phi Phi) is **1996**, the year the novel *The Beach* was published. This is the closest contextual year",Final Answer: ,256,0.96875,test,['16th - century'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Who is the president of the newly declared independent country that formed the Timor Leste Commission of Truth and Friendship with the country where Pantar is found?
+"," ['Francisco Guterres', 'Indonesia']
+
+TITLE: East Timor | ID: 218
+TITLE: Blagar language | ID: 221",Final Answer: ,256,0.96875,test,['Francisco Guterres'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What is the name of the famous bridge in the place of birth of who composed the Concerto in C Major Op 3 6?
+"," ['Comstar wheel']
+
+TITLE: Comstar wheel | ID: 8",Final Answer: ,256,0.96875,test,['Rialto Bridge'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Where do greyhound buses leave from the in the city where the headquarters of the production company which produced A Cosmic Christmas is located?
+"," ['Toronto Coach Terminal']
+
+TITLE: Toronto Coach Terminal | ID: 53
+TITLE: MacGruder and Loud | ID: 40",Final Answer: ,256,0.96875,test,['Toronto Coach Terminal'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Who was a prominent figure at the radio division of the network that created the version of The Biggest Loser set in the country where Seria is?
+"," ['Walter Sabo']
+
+TITLE: The Biggest Loser Brunei: Lose It All | ID: 4
+TITLE: Seria, Belait | ID: 24
+TITLE: Adult contemporary music | ID: 5",Final Answer: ,256,0.96875,test,['Walter Sabo'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What were the Genesis's advantages over the platform that plays Drac's Night Out?
+"," ['Super Nintendo Entertainment System', '127']
+
+TITLE: Super Nintendo Entertainment System | ID: 126
+TITLE: Super Nintendo Entertainment System | ID: 128
+TITLE: Drac's Night Out | ID: 125
+
+The Super Nintendo Entertainment System (SNES) had several advantages over the Nintendo Entertainment System (NES) platform that was intended to play *Drac's Night Out*:
+
+1. **Improved Graphics and Sound**: The SNES introduced 16-bit graphics and improved sound capabilities compared to the 8-bit NES, allowing for more detailed and complex visuals and richer audio.
+
+2. **Enhanced Processing Power**: The SNES had a more powerful processor, which allowed for more complex game mechanics and better performance.
+
+3. **Larger Game Cartridges**: The SNES used larger cartridges, which allowed for more game data to be stored, enabling more detailed and expansive games.
+
+4. **Better Game Library**: By the time the SNES was released, Nintendo had a more extensive and diverse library of games, including many third-party titles, which were not available on the NES.
+
+5. **Multiplayer Capabilities**: The SNES supported multiplayer gaming with",Final Answer: ,256,0.96875,test,['built on 16-bit architectures and offered improved graphics and sound'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: When was the Palau de la Generalitat constructed in the city where Martin of the place where Castiliscar is located died?
+"," ['The Malbork Castle', '1309']
+
+TITLE: Gothic architecture | ID: 50
+TITLE: Martin of Aragon | ID: 51
+TITLE: Castiliscar | ID: 49
+
+The Palau de la Generalitat was not constructed in the city where Martin of Aragon died. Instead, the Malbork Castle was built in the 13th and 14th centuries, and Martin of Aragon died in 1410. The city mentioned in the context of Castiliscar is Zaragoza, Spain, and Martin of Aragon is associated with Olite, Spain.
+
+The correct answer should be:
+- Martin of Aragon died in Olite, Spain.
+- The Palau de la Generalitat in Barcelona was built in the 15th century (1403).
+
+So, the correct documents and information are:
+
+TITLE: Gothic architecture | ID: 50
+TITLE: Martin of Aragon | ID: 51
+
+The Palau de la Generalitat in Barcelona was built in the 15th century, not in the context of Martin of Aragon's death.
+
+Since the question is not directly answerable with the provided documents, here is the closest possible answer based",Final Answer: ,256,0.96875,test,['built in the 15th century'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: When did the U.S. and the country in effective control of political and military functions of the group the People's Socialist Republic of Albania was a member of become allies?
+"," ['1968']
+
+TITLE: Allies of World War II | ID: 192
+TITLE: Warsaw Pact | ID: 193",Final Answer: ,256,0.96875,test,['June 1941'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What team does the person who hit the first home run at the new stadium in South Bronx play for?
+"," ['New York Yankees']
+
+TITLE: Yankee Stadium | ID: 189
+TITLE: Jorge Posada | ID: 191",Final Answer: ,256,0.96875,test,['New York Yankees'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: When did the Governorship end of the city where the author of Paenitentiam Agere died?
+"," ['Governator of Vatican City', '36']
+
+**TITLE and ID of the documents used:**
+- TITLE: Governor of Vatican City | ID: 36
+
+**Explanation:**
+The document titled ""Governator of Vatican City"" (ID: 36) states that the post of Governor of Vatican City was held by Marchese Camillo Serafini from the foundation of the state in 1929 until his death in 1952. The post was not succeeded, effectively ending the governorship role. Pope John XXIII, whose encyclical ""Paenitentiam Agere"" was issued in 1962, died in 1963, but the document does not directly mention his death date in relation to the governorship.
+
+However, the question seems to be asking about the end of the governorship role in Vatican City, which was not officially continued after Camillo Serafini's death in 1952. The document clearly indicates that the post was not filled again after his death. Therefore, the relevant document is ID: 36.",Final Answer: ,256,0.96875,test,['1952'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What is the name of the famous bridge in the birth city of the composer of Scanderbeg?
+"," ['Rialto Bridge']
+
+TITLE: Antonio Vivaldi | ID: (not explicitly mentioned in the documents, but inferred from the context of the opera ""Scanderbeg"" and the city of Venice)
+TITLE: Rialto Bridge | ID: 98
+
+**Explanation:**
+- The opera ""Scanderbeg"" (ID: 100) was composed by Antonio Vivaldi.
+- Antonio Vivaldi was born in Venice, Italy.
+- The famous bridge in Venice is the Rialto Bridge (ID: 98).",Final Answer: ,256,0.96875,test,['Rialto Bridge'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What year did the country where Ercole Manfredi was born form an alliance with Japan?
+","1941
+
+TITLE: Pacific War | ID: 81
+TITLE: Ercole Manfredi | ID: 83",Final Answer: ,256,0.96875,test,['1941'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What year did the country that includes the birth city of Bodindecha form an alliance with Japan?
+"," ['1941']
+
+TITLE: Pacific War | ID: 81
+TITLE: Minyekyawdin | ID: 74",Final Answer: ,256,0.96875,test,['1941'],musique_32k
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: What was Nintendo's limit on games per developer per year for the platform with an abbreviated name that had the game Sunman?
+"," ['Nintendo Entertainment System']
+
+TITLE: Nintendo Entertainment System | ID: 124
+TITLE: Sunman (video game) | ID: 127",Final Answer: ,256,0.96875,test,['five'],musique_32k

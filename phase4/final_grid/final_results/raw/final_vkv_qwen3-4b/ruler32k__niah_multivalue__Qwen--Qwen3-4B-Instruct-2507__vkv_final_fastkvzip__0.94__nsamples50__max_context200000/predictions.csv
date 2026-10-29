@@ -1,0 +1,301 @@
+answer,answer_prefix,compression_ratio,predicted_answer,max_new_tokens,task,context_length,question
+['2294615' '5962567' '2696860' '9517619'],The special magic numbers for detailed-mandate mentioned in the provided text are,0.9375,":
+
+*   2696860
+*   5962567
+*   9517619
+*   2294615",128,niah_multivalue,32768,What are all the special magic numbers for detailed-mandate mentioned in the provided text? 
+['5081983' '6137284' '7191135' '8939993'],The special magic numbers for vivacious-circadian mentioned in the provided text are,0.9375,":
+
+*   7191135
+*   6137284
+*   8939993
+*   5081983",128,niah_multivalue,32768,What are all the special magic numbers for vivacious-circadian mentioned in the provided text? 
+['9249789' '2530793' '8885465' '6837817'],The special magic numbers for teeny-prohibition mentioned in the provided text are,0.9375,":
+
+*   8885465
+*   2530793
+*   9249789
+*   6837817",128,niah_multivalue,32768,What are all the special magic numbers for teeny-prohibition mentioned in the provided text? 
+['7802999' '8175669' '9644974' '6501696'],The special magic numbers for subdued-dash mentioned in the provided text are,0.9375,":
+
+*   9644974
+*   8175669
+*   6501696
+*   7802999",128,niah_multivalue,32768,What are all the special magic numbers for subdued-dash mentioned in the provided text? 
+['6080553' '9950276' '2567468' '9431778'],The special magic numbers for crooked-reduction mentioned in the provided text are,0.9375,":
+
+*   2567468
+*   9950276
+*   9431778
+*   6080553",128,niah_multivalue,32768,What are all the special magic numbers for crooked-reduction mentioned in the provided text? 
+['5960015' '6142147' '8481225' '8149041'],The special magic numbers for important-formation mentioned in the provided text are,0.9375,":
+
+1.  8481225
+2.  6142147
+3.  8149041
+4.  5960015",128,niah_multivalue,32768,What are all the special magic numbers for important-formation mentioned in the provided text? 
+['6243275' '5276341' '7279729' '3560856'],The special magic numbers for needless-measles mentioned in the provided text are,0.9375,":
+
+*   7279729
+*   5276341
+*   3560856
+*   6243275",128,niah_multivalue,32768,What are all the special magic numbers for needless-measles mentioned in the provided text? 
+['8767916' '8115687' '9924365' '7363203'],The special magic numbers for high-pitched-chuck mentioned in the provided text are,0.9375,":
+
+*   9924365
+*   8115687
+*   7363203
+*   8767916",128,niah_multivalue,32768,What are all the special magic numbers for high-pitched-chuck mentioned in the provided text? 
+['9745141' '4708481' '7938388' '6041569'],The special magic numbers for debonair-bondsman mentioned in the provided text are,0.9375,":
+
+*   7938388
+*   4708481
+*   6041569
+*   9745141",128,niah_multivalue,32768,What are all the special magic numbers for debonair-bondsman mentioned in the provided text? 
+['5096953' '9911492' '7913081' '4020853'],The special magic numbers for decorous-vanilla mentioned in the provided text are,0.9375,":
+
+*   7913081
+*   9911492
+*   4020853
+*   5096953",128,niah_multivalue,32768,What are all the special magic numbers for decorous-vanilla mentioned in the provided text? 
+['6404139' '3488628' '2101965' '3117143'],The special magic numbers for brash-sundial mentioned in the provided text are,0.9375,":
+
+*   2101965
+*   3488628
+*   3117143
+*   6404139",128,niah_multivalue,32768,What are all the special magic numbers for brash-sundial mentioned in the provided text? 
+['2654371' '8876742' '6372622' '4407913'],The special magic numbers for overwrought-back-up mentioned in the provided text are,0.9375,":
+
+*   6372622
+*   8876742
+*   4407913
+*   2654371",128,niah_multivalue,32768,What are all the special magic numbers for overwrought-back-up mentioned in the provided text? 
+['9562677' '8473959' '1933413' '8607331'],The special magic numbers for callous-hazel mentioned in the provided text are,0.9375,":
+
+*   1933413
+*   8473959
+*   8607331
+*   9562677",128,niah_multivalue,32768,What are all the special magic numbers for callous-hazel mentioned in the provided text? 
+['4699685' '7631419' '1919088' '1128967'],The special magic numbers for animated-century mentioned in the provided text are,0.9375,":
+
+1.  1919088
+2.  7631419
+3.  1128967
+4.  4699685",128,niah_multivalue,32768,What are all the special magic numbers for animated-century mentioned in the provided text? 
+['4882808' '2140312' '3533857' '1153368'],The special magic numbers for dangerous-voice mentioned in the provided text are,0.9375,":
+
+1.  3533857
+2.  2140312
+3.  1153368
+4.  4882808",128,niah_multivalue,32768,What are all the special magic numbers for dangerous-voice mentioned in the provided text? 
+['7923579' '7987842' '9891787' '3249703'],The special magic numbers for average-curry mentioned in the provided text are,0.9375,":
+
+1.  9891787
+2.  7987842
+3.  3249703
+4.  7923579",128,niah_multivalue,32768,What are all the special magic numbers for average-curry mentioned in the provided text? 
+['9264869' '2948178' '2630611' '4939290'],The special magic numbers for homeless-decoder mentioned in the provided text are,0.9375,":
+
+*   2630611
+*   2948178
+*   4939290
+*   9264869",128,niah_multivalue,32768,What are all the special magic numbers for homeless-decoder mentioned in the provided text? 
+['4906349' '1880654' '2681042' '7934046'],The special magic numbers for tender-oasis mentioned in the provided text are,0.9375,":
+
+*   2681042
+*   1880654
+*   7934046
+*   4906349",128,niah_multivalue,32768,What are all the special magic numbers for tender-oasis mentioned in the provided text? 
+['8719145' '7070880' '2478574' '8326807'],The special magic numbers for sweet-breadfruit mentioned in the provided text are,0.9375,":
+
+*   2478574
+*   7070880
+*   8326807
+*   8719145",128,niah_multivalue,32768,What are all the special magic numbers for sweet-breadfruit mentioned in the provided text? 
+['8575834' '4833486' '7942639' '6686328'],The special magic numbers for new-passbook mentioned in the provided text are,0.9375,":
+
+*   7942639
+*   4833486
+*   6686328
+*   8575834",128,niah_multivalue,32768,What are all the special magic numbers for new-passbook mentioned in the provided text? 
+['2446455' '2103070' '6189037' '7680015'],The special magic numbers for subsequent-intellect mentioned in the provided text are,0.9375,":
+
+*   6189037
+*   2103070
+*   7680015
+*   2446455",128,niah_multivalue,32768,What are all the special magic numbers for subsequent-intellect mentioned in the provided text? 
+['8612582' '5545223' '6144280' '5217853'],The special magic numbers for kaput-tension mentioned in the provided text are,0.9375,":
+
+*   6144280
+*   5545223
+*   5217853
+*   8612582",128,niah_multivalue,32768,What are all the special magic numbers for kaput-tension mentioned in the provided text? 
+['5135904' '5680950' '6007984' '4772642'],The special magic numbers for empty-pleasure mentioned in the provided text are,0.9375,":
+
+1.  6007984
+2.  5680950
+3.  4772642
+4.  5135904",128,niah_multivalue,32768,What are all the special magic numbers for empty-pleasure mentioned in the provided text? 
+['2421349' '6193922' '7319630' '6510922'],The special magic numbers for curious-guilt mentioned in the provided text are,0.9375,":
+
+1.  7319630
+2.  6193922
+3.  6510922
+4.  2421349",128,niah_multivalue,32768,What are all the special magic numbers for curious-guilt mentioned in the provided text? 
+['1522621' '2020480' '9035982' '7738019'],The special magic numbers for therapeutic-doctrine mentioned in the provided text are,0.9375,":
+
+*   9035982
+*   2020480
+*   7738019
+*   1522621",128,niah_multivalue,32768,What are all the special magic numbers for therapeutic-doctrine mentioned in the provided text? 
+['6595355' '5086407' '3112652' '4442778'],The special magic numbers for aromatic-logo mentioned in the provided text are,0.9375,":
+
+*   3112652
+*   5086407
+*   4442778
+*   6595355",128,niah_multivalue,32768,What are all the special magic numbers for aromatic-logo mentioned in the provided text? 
+['9555575' '4253164' '6861544' '6890476'],The special magic numbers for rich-toot mentioned in the provided text are,0.9375,":
+
+*   6861544
+*   4253164
+*   6890476
+*   9555575",128,niah_multivalue,32768,What are all the special magic numbers for rich-toot mentioned in the provided text? 
+['9901266' '5947563' '8612081' '9481739'],The special magic numbers for loving-string mentioned in the provided text are,0.9375,":
+
+*   8612081
+*   5947563
+*   9481739
+*   9901266",128,niah_multivalue,32768,What are all the special magic numbers for loving-string mentioned in the provided text? 
+['6318841' '2244282' '8549319' '8815384'],The special magic numbers for crooked-transport mentioned in the provided text are,0.9375,":
+
+*   8549319
+*   2244282
+*   8815384
+*   6318841",128,niah_multivalue,32768,What are all the special magic numbers for crooked-transport mentioned in the provided text? 
+['6357240' '6794356' '7689354' '3193891'],The special magic numbers for woebegone-aftershave mentioned in the provided text are,0.9375,":
+
+1.  7689354
+2.  6794356
+3.  3193891
+4.  6357240",128,niah_multivalue,32768,What are all the special magic numbers for woebegone-aftershave mentioned in the provided text? 
+['7217147' '2156902' '9488613' '6724909'],The special magic numbers for typical-revitalisation mentioned in the provided text are,0.9375,":
+
+*   9488613
+*   2156902
+*   6724909
+*   7217147",128,niah_multivalue,32768,What are all the special magic numbers for typical-revitalisation mentioned in the provided text? 
+['4256752' '5970190' '4816534' '7054579'],The special magic numbers for chivalrous-disclosure mentioned in the provided text are,0.9375,":
+
+*   4816534
+*   5970190
+*   7054579
+*   4256752",128,niah_multivalue,32768,What are all the special magic numbers for chivalrous-disclosure mentioned in the provided text? 
+['4713925' '2060605' '8789116' '6069909'],The special magic numbers for stupid-cigarette mentioned in the provided text are,0.9375,":
+
+*   8789116
+*   2060605
+*   6069909
+*   4713925",128,niah_multivalue,32768,What are all the special magic numbers for stupid-cigarette mentioned in the provided text? 
+['7208460' '6228407' '6442241' '2425342'],The special magic numbers for didactic-musculature mentioned in the provided text are,0.9375,":
+
+*   6442241
+*   6228407
+*   2425342
+*   7208460",128,niah_multivalue,32768,What are all the special magic numbers for didactic-musculature mentioned in the provided text? 
+['5872986' '1705758' '5825636' '2325893'],The special magic numbers for deeply-baseboard mentioned in the provided text are,0.9375,":
+
+1.  5825636
+2.  1705758
+3.  2325893
+4.  5872986",128,niah_multivalue,32768,What are all the special magic numbers for deeply-baseboard mentioned in the provided text? 
+['3508522' '9854536' '8101036' '2865405'],The special magic numbers for fanatical-muskrat mentioned in the provided text are,0.9375,":
+
+1.  8101036
+2.  9854536
+3.  2865405
+4.  3508522",128,niah_multivalue,32768,What are all the special magic numbers for fanatical-muskrat mentioned in the provided text? 
+['8831858' '9367799' '6176450' '9344488'],The special magic numbers for rambunctious-dresser mentioned in the provided text are,0.9375,":
+
+*   6176450
+*   9367799
+*   9344488
+*   8831858",128,niah_multivalue,32768,What are all the special magic numbers for rambunctious-dresser mentioned in the provided text? 
+['1137194' '2803501' '8229768' '3247055'],The special magic numbers for roomy-hound mentioned in the provided text are,0.9375,":
+
+1.  8229768
+2.  2803501
+3.  3247055
+4.  1137194",128,niah_multivalue,32768,What are all the special magic numbers for roomy-hound mentioned in the provided text? 
+['3514105' '3760475' '6504900' '9729882'],The special magic numbers for slimy-verb mentioned in the provided text are,0.9375,":
+
+*   6504900
+*   3760475
+*   9729882
+*   3514105",128,niah_multivalue,32768,What are all the special magic numbers for slimy-verb mentioned in the provided text? 
+['2368710' '5565128' '8434202' '8113787'],The special magic numbers for uninterested-cashier mentioned in the provided text are,0.9375,":
+
+*   8434202
+*   5565128
+*   8113787
+*   2368710",128,niah_multivalue,32768,What are all the special magic numbers for uninterested-cashier mentioned in the provided text? 
+['3013003' '1129686' '9344741' '8225192'],The special magic numbers for important-opponent mentioned in the provided text are,0.9375,":
+
+*   9344741
+*   1129686
+*   8225192
+*   3013003",128,niah_multivalue,32768,What are all the special magic numbers for important-opponent mentioned in the provided text? 
+['2233237' '2376369' '5495824' '3587398'],The special magic numbers for frightened-pest mentioned in the provided text are,0.9375,":
+
+*   5495824
+*   2376369
+*   3587398
+*   2233237",128,niah_multivalue,32768,What are all the special magic numbers for frightened-pest mentioned in the provided text? 
+['6008935' '9214801' '3493017' '8491822'],The special magic numbers for half-part mentioned in the provided text are,0.9375,":
+
+*   3493017
+*   9214801
+*   8491822
+*   6008935",128,niah_multivalue,32768,What are all the special magic numbers for half-part mentioned in the provided text? 
+['2259379' '3626181' '1044891' '7853787'],The special magic numbers for scintillating-flick mentioned in the provided text are,0.9375,":
+
+1.  1044891
+2.  3626181
+3.  7853787
+4.  2259379",128,niah_multivalue,32768,What are all the special magic numbers for scintillating-flick mentioned in the provided text? 
+['5871470' '6032437' '3642499' '3920762'],The special magic numbers for scary-tank mentioned in the provided text are,0.9375,":
+
+*   3642499
+*   6032437
+*   3920762
+*   5871470",128,niah_multivalue,32768,What are all the special magic numbers for scary-tank mentioned in the provided text? 
+['4894730' '2275374' '6714198' '7655572'],The special magic numbers for nosy-ephyra mentioned in the provided text are,0.9375,":
+
+*   6714198
+*   2275374
+*   7655572
+*   4894730",128,niah_multivalue,32768,What are all the special magic numbers for nosy-ephyra mentioned in the provided text? 
+['5521644' '1674975' '3939212' '8893693'],The special magic numbers for unequaled-atmosphere mentioned in the provided text are,0.9375,":
+
+1.  3939212
+2.  1674975
+3.  8893693
+4.  5521644",128,niah_multivalue,32768,What are all the special magic numbers for unequaled-atmosphere mentioned in the provided text? 
+['1763626' '1914794' '5901239' '3118618'],The special magic numbers for grouchy-bongo mentioned in the provided text are,0.9375,":
+
+*   5901239
+*   1914794
+*   3118618
+*   1763626",128,niah_multivalue,32768,What are all the special magic numbers for grouchy-bongo mentioned in the provided text? 
+['6161977' '1447065' '8962302' '5454861'],The special magic numbers for muddy-tolerance mentioned in the provided text are,0.9375,":
+
+*   8962302
+*   1447065
+*   5454861
+*   6161977",128,niah_multivalue,32768,What are all the special magic numbers for muddy-tolerance mentioned in the provided text? 
+['6303930' '3532644' '8377995' '2145653'],The special magic numbers for tan-fiddle mentioned in the provided text are,0.9375,":
+
+*   8377995
+*   3532644
+*   2145653
+*   6303930",128,niah_multivalue,32768,What are all the special magic numbers for tan-fiddle mentioned in the provided text? 
