@@ -570,8 +570,9 @@ class VkvDecoder:
         if rows is None or "sig" not in rows or self.st.cfg.recall:
             return self.layer(layer, q, sm_scale, soft_cap, need_lse)
         B, Hq, D = q.shape
+        # eps0 / delta are baked into the captured launches: a run may change them between requests
         key = (layer, B, Hq, D, q.dtype, rows["n"], float(sm_scale), float(soft_cap),
-               need_lse, rows["sig"])
+               need_lse, rows["sig"], self.st.cfg.eps0, self.st.cfg.delta)
         g = self._graphs.get(key)
         if g is None:
             if key not in self._warm:
@@ -611,8 +612,8 @@ class VkvDecoder:
 
     def _cuda_ok(self, B: int, Hq: int, D: int) -> bool:
         """The configurations the CUDA decision implements: the vkv_final defaults ("grad"
-        order, Chernoff certificate, truncation), heads up to 4096, head_dim 64 / 128, every
-        row's block resident. Fetched entries are restored in place (no compaction) or staged by
+        order, Chernoff certificate, truncation), heads up to 4096, head_dim 64 / 128 (rows
+        beyond what can be resident are launched in chunks of whole KV heads). Fetched entries are restored in place (no compaction) or staged by
         the store (compaction: every position of every KV head must fit its ring at once)."""
         cfg, st = self.st.cfg, self.st
         if self._sms is None:
@@ -621,7 +622,7 @@ class VkvDecoder:
                 and cfg.k_max <= 4096 and cfg.t_max <= 4096 and cfg.shortlist <= 4096
                 and self._pool_mapped and D in (64, 128)
                 and (st.home is not None or B * self.eng.H * self.rows["n"] <= int(self.store.C))
-                and st.sketch.nch <= 64 and B * Hq <= self._sms)
+                and st.sketch.nch <= 64)
 
     def _layer_cuda(self, layer, q, sm_scale, soft_cap):
         """``layer`` with the decision in CUDA (``csrc/vkv_decide.cu``): decide (A logits ..

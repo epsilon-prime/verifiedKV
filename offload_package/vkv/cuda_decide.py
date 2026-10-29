@@ -11,6 +11,15 @@ import sys
 import torch
 
 _EXT = None
+# VKV_TPROF=1: per-phase SM cycles summed over rows (the lead block of each), [TP_N] int64, by
+# TP_PHASES; [TP_N - 2] = the rows counted, [TP_N - 1] = the rows that ran the certificate.
+TP_N = 20
+TP_PHASES = ("init", "1 exact A", "2 sketch", "3a KV-head barrier", "3b shortlist top-M",
+             "3c shortlist exact", "4 m, sure", "5 wh, jumps", "6 truncation walk",
+             "7 totals, grad key", "8 fetch order top-K", "9 head terms", "10a mark top-HH",
+             "10b mid terms", "10c mid lambda sums", "10d head lambda curve", "10e k* search",
+             "11 outputs, sync")
+TPROF = None
 _SRC = os.path.join(os.path.dirname(__file__), "csrc", "vkv_decide.cu")
 
 
@@ -36,8 +45,17 @@ def ext():
         # ninja lives next to the interpreter in a venv
         os.environ["PATH"] = os.path.dirname(sys.executable) + os.pathsep + os.environ["PATH"]
         major, minor = torch.cuda.get_device_capability()
-        _EXT = ce.load(name="vkv_decide", sources=[_SRC], verbose=False,
+        # VKV_TPROF=1: a separate build with the decide kernel's phase counters (see TPROF).
+        tp = os.environ.get("VKV_TPROF") == "1"
+        _EXT = ce.load(name="vkv_decide_tprof" if tp else "vkv_decide", sources=[_SRC],
+                       verbose=False,
                        extra_cuda_cflags=["-O3", "-fmad=false", "-std=c++17",
                                           f"-gencode=arch=compute_{major}{minor},"
-                                          f"code=sm_{major}{minor}"])
+                                          f"code=sm_{major}{minor}"]
+                       + (["-DVKV_TPROF"] if tp else []))
+        if tp:
+            global TPROF
+            with torch.inference_mode(False):    # first use may be inside vLLM's inference mode
+                TPROF = torch.zeros(TP_N, dtype=torch.int64, device="cuda")
+            _EXT.set_tprof(TPROF)
     return _EXT

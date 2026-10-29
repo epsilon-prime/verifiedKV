@@ -560,6 +560,7 @@ struct Params {
   float sm_scale;
   int B, H, G, Hq, R, n, WA, max_len, M_sl, M_t, Kc, NG, bennett;
   int HH;                   // the certificate's exact head (>= Kc; kstar_fast's head)
+  int row0;                 // first row of this launch (rows launched in chunks of KV heads)
   const int64_t* slots;     // [B]
   const float* r;           // [S, max_len, H]
   const int32_t* cell;      // [S, max_len, H]
@@ -602,7 +603,25 @@ struct Params {
   int32_t* fbl;             // [R + 1], fbl[R] zeroed
   int32_t* keys_cnt;        // [1] zeroed
   int32_t* bar;             // [B * H] zeroed
+  unsigned long long* tprof;  // VKV_TPROF builds: [TP_N] per-phase cycle sums (see TP_MARK)
 };
+
+// VKV_TPROF builds: the lead block of every row adds each phase's SM cycles (thread 0's clock64
+// between consecutive marks) to tprof[phase]; tprof[TP_ROWS] counts rows, tprof[TP_UNSCR] the
+// rows that ran the certificate. Other builds compile the marks away.
+constexpr int TP_N = 20, TP_ROWS = 18, TP_UNSCR = 19;
+#ifdef VKV_TPROF
+#define TP_MARK(i)                                                          \
+  do {                                                                      \
+    if (tp_on) {                                                            \
+      const long long tp_now = clock64();                                   \
+      atomicAdd(p.tprof + (i), (unsigned long long)(tp_now - tp_last));     \
+      tp_last = tp_now;                                                     \
+    }                                                                       \
+  } while (0)
+#else
+#define TP_MARK(i) do {} while (0)
+#endif
 
 __device__ __forceinline__ void unit_barrier(int32_t* bar, int target) {
   __syncthreads();
@@ -701,7 +720,7 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
   float* zs = reinterpret_cast<float*>(smem + LY::ZS);
   Row<CS> rw;
   rw.xs = reinterpret_cast<double*>(smem + LY::XS);
-  const int row = blockIdx.x / CS, cr = rw.cr;
+  const int row = p.row0 + blockIdx.x / CS, cr = rw.cr;
   const bool lead = cr == 0;
   const int H = p.H, G = p.G, n = p.n, WA = p.WA, max_len = p.max_len;
   const int b = row / (H * G), h = (row / G) % H, g = row % G;
@@ -721,6 +740,11 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
   // this block's context segment
   const int seg = (((n + CS - 1) / CS) + 31) & ~31;
   const int p0 = min(n, cr * seg), p1 = min(n, p0 + seg);
+#ifdef VKV_TPROF
+  const bool tp_on = p.tprof != nullptr && lead && tid == 0;
+  long long tp_last = clock64();
+  if (tp_on) atomicAdd(p.tprof + TP_ROWS, 1ull);
+#endif
 
   for (int d = tid; d < D; d += NT) qs[d] = to_f(qrow[d]) * p.sm_scale;
   __syncthreads();
@@ -728,6 +752,7 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
   for (int c = tid; c < p.NCH; c += NT) qsk[c] = qs[ch[c]];
   for (int i = p0 + tid; i < p1; i += NT) { Tm[i] = 0; rank[i] = 0; }
   __syncthreads();
+  TP_MARK(0);                                            // init
 
   // ---- 1 exact logits over A ------------------------------------------------------------------------
   const int cnt = p.acnt[slot * H + h];
@@ -760,6 +785,7 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
     }
     mA = rw.max((double)mx, red);
   }
+  TP_MARK(1);                                            // 1 exact logits over A
 
   // ---- 2 sketch logits: warp-sized groups of positions sharing zero / scale ----------------------
   {
@@ -796,11 +822,16 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
       __syncwarp();
     }
   }
+#ifdef VKV_TPROF
+  __syncthreads();
+#endif
+  TP_MARK(2);                                            // 2 sketch logits
 
   // ---- 3 shortlist ---------------------------------------------------------------------------------
   int32_t* bar = p.bar + unit;
   if (p.M_sl > 0) {
     unit_barrier(bar, G * CS);                           // every query head's sketch logits
+    TP_MARK(3);                                          // 3a wait for the KV head's rows
     float* best = reinterpret_cast<float*>(J);           // this row's copy of the ranking
     const float* s_unit = p.s_hat + (long long)(unit * G) * n;
     for (int pos = p0 + tid; pos < p1; pos += NT) {
@@ -810,7 +841,9 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
     }
     const int M = p.M_sl;
     topk<CS>(rw, [&](int pos) { return okey((double)best[pos]); }, p0, p1, M, false, ts);
+    TP_MARK(4);                                          // 3b shortlist top-M
     unit_barrier(bar, 2 * G * CS);                       // every block read every row
+    TP_MARK(3);
     const uint64_t* ckL = rw.at(ts.ck, 0);
     const int32_t* cpL = rw.at(ts.cp, 0);
     const int sub = tid & 3;
@@ -841,6 +874,7 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
     if (g == 0 && lead && tid == 0 && nhost > 0) atomicAdd(p.keys_cnt, (int)nhost);
   }
   rw.sync();                                             // s_hat final everywhere
+  TP_MARK(5);                                            // 3c shortlist exact logits
 
   // ---- 4 m, sure ---------------------------------------------------------------------------------
   float m_row;
@@ -857,6 +891,7 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
     }
     sure = rw.sum(su, red);
   }
+  TP_MARK(6);                                            // 4 m, sure
 
   // ---- 5 wh (cached), jumps, partials --------------------------------------------------------------
   double b0, s_wh;
@@ -880,6 +915,7 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
     rw.template allreduce<4>(v, op, red);
     b0 = v[0]; s_wh = v[1]; npos = (int)v[2]; ntail = (int)v[3];
   }
+  TP_MARK(7);                                            // 5 wh, jumps
 
   // ---- 6 truncation walk over the top-M_t jumps -----------------------------------------------------
   bool cap_t;
@@ -920,6 +956,7 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
     cap_t = (tsv >= MT) && (npos > MT);
   }
   rw.sync();                                             // T* written everywhere
+  TP_MARK(8);                                            // 6 truncation walk (top-M_t)
 
   // ---- 7 totals, dt/dV, the "grad" key -----------------------------------------------------------------
   {
@@ -943,6 +980,7 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
       J[pos] = e.tail ? mv.b + mv.v * dtdv : -1.0;
     }
   }
+  TP_MARK(9);                                            // 7 totals, grad key
 
   // ---- 8 fetch order: top-Kc by the key, ranks -------------------------------------------------------
   const int K = p.Kc;
@@ -956,6 +994,7 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
     }
   }
   rw.sync();                                             // ranks written everywhere
+  TP_MARK(10);                                           // 8 fetch order top-Kc
 
   // ---- 9 complement partials; the head's terms (thread t owns k in [t C, t C + C)) ---------------------
   double Rb, RV, Rup, Rdn;
@@ -1042,7 +1081,11 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
   while (BK < K) BK <<= 1;
   long long kstar = 0;
   bool cap = false, nonmono = false;
+  TP_MARK(11);                                           // 9 complement partials, head terms
   if (!screened) {
+#ifdef VKV_TPROF
+    if (tp_on) atomicAdd(p.tprof + TP_UNSCR, 1ull);
+#endif
     // The harness's head (kstar_fast with head HH >= K): the curve at k <= K also carries the
     // exact terms of the entries ranked K .. HH - 1 (mid, per lambda), and Bennett's bound is over
     // the entries ranked from HH on (RVh, Muh, Mdh). Those ranked K .. HH - 1 are marked rank -1
@@ -1062,6 +1105,7 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
     float2* TL = reinterpret_cast<float2*>(WH);
     double RVh = RV, Muh = fmax(Rup, 1e-300), Mdh = fmax(Rdn, 1e-300);
     for (int i = tid; i < 128; i += NT) s_midT[i] = 0.0;
+    TP_MARK(12);                                         // 10a mark top-HH
     if (K2 > K) {                // else no mid entries, and Bennett's set is the complement
     {
       double v[3] = {0.0, 0.0, 0.0};
@@ -1089,6 +1133,7 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
       rw.template allreduce<3>(v, op, red);
       RVh = v[0]; Muh = fmax(v[1], 1e-300); Mdh = fmax(v[2], 1e-300);
     }
+    TP_MARK(13);                                         // 10b mid terms, Bennett inputs
     for (int g0 = 0; g0 < p.NG; g0 += 8) {
       double acc[16];
 #pragma unroll
@@ -1131,6 +1176,7 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
       for (int r = 0; r < CS; ++r) x += rw.at(s_mid, r)[o];
       s_midT[o] = x;
     }
+    TP_MARK(14);                                         // 10c mid sums over the lambda grid
     }
     __syncthreads();
     // min over lambda of the bound's exponent; exp is monotone, so exp(min(min_lam z, 0)) is the
@@ -1176,6 +1222,7 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
       zKu = fmin(zKu, (mu_ + ex_up) - lam * uK_up);
       zKd = fmin(zKd, (md_ + ex_dn) - lam * uK_dn);
     }
+    TP_MARK(15);                                         // 10d head curve over the lambda grid
     // the blocks' minima merged: block c finishes k in its share (f64a / f64b overlay the terms)
     __syncthreads();
 #pragma unroll
@@ -1222,6 +1269,7 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
     if (!okK) last_fail = K;
     nonmono = last_fail > first_ok;
   }
+  TP_MARK(16);                                           // 10e k* search (screened rows: 0)
   kstar = min(kstar, (long long)ntail);
 #undef beta
   if (lead) {
@@ -1248,6 +1296,7 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
   }
   // no block may exit while another still reads its shared memory
   if (CS > 1) rw.cl.sync();
+  TP_MARK(17);                                           // outputs, final sync
 }
 
 // ---- emit: A's weights, F's cold entries restored (or packed for staging) ----------------------------
@@ -1407,7 +1456,7 @@ using vkv::Params;
 using vkv::EParams;
 
 template <typename T, int D, int CS>
-static void launch_cs(const Params& p, cudaStream_t st) {
+static void launch_cs(const Params& p, int rows, cudaStream_t st) {
   auto k = vkv::decide_kernel<T, D, CS>;
   const size_t sm = vkv::Layout<CS>::BYTES;
   // The attribute once per instantiation (never inside a graph capture after the first call).
@@ -1415,7 +1464,7 @@ static void launch_cs(const Params& p, cudaStream_t st) {
                                            (int)sm), true);
   (void)attr;
   cudaLaunchConfig_t cfg = {};
-  cfg.gridDim = dim3(p.R * CS);
+  cfg.gridDim = dim3(rows * CS);
   cfg.blockDim = dim3(vkv::NT);
   cfg.dynamicSmemBytes = sm;
   cfg.stream = st;
@@ -1469,11 +1518,19 @@ static int pick_cs(int R, int cs_max) {
 template <typename T, int D>
 static void launch_d(const Params& p, int cs_max, cudaStream_t st) {
   const int cs = pick_cs<T, D>(p.R, cs_max);
-  TORCH_CHECK(cs > 0, "vkv cuda decide: ", p.R, " rows cannot all be resident");
-  if (cs == 4) launch_cs<T, D, 4>(p, st);
-  else if (cs == 3) launch_cs<T, D, 3>(p, st);
-  else if (cs == 2) launch_cs<T, D, 2>(p, st);
-  else launch_cs<T, D, 1>(p, st);
+  if (cs == 4) launch_cs<T, D, 4>(p, p.R, st);
+  else if (cs == 3) launch_cs<T, D, 3>(p, p.R, st);
+  else if (cs == 2) launch_cs<T, D, 2>(p, p.R, st);
+  else if (cs == 1) launch_cs<T, D, 1>(p, p.R, st);
+  else {
+    // More rows than can be resident: launch whole KV heads (the rows that wait on each other)
+    // in chunks that are, one after another on the stream.
+    const int chunk = (active_clusters<T, D, 1>() / p.G) * p.G;
+    TORCH_CHECK(chunk > 0, "vkv cuda decide: a KV head's ", p.G, " rows cannot be resident");
+    Params c = p;
+    for (c.row0 = 0; c.row0 < p.R; c.row0 += chunk)
+      launch_cs<T, D, 1>(c, std::min(chunk, p.R - c.row0), st);
+  }
 }
 
 template <typename T>
@@ -1484,6 +1541,15 @@ static void launch_decide(const Params& p, int D, int cs, cudaStream_t st) {
 }
 
 #define PTR(t, ty) reinterpret_cast<ty*>((t).data_ptr())
+
+// VKV_TPROF builds: the phase counters every later decide launch adds to (vkv::TP_N uint64).
+static unsigned long long* g_tprof = nullptr;
+
+void set_tprof(torch::Tensor t) {
+  TORCH_CHECK(t.numel() >= vkv::TP_N && t.dtype() == torch::kInt64 && t.is_cuda(),
+              "vkv set_tprof: int64 CUDA tensor of ", vkv::TP_N);
+  g_tprof = reinterpret_cast<unsigned long long*>(t.data_ptr());
+}
 
 void decide(torch::Tensor q, double sm_scale, torch::Tensor slots, torch::Tensor r,
             torch::Tensor cell, torch::Tensor cpu_row, torch::Tensor alist, torch::Tensor acnt,
@@ -1544,6 +1610,7 @@ void decide(torch::Tensor q, double sm_scale, torch::Tensor slots, torch::Tensor
   p.beta_k = PTR(beta_k, double); p.Bt = PTR(Bt, double); p.nonmono = PTR(nonmono, int8_t);
   p.tsize = PTR(tsize, double); p.scr = PTR(scr, int8_t); p.fb = PTR(fb, bool);
   p.fbl = PTR(fbl, int32_t); p.keys_cnt = PTR(keys_cnt, int32_t); p.bar = PTR(bar, int32_t);
+  p.tprof = g_tprof;
   cudaStream_t st = at::cuda::getCurrentCUDAStream();
   if (kv.scalar_type() == at::kBFloat16) launch_decide<__nv_bfloat16>(p, (int)q.size(-1), cs, st);
   else if (kv.scalar_type() == at::kHalf) launch_decide<__half>(p, (int)q.size(-1), cs, st);
@@ -1596,6 +1663,8 @@ void emit(torch::Tensor slots, torch::Tensor acnt, torch::Tensor cell, torch::Te
 }
 
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
+  m.def("set_tprof", &set_tprof, "VKV_TPROF builds: the decide phase counters",
+        py::arg("t"));
   m.def("decide", &decide, "vkv decode decision (one layer)", py::arg("q"), py::arg("sm_scale"),
         py::arg("slots"), py::arg("r"), py::arg("cell"), py::arg("cpu_row"), py::arg("alist"),
         py::arg("acnt"), py::arg("kv"), py::arg("pool"), py::arg("codes"), py::arg("zero"),
