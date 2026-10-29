@@ -498,9 +498,13 @@ def _write_scores_masked(engine, slot_t: torch.Tensor, pos: torch.Tensor,
     engine.score[:, s, p] = torch.where(v, score.to(cur.dtype), cur)
 
 
-def install_score_hooks(runner, engine: TokenOffloadEngine, gates,
-                        batched=None) -> list:
-    """Score every written token with the layer's FastKVzip gate.
+def layer_score_fn(runner, engine: TokenOffloadEngine, gates, batched=None,
+                   prefill_only: bool = False):
+    """``score(li, hidden, positions)``: score the forward's written tokens with layer ``li``'s
+    FastKVzip gate, from the layer's attention input (``install_score_hooks`` calls it from its
+    hooks, ``fkvz_op`` from a custom op). ``prefill_only``: forwards of decode tokens alone
+    (every row one token past its prompt) are not scored -- for consumers that read the scores
+    only once, at the end of prefill (vkv's round).
 
     A forward pre-hook on each decoder layer's ``self_attn`` receives exactly
     the gate's input: the post-``input_layernorm`` hidden states and the
@@ -540,68 +544,89 @@ def install_score_hooks(runner, engine: TokenOffloadEngine, gates,
         per_tok = per_tok[:n_tokens].to(device, non_blocking=True)
         return per_tok, n_tokens, all(x >= 0 for x in slots)
 
-    handles = []
     wants_ids = bool(getattr(batched, "wants_ids", False))
-    for li, layer in enumerate(layers):
-        gate = gates[li]
 
-        def hook(module, args, kwargs, li=li, gate=gate):
-            capturing = torch.cuda.is_current_stream_capturing()
-            if capturing and getattr(engine, "decode_rows_d", None) is None:
-                return None                   # engine not prepared for graphs
+    def _decode_only() -> bool:
+        ib = runner.input_batch
+        n = int(ib.num_reqs)
+        return bool((ib.num_computed_tokens_cpu[:n] >= ib.num_prompt_tokens[:n]).all())
+
+    def score(li, hidden, positions):
+        gate = gates[li]
+        capturing = torch.cuda.is_current_stream_capturing()
+        if capturing and prefill_only:
+            return None                   # a captured forward is a decode step
+        if capturing and getattr(engine, "decode_rows_d", None) is None:
+            return None                   # engine not prepared for graphs
+        if li == 0:
+            if capturing:
+                # A FULL decode graph: one token per row, rows from the
+                # engine's persistent map (written eagerly every step);
+                # None = "write through the fixed-shape masked path".
+                n = int(hidden.shape[0])
+                if batched is None or n > min(BATCHED_GATE_MAX_TOKENS,
+                                              engine.decode_rows_d.numel()):
+                    raise RuntimeError("token scoring under CUDA graphs needs the "
+                                       f"batched gate and n={n} <= the row map")
+                step["rows"] = (engine.decode_rows_d[:n], n, None)
+            else:
+                step["rows"] = (None if prefill_only and _decode_only() else
+                                _token_rows(int(hidden.shape[0]), hidden.device))
+            step["stash"] = []
+        rows = step["rows"]
+        if rows is None:
+            return None
+        slot_t, n, all_tracked = rows
+        if batched is not None and n <= BATCHED_GATE_MAX_TOKENS:
+            step["stash"].append(hidden[:n])
+            if li != last:
+                return None
+            stash, step["stash"] = step["stash"], []
+            if len(stash) != len(layers):                 # a layer was skipped
+                return None
+            pos = positions[:n].long()
+            sc = (batched(torch.stack(stash), positions=pos, slots=slot_t)
+                  if wants_ids else batched(torch.stack(stash)))   # [L, n]
+            if _GATE_CHECK and step.setdefault("checks", 0) < 8:
+                # Debug: the stashed inputs must still be the layers'
+                # attention inputs, i.e. batched == per-layer gates.
+                ref = torch.stack([combine(gates[i](h)) for i, h in enumerate(stash)])
+                step["checks"] += 1
+                print(f"[TOKEN GATE CHECK] n={n} batched vs per-layer "
+                      f"max|diff|={float((sc - ref).abs().max()):.2e}", flush=True)
+            if all_tracked is None:
+                _write_scores_masked(engine, slot_t, pos, sc)
+                return None
+            if not all_tracked:
+                keep = slot_t >= 0
+                slot_t, pos, sc = slot_t[keep], pos[keep], sc[:, keep]
+            engine.score[:, slot_t, pos] = sc
+            return None
+        sc = combine(gate(hidden[:n]))                    # [n] ([n, H] per head)
+        pos = positions[:n].long()
+        if not all_tracked:                               # host-side flag: no sync
+            keep = slot_t >= 0
+            slot_t, pos, sc = slot_t[keep], pos[keep], sc[keep]
+        engine.write_scores(li, slot_t, pos, sc)
+        return None
+
+    return score
+
+
+def install_score_hooks(runner, engine: TokenOffloadEngine, gates,
+                        batched=None, prefill_only: bool = False) -> list:
+    """Score every written token with the layer's FastKVzip gate (``layer_score_fn``): a forward
+    pre-hook on each decoder layer's ``self_attn`` receives exactly the gate's input."""
+    score = layer_score_fn(runner, engine, gates, batched, prefill_only)
+    handles = []
+    for li, layer in enumerate(_decoder_layers(runner.model)):
+
+        def hook(module, args, kwargs, li=li):
             hidden = kwargs.get("hidden_states", args[1] if len(args) > 1 else None)
             positions = kwargs.get("positions", args[0] if args else None)
             if hidden is None or positions is None:
                 return None
-            if li == 0:
-                if capturing:
-                    # A FULL decode graph: one token per row, rows from the
-                    # engine's persistent map (written eagerly every step);
-                    # None = "write through the fixed-shape masked path".
-                    n = int(hidden.shape[0])
-                    if batched is None or n > min(BATCHED_GATE_MAX_TOKENS,
-                                                  engine.decode_rows_d.numel()):
-                        raise RuntimeError("token scoring under CUDA graphs needs the "
-                                           f"batched gate and n={n} <= the row map")
-                    step["rows"] = (engine.decode_rows_d[:n], n, None)
-                else:
-                    step["rows"] = _token_rows(int(hidden.shape[0]), hidden.device)
-                step["stash"] = []
-            rows = step["rows"]
-            if rows is None:
-                return None
-            slot_t, n, all_tracked = rows
-            if batched is not None and n <= BATCHED_GATE_MAX_TOKENS:
-                step["stash"].append(hidden[:n])
-                if li != last:
-                    return None
-                stash, step["stash"] = step["stash"], []
-                if len(stash) != len(layers):                 # a layer was skipped
-                    return None
-                pos = positions[:n].long()
-                score = (batched(torch.stack(stash), positions=pos, slots=slot_t)
-                         if wants_ids else batched(torch.stack(stash)))   # [L, n]
-                if _GATE_CHECK and step.setdefault("checks", 0) < 8:
-                    # Debug: the stashed inputs must still be the layers'
-                    # attention inputs, i.e. batched == per-layer gates.
-                    ref = torch.stack([combine(gates[i](h)) for i, h in enumerate(stash)])
-                    step["checks"] += 1
-                    print(f"[TOKEN GATE CHECK] n={n} batched vs per-layer "
-                          f"max|diff|={float((score - ref).abs().max()):.2e}", flush=True)
-                if all_tracked is None:
-                    _write_scores_masked(engine, slot_t, pos, score)
-                    return None
-                if not all_tracked:
-                    keep = slot_t >= 0
-                    slot_t, pos, score = slot_t[keep], pos[keep], score[:, keep]
-                engine.score[:, slot_t, pos] = score
-                return None
-            score = combine(gate(hidden[:n]))                 # [n] ([n, H] per head)
-            pos = positions[:n].long()
-            if not all_tracked:                               # host-side flag: no sync
-                keep = slot_t >= 0
-                slot_t, pos, score = slot_t[keep], pos[keep], score[keep]
-            engine.write_scores(li, slot_t, pos, score)
+            score(li, hidden, positions)
             return None
 
         handles.append(layer.self_attn.register_forward_pre_hook(hook, with_kwargs=True))

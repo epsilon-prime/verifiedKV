@@ -280,6 +280,13 @@ CONFIGS = {
     'offload-recall': dict(method='vkv', offload=True, staging_policy='fixed',
                            num_staging_slots=256, granularity='token', token_policy='vkv',
                            token_scorer='random', vkv={'recall': True, 'compact': False}),
+    # kvzip-evict with FastKVzip gate scores (no reconstruction pass, no private model copy).
+    'fkvz-evict': dict(method='vkv', offload=True, staging_policy='fixed',
+                       num_staging_slots=256, granularity='token', token_policy='vkv',
+                       token_scorer='fastkvzip',
+                       # the harness's fastkvzip arm: FastKVzipPress(window_size=None), 4 sinks and
+                       # a 2% local window kept
+                       vkv={'evict': True, 'evict_sink': 4, 'evict_window': 0.02}),
     'vkv-fkvz': dict(method='vkv', offload=True, staging_policy='fixed',
                      num_staging_slots=256, granularity='token', token_policy='vkv',
                      token_scorer='fastkvzip'),
@@ -391,6 +398,14 @@ def engine_kwargs(method, offload, fraction=0.5, staging_policy='auto',
     if PIECEWISE and method == 'vkv':
         kwargs['compilation_config'] = {'cudagraph_mode': 'PIECEWISE',
                                         'cudagraph_capture_sizes': [1]}
+        if offload and token_scorer == 'fastkvzip':
+            # FastKVzip prompt scores through a custom op the piecewise graph splits at
+            # (torch.compile cannot trace the score hooks); it runs in this process's worker.
+            from offload_package.integration import fkvz_op
+            if os.environ['VLLM_ENABLE_V1_MULTIPROCESSING'] != '0':
+                raise RuntimeError('fkvz_op patches the model in this process: BENCH_MP=0 only')
+            fkvz_op.install()
+            kwargs['compilation_config']['splitting_ops'] = fkvz_op.splitting_ops()
     if (CUDAGRAPH and method != 'vkv') or (EVICT_FULL and method == 'vkv'):
         # Decode-only FULL graphs, no torch.compile (prefill stays eager).
         kwargs['compilation_config'] = {'mode': 0, 'cudagraph_mode': 'FULL_DECODE_ONLY',

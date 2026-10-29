@@ -17,6 +17,7 @@ rebuilt from the surviving cells at the round, then appended to with every new t
 """
 from __future__ import annotations
 
+import os
 import zlib
 from dataclasses import dataclass
 
@@ -60,6 +61,10 @@ class VkvConfig:
                                   # with compression 1 - kappa): keep the top kappa of the
                                   # context cells by score, attend to those only; no draw,
                                   # sketch or fetch
+    evict_sink: int = 0           # evict: the first evict_sink and last evict_window (a fraction
+    evict_window: float = 0.0     # of the context, at least one token) positions score 1, as
+                                  # kvpress FastKVzipPress (n_sink=4, window_ratio=0.02; KVzip
+                                  # scores carry their own sink)
     compact: bool = True          # pack the round's survivors into the request's first blocks
                                   # (frees pages; per (layer, head) in position order); False
                                   # offloads in place: cells stay where vLLM wrote them
@@ -358,6 +363,11 @@ class VkvState:
         each layer its count, then each layer drops its own lowest that many. ctx = 0 makes the
         decoder attend to the resident cells only (exactly, weight 1)."""
         L, H, ctx = score.shape
+        if self.cfg.evict_sink > 0 or self.cfg.evict_window > 0:
+            score = score.clone()
+            score[..., :self.cfg.evict_sink] = 1.0
+            if self.cfg.evict_window > 0:
+                score[..., -max(1, int(ctx * self.cfg.evict_window)):] = 1.0
         n_pr = int(score.numel() * (1.0 - self.cfg.kappa))
         keep = torch.ones_like(score, dtype=torch.bool)
         if n_pr > 0:
@@ -372,8 +382,17 @@ class VkvState:
         self.round_log.append({"req": str(req_id), "ctx": ctx, "kept": kept, "r_mean": kept,
                                "r_one": kept, "r_zero": 1.0 - kept})
         if len(self.round_log) <= 4:
-            print(f"[VKV] evict round {req_id}: ctx={ctx} kappa={self.cfg.kappa} kept={kept:.4f}",
+            print(f"[VKV] evict round {req_id}: ctx={ctx} kappa={self.cfg.kappa} kept={kept:.4f} "
+                  f"score mean={float(score.mean()):.3g} zero={float((score == 0).double().mean()):.3f}",
                   flush=True)
+            if os.environ.get("VKV_EVICT_DEBUG") == "1":
+                # kept fraction per tenth of the context, and the scores' rank correlation with position
+                dec = keep.double().mean((0, 1)).view(-1)[: ctx // 10 * 10].view(10, -1).mean(1)
+                pos = torch.arange(ctx, device=score.device, dtype=torch.float64)
+                rk = score.mean((0, 1)).argsort().argsort().double()
+                rho = float(torch.corrcoef(torch.stack([rk, pos]))[0, 1])
+                print(f"[VKV] evict kept by tenth {[round(float(x), 3) for x in dec]} "
+                      f"rank-corr(score, pos)={rho:.3f}", flush=True)
         return keep.permute(0, 2, 1)
 
     # ---- statistics ----------------------------------------------------------------------------------

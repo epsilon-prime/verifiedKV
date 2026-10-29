@@ -312,17 +312,28 @@ class OffloadPackageWorker(KVConnectorBase_V1):
                 vc.model_config.model, hf.num_attention_heads, hf.num_key_value_heads,
                 kv_cache_view.device)
             batched = BatchedFastKVzipGates(gates, per_head=per_head).to(kv_cache_view.device)
+        from offload_package.integration import fkvz_op
         from offload_package.integration.scheduler_connector import runtime_env
-        if cfg.token_policy == "vkv" and runtime_env(vc)[3]:
-            # Vkv under piecewise graphs (torch.compile cannot trace the Python score hooks):
-            # no hooks. Vkv reads scores only at its round, which runs at the end of prefill on
-            # the prompt's KVzip scores (install_prompt_scores), so the hooks' default scores
-            # are never read.
+        # Vkv reads scores only at its round, at the end of prefill: score prefill tokens only.
+        prefill_only = cfg.token_policy == "vkv"
+        compiled = getattr(getattr(vc.compilation_config, "mode", None), "name", "") == "VLLM_COMPILE"
+        if cfg.token_policy == "vkv" and cfg.token_scorer == "fastkvzip" and compiled:
+            # torch.compile cannot trace the Python score hooks: the scoring custom op instead
+            # (installed before the model was built, a piecewise split point).
+            if not fkvz_op.installed():
+                raise RuntimeError("vkv with FastKVzip scores under torch.compile needs "
+                                   "fkvz_op.install() before the engine and its splitting op")
+            fkvz_op.bind(self._model_runner, engine, gates, batched)
+            gates = None
+        elif cfg.token_policy == "vkv" and cfg.token_scorer != "fastkvzip" and runtime_env(vc)[3]:
+            # KVzip scores come from the prompt scorer at the round (install_prompt_scores) and
+            # random ones are never needed: no hooks under graphs.
             gates = None
         for h in getattr(self, "_token_hooks", []):
             h.remove()
         self._token_hooks = ([] if gates is None else
-                             install_score_hooks(self._model_runner, engine, gates, batched))
+                             install_score_hooks(self._model_runner, engine, gates, batched,
+                                                 prefill_only=prefill_only))
         self._token_engine = engine
         self._model_runner.token_offload = engine
         self._orchestrator.token_offload = engine
