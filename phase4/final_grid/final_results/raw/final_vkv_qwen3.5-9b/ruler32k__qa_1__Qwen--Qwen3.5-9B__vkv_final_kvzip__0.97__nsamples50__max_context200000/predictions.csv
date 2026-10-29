@@ -1,0 +1,166 @@
+answer,answer_prefix,compression_ratio,predicted_answer,max_new_tokens,task,context_length,question
+['singing' 'singing' 'singing'],Answer:,0.96875, singing,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What tradition were the Saint-Evroul monks known for? "
+['north' 'the north' 'north'],Answer:,0.96875, The north of France.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What part of France were the Normans located? "
+['Deabolis' 'the river Deabolis' 'Deabolis'],Answer:,0.96875, The river Deabolis,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What river was Petrela located by? "
+"['random access machines' 'random access machines'
+ 'random access machines']",Answer:,0.96875, random access machines,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What is an example of a machine model that deviates from a generally accepted multi-tape Turing machine? "
+"['how graphs are encoded as binary strings'
+ 'how graphs are encoded as binary strings'
+ 'how graphs are encoded as binary strings']",Answer:,0.96875, The decision of how graphs are encoded as binary strings.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What encoding decision needs to be made in order to determine an exact definition of the formal language? "
+"['computational problems' 'computational problems'
+ 'computational problems']",Answer:,0.96875, It seeks to classify computational problems according to their inherent difficulty and to quantify the amount of resources (such as time and storage) needed to solve them.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What does computational complexity theory most specifically seek to answer?  "
+['Conrad of Montferrat' 'Conrad of Montferrat' 'Conrad of Montferrat'],Answer:,0.96875, Conrad of Montferrat,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who was Guy's Rival? "
+['complexity resources' 'complexity resources' 'complexity'],Answer:,0.96875, computational resources,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Time and space are both examples of what type of resource? "
+['Complexity measures' 'complexity measures' 'complexity'],Answer:,0.96875, complexity measure,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Decision tree is an example of what type of measure? "
+['Modern English' 'Modern English' 'Modern English'],Answer:,0.96875, Modern English,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What was the Anglo-Norman language's final form? "
+['Berengaria' 'Berengaria' 'Berengaria'],Answer:,0.96875, Berengaria,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who was Richard's fiancee? "
+"['the most efficient algorithm' 'the most efficient algorithm'
+ 'the most efficient algorithm solving a given problem']",Answer:,0.96875, the most efficient algorithm solving a given problem,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Classification of resources is contingent on determining the upper and lower bounds of minimum time required by what?   "
+['time' 'non-deterministic time' 'non-deterministic time'],Answer:,0.96875, non-deterministic time,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What is the most critical resource in the analysis of computational problems associated with non-deterministic Turing machines? "
+['Romanesque' 'Romanesque' 'Romanesque'],Answer:,0.96875, A unique Romanesque idiom.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What is the Norman architecture idiom? "
+"['all possible algorithms' 'all possible algorithms'
+ 'all possible algorithms']",Answer:,0.96875, Turing machine,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What is the colloquial phrase used to convey the continuum of algorithms with unlimited availability irrespective of time?  "
+['time' 'time complexity' 'time complexity'],Answer:,0.96875, time,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What is one common example of a critical complexity measure? "
+['the Welsh' 'the Welsh' 'the Welsh'],Answer:,0.96875, The Welsh,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who was Ralph in charge of being at war with? "
+"['A probabilistic Turing machine' 'probabilistic'
+ 'probabilistic Turing machine']",Answer:,0.96875, A probabilistic Turing machine,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What is the term used to identify a deterministic Turing machine that has additional random bits? "
+['Sicily' 'Sicily' 'Kingdom of Sicily'],Answer:,0.96875, Kingdom of Sicily,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What place had the Norman Arab architectural style? "
+['Isaac Komnenos' 'Isaac' 'Isaac Komnenos'],Answer:,0.96875, Isaac Komnenos,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who ruled Cyprus in 1191? "
+['yes' 'yes' 'yes'],Answer:,0.96875, yes,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What will the output be for a member of the language of a decision problem? "
+['fighting horsemen' 'fighting horsemen' 'fighting horsemen'],Answer:,0.96875, Fighting horsemen,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What was one of the Norman's major exports? "
+['the Turing machine' 'the Turing machine' 'Turing machine'],Answer:,0.96875, The Turing machine,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What is the most commonplace model utilized in complexity theory? "
+"[""Latin monastery at Sant'Eufemia."" ""a Latin monastery at Sant'Eufemia""
+ ""Sant'Eufemia""]",Answer:,0.96875, Sant'Eufemia,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What monastery did the Saint-Evroul monks establish in Italy? "
+['a storm' 'a storm' 'a storm'],Answer:,0.96875, A storm dispersed the fleet.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What ruined Richard's plans to reach Acre? "
+['William of Montreuil' 'William of Montreuil' 'William of Montreuil'],Answer:,0.96875, William of Montreuil,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who was in charge of the papal army in the War of Barbastro? "
+['dukes' 'the dukes' 'dukes'],Answer:,0.96875, The dukes of Normandy,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who used the church to unify themselves? "
+['1191' '1191' '1191'],Answer:,0.96875, 1191,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What year did the storm hit Richard's fleet? "
+['yes' 'yes' 'yes'],Answer:,0.96875, yes,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What answer denotes that an algorithm has accepted an input string? "
+"['the integer factorization problem' 'integer factorization'
+ 'integer factorization problem']",Answer:,0.96875, the integer factorization problem,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: In addition to the traveling salesman problem, what is another example of a function problem? "
+['9th century' '9th century' '9th century'],Answer:,0.96875, 9th century,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: When was the Latin version of the word Norman first recorded? "
+['1050s' 'in the 1050s' 'in the 1050s'],Answer:,0.96875, In the 1050s,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: When did Herve serve as a Byzantine general? "
+['Hereford' 'Hereford' 'Hereford'],Answer:,0.96875, Hereford,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Where was Ralph earl of? "
+['Maciot de Bethencourt' 'Maciot de Bethencourt' 'Maciot de Bethencourt'],Answer:,0.96875, Maciot de Bethencourt,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who sold the rights? "
+"['A deterministic Turing machine' 'deterministic'
+ 'deterministic Turing machine']",Answer:,0.96875, A deterministic Turing machine,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What is generally considered to be the most basic iteration of a Turing machine? "
+"['analysis of algorithms and computability theory'
+ 'analysis of algorithms and computability theory'
+ 'analysis of algorithms and computability theory']",Answer:,0.96875, analysis of algorithms and computability theory,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What two fields of theoretical computer science closely mirror computational complexity theory? "
+"['set of triples' 'triple'
+ 'the set of triples (a, b, c) such that the relation a × b = c holds']",Answer:,0.96875, function problem,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: If two integers are multiplied and output a value, what is this expression set called? "
+['the instance' 'the instance' 'the size of the instance'],Answer:,0.96875, The size of the instance.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What is one variable on which the running time may be contingent? "
+['mathematical models' 'mathematical models' 'branching'],Answer:,0.96875, It captures many of the mathematical models we want to analyze.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: A non-deterministic Turing machine has the ability to capture what facet of useful analysis? "
+['Channel Islands' 'the Channel Islands' 'the Channel Islands'],Answer:,0.96875, The Channel Islands,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Where are Jersey and Guernsey "
+['rounded' 'rounded' 'rounded'],Answer:,0.96875, Rounded arches,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What kind of arches does Norman architecture have? "
+['Cobham-Edmonds thesis' 'Cobham-Edmonds' 'Cobham-Edmonds thesis'],Answer:,0.96875, Cobham-Edmonds thesis,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What thesis specifies that a polynomial relationship exists within time complexities in a computational model?  "
+['Harthacnut' 'Harthacnut' 'Harthacnut'],Answer:,0.96875, Harthacnut,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who was Edward the Confessor's half-brother? "
+"['Norman mercenary' 'an Italo-Norman named Raoul'
+ 'descended from an Italo-Norman named Raoul']",Answer:,0.96875, The Raoulii were descended from an Italo-Norman named Raoul.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What were the origins of the Raouliii family? "
+['yes or no' 'yes or no' 'yes or no'],Answer:,0.96875, yes or no,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What are the two simple word responses to a decision problem? "
+['linear time' 'linear' 'linear'],Answer:,0.96875, Linear time,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: A multi-tape Turing machine requires what type of time for a solution? "
+['Bohemond' 'Bohemond' 'Bohemond'],Answer:,0.96875, Bohemond,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: Who was Robert's son? "
+['1060s' 'In the 1060s' 'In the 1060s'],Answer:,0.96875, In the 1060s.,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: When did Robert Crispin go up against the Turks? "
+"['worst-case time complexity' 'worst-case time complexity'
+ 'the worst-case time complexity']",Answer:,0.96875, worst-case time complexity,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What term corresponds to the maximum measurement of time across all functions of n?  "
+['embroidery' 'embroidery' 'embroidery'],Answer:,0.96875, Embroidery,32,qa_1,32768,"Answer the question based on the given documents. Only give me the answer and do not output any other words.
+
+Question: What kind of needlework was used in the creation of the Bayeux Tapestry? "

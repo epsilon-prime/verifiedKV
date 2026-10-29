@@ -1,0 +1,6 @@
+grid start 2026-10-28 17:23:48
+2026-10-28 18:01:00 done qwen3.5-9b_128k_r32_ruler_qa_1 (gpu 2)
+2026-10-28 18:32:25 done qwen3.5-9b_128k_r16_ruler_niah_multikey_3 (gpu 1)
+2026-10-28 18:40:44 done qwen3.5-9b_128k_r8_ruler_cwe (gpu 0)
+all workers finished
+grid end 2026-10-28 18:40:44

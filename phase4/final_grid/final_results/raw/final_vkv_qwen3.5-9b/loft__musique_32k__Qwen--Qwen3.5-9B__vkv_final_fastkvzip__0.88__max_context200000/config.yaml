@@ -1,0 +1,40 @@
+dataset: loft
+data_dir: musique_32k
+model: Qwen/Qwen3.5-9B
+device: null
+press_name: vkv_final_fastkvzip
+compression_ratio: 0.875
+key_channel_compression_ratio: null
+fraction: 1.0
+n_samples: null
+dataset_path: null
+max_new_tokens: null
+min_context_length: null
+max_context_length: 200000
+query_aware: false
+needle_depth: null
+compression_interval: null
+target_size: null
+hidden_states_buffer_size: null
+output_dir: /home/rethinkingai-self/23b1835/vkv-repo/phase4/final_grid/results/final_vkv_qwen3.5-9b
+log_level: INFO
+enable_micro_metrics: false
+micro_metrics_max_records: null
+micro_metrics_sampling_factor: 1.0
+micro_metrics: null
+enable_head_stats: false
+head_stats_layer_stride: 1
+head_stats_step_stride: 1
+head_stats_question_stride: 1
+head_stats_max_rows: null
+model_kwargs:
+  attn_implementation: sdpa
+trust_remote_code: false
+press_init_command: VkvFinalGridPress(bern=BernoulliPress(press=FastKVzipScorer(compression_ratio=0.8906560636182903,
+  layerwise=False, n_sink=4, window_size=None, window_ratio=0.0, gates=None, score_val=None),
+  seed=0), theta=0.01, theta_question=None, persist=False, reserve=0.0, reserve_entries=None,
+  bits=2, n_pairs=16, pairs_per_128_dims=True, group=128, head_dim=128, charge_overhead=True,
+  _total=0.875, kept=None, eps0=0.05, delta=0.1, shortlist_head=128, plan_weights='sketch',
+  charge_sketch=True, fast=True, n_sink=64, window=64, fixed_charge=None)
+seed: 42
+fp8: false

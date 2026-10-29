@@ -1,0 +1,452 @@
+question,task,max_new_tokens,answer_prefix,answers,predicted_answer,split,compression_ratio
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when does monday night raw come on hulu
+",nq_128k,256,Final Answer: ,['the following day'],"2012
+Final Answer: ['2012']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who did puerto rico belong to before the u.s
+",nq_128k,256,Final Answer: ,['Spain' 'Taíno' 'indigenous Taíno people'],"199
+Final Answer: ['Spain']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when did season 4 of glee come out
+",nq_128k,256,Final Answer: ,"['September 13, 2012']","2012
+TITLE: Glee (season 4) | ID: 252",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what is the genus of a bald eagle
+",nq_128k,256,Final Answer: ,['Haliaeetus'], ['Haliaeetus'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when does boomer find out she a cylon
+",nq_128k,256,Final Answer: ,"[""Kobol's Last Gleaming""]",0,test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what is the female lion called in lion king
+",nq_128k,256,Final Answer: ,['Nala'], ['lioness'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who plays the woodsman in over the garden wall
+",nq_128k,256,Final Answer: ,['Christopher Lloyd'], ['Christopher Lloyd'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who introduced the first chrismas tree to the uk
+",nq_128k,256,Final Answer: ,['Charlotte of Mecklenburg-Strelitz']," ['Charlotte of Mecklenburg-Strelitz']
+
+TITLE: Christmas tree | ID: 808",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who played cruella de vil in 101 dalmatians
+",nq_128k,256,Final Answer: ,['Glenn Close'],"1990 | TITLE: 101 Dalmatians (1996 film) | ID: 490
+Final Answer: ['Cruella de Vil']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who sang the song i wanna be sedated
+",nq_128k,256,Final Answer: ,['the Ramones'], ['the Ramones'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: how many players on the line of scrimmage in american football
+",nq_128k,256,Final Answer: ,['at least seven' 'at least seven players' 'seven'],"7
+Final Answer: ['7']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when did the tv show the waltons first air
+",nq_128k,256,Final Answer: ,['September 1972'],"1972
+TITLE: The Waltons | ID: 79",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who is emma dating in once upon a time
+",nq_128k,256,Final Answer: ,['Hook'], ['Hook'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when was the last time giants won superbowl
+",nq_128k,256,Final Answer: ,['2011'],"2011
+ID: 511
+TITLE: New York Giants",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: where does the sun hit the us first
+",nq_128k,256,Final Answer: ,['the summit of Cadillac Mountain']," ['Mars Hill', 'West Quoddy Head']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who is the authority or governing body of mca
+",nq_128k,256,Final Answer: ,['Indian government'], ['Ministry of Corporate Affairs'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: where does prime rib come from on a cow
+",nq_128k,256,Final Answer: ,['the primal rib'], ['Standing rib roast'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who plays joker in batman the dark knight
+",nq_128k,256,Final Answer: ,['Ledger'], ['Heath Ledger'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what is the common name for gravitational force
+",nq_128k,256,Final Answer: ,"['Gravity' 'Gravity, or gravitation']", ['gravitation'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: fast and furious 7 red car abu dhabi
+",nq_128k,256,Final Answer: ,['The Lykan Hypersport'], ['The Lykan HyperSport'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who played the original steve mcgarrett on hawaii five-o
+",nq_128k,256,Final Answer: ,['Jack Lord' 'John Joseph Patrick Ryan']," ['Jack Lord']
+ID: 125",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: is aluminium a ferrous or non ferrous metal
+",nq_128k,256,Final Answer: ,['non-ferrous'], ['non-ferrous metal'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who has a ring of power in lotr
+",nq_128k,256,Final Answer: ,['Sauron']," ['Elrond', 'Galadriel', 'Círdan']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: the era of the great mughals began with the accession of
+",nq_128k,256,Final Answer: ,['Akbar the Great' 'Babur'], ['Babur'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when did hyderabad became a part of india
+",nq_128k,256,Final Answer: ,['24 November 1949'],"24 November 1949
+TITLE: Hyderabad State (1948–56) | ID: 26",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: vikram samvat calender is official in which country
+",nq_128k,256,Final Answer: ,['Nepal'], ['Nepal'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who won the oscar for best picture in 1976
+",nq_128k,256,Final Answer: ,['Rocky'],"49th Academy Awards | ID: 99
+Final Answer: ['Rocky']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: where is the protien made in the cell
+",nq_128k,256,Final Answer: ,['cell nucleus' 'in the cell nucleus'], ['nucleus'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what is the tigers name in life of pi
+",nq_128k,256,Final Answer: ,['Richard Parker'], ['Richard Parker'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who played lionel in as time goes by
+",nq_128k,256,Final Answer: ,"['Geoffrey Dyson Palmer' 'Geoffrey Dyson Palmer, OBE']", ['Lionel Hardcastle'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when does mexico play in the winter olympics
+",nq_128k,256,Final Answer: ,['9 to 25 February 2018'],"2018
+TITLE: Mexico at the 2018 Winter Olympics | ID: 386",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who is the head a in pretty little liars
+",nq_128k,256,Final Answer: ,['CeCe Drake'],467,test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what does g stand for in ncis los angeles
+",nq_128k,256,Final Answer: ,['Grisha'], ['G'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what is the membrane on the surface of the stomach called
+",nq_128k,256,Final Answer: ,['Serous Membrane' 'the visceral membrane'], ['Serous membrane'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when did it become law to stand for the national anthem
+",nq_128k,256,Final Answer: ,"['June 22, 1942']","1942
+TITLE: The Star-Spangled Banner | ID: 855",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what is the name of the compound p4010
+",nq_128k,256,Final Answer: ,['Phosphorus pentoxide'],"199
+Final Answer: ['Phosphorus pentoxide']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: krypton-85 decays by emission of a beta particle. the product of this decay is
+",nq_128k,256,Final Answer: ,['rubidium-85'],"85
+Final Answer: ['rubidium-85']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: which episode does gideon die in criminal minds
+",nq_128k,256,Final Answer: ,"['""Nelson\'s Sparrow""' ""Nelson's Sparrow""]", ['Nelson\'s Sparrow'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: first jnanpith award was an autor of which language
+",nq_128k,256,Final Answer: ,['Malayalam'], ['Malayalam'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who was the first signatory of the israeli declaration of independence
+",nq_128k,256,Final Answer: ,['David Ben-Gurion'], ['David Ben-Gurion'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: where did the rulers of the qing dynasty originate
+",nq_128k,256,Final Answer: ,['Manchuria'], ['The Qing dynasty was founded by the Jurchen Aisin Gioro clan in Manchuria.'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when did where are you now come out
+",nq_128k,256,Final Answer: ,"['February 27, 2015' 'February\xa027,\xa02015']","0
+Final Answer: ['2018']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who made the song we are the world
+",nq_128k,256,Final Answer: ,['produced by Quincy Jones']," ['Michael Jackson', 'Lionel Richie']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who sings the rap in baby by justin bieber
+",nq_128k,256,Final Answer: ,['Ludacris'], ['Ludacris'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: jawaharlal nehru centre for advanced scientific research jakkur campus
+",nq_128k,256,Final Answer: ,"['Jakkur, Bangalore, India']"," ['Jawaharlal Nehru Centre for Advanced Scientific Research', '809']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: why does cooling water run through the condenser
+",nq_128k,256,Final Answer: ,['condense the steam'],2017 New Year Honours | ID: 367,test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when does a cell have condensed visible chromosomes also known as sister chromatids
+",nq_128k,256,Final Answer: ,['metaphase'], ['Chromosome'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what was hawaii's primary export to the united states
+",nq_128k,256,Final Answer: ,['coffee' 'honey' 'livestock' 'macadamia nuts' 'pineapple' 'sugarcane'], ['Hawaii'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what type of government did the ming dynasty have
+",nq_128k,256,Final Answer: ,['imperial rule']," ['Imperial', 'bureaucratic government']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what is the filename extension used for all java source files
+",nq_128k,256,Final Answer: ,['.java'], ['java'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when was the last time unc did not make the ncaa tournament
+",nq_128k,256,Final Answer: ,['2003'],"1965–66
+TITLE: North Carolina Tar Heels men's basketball | ID: 188",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: different ways to spell corey for a boy
+",nq_128k,256,Final Answer: ,['Coire' 'Corey' 'Corie' 'Correy' 'Corrie' 'Cory' 'Khouri' 'Kori' 'Kory']," ['Corey', 'Coire', 'Corie', 'Corrie', 'Curry', 'Correy', 'Kory', 'Khouri', 'Kori']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what percentage of the population is naturally blonde
+",nq_128k,256,Final Answer: ,['2%'],2% to 16%,test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who plays poppy in the beat goes on
+",nq_128k,256,Final Answer: ,['Amanda Leighton'], ['Amanda Leighton'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: a town in west yorkshire on the river aire home to a rugby league team
+",nq_128k,256,Final Answer: ,['Castleford']," ['Castleford', 'Wakefield']
+
+**Documents used:**
+*   ID: 841 (TITLE: Castleford) - Mentions Castleford is in West Yorkshire and the River Aire joins the River Aire there.
+*   ID: 157 (TITLE: South Sydney Rabbitohs) - Incorrectly identified in thought process, need to find Rugby League team in West Yorkshire.
+*   Let's re-examine the documents for a Rugby League team in West Yorkshire on the River Aire.
+*   ID: 841 mentions Castleford is in West Yorkshire and the River Aire joins the River Calder there. It does not explicitly mention a rugby league team.
+*   Let's look for ""Rugby League"" and ""West Yorkshire"".
+*   ID: 157 mentions ""South Sydney Rabbitohs"" and ""New South Wales Rugby Football League"". Not West Yorkshire.
+*   ID: 46 mentions ""Arkansas Razorbacks football"".
+*   ID: 841 is the only one mentioning West Yorkshire and River Aire.
+*   Wait, is there a specific team mentioned?
+*   Let's re-read ID 841 carefully: ""Castleford is",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what is alpha centauri's approximate distance from earth
+",nq_128k,256,Final Answer: ,['4.37 light-years'],4.37 light-years,test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: how many seasons of the rugrats are there
+",nq_128k,256,Final Answer: ,['9' '9 seasons'],9,test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what is the democracy of the united states
+",nq_128k,256,Final Answer: ,['federal republic'],203,test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when did cristiano ronaldo go to manchester united
+",nq_128k,256,Final Answer: ,['2003' 'at age 18 in 2003'],"2003
+TITLE: Cristiano Ronaldo | ID: 29",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when did the nfl adopt a salary cap
+",nq_128k,256,Final Answer: ,['1994' '1994 season' 'for the 1994 season' 'the 1994 season'],"1994
+Final Answer: ['1994']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: where is the tibia and fibula bone located
+",nq_128k,256,Final Answer: ,['leg']," ['The fibula or calf bone is a leg bone located on the lateral side of the tibia']
+TITLE: Fibula | ID: 230",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: where is the villa in call me by your name
+",nq_128k,256,Final Answer: ,['Moscazzano']," ['Crema', 'Pandino', 'Moscazzano']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when does agents of shield season five start
+",nq_128k,256,Final Answer: ,"['December 1, 2017']","2017
+Based on the document ""Agents of S.H.I.E.L.D. (season 5)"" (ID: 229), the fifth season is set to begin airing on December 1, 2017.",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who said i'll gladly pay you tuesday
+",nq_128k,256,Final Answer: ,['Wimpy'], ['J. Wellington Wimpy'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who wrote catch 22 (both names)
+",nq_128k,256,Final Answer: ,['American author Joseph Heller' 'Joseph Heller' 'Joseph Heller.'], ['Joseph Heller'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: where does the synthesis of new dna from existing dna occurs
+",nq_128k,256,Final Answer: ,['origins of replication']," ['DNA replication', '777']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who does tyler end up with in you get me
+",nq_128k,256,Final Answer: ,['Ali'],472,test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who was the editor of the journal jugantor published in the time of swadeshi movement
+",nq_128k,256,Final Answer: ,['Bhupendranath Dutt'], ['Bhupendranath Dutt'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: how and why were serial novels a phenomenon in the nineteenth century
+",nq_128k,256,Final Answer: ,"['improved economics of distribution' 'technological advances in printing'
+ 'the rise of literacy']","199
+['Serialized fiction surged in popularity during Britain's Victorian era, due to a combination of the rise of literacy, technological advances in printing, and improved economics of distribution. Most Victorian novels initially appeared as installments in monthly or weekly periodicals.']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when did the sat become out of 1600
+",nq_128k,256,Final Answer: ,['2014' '2016' 'March 2016'],"1600-point score scale
+TITLE: SAT | ID: 131",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what type of energy do satellites generally use to communicate with earth
+",nq_128k,256,Final Answer: ,['electromagnetic waves' 'radio and microwave frequencies']," ['Radio', 'Microwave']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: which layer of the osi model handles physical addressing
+",nq_128k,256,Final Answer: ,['physical layer or layer 1'],292,test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: roman god of the underworld also called orcus or pluto
+",nq_128k,256,Final Answer: ,['Dis Pater']," ['Pluto (mythology)', 'ID: 593']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who is regarded as the founder of psychoanalysis
+",nq_128k,256,Final Answer: ,['Austrian neurologist Sigmund Freud' 'Sigmund Freud'], ['Sigmund Freud'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: how many national parks are present in india
+",nq_128k,256,Final Answer: ,['103'],103,test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when did they start 3 pointers in basketball
+",nq_128k,256,Final Answer: ,['1945' '1961'],"1961
+TITLE: Three-point field goal | ID: 599",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what type of legal system is used in the uk
+",nq_128k,256,Final Answer: ,['English law' 'Northern Ireland law' 'Scots law']," ['The United Kingdom has three legal systems, each of which applies to a particular geographical area: English law applies in England and Wales, Northern Ireland law applies in Northern Ireland, and Scots law applies in Scotland.']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: how many customers does edf have in the uk
+",nq_128k,256,Final Answer: ,['5.7 million' '5.7 million customer accounts'],"5.7 million
+TITLE: EDF Energy | ID: 311",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what is the highest peak in the ozarks
+",nq_128k,256,Final Answer: ,['Buffalo Lookout' 'Lookout'], ['Buffalo Lookout'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who is the owner of the crowne plaza
+",nq_128k,256,Final Answer: ,['InterContinental Hotels Group'], ['InterContinental Hotels Group'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: batman and robin episode only fools and horses
+",nq_128k,256,Final Answer: ,"['""Heroes and Villains""']", ['Heroes and Villains'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when was the immigration act passed in canada
+",nq_128k,256,Final Answer: ,['1923'],"1923
+TITLE: Chinese Immigration Act, 1923 | ID: 184",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who is known as the father of indian constitution
+",nq_128k,256,Final Answer: ,['Bhimrao Ramji Ambedkar'], ['Bhimrao Ramji Ambedkar'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who were the judges on dancing on ice 2014
+",nq_128k,256,Final Answer: ,['Ashley Roberts' 'Jason Gardiner' 'Karen Barber' 'Robin Cousins']," ['Robin Cousins', 'Nicky Slater', 'Karen Barber', 'Ashley Roberts']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: where does a brisket come from on a cow
+",nq_128k,256,Final Answer: ,['breast or lower chest' 'the breast or lower chest'], ['Brisket'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: how long were the pyramids the tallest structure
+",nq_128k,256,Final Answer: ,"['over 3,800' 'over 3,800 years']",3800 years,test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who played little ricky on i love lucy show
+",nq_128k,256,Final Answer: ,['Keith Thibodeaux']," ['Richard Keith']
+TITLE: Richard Keith (actor) | ID: 202",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when does the new season on the 100 come out
+",nq_128k,256,Final Answer: ,"['April 24, 2018']","2018
+TITLE: List of The 100 episodes | ID: 222",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who has won the eurovision song contest the most times
+",nq_128k,256,Final Answer: ,"['Ireland' ""Ireland's Johnny Logan""]"," ['Ireland']
+
+ID: 63 | TITLE: List of Eurovision Song Contest winners",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: where do they film young and the restless
+",nq_128k,256,Final Answer: ,['CBS Television City']," ['Taped at CBS Television City, studios 41 and 43 in Hollywood']
+TITLE: The Young and the Restless | ID: 669",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: list of books written by abul kalam azad
+",nq_128k,256,Final Answer: ,['Ghubar-e-Khatir' 'India Wins Freedom' 'Tarjumanul Quran' 'Tazkirah']," ['India Wins Freedom', 'Ghubar-e-Khatir', 'Tazkirah', 'Tarjumanul Quran']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when does rick and morty play on tv
+",nq_128k,256,Final Answer: ,['late-night'],"2013
+Final Answer: ['December 2, 2013']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who played jennifer in back to the future
+",nq_128k,256,Final Answer: ,['Claudia Grace Wells'], ['Claudia Wells'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what type of writing did ancient egypt use
+",nq_128k,256,Final Answer: ,['Egyptian hieroglyphs' 'hieroglyphs'], ['Egyptian hieroglyphs'],test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: where does the donkey talk in the bible
+",nq_128k,256,Final Answer: ,['Numbers 22:28'],627,test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when did the bill of rights come out
+",nq_128k,256,Final Answer: ,['16 December 1689' '1689'],"16 December 1689
+TITLE: Bill of Rights 1689 | ID: 830",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: who was selected for the 2018 football hall of fame
+",nq_128k,256,Final Answer: ,"['Bobby Beathard' 'Brian Dawkins' 'Brian Urlacher' 'Jerry Kramer'
+ 'Randy Moss' 'Ray Lewis' 'Robert Brazile' 'Terrell Owens']"," ['Bobby Beathard', 'Robert Brazile', 'Brian Dawkins', 'Jerry Kramer', 'Ray Lewis', 'Randy Moss', 'Terrell Owens', 'Brian Urlacher']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: when was you'll never walk alone first released
+",nq_128k,256,Final Answer: ,['1945'],"1945
+TITLE: You'll Never Walk Alone | ID: 384",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: where was the remake of dirty dancing filmed
+",nq_128k,256,Final Answer: ,"['Hendersonville, North Carolina' 'High Hampton Inn in Cashiers'
+ 'western North Carolina']"," ['Hendersonville, North Carolina']",test,0.9375
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: where did huntington's disease get its name
+",nq_128k,256,Final Answer: ,['the physician George Huntington'], ['George Huntington'],test,0.9375

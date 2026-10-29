@@ -1,0 +1,667 @@
+question,context_length,answer_prefix,predicted_answer,answer,task,max_new_tokens,compression_ratio
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1.  **codpiece**
+2.  **folder**
+3.  **airmail**
+4.  **correspondence**
+5.  **camera**
+6.  **tie**
+7.  **grade**
+8.  **invincible**
+9.  **crewmate**
+10. **id**
+
+*(Note: While the previous example provided a different set of top words for a different list, a careful count of the specific 24,150-word list provided above reveals that ""codpiece,"" ""","['crewmate' 'tie' 'invincible' 'grade' 'camera' 'id' 'airmail'
+ 'correspondence' 'folder' 'codpiece']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **packet**
+2. **evolution**
+3. **leverage**
+4. **wealth**
+5. **set**
+6. **kill**
+7. **puny**
+8. **normalize** (and **normalization**)
+9. **savage**
+10. **expand**
+
+*(Note: Several of these words appear over 100 times each. ""Packet"" and ""Evolution"" are among the highest frequency words in this specific dataset.)*","['kill' 'expand' 'wealth' 'puny' 'savage' 'evolution' 'leverage' 'set'
+ 'normalization' 'packet']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **detention**
+2. **brave**
+3. **builder**
+4. **dew**
+5. **storage**
+6. **plenty**
+7. **moldy**
+8. **tempo**
+9. **role**
+10. **dust**","['storage' 'moldy' 'brave' 'role' 'dew' 'tempo' 'builder' 'detention'
+ 'dust' 'plenty']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1.  **mattock**
+2.  **accordion**
+3.  **fix**
+4.  **clearing**
+5.  **infarction**
+6.  **elegant**
+7.  **password**
+8.  **validate**
+9.  **freelance**
+10. **quaint**
+
+*(Note: While the first example in your prompt listed different words like ""congress"" and ""teenager,"" those were specific to the first short list provided. In this second, much larger list of","['mattock' 'accordion' 'elegant' 'password' 'fix' 'infarction' 'freelance'
+ 'clearing' 'quaint' 'validate']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **solitaire**
+2. **treat**
+3. **stepdaughter**
+4. **forehead**
+5. **margin**
+6. **recorder**
+7. **counterterrorism**
+8. **severely** (Note: ""severity"" is the word in the list, appearing very frequently) -> **severity**
+9. **confidentiality**
+10. **radiator**
+
+*(Self-Correction/Refinement based on a quick re-scan of the massive list provided in the prompt)*:
+","['recorder' 'counterterrorism' 'severity' 'treat' 'stepdaughter'
+ 'forehead' 'margin' 'solitaire' 'radiator' 'confidentiality']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1.  **sugar**
+2.  **uniform**
+3.  **government**
+4.  **research**
+5.  **liquid**
+6.  **pocket**
+7.  **tailor**
+8.  **downfall**
+9.  **sycamore**
+10. **madly**
+
+*(Note: These counts are based on a full scan of the provided 24,150-word list. Words like ""sugar,"" ""uniform,"" and ""government"" appear significantly more frequently than","['sugar' 'government' 'pocket' 'research' 'madly' 'liquid' 'uniform'
+ 'downfall' 'tailor' 'sycamore']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **cabinet**
+2. **federation**
+3. **gutter**
+4. **dibble**
+5. **zip**
+6. **tune-up**
+7. **comic**
+8. **brain**
+9. **swamp**
+10. **receptive**","['dibble' 'brain' 'cabinet' 'swamp' 'zip' 'tune-up' 'comic' 'receptive'
+ 'gutter' 'federation']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **cowbell**
+2. **gavel**
+3. **castanet**
+4. **trellis**
+5. **gadget**
+6. **protect**
+7. **likeable**
+8. **hail**
+9. **pen**
+10. **alteration**","['hail' 'castanet' 'trellis' 'protect' 'alteration' 'cowbell' 'gadget'
+ 'likeable' 'pen' 'reward']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **galoshes**
+2. **magenta**
+3. **reflection**
+4. **pheasant**
+5. **billion**
+6. **sari**
+7. **prove**
+8. **revenant**
+9. **ark**
+10. **buy**","['pheasant' 'revenant' 'prove' 'magenta' 'billion' 'ark' 'sari'
+ 'reflection' 'buy' 'galoshes']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **nebulous**
+2. **mushroom**
+3. **loggia**
+4. **summary**
+5. **checking**
+6. **questionable**
+7. **mineral**
+8. **astrology**
+9. **building**
+10. **compassion**
+
+*(Note: Several other words like ""feigned"", ""motive"", ""subroutine"", ""rutabaga"", ""parameter"", ""keyboard"", ""minimalism"", ""label"", and ""fledgling"" from the first example in your","['mushroom' 'building' 'loggia' 'compassion' 'checking' 'mineral'
+ 'questionable' 'summary' 'nebulous' 'astrology']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+1. heating
+2. cube
+3. zipper
+4. morphology
+5. fun
+6. winter
+7. illusion
+8. keyboard
+9. slump
+10. syndrome","['slump' 'keyboard' 'winter' 'morphology' 'heating' 'illusion' 'cube'
+ 'syndrome' 'zipper' 'fun']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1.  **dart**
+2.  **produce**
+3.  **modification**
+4.  **genre**
+5.  **embarrassed**
+6.  **clear**
+7.  **coordination**
+8.  **attainment**
+9.  **jellyfish**
+10. **cirrus**","['embarrassed' 'clear' 'produce' 'modification' 'jellyfish' 'coordination'
+ 'genre' 'dart' 'cirrus' 'attainment']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **veal**
+2. **clogs**
+3. **legging**
+4. **finer**
+5. **amenity**
+6. **foodstuffs**
+7. **reach**
+8. **inspire**
+9. **assessment**
+10. **hot**","['clogs' 'hot' 'amenity' 'assessment' 'inspire' 'reach' 'veal' 'finer'
+ 'foodstuffs' 'legging']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **unibody**
+2. **semester**
+3. **boundless**
+4. **registry**
+5. **express**
+6. **hesitant**
+7. **circumstance**
+8. **actress**
+9. **beggar**
+10. **unibody** (Note: ""unibody"" and ""semester"" appear extremely frequently, often tied with other high-frequency words like ""boundless"" and ""express"". A precise count reveals ""unibody"", ""semester"", ""boundless"", ""","['boundless' 'circumstance' 'unibody' 'registry' 'semester' 'express'
+ 'hesitant' 'beggar' 'whorl' 'actress']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **film**
+2. **mare**
+3. **driveway**
+4. **passage**
+5. **linkage**
+6. **strait**
+7. **calico**
+8. **dioxide**
+9. **passion**
+10. **armour**","['film' 'linkage' 'passion' 'mare' 'armour' 'dioxide' 'calico' 'sultan'
+ 'driveway' 'strait']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+1. ground
+2. characteristic
+3. molding
+4. ethyl
+5. sanction
+6. change
+7. graduate
+8. tomography
+9. brow
+10. awful","['graduate' 'awful' 'molding' 'ethyl' 'characteristic' 'sanction' 'brow'
+ 'tomography' 'change' 'ground']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **gondola**
+2. **video**
+3. **steamroller**
+4. **literature**
+5. **obsidian**
+6. **leaf**
+7. **logo**
+8. **sherry**
+9. **prove**
+10. **permit**","['video' 'obsidian' 'sherry' 'logo' 'steamroller' 'gondola' 'leaf'
+ 'literature' 'permit' 'prove']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **waffle**
+2. **rosemary**
+3. **prow**
+4. **licensing**
+5. **reparation**
+6. **verdant**
+7. **read**
+8. **behold**
+9. **enthusiastic**
+10. **simplicity**","['prow' 'reparation' 'read' 'waffle' 'licensing' 'simplicity' 'behold'
+ 'rosemary' 'verdant' 'enthusiastic']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **nucleotide**
+2. **mezzanine**
+3. **destiny**
+4. **allergist**
+5. **witch-hunt**
+6. **deed**
+7. **law**
+8. **queue**
+9. **bidet**
+10. **sexuality**","['nucleotide' 'law' 'deed' 'mezzanine' 'destiny' 'bidet' 'allergist'
+ 'witch-hunt' 'queue' 'sexuality']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **market**
+2. **issue**
+3. **dispatch**
+4. **station**
+5. **comic**
+6. **pudding**
+7. **swift**
+8. **parchment**
+9. **thunder**
+10. **selfish**","['selfish' 'parchment' 'thunder' 'dispatch' 'station' 'pudding' 'comic'
+ 'issue' 'market' 'swift']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **clothe**
+2. **activate**
+3. **highland**
+4. **prow**
+5. **drawing**
+6. **feedback**
+7. **furnace**
+8. **subset**
+9. **clothe** (Note: ""clothe"" appears extremely frequently, often listed as the single most common word in similar datasets generated this way. If distinct words are required, the next most frequent are **activate**, **highland**, **prow**, **drawing**, **feedback**, **furnace**, **","['furnace' 'drawing' 'feedback' 'highland' 'subset' 'activate' 'clothe'
+ 'prow' 'collagen' 'screeching']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **belligerent**
+2. **message**
+3. **commandment**
+4. **assess**
+5. **disposal**
+6. **area**
+7. **economic**
+8. **pith**
+9. **testimonial**
+10. **brief**","['belligerent' 'pith' 'economic' 'commandment' 'testimonial' 'area'
+ 'brief' 'message' 'assess' 'disposal']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **management**
+2. **puppet**
+3. **formal**
+4. **integration**
+5. **colonisation**
+6. **grain**
+7. **might**
+8. **receptive**
+9. **hyphenation**
+10. **policy**","['management' 'grain' 'policy' 'hyphenation' 'formal' 'integration'
+ 'puppet' 'colonisation' 'receptive' 'might']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **jerk**
+2. **top**
+3. **blood**
+4. **smoke**
+5. **elbow**
+6. **disagreement**
+7. **meme**
+8. **protocol**
+9. **eternity**
+10. **slang**","['slang' 'smoke' 'disagreement' 'blood' 'jerk' 'eternity' 'top' 'meme'
+ 'protocol' 'elbow']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1.  **aluminum**
+2.  **former**
+3.  **clearing**
+4.  **pennant**
+5.  **lace**
+6.  **gazebo**
+7.  **somersault**
+8.  **eat**
+9.  **full**
+10. **aluminium**
+
+*(Note: ""aluminum"" and ""aluminium"" are counted separately as they appear as distinct entries in the list. ""Former"" and ""Clearing"" are also extremely frequent throughout the text","['aluminum' 'somersault' 'gazebo' 'pennant' 'full' 'former' 'clearing'
+ 'speakerphone' 'eat' 'lace']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **teller**
+2. **floor**
+3. **congress**
+4. **deposition**
+5. **open**
+6. **teepee**
+7. **utility**
+8. **swordfish**
+9. **creationist**
+10. **bram** (Note: ""bran"" appears frequently, but checking the exact spelling in the list, ""bran"" is the word. Let me re-verify the count for ""bran"" vs others).
+
+*Correction upon closer inspection of the full dataset provided:*
+","['open' 'bran' 'teepee' 'floor' 'teller' 'deposition' 'utility'
+ 'creationist' 'swordfish' 'congress']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **robot**
+2. **wisteria**
+3. **insurrection**
+4. **overexertion**
+5. **stale**
+6. **bring**
+7. **fruit**
+8. **codling**
+9. **supervise**
+10. **envy**","['wisteria' 'robot' 'supervise' 'codling' 'stale' 'overexertion' 'fruit'
+ 'insurrection' 'envy' 'bring']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **employee**
+2. **drapes**
+3. **bulldozer**
+4. **equipment**
+5. **lifetime**
+6. **indigence**
+7. **generate**
+8. **exclamation**
+9. **snowflake**
+10. **undergo**","['bulldozer' 'employee' 'generate' 'drapes' 'lifetime' 'exclamation'
+ 'indigence' 'undergo' 'equipment' 'snowflake']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **cricketer**
+2. **ride**
+3. **school**
+4. **refuse**
+5. **defeated**
+6. **blush**
+7. **fact**
+8. **punishment**
+9. **abortion**
+10. **cricketer** (Note: ""cricketer"" appears extremely frequently, often tied with or exceeding other high-frequency words like ""ride"" and ""school"" depending on the exact count method, but in this specific dataset, **cricketer**, **ride**,","['punishment' 'ride' 'school' 'blush' 'defeated' 'tearful' 'fact' 'refuse'
+ 'abortion' 'cricketer']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **breastplate**
+2. **kit**
+3. **chromolithograph**
+4. **excursion**
+5. **belong**
+6. **stump**
+7. **continue**
+8. **block**
+9. **shingle**
+10. **absent**","['belong' 'breastplate' 'absent' 'stump' 'excursion' 'continue'
+ 'chromolithograph' 'kit' 'block' 'shingle']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **fiesta**
+2. **clap**
+3. **compulsion**
+4. **bee**
+5. **high**
+6. **alpenglow**
+7. **fasten**
+8. **nick**
+9. **ringworm**
+10. **estuary**","['alpenglow' 'ringworm' 'estuary' 'compulsion' 'bee' 'clap' 'fasten'
+ 'high' 'fiesta' 'nick']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **hospice**
+2. **church**
+3. **preservation**
+4. **modern**
+5. **define**
+6. **router**
+7. **propaganda**
+8. **hospice** (Note: ""hospice"" and ""church"" are extremely frequent; based on a full count of the provided text, ""hospice"" appears roughly 45 times, ""church"" roughly 42 times, ""preservation"" roughly 40 times, ""modern"" roughly 38 times","['define' 'router' 'preservation' 'hospice' 'dew' 'vengeful' 'church'
+ 'bellows' 'modern' 'propaganda']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1.  **residence**
+2.  **reunion**
+3.  **energy**
+4.  **debris**
+5.  **hare**
+6.  **loafer**
+7.  **surge**
+8.  **transparency**
+9.  **sprag**
+10. **gamma-ray**
+
+*(Note: This list is based on a frequency analysis of the provided text. Words like ""residence,"" ""reunion,"" and ""energy"" appear significantly more often than others, with ""res","['loafer' 'surge' 'reunion' 'residence' 'energy' 'hare' 'sprag' 'debris'
+ 'gamma-ray' 'transparency']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **campus**
+2. **magazine**
+3. **trinket**
+4. **tassel**
+5. **yew**
+6. **crewmen**
+7. **scientific**
+8. **caramel**
+9. **coral**
+10. **underweight**","['coral' 'crewmen' 'scientific' 'trinket' 'underweight' 'tassel' 'yew'
+ 'caramel' 'magazine' 'campus']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **lawn**
+2. **uniform**
+3. **testimony**
+4. **sledge**
+5. **tutu**
+6. **helmet**
+7. **pause**
+8. **research**
+9. **scallion**
+10. **reorganization**","['uniform' 'helmet' 'scallion' 'sledge' 'reorganization' 'pause'
+ 'testimony' 'research' 'lawn' 'tutu']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **jalapeño**
+2. **yak**
+3. **road**
+4. **consolidate**
+5. **garb**
+6. **mushy**
+7. **pink**
+8. **hotdog**
+9. **veneer**
+10. **recommend**","['jalapeño' 'garb' 'consolidate' 'veneer' 'recommend' 'yak' 'pink' 'mushy'
+ 'road' 'hotdog']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **pajamas**
+2. **flame**
+3. **boyfriend**
+4. **funny**
+5. **attenuation**
+6. **diagram**
+7. **eliminate**
+8. **cloakroom**
+9. **month**
+10. **pajamas** (Note: ""pajamas"" and ""flame"" are extremely close in count, but ""pajamas"" appears slightly more frequently in the latter half of the list, while ""flame"" is very consistent throughout.","['eliminate' 'boyfriend' 'diagram' 'pajamas' 'attenuation' 'funny'
+ 'cloakroom' 'pollutant' 'flame' 'month']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **library**
+2. **commercial**
+3. **goddess**
+4. **judicious**
+5. **tendency**
+6. **accomplish**
+7. **inlay**
+8. **electronics**
+9. **blueberry**
+10. **rationale**","['inlay' 'judicious' 'library' 'tendency' 'commercial' 'rationale'
+ 'blueberry' 'goddess' 'electronics' 'accomplish']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1.  **captor**
+2.  **mutt**
+3.  **ray**
+4.  **tongue**
+5.  **separation**
+6.  **solid**
+7.  **supplier**
+8.  **clergyman**
+9.  **sphere**
+10. **yawn**","['supplier' 'solid' 'sphere' 'separation' 'ray' 'captor' 'clergyman'
+ 'tongue' 'yawn' 'mutt']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **drill**
+2. **bomb**
+3. **enrollment**
+4. **learning**
+5. **cold**
+6. **crust**
+7. **gorgeous**
+8. **blackness**
+9. **randomization**
+10. **wingtip**","['gorgeous' 'randomization' 'learning' 'blackness' 'crust' 'cold' 'bomb'
+ 'drill' 'wingtip' 'enrollment']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **songbird**
+2. **referendum**
+3. **riverbed**
+4. **interject**
+5. **leaver**
+6. **careful**
+7. **horse**
+8. **snatch**
+9. **withstand**
+10. **farmer**","['referendum' 'careful' 'farmer' 'withstand' 'snatch' 'horse' 'interject'
+ 'songbird' 'riverbed' 'leaver']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **chug**
+2. **integration**
+3. **coverall**
+4. **sidecar**
+5. **oar**
+6. **mud**
+7. **bag**
+8. **upstairs**
+9. **ephemeris**
+10. **chalk**","['chug' 'ephemeris' 'bag' 'mud' 'sidecar' 'integration' 'chalk' 'coverall'
+ 'upstairs' 'oar']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **building**
+2. **furniture**
+3. **reality**
+4. **present**
+5. **chow**
+6. **building** (Note: ""building"" and ""furniture"" are extremely frequent; ""reality"" and ""present"" follow closely. Other highly frequent words include **tortellini**, **silk**, **posterior**, **allegation**, and **chow**.)
+
+*Correction based on a precise count of the provided text:*
+After re-evaluating the full dataset provided in the prompt, the actual","['calibre' 'tortellini' 'building' 'allegation' 'reality' 'silk'
+ 'posterior' 'furniture' 'chow' 'present']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **pupa**
+2. **off-ramp**
+3. **attorney**
+4. **guarded**
+5. **leeway**
+6. **highway**
+7. **sabre**
+8. **obeisant**
+9. **loss**
+10. **cross-stitch**","['attorney' 'loss' 'highway' 'obeisant' 'pupa' 'cross-stitch' 'off-ramp'
+ 'guarded' 'sabre' 'leeway']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1.  **pavement**
+2.  **laborer**
+3.  **smoking**
+4.  **squid**
+5.  **facet**
+6.  **opportunity**
+7.  **sheet**
+8.  **universe**
+9.  **scale**
+10. **undesirable**","['undesirable' 'sheet' 'universe' 'smoking' 'squid' 'opportunity' 'facet'
+ 'scale' 'pavement' 'laborer']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **pearl**
+2. **catacomb**
+3. **mozzarella**
+4. **province**
+5. **garb**
+6. **interloper**
+7. **beef**
+8. **nectar**
+9. **counterpart**
+10. **puncture**","['nectar' 'mozzarella' 'province' 'garb' 'pearl' 'beef' 'catacomb'
+ 'interloper' 'puncture' 'counterpart']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1.  **meal**
+2.  **poultry**
+3.  **leader**
+4.  **perform**
+5.  **intent**
+6.  **default**
+7.  **entrepreneur**
+8.  **stallion**
+9.  **fingerling**
+10. **silver**
+
+*(Note: These words appear significantly more frequently than any others in the provided text, with counts ranging from approximately 40 to over 60 occurrences each, while the next most common words appear fewer than 3","['meal' 'stallion' 'intent' 'perform' 'silver' 'leader' 'entrepreneur'
+ 'poultry' 'fingerling' 'default']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **gymnast**
+2. **package**
+3. **yarmulke**
+4. **hospitable**
+5. **avocado**
+6. **null**
+7. **loft**
+8. **alliance**
+9. **worry**
+10. **gauge**","['avocado' 'package' 'gymnast' 'hospitable' 'alliance' 'worry' 'yarmulke'
+ 'loft' 'null' 'gauge']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **beak**
+2. **formal**
+3. **advocate**
+4. **swanky**
+5. **legging**
+6. **kick**
+7. **cigarette**
+8. **forgery**
+9. **foodstuffs**
+10. **be**","['advocate' 'forgery' 'formal' 'be' 'kick' 'cigarette' 'foodstuffs'
+ 'swanky' 'beak' 'legging']",cwe,120,0.875
+Question: What are the 10 most common words in the above list? ,131072,Answer: The top 10 words that appear most often in the list are:,"
+
+1. **bush**
+2. **locomotive**
+3. **peacoat**
+4. **downgrade**
+5. **nervous**
+6. **stew**
+7. **recondite**
+8. **bid**
+9. **start**
+10. **sofa**","['sofa' 'nervous' 'stew' 'recondite' 'downgrade' 'peacoat' 'bush' 'start'
+ 'locomotive' 'bid']",cwe,120,0.875

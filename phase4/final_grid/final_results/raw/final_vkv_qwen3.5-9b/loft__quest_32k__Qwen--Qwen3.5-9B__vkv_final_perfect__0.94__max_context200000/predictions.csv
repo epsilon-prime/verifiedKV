@@ -1,0 +1,301 @@
+answer_prefix,task,compression_ratio,max_new_tokens,predicted_answer,answers,split,question
+Final Answer: ,quest_32k,0.9375,256," ['A Case of Need', 'Zodiac (novel)']",['A Case of Need'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Novels about families set in Boston and New England.
+"
+Final Answer: ,quest_32k,0.9375,256,"5 Point Someone, One Night @ the Call Center, The 3 Mistakes of My Life","['Five Point Someone' 'One Night @ the Call Center'
+ 'The 3 Mistakes of My Life']",test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 2009 Indian, or by Chetan Bhagat, novels
+"
+Final Answer: ,quest_32k,0.9375,256, ['La reina de América'],['At Night We Walk in Circles' 'La reina de América' 'Lost City Radio'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Hispanic and Latino American novels set anywhere besides North America
+"
+Final Answer: ,quest_32k,0.9375,256,"1. No Swiss films about stalking were found in the provided documents.
+Final Answer: []",['One Way Trip 3D'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Swiss Films about stalking
+"
+Final Answer: ,quest_32k,0.9375,256," ['Firecrest (novel)', 'Lament for Leto']",['Firecrest (novel)' 'Lament for Leto'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1971 British thriller novels
+"
+Final Answer: ,quest_32k,0.9375,256, ['Crisis of Conscience'],['Crisis of Conscience'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Critical Jehovah's Witness books.
+"
+Final Answer: ,quest_32k,0.9375,256," ['Chain of Attack', 'The Final Nexus', 'The Peacekeepers']",['Chain of Attack' 'The Final Nexus' 'The Peacekeepers'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Gene DeWeese novels
+"
+Final Answer: ,quest_32k,0.9375,256,"2010s speculative fiction novels about Washington (state) and the United States.
+Based on the provided documents, there are no novels that fit the specific criteria of being from the 2010s, being speculative fiction, and being set in Washington (state) and the United States.
+
+- **The Lives of Animals** (ID: 6) is a 1999 novella (not 2010s) by J.M. Coetzee (South African) set in Massachusetts (USA), not Washington.
+- **The Drowning Girl** (ID: 30) is a 2012 novel (2010s) by Caitlín R. Kiernan (American) set in Providence, Rhode Island (USA), not Washington.
+- **Zodiac: An Eco-Thriller** (ID: 58) is a 1988 novel (not 2010s) by Neal Stephenson (American) set in Boston (USA).
+- **Seveneves** (ID: 21) is a 2015 novel (2010s) by Neal Stephenson (American) set in space/or",['Seveneves'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 2010s speculative fiction novels about Washington (state) and the United States.
+"
+Final Answer: ,quest_32k,0.9375,256,"1990's historical films about security and surveillance that are set in England
+Final Answer: []",['Elizabeth (film)'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1990's historical films about security and surveillance that are set in England
+"
+Final Answer: ,quest_32k,0.9375,256," ['Personal Recollections of Joan of Arc', 'The Copper (1930 film)']",['Personal Recollections of Joan of Arc'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1890s historical books and novels published by Harper & Brothers
+"
+Final Answer: ,quest_32k,0.9375,256, ['The Way of the Scarlet Pimpernel'],['The Way of the Scarlet Pimpernel'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: History/Adventure books about France from 1933
+"
+Final Answer: ,quest_32k,0.9375,256," ['Poison in Jest', 'The Waxworks Murder']",['Poison in Jest' 'The Waxworks Murder'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Crime novels that are both American crime novels and 1932 novels
+"
+Final Answer: ,quest_32k,0.9375,256," ['P4W: Prison for Women', 'Waseskun']",['P4W: Prison for Women' 'The Phantom (2021 film)' 'Waseskun'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Penal system documentary films that are not about law enforcement in the United States
+"
+Final Answer: ,quest_32k,0.9375,256," ['Mythago Wood', 'The Changeover']",['Mythago Wood' 'Nights at the Circus'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1984 Fantasy novels about the United Kingdom
+"
+Final Answer: ,quest_32k,0.9375,256,0,['Laughing Gas (novel)'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Novels published by Hutchinson about film director and producers
+"
+Final Answer: ,quest_32k,0.9375,256," ['P4W: Prison for Women', 'Waseskun']",['Ryan (film)'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Canadian documentaries about homelessness and LGBT
+"
+Final Answer: ,quest_32k,0.9375,256,"1982 Italian television films are:
+- Cavalleria rusticana (1982 film) - ID: 112
+- The Life of Verdi (miniseries) - ID: 113","['Cavalleria rusticana (1982 film)' 'The Deadly Game (1982 film)'
+ 'The Life of Verdi (miniseries)']",test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Films set in Italy that are 1982 television films
+"
+Final Answer: ,quest_32k,0.9375,256, ['Time and the Wind'],['Time and the Wind'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Erico Verissimo works adapted into films
+"
+Final Answer: ,quest_32k,0.9375,256, [],['Boy at War' 'The Changeover' 'The Firebird Rocket'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Young adult novels set in Oceania that are not Australian or for children
+"
+Final Answer: ,quest_32k,0.9375,256," ['My Uncle Napoleon', 'Savushun', 'The Blind Owl']",['My Uncle Napoleon' 'Savushun' 'The Blind Owl'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Iranian novels or books by Sadegh Hedayat
+"
+Final Answer: ,quest_32k,0.9375,256," ['Going Vertical', 'Prefontaine', 'The Sun', 'Victory at Entebbe']",['Doctor Zhivago (film)'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Propaganda films that are epic and based on actual events.
+"
+Final Answer: ,quest_32k,0.9375,256," ['The Picturegoers', 'The Violent Bear It Away']",['The Picturegoers' 'The Violent Bear It Away'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1960 Catholic fiction books
+"
+Final Answer: ,quest_32k,0.9375,256,"1958 American one-reel animated 'Tom and Jerry' short produced and directed by William Hanna and Joseph Barbera with music by Scott Bradley. The short was released by Metro-Goldwyn-Mayer on August 1, 1958. It is the 114th and last 'Tom and Jerry' theatrical cartoon produced or directed by both Hanna and Barbera, and the last cartoon short of the series until Gene Deitch's 'Switchin' Kitten' in 1961. Barbera would return to direct one final 'Tom and Jerry' theatrical short, 'The Karate Guard', in 2005.
+
+This is confirmed as the last appearance of Joan. This is also the final appearance of Jeannie and the baby, as Jeannie would not be replicated in the newer entrees due to modern sensibilities regarding child neglect as a very serious matter.
+Babysitter Jeannie (voiced by Julie Bennett) is instructed to look after the baby while his mother (also voiced by Julie Bennett) goes out. However, Jeannie begins talking on the telephone with someone, ignoring the baby and its carriage. In the midst of Tom and Jerry's usual fighting, they see the baby crawling out",['Undercover with the KKK'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: NBC network original films about ideologies that are set in outer space.
+"
+Final Answer: ,quest_32k,0.9375,256,"1930 non american crime films
+TITLE: An Obvious Situation | ID: 108
+TITLE: The Copper (1930 film) | ID: 109
+TITLE: That Night's Wife | ID: 110
+Final Answer: ['An Obvious Situation', 'That Night\'s Wife', 'The Copper (1930 film)']","['An Obvious Situation' ""That Night's Wife"" 'The Copper (1930 film)']",test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1930 non american crime films
+"
+Final Answer: ,quest_32k,0.9375,256,"2010s legal mystery drama films
+Based on the documents provided, there are no films that fit the description of being a ""legal mystery drama"" from the 2010s.
+
+*   **Ace Attorney (film)** (ID: 62) is a 2012 Japanese legal comedy-drama film. While it is a legal drama from the 2010s, the document explicitly describes it as a ""comedy-drama,"" not a ""mystery drama"" (though it is based on a mystery game, the genre tag in the text is comedy-drama).
+*   **The Assassination of Richard Nixon** (ID: 71) is a 2004 drama film (not 2010s).
+*   **Ace Attorney** is the closest match in terms of ""legal"" and ""drama"" in the 2010s, but the ""mystery"" aspect is secondary to the ""comedy"" tag in the provided text.
+
+However, looking strictly at the query ""2010s legal mystery drama films"", none of the documents perfectly match all three criteria (Legal + Mystery + Drama) for the 201",['Ace Attorney (film)' 'True Story (film)'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 2010s legal mystery drama films
+"
+Final Answer: ,quest_32k,0.9375,256," ['First Invasion: The War of 1812', 'Last of the Buccaneers', 'Mohawk']","['First Invasion: The War of 1812' 'Last of the Buccaneers'
+ 'Mohawk (2017 film)']",test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Andrew Jackson films or films about the War or 1812
+"
+Final Answer: ,quest_32k,0.9375,256," ['Going Vertical', 'Prefontaine']",['Going Vertical' 'Prefontaine (film)'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Films about sportspeople set in 1972
+"
+Final Answer: ,quest_32k,0.9375,256,"1936 Alternate history novels and books based in Asia
+TITLE: Laughing Gas (novel) | ID: 23
+Final Answer: ['Laughing Gas (novel)']",['We the Living'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1936 Alternate history novels and books based in Asia
+"
+Final Answer: ,quest_32k,0.9375,256,0,['Circe (novel)' 'Julian (novel)'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Books about social psychology set in the Middle Ages that are Hachette Book Group books
+"
+Final Answer: ,quest_32k,0.9375,256, ['A.P.E.X.'],['A.P.E.X.'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Films set in the year 2073
+"
+Final Answer: ,quest_32k,0.9375,256, ['The Lighthouse at the End of the World'],['The Lighthouse at the End of the World'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: French novels made in 1905.
+"
+Final Answer: ,quest_32k,0.9375,256,"2004 films that are set in 1974: None of the provided documents describe a film released in 2004 that is set in 1974.
+
+*   **The Assassination of Richard Nixon** (ID: 71) is a 2004 film, but it is set in **1973**.
+*   **Going Vertical** (ID: 64) is set in **1972**.
+*   **Prefontaine** (ID: 65) is set in **1969** and **1972/1976**.
+*   **The Invincible Constable** (ID: 1) is set in the **11th century**.
+*   **The Village of No Return** (ID: 0) is set in an unspecified modern time.
+*   **A Queen's Ransom** (ID: 36) is set in **1975**.
+*   **The Sun** (ID: 68) is set in the final days of **World War II** (1945).
+*   **The Samovar Girl** (ID:","['Anchorman: The Legend of Ron Burgundy'
+ 'The Assassination of Richard Nixon']",test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 2004 films that are set in 1974
+"
+Final Answer: ,quest_32k,0.9375,256," ['Demoni', 'Dragon Rider', 'The Two Who Stole the Moon']",['Demoni (2012 film)' 'Dragon Rider (film)' 'Felix the Cat: The Movie'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Bulgarian animated films or Polish or Belgian animated fantasy films
+"
+Final Answer: ,quest_32k,0.9375,256, ['All Quiet on the Western Front'],['All Quiet on the Western Front'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Novels adapted into radio programs that are set during WWI
+"
+Final Answer: ,quest_32k,0.9375,256," ['Little Otik', 'Princess Goldilocks']",['Little Otik' 'Nails (2003 film)' 'Princess Goldilocks'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Horror drama films from the 2000s or Karel Jaromír Erben films
+"
+Final Answer: ,quest_32k,0.9375,256," ['Anandamath', 'Durgeshnandini', 'Those Days']",['Anandamath' 'Durgeshnandini' 'Those Days (novel)'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Bengali written Indian historical novels
+"
+Final Answer: ,quest_32k,0.9375,256,"1970s television films set in Palestine about terrorism
+Final Answer: ['Victory at Entebbe']",['Victory at Entebbe'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1970s television films set in Palestine about terrorism
+"
+Final Answer: ,quest_32k,0.9375,256," ['The Portage to San Cristobal of A.H.', 'The Boys from Brazil']",['The Boys from Brazil (novel)' 'The Portage to San Cristobal of A.H.'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: fictional WWII novels about antisemitisim.
+"
+Final Answer: ,quest_32k,0.9375,256, ['Hild (novel)'],['Hild (novel)'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: English books published by Farrar Straus and Giroux
+"
+Final Answer: ,quest_32k,0.9375,256, [],['Taking Sides (film)'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Films shot in Europe that are Austrian drama films and English language French films.
+"
+Final Answer: ,quest_32k,0.9375,256," ['The Two Captains', 'The Samovar Girl']",['The Samovar Girl' 'The Two Captains'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Novels set in Russia and the Arctic about war and conflict
+"
+Final Answer: ,quest_32k,0.9375,256," ['Illywhacker', 'The Changeover', 'The Hounds of the Morrigan']",['Illywhacker' 'Star Healer' 'The Hounds of the Morrigan'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: English-language novels that are 1985 speculative fiction but not American 1985 novels
+"
+Final Answer: ,quest_32k,0.9375,256,"1950s short films that are both 1950s animated short films and 1958 comedy films
+TITLE: Tot Watchers | ID: 7
+TITLE: Now Hare This | ID: 8
+Final Answer: ['Now Hare This', 'Tot Watchers']","[""A Queen's Ransom""]",test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Historical Chinese martial arts films about terrorism
+"
+Final Answer: ,quest_32k,0.9375,256," ['Game Over (2013 film)', 'The Poot']",['Game Over (2013 film)' 'The Poot' 'Two & Two (2011 film)'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Iranian and Asian short films from 2010's
+"
+Final Answer: ,quest_32k,0.9375,256,"1968 art novels
+TITLE: It Happened in Boston? | ID: 34
+TITLE: The Public Image | ID: 35
+Final Answer: ['It Happened in Boston?', 'The Public Image']",['It Happened in Boston?' 'The Public Image'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1968 art novels
+"
+Final Answer: ,quest_32k,0.9375,256, ['To the Finland Station'],['To the Finland Station'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: books about socialism and the french revolution
+"
+Final Answer: ,quest_32k,0.9375,256, ['Felix the Cat: The Movie'],['Hotel Transylvania (film)'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: American Science fiction children's comedy films set in castles.
+"
+Final Answer: ,quest_32k,0.9375,256," ['Chronicle of Malaysia', 'Korea: A Walk Through the Land of Miracles', 'Treason by the Book']","['Chronicle of Malaysia' 'Korea: A Walk Through the Land of Miracles'
+ 'Treason by the Book']",test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: History books about Malaysia or the Qing dynasty or about South Korea
+"
+Final Answer: ,quest_32k,0.9375,256,"1534 books or 1553 books
+Final Answer: ['Ferrara Bible', 'Observations (Belon book)', 'Scepter of Judah']",['Ferrara Bible' 'Observations (Belon book)' 'Scepter of Judah'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1534 books or 1553 books
+"
+Final Answer: ,quest_32k,0.9375,256," ['Aerials', '3 Bahadur: The Revenge of Baba Balaam', 'The Glassworker']","['3 Bahadur: The Revenge of Baba Balaam' 'Aerials (film)'
+ 'The Glassworker']",test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what are some Emirati multilingual or Pakistani animated films
+"
+Final Answer: ,quest_32k,0.9375,256," ['The Girl on the Stairs', 'Tamburlaine Must Die']",['Tamburlaine Must Die' 'The Girl on the Stairs'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: novels written by by Louise Welsh
+"
+Final Answer: ,quest_32k,0.9375,256, ['The Last Chance'],['The Last Chance (1945 film)' 'The Sun (film)'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: WWII films that are Swiss
+"
+Final Answer: ,quest_32k,0.9375,256,"1898 English-language books that are also about adventure
+TITLE: Rupert of Hentzau | ID: 46
+TITLE: In the Sargasso Sea | ID: 47
+Final Answer: ['In the Sargasso Sea', 'Rupert of Hentzau']",['In the Sargasso Sea' 'Rupert of Hentzau'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1898 English-language books that are also about adventure
+"
+Final Answer: ,quest_32k,0.9375,256, ['Jongens'],['Jongens'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Dutch coming-of-age or Dutch erotic or erotic thriller films
+"
+Final Answer: ,quest_32k,0.9375,256, ['Zodiac: An Eco-Thriller'],"[""The Gate to Women's Country"" 'Zodiac (novel)']",test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1988 fiction environmental books
+"
+Final Answer: ,quest_32k,0.9375,256," ['Demoni', 'Dragon Rider', 'Felix the Cat: The Movie', 'The Two Who Stole the Moon', 'The Young Magician']","['Demoni (2012 film)' 'The Two Who Stole the Moon'
+ 'The Young Magician (film)']",test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what are  some Bulgarian animated, or Polish children's films
+"
+Final Answer: ,quest_32k,0.9375,256," ['Hotel Clausewitz', 'The Girl on the Stairs']",['Hotel Clausewitz' 'Scorpions and Miniskirts' 'Tunis Top Secret'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: German spy comedy films, or 2000s comedy-drama mystery films.
+"
+Final Answer: ,quest_32k,0.9375,256,0,['The Drowning Girl'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: American LGBT novels set in New England and that are also Speculative fiction novels
+"
+Final Answer: ,quest_32k,0.9375,256," ['Hotel Clausewitz', 'Look for a Woman', 'The Master of Taiga']",['Look for a Woman' 'The Master of Taiga' 'Visit to Minotaur (film)'],test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Soviet crime films that arent russian made
+"
+Final Answer: ,quest_32k,0.9375,256,"1984 Science fiction Space opera novel series
+Based on the provided documents, there is no specific novel series explicitly described as a ""1984 Science fiction Space opera novel series"".
+
+However, there are several science fiction novels from 1984 mentioned:
+- **ID 116**: *The Changeover* (1984) by Margaret Mahy. This is described as a ""low fantasy novel for young adults"" set in New Zealand, not a space opera.
+- **ID 122**: *Star Healer* (1985, but part of a series) by James White. This is a science fiction book in the ""Sector General series"" involving space travel (""ambulance ship Rhabwar"", ""planet Goglesk""), but it was published in 1985, not 1984.
+- **ID 90**: *The Final Reflection* (1984) by John M. Ford. This is a *Star Trek* tie-in novel emphasizing Klingon language and culture. While *Star Trek* is a space opera, the document describes it as a single novel providing foundation for role-playing games, not explicitly as a ""nov","['The Final Reflection' 'The Trellisane Confrontation'
+ 'The Vulcan Academy Murders']",test,"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1984 Science fiction Space opera novel series
+"

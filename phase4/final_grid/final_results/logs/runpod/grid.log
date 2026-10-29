@@ -1,0 +1,18 @@
+grid start 2026-10-28 05:06:07
+2026-10-28 05:39:38 done qwen3.5-9b_128k_r16_loft_nq (gpu 2)
+2026-10-28 05:41:10 done qwen3.5-9b_128k_r16_loft_hotpotqa (gpu 0)
+2026-10-28 06:02:30 done qwen3.5-9b_128k_r16_loft_musique (gpu 1)
+2026-10-28 06:08:28 done qwen3.5-9b_128k_r16_loft_qampari (gpu 3)
+2026-10-28 06:22:13 done qwen3.5-9b_128k_r32_loft_hotpotqa (gpu 0)
+2026-10-28 06:32:59 done qwen3.5-9b_128k_r16_loft_quest (gpu 2)
+2026-10-28 06:46:54 done qwen3.5-9b_128k_r32_loft_nq (gpu 3)
+2026-10-28 07:04:31 done qwen3.5-9b_128k_r32_loft_musique (gpu 1)
+2026-10-28 07:19:33 done qwen3.5-9b_128k_r8_loft_hotpotqa (gpu 3)
+2026-10-28 07:39:09 done qwen3.5-9b_128k_r32_loft_quest (gpu 2)
+2026-10-28 07:46:09 done qwen3.5-9b_128k_r32_loft_qampari (gpu 0)
+2026-10-28 07:49:41 done qwen3.5-9b_128k_r8_loft_nq (gpu 3)
+2026-10-28 08:10:00 done qwen3.5-9b_128k_r8_loft_musique (gpu 1)
+2026-10-28 08:25:32 done qwen3.5-9b_128k_r8_loft_quest (gpu 0)
+2026-10-28 08:36:52 done qwen3.5-9b_128k_r8_loft_qampari (gpu 2)
+all workers finished
+grid end 2026-10-28 08:36:52

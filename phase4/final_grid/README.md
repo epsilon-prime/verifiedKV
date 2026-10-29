@@ -144,3 +144,39 @@ questions). Seconds per RULER answer or per LOFT question, and peak GPU memory (
 - LOFT check (`check_multiq.py`): answers were identical whether asked together or one at a time, for all three
   models.
 - Expect some spread from run to run: the first cell of a job also pays one-off warm-up.
+
+## 8. Results
+
+`final_results/` holds the finished results, one model at a time.
+- `<model>.csv`: one row per (dataset, length, ratio, arm, task), with the same columns as
+  `baselines/phase3_results.csv` plus `n` (the number of answers) and `cell` (the source folder).
+- `raw/final_vkv_<model>/`: the cell folders behind the CSV (`predictions.csv`, `metrics.json`, `config.yaml`,
+  `cost.json`).
+- `logs/`: the sweep logs.
+
+To rescore: `python score_grid.py --results final_results/raw --out x.csv`. It must reproduce `<model>.csv` exactly.
+
+**Qwen3.5-9B: complete, 162 of 162 cells, 2026-10-29.** All cells used eps0 0.05 and delta 0.1, and none ran from a
+modified checkout.
+
+| part | GPU | commit |
+|---|---|---|
+| RULER-32k | Prajna L40S | 833da10 |
+| LOFT-32k | Prajna A40 | 833da10 |
+| RULER-128k, 9 sweeps | Prajna A100 | 833da10 |
+| RULER-128k, 3 sweeps (8x cwe, 16x niah_multikey_3, 32x qa_1) | RunPod H100 | 79becfd |
+| LOFT-128k | RunPod H100 | 833da10 |
+
+Commit 79becfd differs from 833da10 only in setup (`env.sh`, `requirements.txt`). The H100 sweeps used the same
+cached KVzip scores as the Prajna ones.
+
+Figures: `analysis/qwen35_quality_vs_compression.{png,pdf}` (2x2: RULER and LOFT at 32k and 128k, against the phase 3
+baselines including Bernoulli = "vKV (no fetch)+KVzip"), the `_relative` version (% of Dense), and
+`analysis/qwen35_quality_per_task.tex`. Every method is averaged over the same 4 RULER tasks. The `analysis/final_*`
+figure has all three models; its Qwen3 and Ministral columns show only the baselines until their results are added.
+The single-model figure:
+
+    python analysis/plot_quality.py --allow-partial --models Qwen3.5 \
+        --csv baselines/phase3_results.csv final_results/qwen3.5-9b.csv --ruler-tasks niah_mk3 niah_mv cwe qa1 \
+        --out analysis/qwen35_quality_vs_compression.png --out-relative analysis/qwen35_quality_vs_compression_relative.png \
+        --appendix-table analysis/qwen35_quality_per_task.tex

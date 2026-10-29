@@ -1,0 +1,531 @@
+question,predicted_answer,answer_prefix,compression_ratio,task,answers,split,max_new_tokens
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Novels about families set in Boston and New England.
+"," ['The Secret Man', 'The Hounds of the Morrigan', 'The Glassworker']
+
+Wait, I need to check the documents again carefully.
+- ID 25: ""The Secret Man"" - Set in London and Berlin. Not Boston/New England.
+- ID 303: ""The Hounds of the Morrigan"" - Set in Galway, Ireland. Not Boston/New England.
+- ID 274: ""The Glassworker"" - Set in Waterfront Town, Pakistan. Not Boston/New England.
+
+Let me re-read the query: ""Novels about families set in Boston and New England.""
+
+Let's scan the documents for ""Boston"", ""New England"", ""Massachusetts"", ""New Hampshire"", ""Maine"", ""Vermont"", ""Connecticut"", ""Rhode Island"", ""New York"" (sometimes considered part of the region in literature, but usually distinct), or specific family sagas in these areas.
+
+- ID 103: ""Zodiac: An Eco-Thriller"" - Set in Boston. ""Taylor is a chemist working for GEE... in Boston Harbor."" It mentions ""Boston Harbor's Spectacle Island"". It involves a family? ""Taylor's projects",Final Answer: ,0.9375,quest_128k,['A Case of Need'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 2009 Indian, or by Chetan Bhagat, novels
+"," ['Five Point Someone', 'The 3 Mistakes of My Life']",Final Answer: ,0.9375,quest_128k,"['Five Point Someone' 'One Night @ the Call Center'
+ 'The 3 Mistakes of My Life']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what are some Hungarian Revolution of 1956 or Austrian war films
+"," ['Doctor Zhivago', 'The Last Winter', 'The Jackals', 'Duel with Death']",Final Answer: ,0.9375,quest_128k,['Duel with Death' 'Fly Away Home (2016 film)' 'Sunshine (1999 film)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Finnish television and animated films
+"," ['Casta Diva (1935 film)', 'The Glassworker', 'The Glassworker', 'The Glassworker']
+
+Wait, I need to re-evaluate based on the specific query ""Finnish television and animated films"".
+
+Let's look for Finnish content again.
+- ID 142: *Santa Claus and the Magic Drum* (Finnish-Hungarian animation, made for TV).
+- ID 169: *Quest for a Heart* (Finnish animated film).
+- ID 202: *Moomins and the Comet Chase* (Finnish children's film company Filmkompaniet produced it, though it's a Polish restoration of a Swedish series, the document says ""produced by Finnish children's film company Filmkompaniet"").
+- ID 239: *P4W: Prison for Women* (Canadian documentary, not Finnish).
+- ID 263: *Fly Away Home* (Austrian drama, not Finnish).
+- ID 274: *The Glassworker* (Pakistani, not Finnish).
+
+Let's re-read ID 142: ""Santa Claus and the Magic Drum... Finnish",Final Answer: ,0.9375,quest_128k,"['Moomins and the Comet Chase' 'Quest for a Heart'
+ 'Santa Claus and the Magic Drum']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Hispanic and Latino American novels set anywhere besides North America
+"," ['Alega Gang: Public Enemy No.1 of Cebu', 'The Secret Man', 'The Jackals']",Final Answer: ,0.9375,quest_128k,['At Night We Walk in Circles' 'La reina de América' 'Lost City Radio'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Swiss Films about stalking
+", ['The Deadly Game'],Final Answer: ,0.9375,quest_128k,['One Way Trip 3D'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 2010s supernatural children's animated films
+"," ['CJ7', 'Dragon Rider', 'The Adventures of Jinbao', 'The Glassworker', 'The Jackals', 'The Last Chance', 'The Last Winter', 'The Last Winter (2006 film)', 'The Last Winter (2006 film)', 'The Last Winter (2006 film)', 'The Last Winter (2006 film)', 'The Last Winter (2006 film)', 'The Last Winter (2006 film)', 'The Last Winter (2006 film)', 'The Last Winter (2006 film)', 'The Last Winter (2006 film)', 'The Last Winter (2006 film)', 'The Last Winter (2006 film)', 'The Last Winter (2006 film)', 'The Last Winter (2006 film)', 'The Last Winter (2006 film)', 'The Last Winter (2006 film)', 'The Last Winter (2006 film)', 'The Last Winter (2006 film)', 'The Last Winter (2006 film)', 'The Last Winter (2006 film)', 'The Last Winter (2006 film)',",Final Answer: ,0.9375,quest_128k,"['Lego Scooby-Doo! Blowout Beach Bash'
+ 'Scooby-Doo! and the Curse of the 13th Ghost' 'The Magic Snowflake']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1971 British thriller novels
+"," ['The Jackals', 'The Mystery of the Yellow Room', 'The Secret Man']
+
+**Correction based on strict adherence to document content:**
+Upon re-evaluating the documents for ""1971 British thriller novels"":
+- **ID 230**: *The Picturegoers* is a 1960 British novel.
+- **ID 219**: *Lament for Leto* is a 1971 British mystery detective novel.
+- **ID 107**: *Sweet Adelaide* is a 1980 British crime novel.
+- **ID 121**: *Poison in Jest* is a 1932 novel.
+- **ID 112**: *Five Point Someone* is a 2004 novel.
+- **ID 126**: *The 3 Mistakes of My Life* is a 2008 novel.
+- **ID 151**: *One Night @ the Call Center* is a 2005 novel.
+- **ID 204**: *Firecrest* is a 1971 spy thriller novel by Victor Canning (British writer).",Final Answer: ,0.9375,quest_128k,['Firecrest (novel)' 'Lament for Leto'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Critical Jehovah's Witness books.
+", ['Crisis of Conscience'],Final Answer: ,0.9375,quest_128k,['Crisis of Conscience'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what are some Novels set in Jiangsu, 1750s, or Novels by Charlotte Lennox?
+"," ['The Adventures of Peregrine Pickle', 'The History of Sir Charles Grandison']",Final Answer: ,0.9375,quest_128k,"['Demi-Gods and Semi-Devils' 'The Adventures of Peregrine Pickle'
+ 'The History of Sir Charles Grandison']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Gene DeWeese novels
+"," ['Chain of Attack', 'The Peacekeepers', 'The Final Nexus']",Final Answer: ,0.9375,quest_128k,['Chain of Attack' 'The Final Nexus' 'The Peacekeepers'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1980s political films about science and the United States Armed Forces
+"," ['CJ7', 'The Jackals']",Final Answer: ,0.9375,quest_128k,['Best Defense' 'Red Dawn'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 2010s speculative fiction novels about Washington (state) and the United States.
+"," ['The Glassworker', 'The Glassworker']
+
+Wait, I need to check the documents again carefully.
+Document 274: ""The Glassworker"" is a Pakistani film set in Waterfront Town. Not a novel about Washington state.
+Document 270: ""Jewel"" is a novel set in 1943 Mississippi.
+Document 269: ""Cloudstreet"" is set in Perth, Australia.
+Document 262: ""To Live"" is set in China.
+Document 261: ""Maa Alludu Very Good"" is a Telugu film.
+Document 255: ""Out"" is set in Japan.
+Document 248: ""Twilight"" is set in Phoenix, Arizona and Forks, Washington. It is a 2005 novel (2000s, not 2010s).
+Document 245: ""Mandragora"" is set in Dunarling (Scotland/Australia).
+Document 235: ""Tamburlaine Must Die"" is set in London 1593.
+Document 229: ""The Story Without a Name"" is set",Final Answer: ,0.9375,quest_128k,['Seveneves'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Cebu films
+"," ['Alega Gang: Public Enemy No.1 of Cebu', 'Patay na si Hesus']",Final Answer: ,0.9375,quest_128k,"['Alega Gang: Public Enemy No.1 of Cebu' 'Lapu-Lapu (2002 film)'
+ 'Patay na si Hesus']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Crime novels set in Japan
+"," ['All She Was Worth', 'Crossfire', 'The Secret Man']",Final Answer: ,0.9375,quest_128k,['All She Was Worth' 'Crossfire (novel)' 'Out (novel)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1990's historical films about security and surveillance that are set in England
+"," ['The Secret Man', 'The Jackal']",Final Answer: ,0.9375,quest_128k,['Elizabeth (film)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1890s historical books and novels published by Harper & Brothers
+", ['Go Tell It on the Mountain'],Final Answer: ,0.9375,quest_128k,['Personal Recollections of Joan of Arc'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 2021 films about action and comedy.
+"," ['Hitman's Wife's Bodyguard', 'The King's Man', 'Mac & Devin Go to High School', 'One Way Trip 3D', 'The Glassworker']",Final Answer: ,0.9375,quest_128k,"[""Hitman's Wife's Bodyguard"" 'Red Notice (film)' ""The King's Man""]",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: History/Adventure books about France from 1933
+", [],Final Answer: ,0.9375,quest_128k,['The Way of the Scarlet Pimpernel'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Films based on works by Bill Finger that are any genre except Animated action films
+"," ['Batman & Robin', 'Batman (serial)']",Final Answer: ,0.9375,quest_128k,['Batman & Bill' 'Batman & Robin (film)' 'Batman (serial)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Films based on works by Alan Moore or Wildstorm titles, or that are Czech superhero films
+"," ['Batman: The Killing Joke (film)', 'The Glassworker', 'The Jackals', 'Pérák: The Shadow over Prague']",Final Answer: ,0.9375,quest_128k,"['Batman: The Killing Joke (film)' 'Pérák: The Shadow over Prague'
+ 'The League of Extraordinary Gentlemen (film)']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Crime novels that are both American crime novels and 1932 novels
+"," ['The Waxworks Murder', 'Poison in Jest']",Final Answer: ,0.9375,quest_128k,['Poison in Jest' 'The Waxworks Murder'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Debut novels released in 1953.
+", ['Go Tell It on the Mountain'],Final Answer: ,0.9375,quest_128k,"['Battle Cry (Uris novel)' 'Go Tell It on the Mountain (novel)'
+ 'Junkie (novel)']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Penal system documentary films that are not about law enforcement in the United States
+"," ['P4W: Prison for Women', 'Waseskun']",Final Answer: ,0.9375,quest_128k,['P4W: Prison for Women' 'The Phantom (2021 film)' 'Waseskun'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1984 Fantasy novels about the United Kingdom
+", [],Final Answer: ,0.9375,quest_128k,['Mythago Wood' 'Nights at the Circus'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Novels published by Hutchinson about film director and producers
+"," ['The Glassworker', 'The Lives of Animals']",Final Answer: ,0.9375,quest_128k,['Laughing Gas (novel)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: American medical novels set in the 1940's
+", ['A Case of Need'],Final Answer: ,0.9375,quest_128k,['Hannibal Rising' 'Jewel (novel)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Canadian documentaries about homelessness and LGBT
+"," ['The Jackals', 'The Last Winter (2006 film)', 'The Secret Man', 'The Secret Man', 'The Secret Man']
+
+Wait, I need to re-evaluate based on the specific query ""Canadian documentaries about homelessness and LGBT"".
+
+Let's look for Canadian documentaries.
+- ID 26: **Waseskun** - ""Canadian short film... about the Waseskun Healing Centre, a Correctional Service of Canada healing lodge run by Canadian Indigenous people for Indigenous inmates... working to break the cycle of abuse and addiction."" This is about homelessness/addiction but not explicitly LGBT in the title/description, though often associated. Wait, the prompt asks for ""homelessness and LGBT"".
+- ID 50: **Self Defense** - Canadian action-thriller, not a documentary.
+- ID 51: **A Lingering Face** - Chinese film.
+- ID 85: **Go Tell It on the Mountain** - Novel.
+- ID 90: **Kajutaijuq: The Spirit That Comes** - Canadian short film about an Inuk man threatened by a spirit. Not homelessness/LGBT.
+- ID 239: **P4W: Prison",Final Answer: ,0.9375,quest_128k,['Ryan (film)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Films set in Italy that are 1982 television films
+"," ['Cavalleria rusticana (1982 film)', 'ID: 211']",Final Answer: ,0.9375,quest_128k,"['Cavalleria rusticana (1982 film)' 'The Deadly Game (1982 film)'
+ 'The Life of Verdi (miniseries)']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Animated non-children films set in New York (state)
+"," ['The Glassworker', 'The Glassworker']",Final Answer: ,0.9375,quest_128k,['Hulk: Where Monsters Dwell' 'Resident Evil: Vendetta'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: mystery drama films that are Chinese
+"," ['Looking Up', 'Ni Jing: Thou Shalt Not Steal']",Final Answer: ,0.9375,quest_128k,['A Lingering Face' 'Looking Up (film)' 'Ni Jing: Thou Shalt Not Steal'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: exploitation films from the 1940s
+"," ['The Devil's Sleep', 'The Copper', 'The Jackals', 'The Chosen (Pinto novel)', 'The Secret Man', 'The Hounds of the Morrigan', 'The Glassworker', 'The Adventures of Peregrine Pickle', 'The Hounds of the Morrigan', 'The Secret Man', 'The Hounds of the Morrigan', 'The Glassworker', 'The Adventures of Peregrine Pickle', 'The Hounds of the Morrigan', 'The Secret Man', 'The Hounds of the Morrigan', 'The Glassworker', 'The Adventures of Peregrine Pickle', 'The Hounds of the Morrigan', 'The Secret Man', 'The Hounds of the Morrigan', 'The Glassworker', 'The Adventures of Peregrine Pickle', 'The Hounds of the Morrigan', 'The Secret Man', 'The Hounds of the Morrigan', 'The Glassworker', 'The Adventures of Peregrine Pickle', 'The Hounds of the Morrigan', 'The Secret Man', 'The Hounds of the Morrigan', 'The Glassworker', 'The Adventures of Peregrine Pickle', 'The Hounds of the Morrigan', 'The Secret Man",Final Answer: ,0.9375,quest_128k,"['Child Bride' 'I Accuse My Parents' ""The Devil's Sleep""]",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Erico Verissimo works adapted into films
+", ['Time and the Wind'],Final Answer: ,0.9375,quest_128k,['Time and the Wind'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Contemporary fantasy romance novels, that aren't Urban fantasy
+"," ['The Glassworker', 'The Lives of Animals', 'The Magic Snowflake', 'The Midnight Zoo', 'The Secret Man', 'The Sun (film)', 'The Two Who Stole the Moon', 'The Wandering Hill', 'The Young Magician', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The Young Magician (film)', 'The",Final Answer: ,0.9375,quest_128k,['Midnight Sun (Meyer novel)' 'New Moon (novel)' 'Twilight (Meyer novel)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Young adult novels set in Oceania that are not Australian or for children
+"," ['The Changeover', 'Mythago Wood']",Final Answer: ,0.9375,quest_128k,['Boy at War' 'The Changeover' 'The Firebird Rocket'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 2012 comedy films that are also about social issues in the United States.
+"," ['The Glassworker', 'The Poot']",Final Answer: ,0.9375,quest_128k,['Killing Them Softly' 'Mac & Devin Go to High School'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Iranian novels or books by Sadegh Hedayat
+"," ['The Blind Owl', 'Savushun']",Final Answer: ,0.9375,quest_128k,['My Uncle Napoleon' 'Savushun' 'The Blind Owl'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Propaganda films that are epic and based on actual events.
+"," ['First Invasion: The War of 1812', 'Red Dawn']",Final Answer: ,0.9375,quest_128k,['Doctor Zhivago (film)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1960 Catholic fiction books
+"," ['The Blind Owl', 'The Hounds of the Morrigan']",Final Answer: ,0.9375,quest_128k,['The Picturegoers' 'The Violent Bear It Away'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: NBC network original films about ideologies that are set in outer space.
+", [],Final Answer: ,0.9375,quest_128k,['Undercover with the KKK'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1930 non american crime films
+"," ['An Obvious Situation', 'The Glassworker', 'The Glassworker', 'The Glassworker']
+
+Wait, I need to re-evaluate the documents carefully for ""1930 non american crime films"".
+
+1.  **ID: 203 - The Obvious Situation**: ""1930 British crime film"". This fits.
+2.  **ID: 92 - The Copper**: ""1930 British-German crime film"". This fits.
+3.  **ID: 231 - That Night's Wife**: ""1930 Japanese crime and drama film"". This fits.
+4.  **ID: 252 - Child Bride**: ""1938 American drama film"". (Not 1930, and American).
+5.  **ID: 266 - Babes in Toyland**: ""1934"". (Not 1930).
+6.  **ID: 267 - Silver Dollar**: ""1932 American"". (Not 1930, and American).
+7.  **ID: 270 - Jewel**: ""1943"". (Not 1",Final Answer: ,0.9375,quest_128k,"['An Obvious Situation' ""That Night's Wife"" 'The Copper (1930 film)']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 2010s legal mystery drama films
+"," ['Ace Attorney (film)', 'The Hounds of the Morrigan']",Final Answer: ,0.9375,quest_128k,['Ace Attorney (film)' 'True Story (film)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: French novels from 1913 or 1922, or that are mysteries
+"," ['The Mystery of the Yellow Room', 'The Jackals']",Final Answer: ,0.9375,quest_128k,"['Le Grand Meaulnes' 'The Mysteries of Paris'
+ 'The Mystery of the Yellow Room']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Films set in 1831 or 1809
+"," ['Under Capricorn', 'The Jackals']",Final Answer: ,0.9375,quest_128k,['Casta Diva (1935 film)' 'The Fire Devil' 'Under Capricorn'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Andrew Jackson films or films about the War or 1812
+"," ['First Invasion: The War of 1812', 'The Jackals']",Final Answer: ,0.9375,quest_128k,"['First Invasion: The War of 1812' 'Last of the Buccaneers'
+ 'Mohawk (2017 film)']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Films about sportspeople set in 1972
+"," ['Going Vertical', 'Prefontaine']",Final Answer: ,0.9375,quest_128k,['Going Vertical' 'Prefontaine (film)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Dan Simmons novels
+"," ['Children of the Night', 'Circus of the Dead', 'Dawn', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead', 'Dawn of the Dead',",Final Answer: ,0.9375,quest_128k,['Ilium (novel)' 'Summer of Night' 'The Fall of Hyperion (novel)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1936 Alternate history novels and books based in Asia
+"," ['The Secret Man', 'The Jackals']",Final Answer: ,0.9375,quest_128k,['We the Living'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Films about sisters shot in Paris.
+"," ['Peppermint Soda', 'Two English Girls']",Final Answer: ,0.9375,quest_128k,['Le Divorce' 'Peppermint Soda' 'Two English Girls'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Non American independent films that are from 1994
+"," ['The Last Winter (2006 film)', 'The Abandoned (2006 film)']",Final Answer: ,0.9375,quest_128k,['Aftermath (1994 film)' 'Amoklauf' 'Aya: Imagined Autobiography'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Books about social psychology set in the Middle Ages that are Hachette Book Group books
+", [],Final Answer: ,0.9375,quest_128k,['Circe (novel)' 'Julian (novel)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: children's books set in subterranea(such as the Chronicles of Narnia) or Isekai novels and light novels
+"," ['The Jackals', 'The Adventures of Peregrine Pickle', 'The Glassworker', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao']
+
+Wait, I need to re-evaluate the query ""children's books set in subterranea(such as the Chronicles of Narnia) or Isekai novels and light novels"" against the provided documents.
+
+1.  **Children's books set in subterranea (like Narnia):**
+    *   **ID 147: The Magician's Nephew**: This is a fantasy children's novel by C.S. Lewis, part of *The Chronicles of Narnia*. The content states: ""The middle third of the novel features the creation of the Narnia world... centred on a section of a lamp-post brought by accidental observers from London in 1900."" It explains the origin of Narnia, which is a subterranean/parallel world accessed through a wardrobe (in other books) or a lamp-post. This fits the ""subterranea"" description in the context of the Narnia series.
+    *   **ID 202: Moomins and the",Final Answer: ,0.9375,quest_128k,"[""Alice's Adventures in Wonderland"" 'Prince Caspian'
+ ""The Magician's Nephew""]",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Films set in the year 2073
+"," ['A.P.E.X.', 'ID: 22']",Final Answer: ,0.9375,quest_128k,['A.P.E.X.'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Stop-motion animated paranormal musical comedy films
+"," ['Mad Monster Party?', 'The Adventures of Jinbao']",Final Answer: ,0.9375,quest_128k,['Babes in Toyland (1934 film)' 'Mad Monster Party?'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Australian novels made into tv shows, or 1911 debut novels, or novels by Joan Lindsay.
+"," ['Under Capricorn', 'The Secret Man', 'The Hound of the Baskervilles']
+
+**Correction based on strict document content analysis:**
+Upon re-evaluating the documents provided:
+1.  **Australian novels made into tv shows**: Document 266 mentions ""The Adventures of Peregrine Pickle"" is a novel by Tobias Smollett (Scottish). Document 112 mentions ""Five Point Someone"" is by Chetan Bhagat (Indian). Document 269 mentions ""Cloudstreet"" is by Tim Winton (Australian) but only mentions a stage play and TV miniseries. Document 276 mentions ""The Thorn Birds"" is by Colleen McCullough (Australian) and mentions a TV miniseries. Document 187 mentions ""Our Sunshine"" is by Robert Drewe (Australian) and mentions a 2003 film. Document 250 mentions ""My Uncle Napoleon"" is by Iraj Pezeshkzad (Iranian) and mentions a TV series.
+    *   Wait, let's look for specific matches.
+    *   Document 269: ""Cloudstreet"" by Tim Winton (Australian). """,Final Answer: ,0.9375,quest_128k,['Come in Spinner' 'The Thorn Birds' 'Zuleika Dobson'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: French novels made in 1905.
+", [],Final Answer: ,0.9375,quest_128k,['The Lighthouse at the End of the World'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 2004 films that are set in 1974
+", [],Final Answer: ,0.9375,quest_128k,"['Anchorman: The Legend of Ron Burgundy'
+ 'The Assassination of Richard Nixon']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: sci-fi films from 2008
+", ['Stargate: The Ark of Truth'],Final Answer: ,0.9375,quest_128k,"['CJ7' ""God's Puzzle (film)"" 'Stargate: The Ark of Truth']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Bulgarian animated films or Polish or Belgian animated fantasy films
+"," ['The Last Winter (2006 film)', 'The Jackals', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker', 'The Glassworker',",Final Answer: ,0.9375,quest_128k,['Demoni (2012 film)' 'Dragon Rider (film)' 'Felix the Cat: The Movie'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Novels adapted into radio programs that are set during WWI
+"," ['The Jackals', 'The Lives of Animals']",Final Answer: ,0.9375,quest_128k,['All Quiet on the Western Front'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Horror drama films from the 2000s or Karel Jaromír Erben films
+"," ['The Last Winter', 'The Glassworker']",Final Answer: ,0.9375,quest_128k,['Little Otik' 'Nails (2003 film)' 'Princess Goldilocks'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 2023 action comedy, 2020s superhero comedy, or Guardians of the Galaxy films
+"," ['Anchorman: The Legend of Ron Burgundy', 'The Adventures of Peregrine Pickle', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures of Jinbao', 'The Adventures",Final Answer: ,0.9375,quest_128k,"['Flora & Ulysses (film)' 'Guardians of the Galaxy Vol. 3'
+ 'Spider-Man: Across the Spider-Verse']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Bengali written Indian historical novels
+"," ['Anandamath', 'Durgeshnandini']",Final Answer: ,0.9375,quest_128k,['Anandamath' 'Durgeshnandini' 'Those Days (novel)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1970s television films set in Palestine about terrorism
+", [],Final Answer: ,0.9375,quest_128k,['Victory at Entebbe'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1990s American buddy action, but not comedy, films
+", ['Fled'],Final Answer: ,0.9375,quest_128k,['Die Hard with a Vengeance' 'Fled' 'Point Break'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: fictional WWII novels about antisemitisim.
+"," ['The Blind Owl', 'The God that Failed']",Final Answer: ,0.9375,quest_128k,['The Boys from Brazil (novel)' 'The Portage to San Cristobal of A.H.'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: English books published by Farrar Straus and Giroux
+"," ['Hild (novel)', 'The Portage to San Cristobal of A.H.']
+
+**Documents used:**
+*   TITLE: Hild (novel) | ID: 183
+*   TITLE: The Portage to San Cristobal of A.H. | ID: 184
+
+*(Note: While the document for ""The Portage to San Cristobal of A.H."" mentions it was published by Faber and Faber in the UK and Simon & Schuster in the US, the document for ""Hild"" explicitly states it was published in the United States by Farrar, Straus and Giroux. The query asks for books published by Farrar Straus and Giroux. Based on the provided text, only ""Hild"" explicitly names this publisher. However, looking closely at ID 184, it says ""published in the United States in hardcover in April 1982 by Simon & Schuster"". Let me re-evaluate the documents to ensure accuracy.)*
+
+**Re-evaluation:**
+*   **ID 183 (Hild):** ""The novel was first published in the United States by **Farrar, Straus and Giroux**...""",Final Answer: ,0.9375,quest_128k,['Hild (novel)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Films shot in Europe that are Austrian drama films and English language French films.
+"," ['Duel with Death', 'The Glassworker']",Final Answer: ,0.9375,quest_128k,['Taking Sides (film)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 2013 novels about multiple time paths
+", ['Life After Life'],Final Answer: ,0.9375,quest_128k,['Life After Life (novel)' 'To Be or Not to Be (book)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Novels set in Russia and the Arctic about war and conflict
+"," ['The Two Captains', 'The Jackals']",Final Answer: ,0.9375,quest_128k,['The Samovar Girl' 'The Two Captains'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: English-language novels that are 1985 speculative fiction but not American 1985 novels
+", ['Illywhacker'],Final Answer: ,0.9375,quest_128k,['Illywhacker' 'Star Healer' 'The Hounds of the Morrigan'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Historical Chinese martial arts films about terrorism
+", ['The King and the Clown'],Final Answer: ,0.9375,quest_128k,"[""A Queen's Ransom""]",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Iranian and Asian short films from 2010's
+"," ['CJ7', 'The Glassworker', 'The Poot', 'Waseskun']",Final Answer: ,0.9375,quest_128k,['Game Over (2013 film)' 'The Poot' 'Two & Two (2011 film)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1968 art novels
+", [],Final Answer: ,0.9375,quest_128k,['It Happened in Boston?' 'The Public Image'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: books about socialism and the french revolution
+"," ['The God that Failed', 'To the Finland Station']",Final Answer: ,0.9375,quest_128k,['To the Finland Station'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: American Science fiction children's comedy films set in castles.
+"," ['Felix the Cat: The Movie', 'The Adventures of Peregrine Pickle']
+
+**Correction based on strict adherence to document content:**
+Upon re-evaluating the documents for ""American Science fiction children's comedy films set in castles"":
+- **Felix the Cat: The Movie** (ID: 18) is an American animated fantasy film (often categorized as comedy/fantasy) set in the ""Kingdom of Oriana"" (a castle setting) involving a princess and a gold mine. It fits the ""American"", ""comedy/fantasy"", and ""castle"" criteria best among the options, though ""science fiction"" is a stretch (it's fantasy).
+- **The Adventures of Peregrine Pickle** (ID: 23) is a novel, not a film.
+- **The Glassworker** (ID: 274) is Pakistani.
+- **CJ7** (ID: 86) is Chinese.
+- **The Jungle Bunch** (ID: 268) is French.
+- **Santa Claus and the Magic Drum** (ID: 142) is Finnish.
+- **The Adventures of Jinbao** (ID:",Final Answer: ,0.9375,quest_128k,['Hotel Transylvania (film)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: History books about Malaysia or the Qing dynasty or about South Korea
+"," ['Chronicle of Malaysia', 'Treason by the Book', 'Korea: A Walk Through the Land of Miracles']",Final Answer: ,0.9375,quest_128k,"['Chronicle of Malaysia' 'Korea: A Walk Through the Land of Miracles'
+ 'Treason by the Book']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Supernatural western horror films from the 1990's
+"," ['Grim Prairie Tales', 'Mad at the Moon']",Final Answer: ,0.9375,quest_128k,"[""From Dusk Till Dawn 3: The Hangman's Daughter"" 'Grim Prairie Tales'
+ 'Mad at the Moon']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Non History Books about communism
+"," ['Crisis of Conscience', 'The God that Failed', 'Red Diapers: Growing Up in the Communist Left']",Final Answer: ,0.9375,quest_128k,"['Red Diapers: Growing Up in the Communist Left'
+ 'Ten Days That Shook the World' 'The God that Failed']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Chinese novels adapted into plays or Yu Hua novels
+"," ['Anandamath', 'The Jackals', 'To Live', 'The Blind Owl', 'The Secret Man', 'The History of Sir Charles Grandison', 'The Hounds of the Morrigan', 'The Mysteries of Paris', 'The Secret Man', 'The History of Sir Charles Grandison', 'The Hounds of the Morrigan', 'The Mysteries of Paris', 'The Secret Man', 'The History of Sir Charles Grandison', 'The Hounds of the Morrigan', 'The Mysteries of Paris', 'The Secret Man', 'The History of Sir Charles Grandison', 'The Hounds of the Morrigan', 'The Mysteries of Paris', 'The Secret Man', 'The History of Sir Charles Grandison', 'The Hounds of the Morrigan', 'The Mysteries of Paris', 'The Secret Man', 'The History of Sir Charles Grandison', 'The Hounds of the Morrigan', 'The Mysteries of Paris', 'The Secret Man', 'The History of Sir Charles Grandison', 'The Hounds of the Morrigan', 'The Mysteries of Paris', 'The Secret Man', 'The History of Sir Charles Grandison', 'The Hounds of the Morrigan', 'The Myst",Final Answer: ,0.9375,quest_128k,['Brothers (Yu novel)' 'Chronicle of a Blood Merchant' 'To Live (novel)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1534 books or 1553 books
+"," ['The History of Sir Charles Grandison', 'The Secret Man', 'The Ferrara Bible']",Final Answer: ,0.9375,quest_128k,['Ferrara Bible' 'Observations (Belon book)' 'Scepter of Judah'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what are some Emirati multilingual or Pakistani animated films
+"," ['Aerials', 'The Adventures of Jinbao', '3 Bahadur: The Revenge of Baba Balaam', 'Quest for a Heart', 'The Glassworker']",Final Answer: ,0.9375,quest_128k,"['3 Bahadur: The Revenge of Baba Balaam' 'Aerials (film)'
+ 'The Glassworker']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: novels written by by Louise Welsh
+"," ['The Girl on the Stairs', 'Tamburlaine Must Die', 'The Jackals']",Final Answer: ,0.9375,quest_128k,['Tamburlaine Must Die' 'The Girl on the Stairs'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: WWII films that are Swiss
+"," ['The Last Chance', 'The Jackals']",Final Answer: ,0.9375,quest_128k,['The Last Chance (1945 film)' 'The Sun (film)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1898 English-language books that are also about adventure
+"," ['The Adventures of Peregrine Pickle', 'The Secret Man']",Final Answer: ,0.9375,quest_128k,['In the Sargasso Sea' 'Rupert of Hentzau'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Dutch coming-of-age or Dutch erotic or erotic thriller films
+"," ['Hotel Clausewitz', 'Jongens', 'The Glassworker']",Final Answer: ,0.9375,quest_128k,['Jongens'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Non-supernatural fantasy films about televised people
+"," ['The Glassworker', 'The Poot']",Final Answer: ,0.9375,quest_128k,['Being John Malkovich' 'Bubba Ho-Tep' 'Millennium Actress'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1988 fiction environmental books
+"," ['The Final Reflection', 'The Secret Man']",Final Answer: ,0.9375,quest_128k,"[""The Gate to Women's Country"" 'Zodiac (novel)']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: what are  some Bulgarian animated, or Polish children's films
+"," ['The Last Winter (2006 film)', 'The Glassworker', 'The Adventures of Jinbao', 'The Glassworker', 'The Adventures of Jinbao', 'The Glassworker', 'The Adventures of Jinbao', 'The Glassworker', 'The Adventures of Jinbao', 'The Glassworker', 'The Adventures of Jinbao', 'The Glassworker', 'The Adventures of Jinbao', 'The Glassworker', 'The Adventures of Jinbao', 'The Glassworker', 'The Adventures of Jinbao', 'The Glassworker', 'The Adventures of Jinbao', 'The Glassworker', 'The Adventures of Jinbao', 'The Glassworker', 'The Adventures of Jinbao', 'The Glassworker', 'The Adventures of Jinbao', 'The Glassworker', 'The Adventures of Jinbao', 'The Glassworker', 'The Adventures of Jinbao', 'The Glassworker', 'The Adventures of Jinbao', 'The Glassworker', 'The Adventures of Jinbao', 'The Glassworker', 'The Adventures of Jinbao', 'The Glassworker', 'The Adventures of Jinbao', 'The Glassworker', 'The Adventures of Jinbao', 'The Glassworker', 'The Adventures of Jinbao', 'The Glassworker',",Final Answer: ,0.9375,quest_128k,"['Demoni (2012 film)' 'The Two Who Stole the Moon'
+ 'The Young Magician (film)']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1850s social psychology books
+"," ['The Glassworker', 'The Picturegoers', 'The Public Image']",Final Answer: ,0.9375,quest_128k,['Madame Bovary' 'The Scarlet Letter'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: German spy comedy films, or 2000s comedy-drama mystery films.
+"," ['Hotel Clausewitz', 'The Jackals', 'Home Sweet Homicide', 'The Deadly Game']",Final Answer: ,0.9375,quest_128k,['Hotel Clausewitz' 'Scorpions and Miniskirts' 'Tunis Top Secret'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: American LGBT novels set in New England and that are also Speculative fiction novels
+", ['The Glassworker'],Final Answer: ,0.9375,quest_128k,['The Drowning Girl'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Films based of Craig Rices' work
+"," ['The Glassworker', 'The Glassworker']",Final Answer: ,0.9375,quest_128k,"['Home Sweet Homicide' ""Mrs. O'Malley and Mr. Malone""
+ 'The Underworld Story']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: New Zealand science fiction thriller films, films shot in Gauteng, or New Zealand post-apocalyptic films.
+"," ['District 9', 'The Last Winter (2006 film)', 'The Jackals']",Final Answer: ,0.9375,quest_128k,['District 9' 'Night Raiders (2021 film)' 'The Quiet Earth (film)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 2004 romantic drama films about media
+", ['Closer'],Final Answer: ,0.9375,quest_128k,['2046 (film)' 'Being Julia' 'Closer (2004 film)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Soviet crime films that arent russian made
+"," ['The Jackals', 'The Master of Taiga']",Final Answer: ,0.9375,quest_128k,['Look for a Woman' 'The Master of Taiga' 'Visit to Minotaur (film)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: British science fiction novels set on fictional planets excluding novels based on Doctor Who.
+"," ['The Making of the Representative for Planet 8', 'The Fall of Hyperion', 'Ilium', 'Seveneves']",Final Answer: ,0.9375,quest_128k,"['The Making of the Representative for Planet 8'
+ 'The Restaurant at the End of the Universe']",test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: Animated films about koalas or 1990s Australian animated films
+"," ['Blinky Bill the Movie', 'Go to Hell!!']",Final Answer: ,0.9375,quest_128k,['Blinky Bill the Movie' 'Go to Hell!!' 'The Jungle Bunch (film)'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: South Korean historical comedy-drama films or Films set in Gwangju or 2000s historical comedy-drama films
+"," ['A Taxi Driver', 'The King and the Clown']",Final Answer: ,0.9375,quest_128k,['A Taxi Driver' 'The King and the Clown'],test,256
+"====== Now let's start! ======
+Based on the documents above, can you answer the following query? Print out the TITLE and ID of the documents you use to answer. Then format the answers into a list.
+query: 1984 Science fiction Space opera novel series
+"," ['The Fall of Hyperion', 'The Hounds of the Morrigan']
+
+**Correction based on strict document analysis:**
+Upon re-evaluating the documents for ""1984 Science fiction Space opera novel series"":
+- **ID 117 (The Fall of Hyperion)**: Published in **1990**, not 1984. It is a science fiction space opera novel (part of the Hyperion Cantos series).
+- **ID 303 (The Hounds of the Morrigan)**: Published in **1985**, not 1984. It is a children's novel about Celtic mythology, not science fiction.
+
+There are **no documents** in the provided list that match the specific criteria of being a **1984** Science Fiction Space Opera novel series.
+- *Hyperion Cantos* (The Fall of Hyperion) started in 1990.
+- *The Hounds of the Morrigan* is 1985 and fantasy.
+- *The Glassworker* is 2023.
+- *The Last Chance* is 1945.
+- *The Secret Man* is a film.",Final Answer: ,0.9375,quest_128k,"['The Final Reflection' 'The Trellisane Confrontation'
+ 'The Vulcan Academy Murders']",test,256

@@ -153,6 +153,7 @@ LOFT_TASKS = [
     ("quest", "QUEST"),
 ]
 TASKS = {"RULER": RULER_TASKS, "LOFT": LOFT_TASKS}
+ALL_TASKS = dict(TASKS)  # every known task (TASKS may be narrowed by --ruler-tasks)
 
 # Two-letter task codes for the compact main-paper table.
 TASK_SHORT = {
@@ -245,7 +246,7 @@ def load_df(csv_path: Path) -> pd.DataFrame:
     missing = required - set(df.columns)
     if missing:
         raise ValueError(f"CSV missing columns: {sorted(missing)}")
-    unknown = {(d, t) for d, t in zip(df["dataset"], df["task"]) if t not in {k for k, _ in TASKS.get(d, [])}}
+    unknown = {(d, t) for d, t in zip(df["dataset"], df["task"]) if t not in {k for k, _ in ALL_TASKS.get(d, [])}}
     if unknown:
         raise ValueError(f"CSV has tasks this script does not know: {sorted(unknown)}")
     return df
@@ -284,7 +285,8 @@ def relative_to_dense(df_agg: pd.DataFrame) -> pd.DataFrame:
 def plot_figure(df_agg: pd.DataFrame, out_path: Path, dummy: bool, relative: bool = False) -> None:
     """4×3: rows = dataset×context; columns = models."""
     n_rows, n_cols = len(ROW_PANELS), len(MODELS)
-    fig, axes = plt.subplots(n_rows, n_cols, figsize=(9.6, 10.2), sharex=True, sharey=False)
+    fig, axes = plt.subplots(n_rows, n_cols, figsize=(3.2 * n_cols + (1.0 if n_cols == 1 else 0.0), 10.2),
+                             sharex=True, sharey=False, squeeze=False)
     fig.subplots_adjust(hspace=0.32, wspace=0.18, bottom=0.10, top=0.94)
 
     legend = {}
@@ -332,7 +334,7 @@ def plot_figure(df_agg: pd.DataFrame, out_path: Path, dummy: bool, relative: boo
         [legend.get(m, blank) for m in order],
         [METHOD_LABELS[m] if m in legend else "" for m in order],
         loc="lower center",
-        ncol=4,
+        ncol=4 if n_cols > 1 else 2,
         frameon=False,
         fontsize=7.5,
         labelcolor=INK,
@@ -361,6 +363,55 @@ def plot_figure(df_agg: pd.DataFrame, out_path: Path, dummy: bool, relative: boo
     plt.close(fig)
     print(f"Wrote {out_path}")
     print(f"Wrote {out_path.with_suffix('.pdf')}")
+
+
+def plot_single_model(df_agg: pd.DataFrame, model: str, out_path: Path, relative: bool = False) -> None:
+    """One model: 2x2 panels (rows RULER / LOFT, columns 32K / 128K), legend below."""
+    fig, axes = plt.subplots(2, 2, figsize=(8.4, 7.2), sharex=True)
+    fig.subplots_adjust(hspace=0.30, wspace=0.22, bottom=0.20, top=0.90)
+    sub = df_agg[df_agg["model"] == model]
+    legend = {}
+    for i, dataset in enumerate(DATASETS):
+        for j, ctx in enumerate(CONTEXTS):
+            ax = axes[i, j]
+            panel = sub[(sub["dataset"] == dataset) & (sub["context_k"] == ctx)]
+            for method in METHOD_ORDER:
+                m = panel[panel["method"] == method].sort_values("rate")
+                if m.empty:
+                    continue
+                (line,) = ax.plot(m["rate"], m["score"], label=METHOD_LABELS[method], **STYLE[method])
+                legend.setdefault(method, line)
+            if relative:
+                top = max(100, 10 * math.ceil((sub["score"].max() + 3) / 10)) if len(sub) else 100
+            else:
+                top = 100 if dataset == "RULER" or panel.empty else min(100, 10 * math.ceil((panel["score"].max() + 3) / 10))
+            ax.set_ylim(0, top)
+            ax.set_xticks(RATES)
+            ax.set_xticklabels([f"{r}x" for r in RATES])
+            ax.set_xlim(RATES[0] - 1.5, RATES[-1] + 1.5)
+            ax.set_title(f"{dataset}, {ctx}K", fontsize=10, color=INK)
+            if j == 0:
+                ax.set_ylabel("% of full cache" if relative else "Quality", fontsize=8, color=INK)
+            if i == 1:
+                ax.set_xlabel("Compression rate", fontsize=8, color=INK)
+            ax.grid(True, color="#e4e3df", linewidth=0.6)
+            ax.set_axisbelow(True)
+            for side in ("top", "right"):
+                ax.spines[side].set_visible(False)
+            for side in ("left", "bottom"):
+                ax.spines[side].set_color("#b9b8b2")
+            ax.tick_params(labelsize=7, colors=INK_2)
+    fig.suptitle(model, fontsize=12, fontweight="bold", color=INK)
+    blank = plt.Line2D([], [], alpha=0)
+    order = LEGEND_ORDER_FINAL if any(m.startswith("vkv_final") for m in legend) else LEGEND_ORDER
+    fig.legend([legend.get(m, blank) for m in order], [METHOD_LABELS[m] if m in legend else "" for m in order],
+               loc="lower center", ncol=4, frameon=False, fontsize=7.5, labelcolor=INK, handlelength=3.2,
+               bbox_to_anchor=(0.5, 0.01))
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path, dpi=200, bbox_inches="tight")
+    fig.savefig(out_path.with_suffix(".pdf"), bbox_inches="tight")
+    plt.close(fig)
+    print(f"Wrote {out_path}")
 
 
 def _score(
@@ -492,6 +543,7 @@ def main() -> None:
                     help="one or more CSVs in this schema (e.g. baselines/phase3_results.csv and results.csv)")
     ap.add_argument("--methods", nargs="+", help="methods to show (default: all; vkv_fetch_* dropped when "
                     "vkv_final rows are present)")
+    ap.add_argument("--models", nargs="+", help="model columns to plot, e.g. Qwen3.5 (default: all three)")
     ap.add_argument("--ruler-tasks", nargs="+", help="RULER task ids to keep, e.g. niah_mk3 niah_mv cwe qa1 "
                     "(default: all 13)")
     ap.add_argument("--make-dummy", action="store_true", help="Rewrite dummy.csv.")
@@ -520,6 +572,9 @@ def main() -> None:
     if args.make_dummy:
         write_dummy_csv(here / "dummy.csv")
 
+    if args.models:
+        assert all(m in MODELS for m in args.models), args.models
+        MODELS[:] = args.models
     if args.ruler_tasks:  # e.g. the final grid's four tasks: every method is then averaged over the same four
         known = dict(RULER_TASKS)
         assert all(t in known for t in args.ruler_tasks), f"unknown RULER task in {args.ruler_tasks}"
@@ -537,9 +592,14 @@ def main() -> None:
     if not args.allow_partial:
         df = complete_only(df)
     df_agg = aggregate(df)
-    plot_figure(df_agg, args.out, dummy=dummy)
-    plot_figure(relative_to_dense(df_agg), args.out_relative, dummy=dummy, relative=True)
-    write_main_table(df, args.main_table, dummy=dummy, rate=args.main_rate, ctx=args.main_context)
+    if len(MODELS) == 1:  # one model: a 2x2 grid reads better than one tall column
+        plot_single_model(df_agg, MODELS[0], args.out)
+        plot_single_model(relative_to_dense(df_agg), MODELS[0], args.out_relative, relative=True)
+    else:
+        plot_figure(df_agg, args.out, dummy=dummy)
+        plot_figure(relative_to_dense(df_agg), args.out_relative, dummy=dummy, relative=True)
+    if len(MODELS) >= 2:  # the main-paper table pairs two models
+        write_main_table(df, args.main_table, dummy=dummy, rate=args.main_rate, ctx=args.main_context)
     write_appendix_table(df, args.appendix_table, dummy=dummy)
 
 

@@ -1,0 +1,35 @@
+% Main-paper: 16$\times$, 128K; Qwen3 | Qwen3.5, shared task column.
+\footnotesize
+\setlength{\tabcolsep}{2.0pt}
+\centering
+% --- RULER: Qwen3 | Qwen3.5 ---
+\begin{tabular}{l|ccccccc|ccccccc}
+\toprule
+ & \multicolumn{7}{c|}{\textbf{Qwen3}} & \multicolumn{7}{c}{\textbf{Qwen3.5}} \\
+ & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV+K & vKV+F & vKV$^\ast$ & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV+K & vKV+F & vKV$^\ast$ \\
+\midrule
+M3 & 88.0 & 0.0 & 0.0 & 56.0 & -- & -- & -- & 100.0 & 0.0 & 0.0 & 0.0 & 94.0 & 88.0 & 100.0 \\
+MV & 100.0 & 34.0 & 22.0 & 78.0 & -- & -- & -- & 100.0 & 3.0 & 2.0 & 0.0 & 100.0 & 100.0 & 100.0 \\
+CW & 4.2 & 2.4 & 0.2 & 3.6 & -- & -- & -- & 100.0 & 6.2 & 48.0 & 74.8 & 87.6 & 93.0 & 99.8 \\
+Q1 & 68.0 & 26.0 & 24.0 & 52.0 & -- & -- & -- & 86.0 & 16.0 & 18.0 & 32.0 & 72.0 & 74.0 & 86.0 \\
+\midrule
+Av & 65.0 & 15.6 & 11.6 & 47.4 & -- & -- & -- & 96.5 & 6.3 & 17.0 & 26.7 & 88.4 & 88.8 & 96.5 \\
+\bottomrule
+\end{tabular}
+\vspace{0.9em}
+
+% --- LOFT: Qwen3 | Qwen3.5 ---
+\begin{tabular}{l|ccccccc|ccccccc}
+\toprule
+ & \multicolumn{7}{c|}{\textbf{Qwen3}} & \multicolumn{7}{c}{\textbf{Qwen3.5}} \\
+ & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV+K & vKV+F & vKV$^\ast$ & Dense & KVzip & F-KVzip & vKV$\emptyset$+K & vKV+K & vKV+F & vKV$^\ast$ \\
+\midrule
+NQ & 16.0 & 3.0 & 10.0 & 2.0 & -- & -- & -- & 57.0 & 0.0 & 4.0 & 6.0 & 45.0 & 48.0 & 56.0 \\
+HP & 27.0 & 6.0 & 16.0 & 28.0 & -- & -- & -- & 55.0 & 0.0 & 5.0 & 11.0 & 41.0 & 44.0 & 55.0 \\
+MS & 8.0 & 0.0 & 7.0 & 5.0 & -- & -- & -- & 23.0 & 0.0 & 2.0 & 2.0 & 17.0 & 18.0 & 23.0 \\
+QM & 5.0 & 0.0 & 0.0 & 0.0 & -- & -- & -- & 33.0 & 0.0 & 0.0 & 0.0 & 18.0 & 16.0 & 37.0 \\
+QS & 7.0 & 0.0 & 0.0 & 2.0 & -- & -- & -- & 24.0 & 0.0 & 0.0 & 1.0 & 16.0 & 13.0 & 24.0 \\
+\midrule
+Av & 12.6 & 1.8 & 6.6 & 7.4 & -- & -- & -- & 38.4 & 0.0 & 2.2 & 4.0 & 27.4 & 27.8 & 39.0 \\
+\bottomrule
+\end{tabular}
