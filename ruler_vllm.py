@@ -11,6 +11,10 @@ out/<run>/<arm>/rows.jsonl in the harness's format, so its score_runs.py scores 
 
 Arms are bench_1req_off99.CONFIGS names (dense, vkv, ...). Resumable.
 
+--bench loft: LOFT RAG (f20180301/loft-rag-<task>-<len>, the harness's load_loft_dataset), test split
+in order, rows a:b per task; every task has one shared context (~118-121k tokens at 128k) and
+each question is its own request. Score with tools/score_loft_vllm.py (LOFT's official parser).
+
 --question forced (default): the prompt is the context alone (the round compresses it), and
 question + chat suffix + answer prefix are forced as the first output tokens, one decode step
 each (``force_prefix.ForcePrefix``), as the harness's question pass runs over the compressed
@@ -30,12 +34,18 @@ TASKS = ["cwe", "fwe", "niah_multikey_1", "niah_multikey_2", "niah_multikey_3", 
 ap = argparse.ArgumentParser()
 ap.add_argument("--arm", required=True)
 ap.add_argument("--rows", default="152:154")
-ap.add_argument("--tasks", nargs="+", default=TASKS)
+ap.add_argument("--bench", choices=("ruler", "loft"), default="ruler")
+ap.add_argument("--tasks", nargs="+", default=None,
+                help="default: all RULER tasks, or the five LOFT RAG tasks at --loft-len")
+ap.add_argument("--loft-len", default="128k")
 ap.add_argument("--dataset", default="xAlg-AI/att-hub-ruler-32k")
 ap.add_argument("--run", default="ruler32k")
 ap.add_argument("--tag", default=None, help="output arm name (default --arm), e.g. vkv-compact")
 ap.add_argument("--question", choices=("forced", "prefill"), default="forced")
 args = ap.parse_args()
+LOFT_TASKS = ["nq", "hotpotqa", "musique", "qampari", "quest"]
+if args.tasks is None:
+    args.tasks = TASKS if args.bench == "ruler" else [f"{t}_{args.loft_len}" for t in LOFT_TASKS]
 
 import torch  # noqa: E402
 from datasets import load_dataset  # noqa: E402
@@ -108,8 +118,13 @@ def prompt_ids(context, question, answer_prefix):
 a, b = (int(x) for x in args.rows.split(":"))
 prev = copied_now() if vkv is not None else None
 for task in args.tasks:
-    df = load_dataset(args.dataset, task, split=task).to_pandas()
-    df = df.sample(frac=1, random_state=42).iloc[a:b]
+    if args.bench == "loft":
+        name, length = task.rsplit("_", 1)
+        df = load_dataset(f"f20180301/loft-rag-{name}-{length}", split="test").to_pandas().iloc[a:b]
+        df = df.rename(columns={"answers": "answer"})
+    else:
+        df = load_dataset(args.dataset, task, split=task).to_pandas()
+        df = df.sample(frac=1, random_state=42).iloc[a:b]
     for ridx, (_, row) in zip(range(a, b), df.iterrows()):
         if (task, ridx) in done:
             continue
@@ -135,7 +150,7 @@ for task in args.tasks:
         n_out = len(toks) - Q                                  # answer tokens
         rec = {"task": task, "row": ridx, "pred": pred, "gold": list(row["answer"]),
                "sec": round(sec, 1), "n_prompt": len(ids), "n_question": Q,
-               "question": args.question, "n_out": n_out, "gpu": torch.cuda.get_device_name(0)}
+               "question": args.question, "answer_prefix": row["answer_prefix"], "n_out": n_out, "gpu": torch.cuda.get_device_name(0)}
         # Step i lasts from its schedule() to the next one (the last to generate()'s return).
         # Prefill steps schedule > 1 token; decode step j (from 1) produces output token j, so
         # with Q forced tokens decode steps 1..Q end with the first answer token.

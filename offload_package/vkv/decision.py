@@ -11,13 +11,14 @@ to the reference on the rows whose prefix does not fit the cap:
   ``t_max`` jumps, those are all it needs (beta_before only sums earlier entries).
 * Fetch order: "needle" sorts by wh; "grad" by b + v dt/dV, with dt/dV from the row's totals
   after T* (plain reductions), so a top-``k_max`` of the key is the order's head.
-* k*, Chernoff ("chern", ``reference_chernoff.kstar_fast`` with head = ``k_max``): the Bernstein
-  screen at k = 0 (totals), then the exact two-point log-MGF on the first ``k_max`` entries of the
+* k*, Chernoff ("chern", ``reference_chernoff.kstar_fast`` with its ``head``): the Bernstein
+  screen at k = 0 (totals), then the exact two-point log-MGF on the first ``head`` entries of the
   order plus Bennett's bound for the rest, which needs only the rest's variance and largest moves:
-  the curves at index ``k_max`` of the capped suffix sums / maxima. Those are exactly the inputs of
+  the curves at index ``head`` of the capped suffix sums / maxima. Those are exactly the inputs of
   the harness's ``chern_curve_head`` (it reads ``order[:, :head]`` and the curves at ``head``), so
-  it is called on them directly. With ``k_max >= n`` the whole order is the head
-  (``chern_curve_rows``, no Bennett), as in the harness.
+  it is called on them directly (a top-``head`` of the key), and its curve is read at
+  k <= ``k_max``. With ``head >= n`` the whole order is the head (``chern_curve_rows``, no
+  Bennett), as in the harness.
 * k*, Bernstein ("simple" / "tight"): the curves at k <= ``k_max`` are the top part from k on plus
   the complement's sum / max.
 
@@ -81,7 +82,8 @@ def grad_dtdV(v, up, dn, L: float):
 @torch.no_grad()
 def decide(wh: torch.Tensor, r: torch.Tensor, tail: torch.Tensor, sure: torch.Tensor, *,
            eps0: float, delta: float, check: str = "chern", order: str = "grad",
-           trunc: bool = True, t_max: int = 4096, k_max: int = 1024) -> Decision:
+           trunc: bool = True, t_max: int = 4096, k_max: int = 1024,
+           head: int = 16384) -> Decision:
     """wh, r [R, n] float64, tail [R, n] bool, sure [R] float64 (see ``reference.prepare``)."""
     assert check in ("chern",) + ref.CHECKS and order in ref.ORDERS, (check, order)
     R, n = wh.shape
@@ -143,13 +145,27 @@ def decide(wh: torch.Tensor, r: torch.Tensor, tail: torch.Tensor, sure: torch.Te
         nonmono = torch.zeros(R, dtype=torch.bool, device=dev)
         idx = (~screened).nonzero()[:, 0]
         if idx.numel():
-            args = (T[idx], o_i[idx], Bt[idx], beta[idx])
+            # the harness's curve (exact terms on the first `head` entries, Bennett beyond), at
+            # k <= K; the top-K is the top-K2's prefix (row_topk's order is total)
+            K2 = max(min(int(head), n), K)
+            o2 = o_i[idx] if K2 == K else row_topk(key[idx], K2)
+            b2, v2, u2, d2 = b[idx], v[idx], up[idx], dn[idx]
+            rest2 = torch.ones_like(tail[idx]).scatter_(-1, o2, False)
+            beta2 = (ref._suffix_sum(b2.gather(-1, o2))
+                     + torch.where(rest2, b2, zero).sum(-1, keepdim=True))
+            args = (T[idx], o2, Bt[idx], beta2)
             rows = (wh[idx], r[idx], tail[idx])
-            if K < n:   # head + Bennett (the harness's ``head < n``)
-                P = chern.chern_curve_head(*args, Vc[idx], upc[idx], dnc[idx], *rows, eps0, K)
-            else:       # the head is the whole order
+            if K2 < n:   # head + Bennett (the harness's ``head < n``)
+                V2 = (ref._suffix_sum(v2.gather(-1, o2))
+                      + torch.where(rest2, v2, zero).sum(-1, keepdim=True))
+                up2 = torch.maximum(ref._suffix_max(u2.gather(-1, o2)),
+                                    torch.where(rest2, u2, zero).amax(-1, keepdim=True))
+                dn2 = torch.maximum(ref._suffix_max(d2.gather(-1, o2)),
+                                    torch.where(rest2, d2, zero).amax(-1, keepdim=True))
+                P = chern.chern_curve_head(*args, V2, up2, dn2, *rows, eps0, K2)
+            else:        # the head is the whole order
                 P = chern.chern_curve_rows(*args, *rows, eps0)
-            ok = P <= delta * (1 - CHERN_MARGIN)
+            ok = P[:, :K + 1] <= delta * (1 - CHERN_MARGIN)
             found[idx] = ok.any(-1)
             k[idx] = ok.to(torch.int8).argmax(-1)
             nonmono[idx] = (ok[:, :-1] & ~ok[:, 1:]).any(-1)
@@ -178,7 +194,7 @@ def decide(wh: torch.Tensor, r: torch.Tensor, tail: torch.Tensor, sure: torch.Te
         rows = fallback.nonzero()[:, 0]
         plan, kf, nm = reference_rows(wh[rows], r[rows], tail[rows], sure[rows], eps0=eps0,
                                       delta=delta, check=check, order=order, trunc=trunc,
-                                      k_max=k_max)
+                                      k_max=k_max, head=head)
         T[rows] = plan.T
         k[rows] = kf
         nonmono[rows] = nm
@@ -191,13 +207,14 @@ def decide(wh: torch.Tensor, r: torch.Tensor, tail: torch.Tensor, sure: torch.Te
                     screened=screened)
 
 
-def reference_rows(wh, r, tail, sure, *, eps0, delta, check, order, trunc, k_max):
+def reference_rows(wh, r, tail, sure, *, eps0, delta, check, order, trunc, k_max,
+                   head=16384):
     """The reference decision for some rows: (plan, k*, nonmono). "chern" is the harness's
-    ``kstar_fast`` with head = ``k_max`` (its rows that pass nowhere in the head get the full
+    ``kstar_fast`` with its ``head`` (its rows that pass nowhere in the head get the full
     exact-term curve)."""
     plan = ref.prepare(wh, r, tail, sure, delta, trunc=trunc, order=order)
     if check == "chern":
-        kf = chern.kstar_fast(plan, wh, r, tail, eps0, delta, head=int(k_max))[0]
+        kf = chern.kstar_fast(plan, wh, r, tail, eps0, delta, head=int(head))[0]
         return plan, kf, torch.zeros_like(kf, dtype=torch.bool)
     kf, nm = ref.kstar(plan, eps0, check)
     return plan, kf, nm

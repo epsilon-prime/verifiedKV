@@ -24,9 +24,9 @@ def _inputs(R, n, seed, *, p_zero=0.05, p_one=0.1, p_promoted=0.02, spread=4.0):
     return wh.to(DEV), r.to(DEV), tail.to(DEV), sure.to(DEV)
 
 
-def _reference(wh, r, tail, sure, eps0, delta, check, order, trunc, k_max=1024):
+def _reference(wh, r, tail, sure, eps0, delta, check, order, trunc, k_max=1024, head=16384):
     plan, k, _ = reference_rows(wh, r, tail, sure, eps0=eps0, delta=delta, check=check,
-                                order=order, trunc=trunc, k_max=k_max)
+                                order=order, trunc=trunc, k_max=k_max, head=head)
     F = ref.fetch_mask(plan, k) & tail
     return plan, k, F
 
@@ -41,14 +41,15 @@ def _fmask(dec, n):
 @pytest.mark.parametrize("check", ["chern", "simple", "tight"])
 @pytest.mark.parametrize("order", ["needle", "grad"])
 @pytest.mark.parametrize("trunc", [True, False])
-@pytest.mark.parametrize("caps", [(4096, 1024), (8, 4), (1, 1), (4096, 16384)])
+@pytest.mark.parametrize("caps", [(4096, 1024, 16384), (8, 4, 16384), (1, 1, 1),
+                                  (4096, 16384, 16384), (8, 16, 64), (8, 16, 16)])
 def test_decide_matches_reference(check, order, trunc, caps):
-    t_max, k_max = caps
+    t_max, k_max, head = caps
     for seed, (R, n, eps0) in enumerate([(16, 3000, 0.3), (8, 700, 0.05), (12, 2000, 0.6)]):
         wh, r, tail, sure = _inputs(R, n, seed)
-        plan, k, F = _reference(wh, r, tail, sure, eps0, 0.05, check, order, trunc, k_max)
+        plan, k, F = _reference(wh, r, tail, sure, eps0, 0.05, check, order, trunc, k_max, head)
         dec = decide(wh, r, tail, sure, eps0=eps0, delta=0.05, check=check, order=order,
-                     trunc=trunc, t_max=t_max, k_max=k_max)
+                     trunc=trunc, t_max=t_max, k_max=k_max, head=head)
         assert torch.equal(dec.T, plan.T), (seed, (dec.T != plan.T).sum())
         assert torch.equal(dec.k, k), (seed, dec.k, k)
         assert torch.equal(_fmask(dec, n) & tail, F), seed
@@ -91,7 +92,7 @@ def test_chern_bennett_head_is_exercised_and_exact():
     plan = ref.prepare(wh, r, tail, sure, 0.05, trunc=True, order="grad")
     k_h = chern.kstar_fast(plan, wh, r, tail, 0.3, 0.05, head=128)[0]
     k_full = chern.kstar_fast(plan, wh, r, tail, 0.3, 0.05, head=0)[0]
-    dec = decide(wh, r, tail, sure, eps0=0.3, delta=0.05, k_max=128)
+    dec = decide(wh, r, tail, sure, eps0=0.3, delta=0.05, k_max=128, head=128)
     assert torch.equal(dec.k, k_h)
     inh = ~dec.fallback
     assert bool(inh.any()) and bool(dec.fallback.any())
@@ -118,3 +119,17 @@ def test_attention_weights_match_reference_bias():
     keep = torch.isfinite(bias)
     assert torch.equal(keep, w > 0)
     assert torch.allclose(w[keep].double().log(), bias[keep], rtol=1e-6, atol=1e-6)
+
+
+def test_chern_head_beyond_k_max_is_the_harness_head():
+    """head > k_max: the curve at k <= k_max carries the exact terms of the entries ranked
+    k_max .. head - 1 (not Bennett from k_max), so k* is the harness's kstar_fast with that head;
+    rows passing nowhere within k_max get it from the reference (fallback)."""
+    wh, r, tail, sure = _inputs(32, 4000, 21, spread=3.0)
+    plan = ref.prepare(wh, r, tail, sure, 0.05, trunc=True, order="grad")
+    for k_max, head in ((64, 512), (128, 1024), (32, 4000)):
+        k_h = chern.kstar_fast(plan, wh, r, tail, 0.3, 0.05, head=head)[0]
+        k_short = chern.kstar_fast(plan, wh, r, tail, 0.3, 0.05, head=k_max)[0]
+        dec = decide(wh, r, tail, sure, eps0=0.3, delta=0.05, k_max=k_max, head=head)
+        assert torch.equal(dec.k, k_h), (k_max, head)
+        assert bool((k_h != k_short).any()), (k_max, head)     # the head changes some k*

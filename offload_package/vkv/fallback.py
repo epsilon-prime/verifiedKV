@@ -15,7 +15,8 @@ number of rows; none costs one empty launch):
   E  the curves along that order (suffix sums / maxima over the slices), then k*: the
      Bernstein screen, the Chernoff curve on the first k_max entries plus Bennett's bound for
      the rest, and where nothing passes there, the exact curve over all entries
-     ("chern"); or the Bernstein curve over all entries ("simple" / "tight").
+     ("chern"); or the Bernstein curve over all entries ("simple" / "tight"). The Chernoff head
+     is the harness's ``head`` (exact terms on its first entries, Bennett beyond: ``kstar_fast``).
 
 The row's T* (Tm), ranks (1 + place in the fetch order, every entry), k*, beta(k*), B~,
 non-monotonicity, |T* cap tail| and the screen flag are overwritten in place. Same expressions
@@ -421,9 +422,11 @@ def plan(n: int, dev) -> tuple[int, int]:
 
 
 def run(fbl, s_hat, r_l, slots_d, m, sure, grid, consts, Tm, rank, kst, beta_k, Bt, nonmono,
-        tsize, scr, *, n, Kc, max_len, H, G, trunc, order, check):
-    """Recompute the rows listed in ``fbl`` ([R] row ids, count at [R]) by the reference rule."""
+        tsize, scr, *, n, Kc, max_len, H, G, trunc, order, check, head=16384):
+    """Recompute the rows listed in ``fbl`` ([R] row ids, count at [R]) by the reference rule
+    (the Chernoff certificate with ``head`` exact terms: ``kstar_fast``'s head)."""
     R = int(kst.numel())
+    Kc = max(int(Kc), min(int(head), n))       # the kernel's Kc: the certificate's head
     dev = s_hat.device
     S, FBR = plan(n, dev)
     BK = S * SL

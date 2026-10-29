@@ -49,9 +49,13 @@ class VkvConfig:
     group: int = 128              # sketch quantisation group (context tokens)
     seed: int = 0                 # draw seed = (crc32(prompt) ^ (seed * 7919)) & 0x7FFFFFFF
     t_max: int = 4096             # truncation-walk cap (exact fallback beyond)
-    k_max: int = 4096             # fetch-order head: exact terms (Chernoff) / curve (Bernstein)
-                                  # for the first k_max entries, the rest in closed form; rows
-                                  # that pass nowhere in the head fall back to the reference
+    k_max: int = 4096             # fetch-order prefix the kernels sort and evaluate the curve on
+                                  # (k <= k_max; Bernstein: the rest in closed form); rows that
+                                  # pass nowhere in it fall back to the reference
+    head: int = 16384             # the Chernoff certificate's exact head (harness kstar_fast's
+                                  # head): two-point terms for the first `head` entries of the
+                                  # fetch order, Bennett's bound beyond (none when head >= n); the
+                                  # kernels evaluate the curve at k <= k_max, the fallback beyond
     evict: bool = False           # baseline: plain KVzip at the same budget (kvpress KVzipPress
                                   # with compression 1 - kappa): keep the top kappa of the
                                   # context cells by score, attend to those only; no draw,
@@ -73,6 +77,8 @@ class VkvConfig:
             raise ValueError("vkv shortlist must be >= 0, k_max and t_max >= 1")
         if self.recall and self.evict:
             raise ValueError("vkv recall and evict are exclusive")
+        if self.head < self.k_max:
+            raise ValueError("vkv head (the certificate's exact terms) must be >= k_max")
 
     @classmethod
     def from_extra(cls, extra: dict) -> "VkvConfig":

@@ -403,7 +403,7 @@ class VkvDecoder:
         tsize = torch.empty((R,), dtype=torch.float64, device=dev)
         if cfg.check == "chern":
             self._chern(o_i, s_hat, r_l, slots_d, m, Tm, part, part_r, sure, kst, cap_k, beta_k,
-                        Bt, nonmono, tsize, scr, n, Kc, NB, max_len, H, G)
+                        Bt, nonmono, tsize, scr, n, Kc, NB, max_len, H, G, key, rank)
         else:
             K.curve_kernel[(R,)](o_i, s_hat, r_l, slots_d, m, Tm, part, part_r, sure, kst, cap_k,
                                  beta_k, Bt, nonmono, tsize, float(cfg.eps0), float(cfg.delta),
@@ -415,7 +415,7 @@ class VkvDecoder:
         K.flags_kernel[(1,)](cap_t, cap_k, fb, fbl, R, BR=_np2(R))
         FB.run(fbl, s_hat, r_l, slots_d, m, sure, self._grid, self._fb_consts(cfg, dev), Tm,
                rank, kst, beta_k, Bt, nonmono, tsize, scr, n=n, Kc=Kc, max_len=max_len, H=H,
-               G=G, trunc=cfg.trunc, order=cfg.order, check=cfg.check)
+               G=G, trunc=cfg.trunc, order=cfg.order, check=cfg.check, head=cfg.head)
 
         # ---- attention list: A with Algorithm 2 (e) weights, then the fetched entries -------------
         # F = the entries with 1 <= rank <= k*; its cold part is staged in. Every row's list holds
@@ -664,15 +664,15 @@ class VkvDecoder:
         X.decide(q.contiguous(), float(sm_scale), slots_d, st.r[layer], eng.cell[layer],
                  eng.cpu_row[layer], st.alist[layer], st.acnt[layer], eng.kv_rows, eng.cpu_pool,
                  sk.codes[layer], sk.zero[layer], sk.scale[layer], sk.channels[layer], self._grid,
-                 [B, H, G, n, WA, max_len, M_sl, M_t, Kc, int(Kc < n), sk.nch, sk.per_byte,
-                  sk.bits, sk.group, CUDA_CLUSTER],
+                 [B, H, G, n, WA, max_len, M_sl, M_t, Kc, int(max(min(cfg.head, n), Kc) < n),
+                  sk.nch, sk.per_byte, sk.bits, sk.group, CUDA_CLUSTER, int(cfg.head)],
                  [float(cfg.eps0), float(cfg.delta), float(cfg.delta * (1 - CHERN_MARGIN)),
                   _ln2_over(cfg.delta), 1.0 / 3.0],
                  s_hat, jbuf, whb, Tm, rank, sA, rA, pA, physA, o_i, m, sure, kst, beta_k, Bt,
                  nonmono, tsize, scr, fb, fbl, keys_cnt, bar)
         FB.run(fbl, s_hat, st.r[layer], slots_d, m, sure, self._grid, self._fb_consts(cfg, dev),
                Tm, rank, kst, beta_k, Bt, nonmono, tsize, scr, n=n, Kc=Kc, max_len=max_len, H=H,
-               G=G, trunc=cfg.trunc, order=cfg.order, check=cfg.check)
+               G=G, trunc=cfg.trunc, order=cfg.order, check=cfg.check, head=cfg.head)
         # The list: A, then F's cold entries (W1 = A + k_max), the rest of a capped row's F in
         # the overflow list (W2 = n), the two attended separately and LSE-merged.
         W1, W2 = WA + Kc, n
@@ -713,21 +713,36 @@ class VkvDecoder:
         return out, lse
 
     def _chern(self, o_i, s_hat, r_l, slots_d, m, Tm, part, part_r, sure, kst, cap_k, beta_k, Bt,
-               nonmono, tsize, scr, n, Kc, NB, max_len, H, G):
-        """k* by the Chernoff certificate: ``chern_kernel`` split over (row, entry block) and
-        (row, lambda part) programs (one program per row cannot fill the GPU for a 4096-entry
-        head); CHERN_SPLIT = 1 runs the single-program kernel. Same k* either way."""
+               nonmono, tsize, scr, n, Kc, NB, max_len, H, G, key, rank):
+        """k* by the Chernoff certificate, the harness's (``kstar_fast`` with ``cfg.head``) read at
+        k <= Kc: ``chern_mid_kernel`` sums the exact terms of the entries ranked Kc .. head - 1
+        (top-head membership by ``row_topk``) and the Bennett inputs from the head on; then
+        ``chern_kernel`` split over (row, entry block) and (row, lambda part) programs (one
+        program per row cannot fill the GPU for a 4096-entry top-K); CHERN_SPLIT = 1 runs the
+        single-program kernel. Same k* either way."""
         cfg, dev = self.st.cfg, s_hat.device
         R = int(o_i.shape[0])
         BK, NG = _np2(Kc), int(self._grid.numel())
         eps0, delta = float(cfg.eps0), float(cfg.delta)
         thr = float(cfg.delta * (1 - CHERN_MARGIN))
         NS = CHERN_SPLIT if CHERN_SPLIT > 1 and NG % CHERN_SPLIT == 0 else 1
+        K2 = max(min(int(cfg.head), n), Kc)
+        mid = torch.empty((R, 2, NG), dtype=torch.float64, device=dev)
+        bey = torch.empty((R, 3), dtype=torch.float64, device=dev)
+        mem, mode = rank, (0 if K2 >= n else 2)
+        if Kc < K2 < n:
+            mem = torch.zeros((R, n), dtype=torch.int8, device=dev)
+            mem.scatter_(1, row_topk(key, K2), 1)
+            mode = 1
+        K.chern_mid_kernel[(R, NG)](s_hat, r_l, slots_d, m, Tm, rank, mem, part, sure, self._grid,
+                                    mid, bey, n, NB, max_len, H=H, G=G, BLK=1024, BP=_BP,
+                                    MODE=mode, num_warps=4)
+        bennett = K2 < n
         if NS == 1:
             K.chern_kernel[(R,)](o_i, s_hat, r_l, slots_d, m, Tm, part, part_r, sure, self._grid,
-                                 kst, cap_k, beta_k, Bt, nonmono, tsize, scr, eps0, delta, thr,
-                                 n, Kc, NB, max_len, H=H, G=G, BK=BK, BP=_BP, NG=NG,
-                                 BENNETT=Kc < n, num_warps=8)
+                                 mid, bey, kst, cap_k, beta_k, Bt, nonmono, tsize, scr, eps0,
+                                 delta, thr, n, Kc, NB, max_len, H=H, G=G, BK=BK, BP=_BP, NG=NG,
+                                 BENNETT=bennett, num_warps=8)
             return
         EB = min(_CHERN_EB, BK)
         f32 = torch.empty((4 * R * BK,), dtype=torch.float32, device=dev)
@@ -739,8 +754,8 @@ class VkvDecoder:
                                            max_len, H=H, G=G, BK=BK, EB=EB)
         K.chern_row_kernel[(R,)](part, part_r, sure, f64, sc, eps0, delta, NB, BK=BK, BP=_BP,
                                  num_warps=8)
-        K.chern_lam_kernel[(R, NS)](f32, f64, sc, self._grid, best, bK, eps0, BK=BK, NG=NG, NS=NS,
-                                    BENNETT=Kc < n, num_warps=8)
+        K.chern_lam_kernel[(R, NS)](f32, f64, sc, self._grid, mid, bey, best, bK, eps0, BK=BK,
+                                    NG=NG, NS=NS, BENNETT=bennett, num_warps=8)
         K.chern_finish_kernel[(R,)](f64, sc, best, bK, kst, cap_k, beta_k, Bt, nonmono, tsize,
                                     scr, thr, Kc, BK=BK, NS=NS, num_warps=8)
 
@@ -905,7 +920,7 @@ class VkvDecoder:
         r_r = rl[..., :n].unsqueeze(2).expand(B, H, G, n).reshape(R, n).double()
         dec = decide(wh.view(R, n), r_r, tail_r, sure.view(R), eps0=cfg.eps0, delta=cfg.delta,
                      check=cfg.check, order=cfg.order, trunc=cfg.trunc, t_max=cfg.t_max,
-                     k_max=cfg.k_max)
+                     k_max=cfg.k_max, head=cfg.head)
         WF = dec.WF
 
         # ---- weights on A (Algorithm 2 (e)) --------------------------------------------------------

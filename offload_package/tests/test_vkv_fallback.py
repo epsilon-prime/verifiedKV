@@ -35,7 +35,9 @@ def _world(n, B, H, G, seed):
     ("tight", "needle", True, 8, 0.1), ("simple", "grad", False, 8, 0.2),
     ("simple", "grad", True, 8, 0.05)])
 @pytest.mark.parametrize("n", [700, 5000])
-def test_matches_reference_rows(check, order, trunc, k_max, eps0, n):
+@pytest.mark.parametrize("hx", [1, 4])
+def test_matches_reference_rows(check, order, trunc, k_max, eps0, n, hx):
+    head = k_max * hx                       # the certificate's exact head (>= k_max)
     B, H, G = 2, 2, 3
     R = B * H * G
     delta = 0.05
@@ -56,14 +58,14 @@ def test_matches_reference_rows(check, order, trunc, k_max, eps0, n):
     grid = chern.GRID.to("cuda")
     FB.run(fbl, s_hat, r, slots, m, sure, grid, consts, Tm, rank, kst, beta_k, Bt, nonmono,
            tsize, scr, n=n, Kc=min(k_max, n), max_len=max_len, H=H, G=G, trunc=trunc,
-           order=order, check=check)
+           order=order, check=check, head=head)
     b = rows // (H * G)
     h = (rows // G) % H
     rr = r[slots[b].view(-1, 1), torch.arange(n, device="cuda").view(1, -1), h.view(-1, 1)].double()
     tail = rr < 1
     wh = torch.exp((s_hat[rows] - m[rows].view(-1, 1)).double())
     plan, kf, nm = reference_rows(wh, rr, tail, sure[rows], eps0=eps0, delta=delta, check=check,
-                                  order=order, trunc=trunc, k_max=k_max)
+                                  order=order, trunc=trunc, k_max=k_max, head=head)
     assert torch.equal(kst[rows], kf)
     assert torch.equal((Tm[rows] != 0) | (tail & (rr <= 0)), plan.T)
     assert torch.equal(nonmono[rows].bool(), nm)

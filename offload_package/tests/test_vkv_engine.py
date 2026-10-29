@@ -110,7 +110,7 @@ def _harness_residency(eng, cfg, prompt, rid="r", ctx=CTX):
 def harness_layer(qs, K, V, r, Z, kh, ch, cfg, ctx=CTX):
     """vkv_final_bias for one layer + the biased softmax. qs [Hq, D] (scaled); K, V [H, n, D] over
     context + generated; r, Z [H, ctx]; kh [H, ctx, nch]; ch [H, nch]. The certificate is
-    kstar_fast with head = cfg.k_max (the harness's 16384 whenever k_max >= ctx)."""
+    kstar_fast with head = cfg.head (the harness's 16384 by default)."""
     q = qs.view(H, G, D)
     s_all = q @ K.transpose(-1, -2)                                       # [H, G, n]
     s, se = s_all[..., :ctx], s_all[..., ctx:]
@@ -132,7 +132,7 @@ def harness_layer(qs, K, V, r, Z, kh, ch, cfg, ctx=CTX):
                        order=cfg.order)
     if cfg.check == "chern":
         k = chern.kstar_fast(plan, wh, r[:, None], tail[:, None], cfg.eps0, cfg.delta,
-                             head=cfg.k_max)[0]
+                             head=cfg.head)[0]
     else:
         k, _ = ref.kstar(plan, cfg.eps0, cfg.check)
     F = ref.fetch_mask(plan, k) & tail[:, None]
@@ -154,12 +154,15 @@ def _sketch_ref(Kctx, cfg, ctx=CTX):
 _C = dict(n_sink=4, window=4, group=32)
 CFGS = [
     VkvConfig(kappa=0.3, eps0=0.3, shortlist=16, **_C),                  # vkv_final defaults
-    VkvConfig(kappa=0.2, eps0=0.1, shortlist=16, k_max=8, t_max=4, **_C),   # Bennett head, caps
+    VkvConfig(kappa=0.2, eps0=0.1, shortlist=16, k_max=8, t_max=4, head=24,
+              **_C),                                                       # mid terms, Bennett, caps
     VkvConfig(kappa=0.25, eps0=0.05, shortlist=0, check="tight", order="needle", t_max=4,
               k_max=3, **_C),
-    VkvConfig(kappa=0.3, eps0=0.08, shortlist=32, trunc=False, k_max=2, **_C),
+    VkvConfig(kappa=0.3, eps0=0.08, shortlist=32, trunc=False, k_max=2, head=2, **_C),
     VkvConfig(kappa=0.2, eps0=0.2, shortlist=16, check="simple", order="needle", **_C),
     VkvConfig(kappa=0.15, eps0=0.05, shortlist=8, charge_sketch=False, seed=3, **_C),
+    VkvConfig(kappa=0.25, eps0=0.1, shortlist=16, k_max=8, t_max=16, head=8, **_C),  # Bennett at K
+    VkvConfig(kappa=0.25, eps0=0.1, shortlist=16, k_max=8, **_C),     # exact terms past K, no Bennett
 ]
 
 
@@ -773,6 +776,7 @@ def test_cuda_decision_equals_triton(ci, compact):
     for key in ("decisions", "fetch_any", "k_sum", "xfer_sum", "T_size_sum", "fallback",
                 "screened", "keys_sum", "nonmono"):
         assert reps[0][key] == reps[1][key], (key, reps[0][key], reps[1][key])
-    assert abs(reps[0]["beta_rel_sum"] - reps[1]["beta_rel_sum"]) <= 1e-6 * reps[1]["beta_rel_sum"]
+    # beta(k) is a float64 suffix sum in a different order on each path (last-bit differences)
+    assert abs(reps[0]["beta_rel_sum"] - reps[1]["beta_rel_sum"]) <= 1e-5 * reps[1]["beta_rel_sum"]
     assert torch.allclose(outs[0], outs[1], atol=1e-3, rtol=1e-3)
     assert reps[0]["k_sum"] > 0

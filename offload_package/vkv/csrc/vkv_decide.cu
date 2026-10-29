@@ -287,12 +287,16 @@ struct TopkSmem {
   int* whist;       // [NW, 256] per-warp histograms
 };
 
+// Radix select of the row's K-th largest key: the threshold's top bits ``pref`` (key >> shift),
+// and krem = how many of the keys equal to it (at that resolution) are among the K.
 template <int CS, typename KeyF>
-__device__ void topk(Row<CS>& rw, KeyF keyf, int p0, int p1, int K, bool sort, TopkSmem& t) {
+__device__ void radix_select(Row<CS>& rw, KeyF keyf, int p0, int p1, int K, TopkSmem& t,
+                             uint64_t& pref, int& shift, int& krem) {
   __shared__ int s_dsel, s_cd, s_above;
   __syncthreads();                                       // the keys are written
-  uint64_t pref = 0;
-  int shift = 64, krem = K;
+  pref = 0;
+  shift = 64;
+  krem = K;
   bool done = false;
   const int lane = threadIdx.x & 31, w = threadIdx.x >> 5;
   for (int p = 0; p < 8 && !done; ++p) {
@@ -373,12 +377,19 @@ __device__ void topk(Row<CS>& rw, KeyF keyf, int p0, int p1, int K, bool sort, T
     done = (cd == krem);
     __syncthreads();
   }
-  // Order-preserving compaction into the lead block: above the threshold class, then krem of its
-  // equals by ascending position. Positions in order: block rank, then warp segment, then lane.
-  const int G0 = K - krem;
+}
+
+// The row's positions in this block's [p0, p1), in the order the compaction and the marking
+// count them (block rank, then warp segment, then lane), and each warp's first offsets of the
+// keys above the threshold (og) and equal to it (oe) among the whole row.
+template <int CS, typename KeyF>
+__device__ void class_offsets(Row<CS>& rw, KeyF keyf, int p0, int p1, uint64_t pref, int shift,
+                              TopkSmem& t, int& s0, int& s1, int& og, int& oe) {
+  const int lane = threadIdx.x & 31, w = threadIdx.x >> 5;
   const int n_b = max(0, p1 - p0);
   const int seg = ((n_b + NW - 1) / NW + 31) & ~31;
-  const int s0 = p0 + w * seg, s1 = min(p1, s0 + seg);
+  s0 = p0 + w * seg;
+  s1 = min(p1, s0 + seg);
   int ng = 0, ne = 0;
   for (int base = s0; base < s1; base += 32 * TKB) {
     uint64_t v[TKB];
@@ -396,7 +407,8 @@ __device__ void topk(Row<CS>& rw, KeyF keyf, int p0, int p1, int K, bool sort, T
   }
   if (lane == 0) { t.ired[w] = ng; t.ired[NW + w] = ne; }
   __syncthreads();
-  int og = 0, oe = 0, tg = 0, te = 0;
+  og = 0; oe = 0;
+  int tg = 0, te = 0;
   for (int i = 0; i < NW; ++i) {
     if (i < w) { og += t.ired[i]; oe += t.ired[NW + i]; }
     tg += t.ired[i];
@@ -409,6 +421,42 @@ __device__ void topk(Row<CS>& rw, KeyF keyf, int p0, int p1, int K, bool sort, T
     og += (int)bf[0];
     oe += (int)bf[1];
   }
+}
+
+// The row's top-K positions, unsorted: f(pos) for each (ties at the threshold by position, as in
+// topk). Every block calls it for its own [p0, p1).
+template <int CS, typename KeyF, typename F>
+__device__ void mark_top(Row<CS>& rw, KeyF keyf, int p0, int p1, int K, TopkSmem& t, F f) {
+  uint64_t pref;
+  int shift, krem;
+  radix_select<CS>(rw, keyf, p0, p1, K, t, pref, shift, krem);
+  int s0, s1, og, oe;
+  class_offsets<CS>(rw, keyf, p0, p1, pref, shift, t, s0, s1, og, oe);
+  const int G0 = K - krem, lane = threadIdx.x & 31;
+  const unsigned lt = (1u << lane) - 1u;
+  for (int base = s0; base < s1 && (og < G0 || oe < krem); base += 32) {
+    const int pos = base + lane;
+    const uint64_t v = pos < s1 ? keyf(pos) >> shift : 0;
+    const bool gt = pos < s1 && v > pref, eq = pos < s1 && v == pref;
+    const unsigned bg = __ballot_sync(0xffffffffu, gt), be = __ballot_sync(0xffffffffu, eq);
+    if (gt || (eq && oe + __popc(be & lt) < krem)) f(pos);
+    og += __popc(bg);
+    oe += __popc(be);
+  }
+  rw.sync();
+}
+
+template <int CS, typename KeyF>
+__device__ void topk(Row<CS>& rw, KeyF keyf, int p0, int p1, int K, bool sort, TopkSmem& t) {
+  uint64_t pref;
+  int shift, krem;
+  radix_select<CS>(rw, keyf, p0, p1, K, t, pref, shift, krem);
+  const int lane = threadIdx.x & 31;
+  // Order-preserving compaction into the lead block: above the threshold class, then krem of its
+  // equals by ascending position. Positions in order: block rank, then warp segment, then lane.
+  const int G0 = K - krem;
+  int s0, s1, og, oe;
+  class_offsets<CS>(rw, keyf, p0, p1, pref, shift, t, s0, s1, og, oe);
   uint64_t* ckL = rw.at(t.ck, 0);
   int32_t* cpL = rw.at(t.cp, 0);
   const unsigned lt = (1u << lane) - 1u;
@@ -511,6 +559,7 @@ struct Params {
   const void* q;            // [B, Hq, D] (T)
   float sm_scale;
   int B, H, G, Hq, R, n, WA, max_len, M_sl, M_t, Kc, NG, bennett;
+  int HH;                   // the certificate's exact head (>= Kc; kstar_fast's head)
   const int64_t* slots;     // [B]
   const float* r;           // [S, max_len, H]
   const int32_t* cell;      // [S, max_len, H]
@@ -994,6 +1043,96 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
   long long kstar = 0;
   bool cap = false, nonmono = false;
   if (!screened) {
+    // The harness's head (kstar_fast with head HH >= K): the curve at k <= K also carries the
+    // exact terms of the entries ranked K .. HH - 1 (mid, per lambda), and Bennett's bound is over
+    // the entries ranked from HH on (RVh, Muh, Mdh). Those ranked K .. HH - 1 are marked rank -1
+    // (top-HH by the key, ties by position as in topk); with HH >= n every non-head entry is mid.
+    __shared__ double s_mid[2 * 64], s_midT[2 * 64], s_wp[NW][16];
+    const int K2 = max(min(p.HH, n), K);
+    const bool all_mid = K2 >= n;
+    if (K < K2 && K2 < n)
+      mark_top<CS>(rw, [&](int pos) { return okey(J[pos]); }, p0, p1, K2, ts,
+                   [&](int pos) { if (rank[pos] == 0) rank[pos] = -1; });
+    // One pass: the Bennett inputs from HH on, and each mid entry's float terms cached in place
+    // of its key / wh (J, WH: neither is read again by this kernel): (c, r) and (log r,
+    // log(1 - r)); c = 0 marks the entries without a term.
+    __shared__ float s_lam[64];
+    for (int gi = tid; gi < p.NG; gi += NT) s_lam[gi] = (float)(p.grid[gi] / Bt);
+    float2* TC = reinterpret_cast<float2*>(J);
+    float2* TL = reinterpret_cast<float2*>(WH);
+    double RVh = RV, Muh = fmax(Rup, 1e-300), Mdh = fmax(Rdn, 1e-300);
+    for (int i = tid; i < 128; i += NT) s_midT[i] = 0.0;
+    if (K2 > K) {                // else no mid entries, and Bennett's set is the complement
+    {
+      double v[3] = {0.0, 0.0, 0.0};
+      const int op[3] = {0, 1, 1};
+      for (int pos = p0 + tid; pos < p1; pos += NT) {
+        const int rk = __ldcg(rank + pos);
+        const bool mid = rk == -1 || (rk == 0 && all_mid);
+        if (!mid && rk != 0) continue;                   // the top-K: neither
+        const Entry e = entry_c(rS[(long long)pos * H + h], WH[pos]);
+        const Moves mv = moves(e, __ldcg(Tm + pos) != 0);
+        if (!mid) {                                      // from HH on: rank 0, not marked
+          v[0] += mv.v;
+          v[1] = fmax(v[1], mv.up);
+          v[2] = fmax(v[2], mv.dn);
+          TC[pos] = make_float2(0.0f, 0.0f);
+          continue;
+        }
+        const bool Tp = mv.T && e.posm, Hp = e.posm && !mv.T;
+        const float hc = (float)(Tp ? e.wh : (Hp ? e.wh / fmax(e.rd, 1e-300) : 0.0));
+        TC[pos] = make_float2(hc, (float)e.rd);
+        if (hc > 0.0f)
+          TL[pos] = make_float2((float)log(fmin(fmax(e.rd, 1e-300), 1.0)),
+                                (float)log1p(-fmin(fmax(e.rd, 0.0), 1.0 - 1e-16)));
+      }
+      rw.template allreduce<3>(v, op, red);
+      RVh = v[0]; Muh = fmax(v[1], 1e-300); Mdh = fmax(v[2], 1e-300);
+    }
+    for (int g0 = 0; g0 < p.NG; g0 += 8) {
+      double acc[16];
+#pragma unroll
+      for (int i = 0; i < 16; ++i) acc[i] = 0.0;
+      for (int pos = p0 + tid; pos < p1; pos += NT) {
+        const int rk = __ldcg(rank + pos);
+        if (!(rk == -1 || (rk == 0 && all_mid))) continue;
+        const float2 cr2 = TC[pos];
+        const float hc = cr2.x, hr32 = cr2.y;
+        if (!(hc > 0.0f)) continue;
+        const float2 l2 = TL[pos];
+        const float hlr = l2.x, hl1r = l2.y;
+#pragma unroll
+        for (int j = 0; j < 8; ++j) {
+          if (g0 + j < p.NG) {
+            const float ac = s_lam[g0 + j] * hc;
+            acc[2 * j] += (double)lae32(hlr + ac * (1.0f - hr32), hl1r - ac * hr32);
+            acc[2 * j + 1] += (double)lae32(hlr - ac * (1.0f - hr32), hl1r + ac * hr32);
+          }
+        }
+      }
+#pragma unroll
+      for (int i = 0; i < 16; ++i) {
+        double x = acc[i];
+        for (int o = 16; o > 0; o >>= 1) x += __shfl_down_sync(0xffffffffu, x, o);
+        if (lane == 0) s_wp[w][i] = x;
+      }
+      __syncthreads();
+      if (tid < 16 && g0 + tid / 2 < p.NG) {
+        double x = 0.0;
+        for (int u = 0; u < NW; ++u) x += s_wp[u][tid];
+        s_mid[(tid & 1) * 64 + g0 + tid / 2] = x;
+      }
+      __syncthreads();
+    }
+    rw.sync();                                           // every block's partial sums
+    for (int i = tid; i < 2 * p.NG; i += NT) {
+      const int o = (i / p.NG) * 64 + i % p.NG;
+      double x = 0.0;
+      for (int r = 0; r < CS; ++r) x += rw.at(s_mid, r)[o];
+      s_midT[o] = x;
+    }
+    }
+    __syncthreads();
     // min over lambda of the bound's exponent; exp is monotone, so exp(min(min_lam z, 0)) is the
     // Triton kernel's min over lambda of exp(min(z, 0))
     double zu[HC], zd[HC];
@@ -1001,7 +1140,6 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
     for (int j = 0; j < HC; ++j) { zu[j] = INFINITY; zd[j] = INFINITY; }
     double zKu = INFINITY, zKd = INFINITY;
     const double uK_up = e0Bt + Rb, uK_dn = e0Bt - Rb;
-    const double Mu = fmax(Rup, 1e-300), Md = fmax(Rdn, 1e-300);
     for (int gi = cr; gi < p.NG; gi += CS) {
       const double lam = p.grid[gi] / Bt;
       const float a = (float)lam;
@@ -1024,8 +1162,9 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
       double af[2];
       block_rexcl<2>(s2, af, red);
       double ex_up = 0.0, ex_dn = 0.0;
-      if (p.bennett) { ex_up = bennett(lam, RV, Mu); ex_dn = bennett(lam, RV, Md); }
-      double Ku = af[0], Kd = af[1];
+      if (p.bennett) { ex_up = bennett(lam, RVh, Muh); ex_dn = bennett(lam, RVh, Mdh); }
+      const double mu_ = s_midT[gi], md_ = s_midT[64 + gi];
+      double Ku = af[0] + mu_, Kd = af[1] + md_;
 #pragma unroll
       for (int j = HC - 1; j >= 0; --j) {
         Ku += (double)tu[j];
@@ -1034,8 +1173,8 @@ __global__ void __launch_bounds__(NT, 1) decide_kernel(Params p) {
         zu[j] = fmin(zu[j], (Ku + ex_up) - lam * (e0Bt + bj));
         zd[j] = fmin(zd[j], (Kd + ex_dn) - lam * (e0Bt - bj));
       }
-      zKu = fmin(zKu, ex_up - lam * uK_up);
-      zKd = fmin(zKd, ex_dn - lam * uK_dn);
+      zKu = fmin(zKu, (mu_ + ex_up) - lam * uK_up);
+      zKd = fmin(zKd, (md_ + ex_dn) - lam * uK_dn);
     }
     // the blocks' minima merged: block c finishes k in its share (f64a / f64b overlay the terms)
     __syncthreads();
@@ -1358,7 +1497,7 @@ void decide(torch::Tensor q, double sm_scale, torch::Tensor slots, torch::Tensor
             torch::Tensor beta_k, torch::Tensor Bt, torch::Tensor nonmono, torch::Tensor tsize,
             torch::Tensor scr, torch::Tensor fb, torch::Tensor fbl, torch::Tensor keys_cnt,
             torch::Tensor bar) {
-  // ints: B, H, G, n, WA, max_len, M_sl, M_t, Kc, bennett, NCH, PER, BITS, GROUP, CS
+  // ints: B, H, G, n, WA, max_len, M_sl, M_t, Kc, bennett, NCH, PER, BITS, GROUP, CS, HH
   Params p{};
   p.q = q.data_ptr();
   p.sm_scale = (float)sm_scale;
@@ -1366,6 +1505,7 @@ void decide(torch::Tensor q, double sm_scale, torch::Tensor slots, torch::Tensor
   p.n = ints[3]; p.WA = ints[4]; p.max_len = ints[5]; p.M_sl = ints[6]; p.M_t = ints[7];
   p.Kc = ints[8]; p.bennett = ints[9]; p.NCH = ints[10]; p.PER = ints[11]; p.BITS = ints[12];
   p.GROUP = ints[13];
+  p.HH = (int)ints[15];
   const int cs = (int)ints[14];
   TORCH_CHECK(cs >= 1 && cs <= 4, "vkv cuda decide: cluster size 1 .. 4");
   p.NB = p.NCH / p.PER;

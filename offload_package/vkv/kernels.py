@@ -545,15 +545,24 @@ def _bennett(lam, Vr, M):
 
 
 @triton.jit
-def _chern_lam(lam, c, live, lr, l1r, r32, u_up, u_dn, uK_up, uK_dn, RV, Mu, Md,
-               BENNETT: tl.constexpr):
-    """One lambda of the grid: the bound's terms exp(K(lam, k) - lam u(k)) at every k of the head
-    (up / down) and at k = K."""
+def _chern_terms(lam, c, live, lr, l1r, r32):
+    """The two-point log-MGF terms (up, down) at one lambda (float32, ``kstar_fast``'s)."""
     a = lam.to(tl.float32) * c
     k_up = tl.where(live, _lae32(lr + a * (1 - r32), l1r - a * r32), 0.0)
     k_dn = tl.where(live, _lae32(lr - a * (1 - r32), l1r + a * r32), 0.0)
-    Ku = tl.cumsum(k_up.to(tl.float64), 0, reverse=True)
-    Kd = tl.cumsum(k_dn.to(tl.float64), 0, reverse=True)
+    return k_up, k_dn
+
+
+@triton.jit
+def _chern_lam(lam, c, live, lr, l1r, r32, u_up, u_dn, uK_up, uK_dn, RV, Mu, Md, mid_up, mid_dn,
+               BENNETT: tl.constexpr):
+    """One lambda of the grid: the bound's terms exp(K(lam, k) - lam u(k)) at every k of the
+    top-K (up / down) and at k = K. K(lam, k): the exact terms of the top-K from k on, plus
+    ``mid_*`` (the exact terms of the entries ranked K .. head - 1), plus (BENNETT) Bennett's
+    bound for the entries ranked from the head on (RV, Mu, Md: their variance and moves)."""
+    k_up, k_dn = _chern_terms(lam, c, live, lr, l1r, r32)
+    Ku = tl.cumsum(k_up.to(tl.float64), 0, reverse=True) + mid_up
+    Kd = tl.cumsum(k_dn.to(tl.float64), 0, reverse=True) + mid_dn
     ex_up = tl.zeros([], dtype=tl.float64)
     ex_dn = tl.zeros([], dtype=tl.float64)
     if BENNETT:
@@ -561,22 +570,86 @@ def _chern_lam(lam, c, live, lr, l1r, r32, u_up, u_dn, uK_up, uK_dn, RV, Mu, Md,
         ex_dn = _bennett(lam, RV, Md)
     t_up = libdevice.exp(tl.minimum(Ku + ex_up - lam * u_up, 0.0))
     t_dn = tl.where(u_dn > 0, libdevice.exp(tl.minimum(Kd + ex_dn - lam * u_dn, 0.0)), 1.0)
-    tK_up = libdevice.exp(tl.minimum(ex_up - lam * uK_up, 0.0))
-    tK_dn = tl.where(uK_dn > 0, libdevice.exp(tl.minimum(ex_dn - lam * uK_dn, 0.0)), 1.0)
+    tK_up = libdevice.exp(tl.minimum(mid_up + ex_up - lam * uK_up, 0.0))
+    tK_dn = tl.where(uK_dn > 0, libdevice.exp(tl.minimum(mid_dn + ex_dn - lam * uK_dn, 0.0)), 1.0)
     return t_up, t_dn, tK_up, tK_dn
 
 
+@triton.jit(do_not_specialize=['n', 'NBLK', 'max_len'])
+def chern_mid_kernel(s_hat, r, slots, m, Tm, rank, mem, part_p, sure, grid, mid, bey,
+                     n, NBLK, max_len, H: tl.constexpr, G: tl.constexpr, BLK: tl.constexpr,
+                     BP: tl.constexpr, MODE: tl.constexpr):
+    """(row, lambda gi): the exact two-point terms summed over the entries ranked K .. head - 1 of
+    the fetch order (not in the top-K, rank == 0, but in the top-head) -> mid [R, 2, NG]; program
+    gi = 0 also the Bennett inputs of the entries ranked from the head on -> bey [R, 3] = (sum v,
+    max up, max dn). Top-head membership: MODE 0 every entry (head >= n), 1 ``mem`` [R, n] int8,
+    2 none (head = K). B~ (for lambda = grid / B~) is summed exactly as the chern kernels do."""
+    row = tl.program_id(0)
+    gi = tl.program_id(1)
+    b = row // (H * G)
+    h = (row // G) % H
+    slot = tl.load(slots + b).to(tl.int64)
+    s_wh = tl.zeros([BP], dtype=tl.float64)
+    for a in range(0, NBLK, BP):
+        i = a + tl.arange(0, BP)
+        s_wh += tl.load(part_p + (row * NBLK + i) * 4 + 1, mask=i < NBLK, other=0.0)
+    Bt = tl.load(sure + row) + tl.sum(s_wh, axis=0)
+    lam = tl.load(grid + gi) / Bt
+    m_row = tl.load(m + row)
+    base = row.to(tl.int64) * n
+    su = tl.zeros([BLK], dtype=tl.float64)
+    sd = tl.zeros([BLK], dtype=tl.float64)
+    sv = tl.zeros([BLK], dtype=tl.float64)
+    mu = tl.zeros([BLK], dtype=tl.float64)
+    md = tl.zeros([BLK], dtype=tl.float64)
+    for a in range(0, n, BLK):
+        pos = a + tl.arange(0, BLK)
+        inb = pos < n
+        x, rd, wh, tail, posm, r0 = _entry(s_hat, r, m_row, row, slot, h, pos, inb, n, max_len,
+                                           H)
+        tmv = tl.load(Tm + base + pos, mask=inb, other=0)
+        T, bb, v, up, dn = _moves(wh, rd, posm, r0, tmv)
+        rest = inb & (tl.load(rank + base + pos, mask=inb, other=1) == 0)
+        if MODE == 0:
+            inh = rest
+        elif MODE == 1:
+            inh = rest & (tl.load(mem + base + pos, mask=inb, other=0) != 0)
+        else:
+            inh = rest & (pos < 0)
+        Tp = T & posm
+        Hp = posm & ~T
+        c = tl.where(Tp, wh, tl.where(Hp, wh / tl.maximum(rd, 1e-300), 0.0)).to(tl.float32)
+        live = (c > 0) & inh
+        lr = tl.log(tl.minimum(tl.maximum(rd, 1e-300), 1.0)).to(tl.float32)
+        l1r = libdevice.log1p(-tl.minimum(tl.maximum(rd, 0.0), 1 - 1e-16)).to(tl.float32)
+        k_up, k_dn = _chern_terms(lam, c, live, lr, l1r, rd.to(tl.float32))
+        su += k_up.to(tl.float64)
+        sd += k_dn.to(tl.float64)
+        out = rest & ~inh
+        sv += tl.where(out, v, 0.0)
+        mu = tl.maximum(mu, tl.where(out, up, 0.0))
+        md = tl.maximum(md, tl.where(out, dn, 0.0))
+    NG = tl.num_programs(1)
+    tl.store(mid + (row * 2) * NG + gi, tl.sum(su, axis=0))
+    tl.store(mid + (row * 2 + 1) * NG + gi, tl.sum(sd, axis=0))
+    if gi == 0:
+        tl.store(bey + row * 3, tl.sum(sv, axis=0))
+        tl.store(bey + row * 3 + 1, tl.max(mu, axis=0))
+        tl.store(bey + row * 3 + 2, tl.max(md, axis=0))
+
+
 @triton.jit(do_not_specialize=['n', 'K', 'NBLK', 'max_len'])
-def chern_kernel(o_i, s_hat, r, slots, m, Tm, part_p, part_r, sure, grid, k_out, cap_out,
-                 beta_out, Bt_out, nonmono_out, tsize_out, scr_out, eps0, delta, thr,
+def chern_kernel(o_i, s_hat, r, slots, m, Tm, part_p, part_r, sure, grid, mid, bey, k_out,
+                 cap_out, beta_out, Bt_out, nonmono_out, tsize_out, scr_out, eps0, delta, thr,
                  n, K, NBLK, max_len,
                  H: tl.constexpr, G: tl.constexpr, BK: tl.constexpr, BP: tl.constexpr,
                  NG: tl.constexpr, BENNETT: tl.constexpr):
     """One row, ``reference_chernoff.kstar_fast`` with head = K: the Bernstein screen at k = 0;
     else the two-sided Chernoff bound min over the lambda grid of exp(K(lam, k) - lam u(k)) for
     k = 0..K, with the exact two-point log-MGF of the top-K entries of the fetch order from k on
-    plus (BENNETT, K < n) Bennett's bound for the rest; k* = the first k with P <= thr. cap =
-    unscreened and no k <= K passes (the caller recomputes those rows by the reference).
+    plus the exact terms of the entries ranked K .. head - 1 (``mid``, chern_mid_kernel) and
+    (BENNETT, head < n) Bennett's bound for the rest (``bey``); k* = the first k with P <= thr.
+    cap = unscreened and no k <= K passes (the caller recomputes those rows by the reference).
 
     One program per row; ``chern_elem_kernel`` .. ``chern_finish_kernel`` are the same
     computation split over many programs (bit-identical k*, and the decoder's default)."""
@@ -636,8 +709,9 @@ def chern_kernel(o_i, s_hat, r, slots, m, Tm, part_p, part_r, sure, grid, k_out,
     u_dn = e0Bt - beta
     uK_up = e0Bt + Rb
     uK_dn = e0Bt - Rb
-    Mu = tl.maximum(Rup, 1e-300)
-    Md = tl.maximum(Rdn, 1e-300)
+    RVh = tl.load(bey + row * 3)
+    Mu = tl.maximum(tl.load(bey + row * 3 + 1), 1e-300)
+    Md = tl.maximum(tl.load(bey + row * 3 + 2), 1e-300)
     best_up = tl.full([BK], 1.0, tl.float64)
     best_dn = tl.full([BK], 1.0, tl.float64)
     bK_up = tl.full([], 1.0, tl.float64)
@@ -645,7 +719,9 @@ def chern_kernel(o_i, s_hat, r, slots, m, Tm, part_p, part_r, sure, grid, k_out,
     for gi in tl.static_range(NG):
         lam = tl.load(grid + gi) / Bt
         t_up, t_dn, tK_up, tK_dn = _chern_lam(lam, c, live, lr, l1r, r32, u_up, u_dn,
-                                              uK_up, uK_dn, RV, Mu, Md, BENNETT)
+                                              uK_up, uK_dn, RVh, Mu, Md,
+                                              tl.load(mid + (row * 2) * NG + gi),
+                                              tl.load(mid + (row * 2 + 1) * NG + gi), BENNETT)
         best_up = tl.minimum(best_up, t_up)
         best_dn = tl.minimum(best_dn, t_dn)
         bK_up = tl.minimum(bK_up, tK_up)
@@ -772,7 +848,7 @@ def chern_row_kernel(part_p, part_r, sure, f64_o, sc, eps0, delta, NBLK,
 
 
 @triton.jit
-def chern_lam_kernel(f32_o, f64_o, sc, grid, best_buf, bK_buf, eps0,
+def chern_lam_kernel(f32_o, f64_o, sc, grid, mid, bey, best_buf, bK_buf, eps0,
                      BK: tl.constexpr, NG: tl.constexpr, NS: tl.constexpr,
                      BENNETT: tl.constexpr):
     row = tl.program_id(0)
@@ -783,9 +859,9 @@ def chern_lam_kernel(f32_o, f64_o, sc, grid, best_buf, bK_buf, eps0,
     so = sc + row * 8
     Bt = tl.load(so)
     Rb = tl.load(so + 1)
-    RV = tl.load(so + 2)
-    Mu = tl.maximum(tl.load(so + 3), 1e-300)
-    Md = tl.maximum(tl.load(so + 4), 1e-300)
+    RVh = tl.load(bey + row * 3)
+    Mu = tl.maximum(tl.load(bey + row * 3 + 1), 1e-300)
+    Md = tl.maximum(tl.load(bey + row * 3 + 2), 1e-300)
     c = tl.load(f32_o + o)
     lr = tl.load(f32_o + RB + o)
     l1r = tl.load(f32_o + 2 * RB + o)
@@ -801,9 +877,12 @@ def chern_lam_kernel(f32_o, f64_o, sc, grid, best_buf, bK_buf, eps0,
     bK_up = tl.full([], 1.0, tl.float64)
     bK_dn = tl.full([], 1.0, tl.float64)
     for j in tl.static_range(NG // NS):
-        lam = tl.load(grid + sp * (NG // NS) + j) / Bt
+        gi = sp * (NG // NS) + j
+        lam = tl.load(grid + gi) / Bt
         t_up, t_dn, tK_up, tK_dn = _chern_lam(lam, c, live, lr, l1r, r32, u_up, u_dn,
-                                              uK_up, uK_dn, RV, Mu, Md, BENNETT)
+                                              uK_up, uK_dn, RVh, Mu, Md,
+                                              tl.load(mid + (row * 2) * NG + gi),
+                                              tl.load(mid + (row * 2 + 1) * NG + gi), BENNETT)
         best_up = tl.minimum(best_up, t_up)
         best_dn = tl.minimum(best_dn, t_dn)
         bK_up = tl.minimum(bK_up, tK_up)
