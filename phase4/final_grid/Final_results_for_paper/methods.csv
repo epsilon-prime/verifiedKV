@@ -1,0 +1,10 @@
+method,label,origin,description
+dense,Dense,phase 3,"full KV cache, no compression"
+kvzip,KVzip,phase 3,KVzip top-k eviction
+fastkvzip,Fast KVzip,phase 3,Fast KVzip (learned gates) top-k eviction
+vkv_nofetch_kvzip,vKV (no fetch)+KVzip,phase 3,"Bernoulli/Poisson sample on KVzip scores, reweighted, never fetches"
+vkv_final_kvzip,vKV+KVzip,final grid,"VerifiedKV final: KVzip scores, 2-bit sketch + 128 shortlist"
+vkv_final_fastkvzip,vKV+Fast KVzip,final grid,"VerifiedKV final: Fast KVzip scores, 2-bit sketch + 128 shortlist"
+vkv_final_perfect,"vKV, exact sketch",final grid,"VerifiedKV final, KVzip scores, exact weights as sketch (2% memory charged); reference"
+vkv_fetch_kvzip,vKV fetch (phase 3)+KVzip,phase 3,"earlier VerifiedKV version, superseded"
+vkv_fetch_fastkvzip,vKV fetch (phase 3)+Fast KVzip,phase 3,"earlier VerifiedKV version, superseded"

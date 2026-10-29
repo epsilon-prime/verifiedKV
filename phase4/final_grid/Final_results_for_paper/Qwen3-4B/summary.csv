@@ -1,0 +1,109 @@
+dataset,context_k,rate,method,label,mean_score,n_tasks,n_per_task
+LOFT,32,8,dense,Dense,35.2,5,25
+LOFT,32,8,kvzip,KVzip,16.8,5,25
+LOFT,32,8,fastkvzip,Fast KVzip,22.4,5,25
+LOFT,32,8,vkv_nofetch_kvzip,vKV (no fetch)+KVzip,29.6,5,25
+LOFT,32,8,vkv_final_kvzip,vKV+KVzip,29.6,5,25
+LOFT,32,8,vkv_final_fastkvzip,vKV+Fast KVzip,32.0,5,25
+LOFT,32,8,vkv_final_perfect,"vKV, exact sketch",35.2,5,25
+LOFT,32,8,vkv_fetch_kvzip,vKV fetch (phase 3)+KVzip,32.8,5,25
+LOFT,32,8,vkv_fetch_fastkvzip,vKV fetch (phase 3)+Fast KVzip,32.8,5,25
+LOFT,32,16,dense,Dense,35.2,5,25
+LOFT,32,16,kvzip,KVzip,7.2,5,25
+LOFT,32,16,fastkvzip,Fast KVzip,7.2,5,25
+LOFT,32,16,vkv_nofetch_kvzip,vKV (no fetch)+KVzip,17.6,5,25
+LOFT,32,16,vkv_final_kvzip,vKV+KVzip,34.4,5,25
+LOFT,32,16,vkv_final_fastkvzip,vKV+Fast KVzip,34.4,5,25
+LOFT,32,16,vkv_final_perfect,"vKV, exact sketch",35.2,5,25
+LOFT,32,16,vkv_fetch_kvzip,vKV fetch (phase 3)+KVzip,20.0,5,25
+LOFT,32,16,vkv_fetch_fastkvzip,vKV fetch (phase 3)+Fast KVzip,24.8,5,25
+LOFT,32,32,dense,Dense,35.2,5,25
+LOFT,32,32,kvzip,KVzip,0.8,5,25
+LOFT,32,32,fastkvzip,Fast KVzip,4.0,5,25
+LOFT,32,32,vkv_nofetch_kvzip,vKV (no fetch)+KVzip,4.0,5,25
+LOFT,32,32,vkv_final_kvzip,vKV+KVzip,34.4,5,25
+LOFT,32,32,vkv_final_fastkvzip,vKV+Fast KVzip,33.6,5,25
+LOFT,32,32,vkv_final_perfect,"vKV, exact sketch",37.6,5,25
+LOFT,32,32,vkv_fetch_kvzip,vKV fetch (phase 3)+KVzip,5.6,5,25
+LOFT,32,32,vkv_fetch_fastkvzip,vKV fetch (phase 3)+Fast KVzip,8.8,5,25
+LOFT,128,8,dense,Dense,15.2,5,25
+LOFT,128,8,kvzip,KVzip,13.6,5,25
+LOFT,128,8,fastkvzip,Fast KVzip,10.4,5,25
+LOFT,128,8,vkv_nofetch_kvzip,vKV (no fetch)+KVzip,12.0,5,25
+LOFT,128,8,vkv_final_kvzip,vKV+KVzip,14.4,5,25
+LOFT,128,8,vkv_final_fastkvzip,vKV+Fast KVzip,16.8,5,25
+LOFT,128,8,vkv_final_perfect,"vKV, exact sketch",13.6,5,25
+LOFT,128,8,vkv_fetch_kvzip,vKV fetch (phase 3)+KVzip,9.6,5,25
+LOFT,128,8,vkv_fetch_fastkvzip,vKV fetch (phase 3)+Fast KVzip,14.4,5,25
+LOFT,128,16,dense,Dense,15.2,5,25
+LOFT,128,16,kvzip,KVzip,1.6,5,25
+LOFT,128,16,fastkvzip,Fast KVzip,8.0,5,25
+LOFT,128,16,vkv_nofetch_kvzip,vKV (no fetch)+KVzip,11.2,5,25
+LOFT,128,16,vkv_final_kvzip,vKV+KVzip,12.0,5,25
+LOFT,128,16,vkv_final_fastkvzip,vKV+Fast KVzip,13.6,5,25
+LOFT,128,16,vkv_final_perfect,"vKV, exact sketch",14.4,5,25
+LOFT,128,16,vkv_fetch_kvzip,vKV fetch (phase 3)+KVzip,12.8,5,25
+LOFT,128,16,vkv_fetch_fastkvzip,vKV fetch (phase 3)+Fast KVzip,9.6,5,25
+LOFT,128,32,dense,Dense,15.2,5,25
+LOFT,128,32,kvzip,KVzip,2.4,5,25
+LOFT,128,32,fastkvzip,Fast KVzip,1.6,5,25
+LOFT,128,32,vkv_nofetch_kvzip,vKV (no fetch)+KVzip,6.4,5,25
+LOFT,128,32,vkv_final_kvzip,vKV+KVzip,15.2,5,25
+LOFT,128,32,vkv_final_fastkvzip,vKV+Fast KVzip,14.4,5,25
+LOFT,128,32,vkv_final_perfect,"vKV, exact sketch",13.6,5,25
+LOFT,128,32,vkv_fetch_kvzip,vKV fetch (phase 3)+KVzip,9.6,5,25
+LOFT,128,32,vkv_fetch_fastkvzip,vKV fetch (phase 3)+Fast KVzip,7.2,5,25
+RULER,32,8,dense,Dense,87.9,4,50
+RULER,32,8,kvzip,KVzip,69.0,4,50
+RULER,32,8,fastkvzip,Fast KVzip,67.65,4,50
+RULER,32,8,vkv_nofetch_kvzip,vKV (no fetch)+KVzip,83.2,4,50
+RULER,32,8,vkv_final_kvzip,vKV+KVzip,86.15,4,50
+RULER,32,8,vkv_final_fastkvzip,vKV+Fast KVzip,87.4,4,50
+RULER,32,8,vkv_final_perfect,"vKV, exact sketch",88.45,4,50
+RULER,32,8,vkv_fetch_kvzip,vKV fetch (phase 3)+KVzip,84.35,4,50
+RULER,32,8,vkv_fetch_fastkvzip,vKV fetch (phase 3)+Fast KVzip,84.62,4,50
+RULER,32,16,dense,Dense,87.9,4,50
+RULER,32,16,kvzip,KVzip,19.05,4,50
+RULER,32,16,fastkvzip,Fast KVzip,20.15,4,50
+RULER,32,16,vkv_nofetch_kvzip,vKV (no fetch)+KVzip,59.25,4,50
+RULER,32,16,vkv_final_kvzip,vKV+KVzip,86.35,4,50
+RULER,32,16,vkv_final_fastkvzip,vKV+Fast KVzip,86.15,4,50
+RULER,32,16,vkv_final_perfect,"vKV, exact sketch",88.2,4,50
+RULER,32,16,vkv_fetch_kvzip,vKV fetch (phase 3)+KVzip,76.88,4,50
+RULER,32,16,vkv_fetch_fastkvzip,vKV fetch (phase 3)+Fast KVzip,82.08,4,50
+RULER,32,32,dense,Dense,87.9,4,50
+RULER,32,32,kvzip,KVzip,5.22,4,50
+RULER,32,32,fastkvzip,Fast KVzip,3.1,4,50
+RULER,32,32,vkv_nofetch_kvzip,vKV (no fetch)+KVzip,14.6,4,50
+RULER,32,32,vkv_final_kvzip,vKV+KVzip,86.32,4,50
+RULER,32,32,vkv_final_fastkvzip,vKV+Fast KVzip,85.25,4,50
+RULER,32,32,vkv_final_perfect,"vKV, exact sketch",87.9,4,50
+RULER,32,32,vkv_fetch_kvzip,vKV fetch (phase 3)+KVzip,48.55,4,50
+RULER,32,32,vkv_fetch_fastkvzip,vKV fetch (phase 3)+Fast KVzip,52.15,4,50
+RULER,128,8,dense,Dense,65.05,4,50
+RULER,128,8,kvzip,KVzip,33.67,4,50
+RULER,128,8,fastkvzip,Fast KVzip,33.25,4,50
+RULER,128,8,vkv_nofetch_kvzip,vKV (no fetch)+KVzip,63.1,4,50
+RULER,128,8,vkv_final_kvzip,vKV+KVzip,65.8,4,50
+RULER,128,8,vkv_final_fastkvzip,vKV+Fast KVzip,64.7,4,50
+RULER,128,8,vkv_final_perfect,"vKV, exact sketch",65.05,4,50
+RULER,128,8,vkv_fetch_kvzip,vKV fetch (phase 3)+KVzip,63.05,4,50
+RULER,128,8,vkv_fetch_fastkvzip,vKV fetch (phase 3)+Fast KVzip,65.72,4,50
+RULER,128,16,dense,Dense,65.05,4,50
+RULER,128,16,kvzip,KVzip,15.6,4,50
+RULER,128,16,fastkvzip,Fast KVzip,11.55,4,50
+RULER,128,16,vkv_nofetch_kvzip,vKV (no fetch)+KVzip,47.4,4,50
+RULER,128,16,vkv_final_kvzip,vKV+KVzip,62.95,4,50
+RULER,128,16,vkv_final_fastkvzip,vKV+Fast KVzip,61.55,4,50
+RULER,128,16,vkv_final_perfect,"vKV, exact sketch",66.05,4,50
+RULER,128,16,vkv_fetch_kvzip,vKV fetch (phase 3)+KVzip,51.92,4,50
+RULER,128,16,vkv_fetch_fastkvzip,vKV fetch (phase 3)+Fast KVzip,49.72,4,50
+RULER,128,32,dense,Dense,65.05,4,50
+RULER,128,32,kvzip,KVzip,5.08,4,50
+RULER,128,32,fastkvzip,Fast KVzip,4.28,4,50
+RULER,128,32,vkv_nofetch_kvzip,vKV (no fetch)+KVzip,9.05,4,50
+RULER,128,32,vkv_final_kvzip,vKV+KVzip,57.85,4,50
+RULER,128,32,vkv_final_fastkvzip,vKV+Fast KVzip,59.28,4,50
+RULER,128,32,vkv_final_perfect,"vKV, exact sketch",65.1,4,50
+RULER,128,32,vkv_fetch_kvzip,vKV fetch (phase 3)+KVzip,30.92,4,50
+RULER,128,32,vkv_fetch_fastkvzip,vKV fetch (phase 3)+Fast KVzip,31.25,4,50
