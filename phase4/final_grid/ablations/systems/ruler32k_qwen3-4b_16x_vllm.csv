@@ -1,4 +1,5 @@
 method,eps,delta,n_cwe,n_niah_multikey_3,n_niah_multivalue,n_qa_1,score_cwe,score_niah_multikey_3,score_niah_multivalue,score_qa_1,score,ttft_s,tpot_ms,decode_tok_s,e2e_tok_s,latency_s,fetch_GB_per_request
+dense,,,50,50,50,50,76.8,100.0,100.0,76.0,88.2,1.531,5.84,171.49,27.13,1.844,0.0
 dense_recall,,,50,50,50,50,76.0,100.0,100.0,76.0,88.0,9.373,114.4,8.9,3.2,15.868,601.553
 vkv,0.01,0.05,50,50,50,50,76.6,100.0,100.0,76.0,88.15,12.276,149.6,6.72,2.5,20.076,127.085
 vkv,0.03,0.05,50,50,50,50,74.4,100.0,100.0,76.0,87.6,9.03,92.49,10.86,3.67,13.93,43.961
