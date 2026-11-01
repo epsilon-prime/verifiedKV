@@ -168,10 +168,24 @@ gen_eos = GenerationConfig.from_pretrained(B.MODEL).eos_token_id
 stop_ids = {tok.eos_token_id, tok.convert_tokens_to_ids("<|im_end|>")}
 stop_ids |= set(gen_eos if isinstance(gen_eos, (list, tuple)) else [gen_eos] if gen_eos else [])
 
+# Raw RULER datasets, as ruler_vllm.py: repo -> (revision, context length).
+RULER_RAW = {"SaylorTwift/RULER-131072-llama-3.2-tokenizer":
+             ("758174ef5e9a6a2da6c4c3a25c18b9aca57b2881", 131072)}
 a, b = (int(x) for x in args.rows.split(":"))
 reqs = []
 for task in args.tasks:
-    df = load_dataset(args.dataset, task, split=task).to_pandas()
+    if args.dataset in RULER_RAW:
+        # raw RULER (one default config, splits are tasks): split by the harness's prepare_dataframe
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "ruler_prepare", os.path.join(os.environ.get("VKV_ROOT", "/home/gaurav_kumar/vkv"),
+                                          "kvpress/evaluation/benchmarks/ruler/prepare_dataframe.py"))
+        prep = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(prep)
+        rev, length = RULER_RAW[args.dataset]
+        df = prep.prepare_dataframe(load_dataset(args.dataset, split=task, revision=rev).to_pandas(), task, length)
+    else:
+        df = load_dataset(args.dataset, task, split=task).to_pandas()
     df = df.sample(frac=1, random_state=42).iloc[a:b]
     for ridx, (_, row) in zip(range(a, b), df.iterrows()):
         c_ids, q_ids = prompt_ids(row["context"], row["question"], row["answer_prefix"])

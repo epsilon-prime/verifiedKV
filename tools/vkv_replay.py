@@ -30,7 +30,7 @@ import torch
 
 ap = argparse.ArgumentParser()
 ap.add_argument("dump")
-ap.add_argument("--harness", default="/home/gaurav_kumar/vkv")
+ap.add_argument("--harness", default=os.environ.get("VKV_ROOT", "/home/gaurav_kumar/vkv"))
 ap.add_argument("--kappa", type=float, default=0.0625)
 ap.add_argument("--eps0", type=float, default=0.3)
 ap.add_argument("--delta", type=float, default=0.05)

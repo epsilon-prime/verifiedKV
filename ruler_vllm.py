@@ -7,7 +7,7 @@ out/<run>/<arm>/rows.jsonl in the harness's format, so its score_runs.py scores 
 
     BENCH_MODEL=Qwen/Qwen3-4B-Instruct-2507 BENCH_DTYPE=bfloat16 BENCH_MAX_MODEL_LEN=34000 \\
     BENCH_GPU_UTIL=0.5 python ruler_vllm.py --arm vkv --rows 152:154 --run r32k
-    python /home/gaurav_kumar/vkv/phase4/vkv_final/score_runs.py out/r32k
+    python $VKV_ROOT/phase4/vkv_final/score_runs.py out/r32k
 
 Arms are bench_1req_off99.CONFIGS names (dense, vkv, ...). Resumable.
 
@@ -52,6 +52,10 @@ ap.add_argument("--sweep", nargs="+", default=None, metavar="EPS0:DELTA",
 ap.add_argument("--warmup", action="store_true",
                 help="run the first row once (at the first sweep point) before timing anything, "
                      "and discard it: the process's JIT compiles and first graph captures")
+ap.add_argument("--sysmon", action="store_true",
+                help="system metrics (tools/sysmon.py): GPM / NVML counters per phase of every row "
+                     "(prefill + round, forced question, answer), and on the first row of each "
+                     "task and sweep point (marked profiled) a kernel time breakdown of 20 answer steps")
 args = ap.parse_args()
 LOFT_TASKS = ["nq", "hotpotqa", "musique", "qampari", "quest"]
 if args.tasks is None:
@@ -66,10 +70,12 @@ import bench_1req_off99 as B  # noqa: E402
 # Raw RULER datasets (one default config, splits are tasks): repo -> (revision, context length).
 RULER_RAW = {"SaylorTwift/RULER-131072-llama-3.2-tokenizer":
              ("758174ef5e9a6a2da6c4c3a25c18b9aca57b2881", 131072)}
-HARNESS = Path("/home/gaurav_kumar/vkv")
+HARNESS = Path(os.environ.get("VKV_ROOT", "/home/gaurav_kumar/vkv"))   # the vkv repo (kvpress, harness)
 sweep = [tuple(float(x) for x in p.split(":")) for p in args.sweep] if args.sweep else [None]
 
 kwargs = B.engine_kwargs(**B.CONFIGS[args.arm])
+# Every request prefills its own context (dense would otherwise reuse the warm-up row's cache).
+kwargs["enable_prefix_caching"] = False
 if args.question == "forced":
     from force_prefix import ForcePrefix, install_stop_guard
     kwargs["logits_processors"] = [ForcePrefix]
@@ -83,10 +89,24 @@ _sched = llm.llm_engine.engine_core.engine_core.scheduler
 _orig_schedule = _sched.schedule
 
 
+PROF = {"Q": None, "prof": None, "n": 0}   # --sysmon: profile answer decode steps Q+3 .. Q+22
+
+
 def _schedule(*a, **k):
     t = time.perf_counter()
     out = _orig_schedule(*a, **k)
-    steps.append((t, int(getattr(out, "total_num_scheduled_tokens", 0) or 0)))
+    n_tok = int(getattr(out, "total_num_scheduled_tokens", 0) or 0)
+    steps.append((t, n_tok))
+    if PROF["Q"] is not None and n_tok == 1:
+        nd = sum(1 for _, n in steps if n == 1)
+        if nd == PROF["Q"] + 3 and PROF["prof"] is None:
+            torch.cuda.synchronize()
+            PROF["prof"] = torch.profiler.profile(activities=[torch.profiler.ProfilerActivity.CUDA])
+            PROF["prof"].__enter__()
+        elif nd == PROF["Q"] + 23 and PROF["prof"] is not None and PROF["n"] == 0:
+            torch.cuda.synchronize()
+            PROF["prof"].__exit__(None, None, None)
+            PROF["n"] = 20
     return out
 
 
@@ -145,6 +165,12 @@ def task_rows(task, a, b):
 
 a, b = (int(x) for x in args.rows.split(":"))
 data = {task: task_rows(task, a, b) for task in args.tasks}
+if args.sysmon:
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent / "tools"))
+    import sysmon
+    MON = sysmon.GpmSampler(sysmon.handle_for_torch_device(0))
+    MON.start()
 if args.warmup:
     if sweep[0] is not None:
         import dataclasses
@@ -186,6 +212,8 @@ for pt in sweep:
                 ids, Q = c_ids + q_ids, 0
                 sp = SamplingParams(temperature=0.0, max_tokens=int(row["max_new_tokens"]))
             before = vkv.stats.clone() if vkv is not None else None
+            profiled = args.sysmon and ridx == a
+            PROF.update(Q=Q if profiled else None, prof=None, n=0)
             steps.clear()
             t0 = time.perf_counter()
             out = llm.generate([{"prompt_token_ids": ids}], sp, use_tqdm=False)[0]
@@ -216,6 +244,20 @@ for pt in sweep:
             rec["latency"] = sec
             rec["decode_tok_s"] = len(adec) / sum(adec) if adec else None   # after the first answer token
             rec["tok_s"] = n_out / max(sec, 1e-9)
+            if args.sysmon:
+                rec["profiled"] = bool(profiled)
+                if profiled:
+                    p = PROF["prof"]
+                    if p is not None and PROF["n"] == 0:          # answer ended inside the window
+                        p.__exit__(None, None, None)
+                        PROF["n"] = max(len(adec) - 2, 1)       # steps Q+3 .. the last
+                    rec["kernels"] = sysmon.kernel_breakdown(p, PROF["n"]) if p is not None else None
+                    PROF.update(Q=None, prof=None)
+                else:
+                    tp = t0 + rec["prefill_s"]
+                    tq = tp + rec["question_s"]
+                    rec["sys"] = {"prefill": MON.window(t0, tp), "question": MON.window(tp, tq),
+                                  "answer": MON.window(tq, t0 + sec)}
             if vkv is not None:
                 from offload_package.vkv.state import STATS
                 d = dict(zip(STATS, (vkv.stats - before).tolist()))
@@ -231,4 +273,6 @@ for pt in sweep:
                 fh.write(json.dumps(rec) + "\n")
             print(f"{task}_{ridx} {args.arm}: {rec['sec']}s n={len(ids)}+{Q} pred={rec['pred'][:60]!r} "
                   f"gold={rec['gold'][:2]}", flush=True)
+if args.sysmon:
+    MON.stop()
 B.shutdown_llm(llm)

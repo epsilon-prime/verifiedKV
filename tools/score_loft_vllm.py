@@ -10,12 +10,13 @@ the timing / fetch means of the rows.
 import argparse
 import importlib.util
 import json
+import os
 import sys
 from pathlib import Path
 
 import pandas as pd
 
-VKV = Path("/home/gaurav_kumar/vkv")
+VKV = Path(os.environ.get("VKV_ROOT", "/home/gaurav_kumar/vkv"))
 
 
 def _load(name, path):

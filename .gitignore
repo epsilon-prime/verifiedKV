@@ -92,3 +92,5 @@ Desktop.ini
 
 
 bench_results/
+# launcher logs and .done files (vkv final_eval/systems/launchers)
+logs/
