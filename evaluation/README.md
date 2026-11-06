@@ -81,5 +81,3 @@ Where:
 ### Multi GPU Evaluation
 Use the provided `evaluate.sh` script to run multiple presses simultaneously across different GPUs with varying compression ratios.
 
-### Leaderboard 🥇
-After evaluating your model, you can easily submit it to the [KVPress Leaderboard](https://huggingface.co/spaces/nvidia/kvpress-leaderboard) on Hugging Face! Just copy the output directory in the huggingface space, and your method will soon be displayed in the leaderboard.
