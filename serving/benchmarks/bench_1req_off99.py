@@ -1,0 +1,694 @@
+#!/usr/bin/env python3
+"""Single-request check: pq vs pq + 99% offload.
+
+Hypothesis under test: with offload_fraction=0.99 almost every KV block is
+moved to CPU each offload interval, and the PQ sparse decode must still be
+token-for-token identical to plain pq, because selected CPU-resident pages
+are fetched into the GPU staging pool (chunked exact decode when the cold
+set exceeds staging capacity). pq+offload is expected to be SLOWER: the
+fetch (and possibly multi-pass chunked decode) is on the critical path of
+every decode step for a single request.
+
+Configs:
+  pq            baseline, no offloading
+  pq+off99      99% offload, staging_policy='auto' (auto-sized to hot set)
+  pq+off99-tiny 99% offload, fixed tiny staging (64 slots) -> forced chunked
+                fallback (cold set ~160 blocks > 64 slots)
+
+Usage: .venv/bin/python bench_1req_off99.py [config,config,...]
+"""
+import os
+import gc
+import sys
+import time
+
+# BENCH_MP=1: multiprocess frontend (EngineCore in its own process, uni
+# executor) -- what `vllm serve` runs. In-process engine otherwise.
+os.environ['VLLM_ENABLE_V1_MULTIPROCESSING'] = '1' if os.environ.get('BENCH_MP') == '1' else '0'
+os.environ['VLLM_USE_V2_MODEL_RUNNER'] = '0'
+os.environ['VLLM_ALLOW_LONG_MAX_MODEL_LEN'] = '1'
+os.environ['FLASHINFER_DISABLE_VERSION_CHECK'] = '1'
+os.environ.setdefault('CUDA_VISIBLE_DEVICES', '0')
+
+import torch
+
+from vllm.v1.attention.backends.registry import AttentionBackendEnum, register_backend
+register_backend(AttentionBackendEnum.CUSTOM, 'skylight.backend.SkylightSparseBackend')
+import vllm.platforms.cuda as cuda_module
+from vllm.v1.attention.backends.registry import _ATTN_OVERRIDES
+
+_orig = getattr(cuda_module, '_get_attn_backend_class', None)
+
+
+def _patched_get(backend, *a, **k):
+    if backend is AttentionBackendEnum.CUSTOM or (
+        backend is None and AttentionBackendEnum.CUSTOM in _ATTN_OVERRIDES
+    ):
+        backend = AttentionBackendEnum.CUSTOM
+    if _orig:
+        return _orig(backend, *a, **k)
+    return backend
+
+
+if _orig:
+    cuda_module._get_attn_backend_class = _patched_get
+
+from vllm import LLM, SamplingParams
+from vllm.config import KVTransferConfig
+
+MODEL = os.environ.get('BENCH_MODEL', 'TinyLlama/TinyLlama-1.1B-Chat-v1.0')
+MAX_MODEL_LEN = int(os.environ.get('BENCH_MAX_MODEL_LEN', '18000'))  # prompt + decode + headroom
+MAX_NEW_TOKENS = int(os.environ.get('BENCH_NEW_TOKENS', '8192'))
+INTERVAL_TOKENS = int(os.environ.get('BENCH_INTERVAL', '128'))
+
+# Single request: ~26 tokens per repetition. BENCH_PROMPT_REPS sets the
+# length (40 -> ~1k tokens).
+PROMPT = ('The history of artificial intelligence is a story of ambition, '
+          'setbacks, and breakthroughs across decades of research. ') * \
+    int(os.environ.get('BENCH_PROMPT_REPS', '1'))
+
+# BENCH_PROMPT_FILE replaces the repeated-sentence prompt with a real text
+# (e.g. a LongBench sample already truncated to the target length).
+if os.environ.get('BENCH_PROMPT_FILE'):
+    with open(os.environ['BENCH_PROMPT_FILE']) as _f:
+        PROMPT = _f.read()
+
+# Second request's prompt for the long-lived-process reuse test.
+PROMPT_B = ('Quantum computing promises to reshape cryptography, optimization, '
+            'and molecular simulation once fault-tolerant hardware arrives. ') * \
+    int(os.environ.get('BENCH_PROMPT_REPS', '1'))
+
+# if os.environ.get('BENCH_PROMPT') == 'varied':
+#     # Non-degenerate prompt: varied content per block, so greedy logits are
+#     # not a tie-fest; ~15 tokens/sentence -> 540 sentences ~ 8.1k tokens.
+#     PROMPT = ''.join(
+#         f"Observation {i}: the calibrated reading was {(i * 37) % 997}, "
+#         f"which the field team called noteworthy, and the reviewers of "
+#         f"section {(i * 11) % 23} marked it pending further review. "
+#         for i in range(170))
+
+# BENCH_CUDAGRAPH=1: FULL decode CUDA graphs (cudagraph_mode=FULL_DECODE_ONLY,
+# no torch.compile) for every config, pq included -- like for like.
+CUDAGRAPH = os.environ.get('BENCH_CUDAGRAPH', '0') == '1'
+# BENCH_PIECEWISE=1 (vkv configs): torch.compile + PIECEWISE decode graphs for everything but
+# attention; with VKV_GRAPHS=1 the vkv decoder replays its own per-layer attention graphs.
+PIECEWISE = os.environ.get('BENCH_PIECEWISE', '0') == '1'
+# BENCH_EVICT_FULL=1 (kvzip-evict): FULL decode graphs like the other configs' BENCH_CUDAGRAPH
+# (attention through FlashAttention over the kept cells, captured with the rest).
+EVICT_FULL = os.environ.get('BENCH_EVICT_FULL', '0') == '1'
+if EVICT_FULL:
+    os.environ['VKV_FULL'] = '1'
+
+SPARSE_ENV = {
+    'SKYLIGHT_SPARSE_TOPK': os.environ.get('BENCH_TOPK', '0.1'),
+    'SKYLIGHT_SPARSE_SINK': '64',
+    'SKYLIGHT_SPARSE_LOCAL': '64',
+    'SKYLIGHT_SPARSE_CHANNEL_NUM': '64',
+    'SKYLIGHT_PQ_GQA_SHARE': os.environ.get('BENCH_GQA_SHARE', '1'),  # selection per kv-head
+}
+
+CONFIGS = {
+    'pq': dict(method='pq', offload=False),
+    # Dense attention, vLLM's own FlashAttention backend (no Skylight, no offload).
+    'dense': dict(method='dense', offload=False),
+
+    'pq+off50': dict(method='pq', offload=True, fraction=0.5,
+                     staging_policy='auto', num_staging_slots=None,
+                     scorer_type='paged_eviction'),
+    'pq+off50-rand': dict(method='pq', offload=True, fraction=0.5,
+                          staging_policy='auto', num_staging_slots=None,
+                          scorer_type='random'),
+    'pq+off50-lru': dict(method='pq', offload=True, fraction=0.5,
+                          staging_policy='auto', num_staging_slots=None,
+                          scorer_type='lru'),
+    'pq+off50-tok': dict(method='pq', offload=True, fraction=0.5,
+                         staging_policy='auto', num_staging_slots=None,
+                         scorer_type='paged_eviction',
+                         fetch_granularity='per_layer_tokens'),
+    'pq+off50-lru-tok': dict(method='pq', offload=True, fraction=0.5,
+                             staging_policy='auto', num_staging_slots=None,
+                             scorer_type='lru',
+                             fetch_granularity='per_layer_tokens'),
+    # 70% offload, per-layer token recall (scorer comparison under staging
+    # pressure: the auto pool is smaller than the offloaded set late in a run).
+    'pq+off70': dict(method='pq', offload=True, fraction=0.7,
+                     staging_policy='auto', num_staging_slots=None,
+                     scorer_type='paged_eviction',
+                     fetch_granularity='per_layer_tokens'),
+    'pq+off70-lru': dict(method='pq', offload=True, fraction=0.7,
+                         staging_policy='auto', num_staging_slots=None,
+                         scorer_type='lru',
+                         fetch_granularity='per_layer_tokens'),
+    # Token-level offloading, default policy (FastKVzip's): per-(layer, head)
+    # budgets from one global ranking, staging shared by all layers/heads.
+    'pq+tok70': dict(method='pq', offload=True, fraction=0.7,
+                     staging_policy='auto', num_staging_slots=None,
+                     scorer_type='paged_eviction', granularity='token'),
+    'pq+tokrand70': dict(method='pq', offload=True, fraction=0.7,
+                         staging_policy='auto', num_staging_slots=None,
+                         scorer_type='paged_eviction', granularity='token',
+                         token_scorer='random'),
+    # Older shared engine: same tokens for every head of a layer, same count
+    # in every layer, per-layer LRU staging.
+    'pq+tok70s': dict(method='pq', offload=True, fraction=0.7,
+                      staging_policy='auto', num_staging_slots=None,
+                      scorer_type='paged_eviction', granularity='token',
+                      budget_scope='shared'),
+    'pq+tokrand70s': dict(method='pq', offload=True, fraction=0.7,
+                          staging_policy='auto', num_staging_slots=None,
+                          scorer_type='paged_eviction', granularity='token',
+                          token_scorer='random', budget_scope='shared'),
+    # Per-(layer, head) budgets: g = global ranking over (layer, head, token)
+    # (FastKVzip's policy), l = equal per-layer totals, u = equal per head.
+    'pq+tok70g': dict(method='pq', offload=True, fraction=0.7,
+                      staging_policy='auto', num_staging_slots=None,
+                      scorer_type='paged_eviction', granularity='token',
+                      budget_scope='global'),
+    'pq+tokrand70g': dict(method='pq', offload=True, fraction=0.7,
+                          staging_policy='auto', num_staging_slots=None,
+                          scorer_type='paged_eviction', granularity='token',
+                          token_scorer='random', budget_scope='global'),
+    'pq+tokkvz70g': dict(method='pq', offload=True, fraction=0.7,
+                         staging_policy='auto', num_staging_slots=None,
+                         scorer_type='paged_eviction', granularity='token',
+                         token_scorer='kvzip', budget_scope='global'),
+    'pq+tokkvz70u': dict(method='pq', offload=True, fraction=0.7,
+                         staging_policy='auto', num_staging_slots=None,
+                         scorer_type='paged_eviction', granularity='token',
+                         token_scorer='kvzip', budget_scope='uniform'),
+    'pq+tokkvz70l': dict(method='pq', offload=True, fraction=0.7,
+                         staging_policy='auto', num_staging_slots=None,
+                         scorer_type='paged_eviction', granularity='token',
+                         token_scorer='kvzip', budget_scope='layer'),
+    'pq+tok70l': dict(method='pq', offload=True, fraction=0.7,
+                      staging_policy='auto', num_staging_slots=None,
+                      scorer_type='paged_eviction', granularity='token',
+                      budget_scope='layer'),
+    # Token-level LRU: evict the cells least recently selected by PQ top-k.
+    'pq+toklru70u': dict(method='pq', offload=True, fraction=0.7,
+                         staging_policy='auto', num_staging_slots=None,
+                         scorer_type='paged_eviction', granularity='token',
+                         token_scorer='lru', budget_scope='uniform'),
+    'pq+toklru70': dict(method='pq', offload=True, fraction=0.7,
+                        staging_policy='auto', num_staging_slots=None,
+                        scorer_type='paged_eviction', granularity='token',
+                        token_scorer='lru', budget_scope='global'),
+    # KeyDiff (key distinctiveness vs the mean key), equal per-head budgets.
+    'pq+tokkd70u': dict(method='pq', offload=True, fraction=0.7,
+                        staging_policy='auto', num_staging_slots=None,
+                        scorer_type='paged_eviction', granularity='token',
+                        token_scorer='keydiff', budget_scope='uniform'),
+    'pq+tokrand70u': dict(method='pq', offload=True, fraction=0.7,
+                          staging_policy='auto', num_staging_slots=None,
+                          scorer_type='paged_eviction', granularity='token',
+                          token_scorer='random', budget_scope='uniform'),
+    'pq+tok70u': dict(method='pq', offload=True, fraction=0.7,
+                      staging_policy='auto', num_staging_slots=None,
+                      scorer_type='paged_eviction', granularity='token',
+                      budget_scope='uniform'),
+    # 50% offload, equal budget per (layer, head): FastKVzip vs random with the
+    # same budget shape (only the scorer differs).
+    'pq+tok50u': dict(method='pq', offload=True, fraction=0.5,
+                      staging_policy='auto', num_staging_slots=None,
+                      scorer_type='paged_eviction', granularity='token',
+                      budget_scope='uniform'),
+    'pq+tokrand50u': dict(method='pq', offload=True, fraction=0.5,
+                          staging_policy='auto', num_staging_slots=None,
+                          scorer_type='paged_eviction', granularity='token',
+                          token_scorer='random', budget_scope='uniform'),
+    'pq+tok70c': dict(method='pq', offload=True, fraction=0.7,
+                      staging_policy='auto', num_staging_slots=None,
+                      scorer_type='paged_eviction', granularity='token',
+                      budget_scope='cells_shared'),
+    'pq+tok0g': dict(method='pq', offload=True, fraction=0.0,
+                     staging_policy='auto', num_staging_slots=None,
+                     scorer_type='paged_eviction', granularity='token',
+                     budget_scope='global'),
+    'pq-nopc': dict(method='pq', offload=False, granularity='nopc'),
+    'pq+tok0': dict(method='pq', offload=True, fraction=0.0,
+                    staging_policy='auto', num_staging_slots=None,
+                    scorer_type='paged_eviction', granularity='token'),
+    'pq+off70-rand': dict(method='pq', offload=True, fraction=0.7,
+                          staging_policy='auto', num_staging_slots=None,
+                          scorer_type='random',
+                          fetch_granularity='per_layer_tokens'),
+    # Explicit block-granularity baselines for the token-vs-block matrix
+    # (independent of the fetch_granularity default).
+    'pq+off50-blk': dict(method='pq', offload=True, fraction=0.5,
+                         staging_policy='auto', num_staging_slots=None,
+                         scorer_type='paged_eviction',
+                         fetch_granularity='block'),
+    'pq+off50-lru-blk': dict(method='pq', offload=True, fraction=0.5,
+                             staging_policy='auto', num_staging_slots=None,
+                             scorer_type='lru',
+                             fetch_granularity='block'),
+
+    # Gate configs (e2e gate suite). off99 forces nearly-everything-fetched;
+    # t12 forces the chunked-exact fallback under 12-slot staging pressure.
+    'pq+off99': dict(method='pq', offload=True, fraction=0.99,
+                     staging_policy='auto', num_staging_slots=None,
+                     scorer_type='paged_eviction'),
+    'pq+off99-t12': dict(method='pq', offload=True, fraction=0.99,
+                         staging_policy='fixed', num_staging_slots=12,
+                         scorer_type='paged_eviction'),
+    'pq+off99-tok': dict(method='pq', offload=True, fraction=0.99,
+                         staging_policy='auto', num_staging_slots=None,
+                         scorer_type='paged_eviction',
+                         fetch_granularity='per_layer_tokens'),
+    'pq+off99-t12-tok': dict(method='pq', offload=True, fraction=0.99,
+                             staging_policy='fixed', num_staging_slots=12,
+                             scorer_type='paged_eviction',
+                             fetch_granularity='per_layer_tokens'),
+
+    # Vkv (offload_package.vkv, the harness's vkv_final): Bernoulli residency
+    # sampled once from KVzip (or FastKVzip) scores, kappa of the cache kept
+    # including the 2-bit sketch, a 128-key exact shortlist and a Chernoff-
+    # certified fetch at decode, no persistence. Eager. vkv_* knobs from
+    # BENCH_VKV_<FIELD>. Staging = the per-layer fetch ring (BENCH_STAGING_SLOTS).
+    'vkv': dict(method='vkv', offload=True, staging_policy='fixed',
+                num_staging_slots=256, granularity='token', token_policy='vkv',
+                token_scorer='kvzip'),
+    # Plain KVzip at vkv's budget (kvpress KVzipPress, compression 1 - kappa): the top kappa
+    # of the context cells by KVzip score stay, decode attends to those only.
+    'kvzip-evict': dict(method='vkv', offload=True, staging_policy='fixed',
+                        num_staging_slots=256, granularity='token', token_policy='vkv',
+                        token_scorer='kvzip', vkv={'evict': True}),
+    # Dense + offload: vkv's draw fraction of the context goes to the CPU, and every decode step
+    # copies all of it back (no compaction: to their own cells; BENCH_VKV_COMPACT=1: to a staging
+    # buffer). Which cells does not matter (everything is recalled), so no KVzip pass: random
+    # scores.
+    'offload-recall': dict(method='vkv', offload=True, staging_policy='fixed',
+                           num_staging_slots=256, granularity='token', token_policy='vkv',
+                           token_scorer='random', vkv={'recall': True, 'compact': False}),
+    'vkv-fkvz': dict(method='vkv', offload=True, staging_policy='fixed',
+                     num_staging_slots=256, granularity='token', token_policy='vkv',
+                     token_scorer='fastkvzip'),
+
+}
+
+
+
+def shutdown_llm(llm):
+    """Release an in-process engine's GPU memory.
+
+    vLLM gc.freeze()s the heap at engine startup, so `del llm` alone frees
+    nothing; EngineCore.shutdown() unfreezes it and runs the worker/connector
+    shutdown (which drops the offload package's engine references).
+    """
+    try:
+        llm.llm_engine.engine_core.shutdown()
+    except Exception as e:  # attribute path changed / already shut down
+        print(f"  engine shutdown failed ({e}); falling back to gc.unfreeze", flush=True)
+    gc.unfreeze()
+
+def engine_kwargs(method, offload, fraction=0.5, staging_policy='auto',
+                  num_staging_slots=None, scorer_type='paged_eviction',
+                  fetch_granularity='per_layer_tokens', granularity='block',
+                  token_scorer='fastkvzip', budget_scope='global', token_policy='lowest',
+                  vkv=None):
+    """Set the Skylight env for ``method`` and return the ``LLM(**kwargs)``
+    of a config (CONFIGS entry); shared with LongBench/run_offload.py."""
+    for k, v in SPARSE_ENV.items():
+        os.environ[k] = v
+    os.environ['SKYLIGHT_SPARSE_METHOD'] = method
+    if method == 'vkv':
+        # Not the FULL-cg slot path (no PQ / summary maintainer); eager decode.
+        os.environ.pop('SKYLIGHT_INCR_FULLCG', None)
+        os.environ.pop('SKYLIGHT_INCR_SLOT', None)
+    if method == 'pq':
+        # Skylight upstream (ak/pq): 'pq' is the pure-torch reference; the
+        # production path is 'pq_optimized' with its slot-code maintainer,
+        # driven on the FULL-cg slot path (eager here) with top-k sized from
+        # the live context.
+        os.environ['SKYLIGHT_SPARSE_METHOD'] = 'pq_optimized'
+        os.environ['SKYLIGHT_INCR_FULLCG'] = '1'
+        os.environ['SKYLIGHT_INCR_SLOT'] = '1'
+        if CUDAGRAPH:
+            # Upstream's FULL-graph default: a fixed top-k width from
+            # max_model_len. (SKYLIGHT_PQ_DYN_CG -- a live budget under
+            # graphs -- needs a sorted top-k: ~25% slower at 128k.)
+            os.environ.pop('SKYLIGHT_SPARSE_DYNAMIC_TOPK', None)
+            os.environ.pop('SKYLIGHT_PQ_DYN_CG', None)
+        else:
+            os.environ['SKYLIGHT_SPARSE_DYNAMIC_TOPK'] = '1'
+
+    kv = None
+    if offload and os.environ.get('BENCH_STAGING_SLOTS'):
+        # Fixed staging size for every offload config (staging-pressure sweeps).
+        staging_policy = 'fixed'
+        num_staging_slots = int(os.environ['BENCH_STAGING_SLOTS'])
+    if offload:
+        extra = {
+            'enabled': True,
+            'offload_fraction': fraction,
+            'token_policy': token_policy,
+            'num_cpu_slots': 4096,
+            'staging_policy': staging_policy,
+            'interval_tokens': INTERVAL_TOKENS,
+            'true_free': True,
+            'scorer_type': scorer_type,
+            'fetch_granularity': fetch_granularity,
+            'offload_granularity': granularity,
+            'token_scorer': token_scorer,
+            'token_budget_scope': budget_scope,
+        }
+        if num_staging_slots is not None:
+            extra['num_staging_slots'] = num_staging_slots
+        if token_policy == 'vkv':
+            for k, v in (vkv or {}).items():
+                extra['vkv_' + k] = v
+            for k, v in os.environ.items():
+                if k.startswith('BENCH_VKV_'):
+                    extra['vkv_' + k[len('BENCH_VKV_'):].lower()] = v
+        if os.environ.get('BENCH_NUM_CPU_TOKENS'):
+            # CPU token-pool capacity (default max_num_seqs * max_model_len).
+            extra['num_cpu_tokens'] = int(os.environ['BENCH_NUM_CPU_TOKENS'])
+        kv = KVTransferConfig(
+            kv_connector='OffloadPackageConnector',
+            kv_connector_module_path='vllm.distributed.kv_transfer.kv_connector.v1.offload_package_connector',
+            kv_connector_extra_config=extra,
+            kv_role='kv_both',
+        )
+
+
+    kwargs = dict(
+        model=MODEL,
+        dtype=os.environ.get('BENCH_DTYPE', 'float16'),
+        max_model_len=MAX_MODEL_LEN,
+        gpu_memory_utilization=float(os.environ.get('BENCH_GPU_UTIL', '0.20')),
+        enforce_eager=not ((PIECEWISE or EVICT_FULL) if method == 'vkv' else CUDAGRAPH),
+        tensor_parallel_size=1,
+        max_num_seqs=1,
+        disable_log_stats=True,
+        attention_config={'backend': 'FLASH_ATTN' if method == 'dense' else 'CUSTOM'},
+        async_scheduling=False,
+        # Token-level offloading compacts KV, which invalidates block hashes.
+        enable_prefix_caching=not ((offload and granularity == 'token')
+                                   or granularity == 'nopc'),
+    )
+    if kv is not None:
+        kwargs['kv_transfer_config'] = kv
+    if PIECEWISE and method == 'vkv':
+        kwargs['compilation_config'] = {'cudagraph_mode': 'PIECEWISE',
+                                        'cudagraph_capture_sizes': [1]}
+    if (CUDAGRAPH and method != 'vkv') or (EVICT_FULL and method == 'vkv'):
+        # Decode-only FULL graphs, no torch.compile (prefill stays eager).
+        kwargs['compilation_config'] = {'mode': 0, 'cudagraph_mode': 'FULL_DECODE_ONLY',
+                                        'cudagraph_capture_sizes': [1]}
+    # BENCH_WARMUP=1: measure steady-state decode only. A short warm-up
+    # generation on the same prompt pays the one-time per-process costs (PQ
+    # codebook fit at the first decode step, JIT); prefix caching is off so the
+    # timed request re-prefills identically in every config (offloaded blocks
+    # lose their cache hashes, which would otherwise make prefill
+    # config-dependent); stats are on so per-request token timestamps exist.
+    warmup = os.environ.get('BENCH_WARMUP') == '1'
+    if warmup:
+        kwargs['disable_log_stats'] = False
+        kwargs['enable_prefix_caching'] = False
+
+    forced = os.environ.get('BENCH_FORCE_TOKENS')
+    if forced:
+        from bench_force import ForcedTokens
+        kwargs['logits_processors'] = [ForcedTokens]
+    return kwargs
+
+
+def run(name, method, offload, fraction=0.5, staging_policy='auto',
+        num_staging_slots=None, scorer_type='paged_eviction',
+        fetch_granularity='per_layer_tokens', granularity='block',
+        token_scorer='fastkvzip', budget_scope='global', token_policy='lowest', vkv=None):
+    print(f"\n{'=' * 70}\nCONFIG: {name}\n{'=' * 70}", flush=True)
+    kwargs = engine_kwargs(method, offload, fraction, staging_policy, num_staging_slots,
+                           scorer_type, fetch_granularity, granularity, token_scorer,
+                           budget_scope, token_policy, vkv)
+    warmup = os.environ.get('BENCH_WARMUP') == '1'
+    forced = os.environ.get('BENCH_FORCE_TOKENS')
+    if forced:
+        from bench_force import ForcedTokens
+    torch.cuda.empty_cache()
+    torch.cuda.reset_peak_memory_stats()
+
+    t_init0 = time.time()
+    llm = LLM(**kwargs)
+    t_init = time.time() - t_init0
+
+    # Peak KV blocks in use, from vLLM's allocator (the KV pool is
+    # preallocated, so "peak GPU allocated" cannot show offload savings).
+    kv = {'min_free': None, 'free': [], 't': [], 'nt': [],
+          'ctr': [] if os.environ.get('BENCH_STEP_COUNTERS') else None}
+    import skylight.backend as _skb
+    _sk_builder = _skb.SkylightSparseMetadataBuilder
+    try:
+        _sched = llm.llm_engine.engine_core.engine_core.scheduler
+        _pool = _sched.kv_cache_manager.block_pool
+        _orig_schedule = _sched.schedule
+
+        def _schedule(*a, **k):
+            if kv.get('prof') is not None:
+                kv['prof'].step()          # one profiler step per engine step
+            kv['t'].append(time.perf_counter())   # one stamp per engine step
+            if kv.get('ctr') is not None:
+                # Cumulative token-offload counters (GPU), read once per engine
+                # step after the previous step's sampling sync: [n_need,
+                # n_hit_new, err, n_cold, selected entries].
+                _st = getattr(_sk_builder._offload_orchestrator, 'token_store', None)
+                _acc = getattr(_st, '_ctr_acc', None)
+                kv['ctr'].append(_acc.tolist() if _acc is not None else None)
+            out = _orig_schedule(*a, **k)
+            kv['nt'].append(int(getattr(out, 'total_num_scheduled_tokens', 0) or 0))
+            f = _pool.get_num_free_blocks()
+            kv['min_free'] = f if kv['min_free'] is None else min(kv['min_free'], f)
+            kv['free'].append(f)
+            return out
+        _sched.schedule = _schedule
+        kv['pool'] = _pool
+    except AttributeError:
+        _pool = None
+
+    # BENCH_TEMPERATURE > 0: temperature sampling (BENCH_TOP_P / BENCH_TOP_K,
+    # fixed per-request BENCH_SEED so a config's run is reproducible); greedy
+    # otherwise. Each config samples its own text: offload perturbs logits.
+    _temp = float(os.environ.get('BENCH_TEMPERATURE', '0'))
+    _samp = (dict(temperature=_temp, top_p=float(os.environ.get('BENCH_TOP_P', '1.0')),
+                  top_k=int(os.environ.get('BENCH_TOP_K', '-1')),
+                  seed=int(os.environ.get('BENCH_SEED', '0')))
+             if _temp > 0 else dict(temperature=0, top_p=1.0))
+    sp = SamplingParams(max_tokens=MAX_NEW_TOKENS, ignore_eos=True, **_samp)
+    if warmup:
+        llm.generate([PROMPT], SamplingParams(max_tokens=8, ignore_eos=True, **_samp))
+        from offload_package import timing as _timing
+        _timing.reset()  # breakdown covers the timed request only
+        if forced:
+            if ForcedTokens.instance is not None:   # in-process only; under
+                ForcedTokens.instance.reset()       # MP the timed run overwrites
+        kv['min_free'] = None
+        kv['free'] = []
+        kv['t'] = []
+        kv['nt'] = []
+        if kv['ctr'] is not None:
+            kv['ctr'] = []
+    torch.cuda.synchronize()
+    t0 = time.time()
+    if os.environ.get('BENCH_TRACE_MULTINOMIAL') == '1':
+        import traceback as _tb
+        _orig_mn = torch.multinomial
+        _mn_count = [0]
+        def _traced_multinomial(*a, **k):
+            if _mn_count[0] < 3:
+                _mn_count[0] += 1
+                print(f"\n=== torch.multinomial call #{_mn_count[0]} stack ===", flush=True)
+                _tb.print_stack()
+            return _orig_mn(*a, **k)
+        torch.multinomial = _traced_multinomial
+
+    if os.environ.get('BENCH_PROFILE_STEPS'):
+        # BENCH_PROFILE_STEPS="start,count": torch-profile `count` engine
+        # steps starting at step `start` of the timed request (stepped from
+        # the schedule() wrapper above); writes a chrome trace.
+        from torch.profiler import profile, ProfilerActivity, schedule as _psched
+        _ps, _pc = (int(x) for x in os.environ['BENCH_PROFILE_STEPS'].split(','))
+        _trace = os.environ.get('BENCH_PROFILE_TRACE', f'/tmp/trace_{name}.json')
+        with profile(
+            activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
+            with_stack=os.environ.get('BENCH_PROFILE_STACK') == '1',
+            schedule=_psched(skip_first=_ps, wait=0, warmup=2, active=_pc, repeat=1),
+            on_trace_ready=lambda p: p.export_chrome_trace(_trace),
+        ) as prof:
+            kv['prof'] = prof
+            outputs = llm.generate([PROMPT], sp)
+            kv['prof'] = None
+        print(f"  profile: steps {_ps}+2..{_ps + 2 + _pc} -> {_trace}", flush=True)
+    elif os.environ.get('BENCH_PROFILE') == '1':
+        from torch.profiler import profile, ProfilerActivity
+        with profile(
+            activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
+            with_stack=True,
+        ) as prof:
+            outputs = llm.generate([PROMPT], sp)
+        print(prof.key_averages(group_by_stack_n=8).table(
+            sort_by='self_cpu_time_total', row_limit=35))
+    else:
+        outputs = llm.generate([PROMPT], sp)
+    torch.cuda.synchronize()
+    elapsed = time.time() - t0
+
+    reuse = None
+    if os.environ.get('BENCH_REUSE') == '1':
+        torch.cuda.synchronize()
+        t_r0 = time.time()
+        outputs_b = llm.generate([PROMPT_B], sp)
+        torch.cuda.synchronize()
+        reuse = time.time() - t_r0
+
+    in_tokens = len(outputs[0].prompt_token_ids)
+    out_tokens = len(outputs[0].outputs[0].token_ids)
+    tpot_ms = elapsed / max(out_tokens, 1) * 1000
+    peak_gb = torch.cuda.max_memory_allocated() / 1e9
+
+    print(f"  init: {t_init:.1f}s")
+    print(f"  prompt tokens: {in_tokens}")
+    print(f"  new tokens: {out_tokens}")
+    print(f"  total time: {elapsed:.1f}s")
+    print(f"  decode TPOT: {tpot_ms:.2f} ms/token")
+    if os.environ.get('BENCH_STEP_TIMES') and kv.get('t'):
+        # Engine-step wall times of the timed request (schedule-to-schedule):
+        # step i = decode step i-1 after the prefill step(s).
+        import json as _json
+        _t = kv['t']
+        with open(os.environ['BENCH_STEP_TIMES'], 'w') as _f:
+            _json.dump([b - a for a, b in zip(_t, _t[1:])], _f)
+    if kv.get('t'):
+        # Split by engine step (schedule-to-schedule, so work done inside a
+        # step's schedule() -- e.g. the KVzip pass at the last prefill chunk --
+        # lands in that step): prefill steps schedule >1 token, decode steps 1.
+        _st = [(b - a, n) for a, b, n in zip(kv['t'], kv['t'][1:], kv['nt'])]
+        _pre = [x for x, n in _st if n > 1]
+        _dsteps = sorted(x for x, n in _st if n == 1)
+        if _pre and _dsteps:
+            print(f"  step TTFT (prefill steps): {sum(_pre) * 1000:.1f} ms; decode steps: "
+                  f"mean {sum(_dsteps) / len(_dsteps) * 1000:.2f} median "
+                  f"{_dsteps[len(_dsteps) // 2] * 1000:.2f} max {_dsteps[-1] * 1000:.0f} ms "
+                  f"({len(_dsteps)} steps)")
+    if os.environ.get('BENCH_STEP_COUNTERS') and kv.get('ctr'):
+        import json as _json
+        with open(os.environ['BENCH_STEP_COUNTERS'], 'w') as _f:
+            _json.dump(kv['ctr'], _f)       # one cumulative row per engine step
+    m = getattr(outputs[0], 'metrics', None)
+    if m is not None and m.first_token_ts and m.last_token_ts and out_tokens > 1:
+        print(f"  TTFT: {m.first_token_latency * 1000:.1f} ms")
+        print(f"  decode-only TPOT: "
+              f"{(m.last_token_ts - m.first_token_ts) / (out_tokens - 1) * 1000:.2f} ms/token")
+        # Post-prefill setup in TTFT: the first two decode steps build the
+        # request's PQ codes (every config) and run the first offload round
+        # (offload configs: ranking / KVzip pass / copy to CPU). Engine-step
+        # wall times from the schedule() stamps; decode steps = 1 token each.
+        _t, _nt = kv.get('t', []), kv.get('nt', [])
+        _dec = [b - a for a, b, n in zip(_t, _t[1:], _nt) if n == 1]
+        if len(_dec) > 3:
+            _setup = _dec[0] + _dec[1]
+            print(f"  TTFT incl. setup: {(m.first_token_latency + _setup) * 1000:.1f} ms "
+                  f"(TTFT + first 2 decode steps: {_dec[0] * 1e3:.0f} + {_dec[1] * 1e3:.0f} ms)")
+            print(f"  TPOT after setup: {sum(_dec[2:]) / len(_dec[2:]) * 1000:.2f} ms/token "
+                  f"({len(_dec) - 2} decode steps)")
+    print(f"  throughput: {out_tokens / max(elapsed, 1e-9):.1f} tok/s")
+    print(f"  peak GPU allocated: {peak_gb:.2f} GB")
+    if kv.get('pool') is not None and kv['min_free'] is not None:
+        _total = kv['pool'].num_gpu_blocks - 1          # minus the null block
+        _conn = getattr(llm.llm_engine.engine_core.engine_core.scheduler, 'connector', None)
+        _mgr = getattr(_conn, '_scheduler_manager', None)
+        _reserved = len(getattr(_mgr, '_reserved_staging_ids', None) or [])
+        _peak = _total - _reserved - kv['min_free']
+        _used = [_total - _reserved - f for f in kv['free'][1:]]   # [0] = before prefill
+        _mean = sum(_used) / len(_used) if _used else 0
+        _final = _used[-1] if _used else 0
+        print(f"  KV blocks in use: peak {_peak}, mean {_mean:.0f}, final {_final} "
+              f"(+{_reserved} staging reserved, pool {_total})")
+    _vkv = getattr(getattr(_sk_builder._offload_orchestrator, 'token_offload', None), 'vkv', None)
+    if _vkv is not None:
+        _r = _vkv.report()
+        print(f"  vkv: decisions {_r['decisions']:.0f}, fetch_any {_r['fetch_any_frac']:.4f}, "
+              f"k mean {_r['k_mean']:.2f}, xfer mean {_r['xfer_mean']:.2f}, screened "
+              f"{_r['screened_frac']:.4f}, fallback {_r['fallback_frac']:.4f}, shortlist host "
+              f"keys/layer {_r['keys_per_layer']:.1f}, passes>1 {_r['chunked']:.0f}; "
+              f"rounds {_vkv.round_log[-3:]}")
+        print(f"  vkv raw stats: {_vkv.stats.tolist()}")
+        # CPU->GPU fetch volume: restore / recall count copied entries in vkv stats, compaction
+        # counts staging misses in the store (each entry = one token's K+V of one KV head).
+        _to = _sk_builder._offload_orchestrator.token_offload
+        _eb = _to.C2 * _to.kv_caches[0].element_size()
+        _ts = getattr(_sk_builder._offload_orchestrator, 'token_store', None)
+        _acc = getattr(_ts, '_ctr_acc', None)
+        _cp = _r['copied'] + (float(_acc[0]) if _acc is not None else 0.0)
+        _nd = max(out_tokens - 1, 1)
+        print(f"  fetch: requested {_r['xfer_sum']:.0f} entries (per q row), copied {_cp:.0f} "
+              f"entries = {_cp * _eb / 1e9:.3f} GB ({_cp * _eb / 1e6 / _nd:.2f} MB/step over "
+              f"{_nd:.0f} steps, {_eb} B/entry)"
+              + (f", staging hits {int(_acc[1])}, cold {int(_acc[3])}" if _acc is not None else ""))
+    print(f"  out: {outputs[0].outputs[0].text[:110]!r}")
+    print(f"  token_ids[:32]: {list(outputs[0].outputs[0].token_ids)[:32]}")
+    if forced:
+        if ForcedTokens.instance is not None:
+            fs = ForcedTokens.instance.summary()
+            if os.environ.get('BENCH_FORCE_DUMP'):
+                ForcedTokens.instance.dump(os.environ['BENCH_FORCE_DUMP'])
+        else:   # multiprocess: the EngineCore-side processor saved the dump
+            fs = ForcedTokens.summary_from_file(os.environ['BENCH_FORCE_DUMP'])
+        print(f"  forced: steps {fs['steps']}, agree {100 * fs['agree']:.2f}%, "
+              f"ref NLL {fs['nll']:.4f}, first disagreement at step {fs['first_disagree']}")
+    if reuse is not None:
+        rb = len(outputs_b[0].outputs[0].token_ids)
+        print(f"  REUSE req#2: total {reuse:.1f}s, TPOT {reuse / max(rb,1) * 1000:.2f} ms/token "
+              f"({rb} tokens; codebook already fitted -> no pq.fit)")
+
+    result = {
+        'name': name, 'prompt_tokens': in_tokens, 'new_tokens': out_tokens,
+        'time_s': elapsed, 'tpot_ms': tpot_ms, 'tps': out_tokens / max(elapsed, 1e-9),
+        'peak_gb': peak_gb, 'init_s': t_init,
+        'text': outputs[0].outputs[0].text,
+        'tokens': list(outputs[0].outputs[0].token_ids),
+    }
+    import json
+    with open(os.environ.get('BENCH_TOKENS_OUT')
+              or f"/tmp/opencode/tokens_{name.replace('+', '_')}.json", "w") as f:
+        json.dump(result['tokens'], f)
+    shutdown_llm(llm)
+    del llm
+    gc.collect()
+    torch.cuda.empty_cache()
+    torch.cuda.synchronize()
+    time.sleep(2)
+    return result
+
+
+if __name__ == '__main__':
+    names = sys.argv[1].split(',') if len(sys.argv) > 1 else list(CONFIGS)
+    results = {}
+    for name in names:
+        results[name] = run(name, **CONFIGS[name])
+
+    rs = list(results.values())
+    print(f"\n{'=' * 92}")
+    print(f"SUMMARY single-request (input={rs[0]['prompt_tokens']}, +{MAX_NEW_TOKENS} out)")
+    print(f"{'=' * 92}")
+    print(f"{'config':<16} {'time(s)':>8} {'TPOT(ms)':>9} {'tok/s':>8} {'peak GPU(GB)':>13} {'init(s)':>8}")
+    for r in rs:
+        print(f"{r['name']:<16} {r['time_s']:>8.1f} {r['tpot_ms']:>9.2f} {r['tps']:>8.1f} "
+              f"{r['peak_gb']:>13.2f} {r['init_s']:>8.1f}")
+
+    # Correctness: every offload config must be token-for-token identical to pq.
+    print("\nCORRECTNESS (greedy token-for-token vs 'pq' baseline):")
+    base = results.get('pq')
+    if base is None:
+        print("  pq baseline not run; skipping comparison")
+    else:
+        for name, r in results.items():
+            if name == 'pq':
+                continue
+            match = r['tokens'] == base['tokens']
+            if not match:
+                for j, (ta, tb) in enumerate(zip(base['tokens'], r['tokens'])):
+                    if ta != tb:
+                        print(f"  {name}: diverges at token {j}: {base['text'][:200]!r}")
+                        print(f"  {' ' * len(name)}  vs off: {r['text'][:200]!r}")
+                        break
+            print(f"  {name}: {'PASS' if match else 'FAIL'}")

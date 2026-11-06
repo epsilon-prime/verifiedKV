@@ -1,0 +1,23 @@
+{
+ "source": "phase4/experiments/trunc_ablation/out/sketch_ab_16x.npz",
+ "index": 8810,
+ "task": "cwe",
+ "rag_row": 152,
+ "layer": 21,
+ "step": 21,
+ "phase": "decode",
+ "n_L": 44549,
+ "mse_evict_rel": 1.6213374874407394,
+ "jump_rule": {
+  "exact": {
+   "m": 52,
+   "frac": 0.0011672540348829378,
+   "mse_rel": 0.5355919707276937
+  },
+  "sketch": {
+   "m": 16,
+   "frac": 0.0003591550876562886,
+   "mse_rel": 0.6885501280486659
+  }
+ }
+}

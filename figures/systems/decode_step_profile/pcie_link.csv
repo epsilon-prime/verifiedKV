@@ -1,0 +1,10 @@
+config,method,eps,delta,pcie_h2d_GBs,pcie_link_util_pct,link_measured_GBs
+Dense (no offload),dense,,,0.034,0.06,55.5
+Dense recall (exact),dense_recall,,,51.297,92.43,55.5
+"vkv ε=0.01, δ=0.05",vkv,0.01,0.05,8.828,15.91,55.5
+"vkv ε=0.03, δ=0.05",vkv,0.03,0.05,4.352,7.84,55.5
+"vkv ε=0.05, δ=0.05",vkv,0.05,0.05,2.446,4.41,55.5
+"vkv ε=0.1, δ=0.05",vkv,0.1,0.05,1.463,2.64,55.5
+"vkv ε=0.25, δ=0.05",vkv,0.25,0.05,1.252,2.26,55.5
+"vkv ε=0.5, δ=0.05",vkv,0.5,0.05,1.394,2.51,55.5
+FastKVzip evict,fastkvzip_evict,,,0.039,0.07,55.5

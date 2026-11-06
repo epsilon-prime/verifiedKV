@@ -1,0 +1,1135 @@
+model,dataset,context_k,rate,method,task,score,n,label,cell
+Ministral-3,LOFT,32,8,dense,hotpotqa,68.0,25,Dense,loft__hotpotqa_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,32,8,dense,musique,32.0,25,Dense,loft__musique_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,32,8,dense,nq,76.0,25,Dense,loft__nq_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,32,8,dense,qampari,36.0,25,Dense,loft__qampari_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,32,8,dense,quest,36.0,25,Dense,loft__quest_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,32,8,fastkvzip,hotpotqa,56.0,25,Fast KVzip,loft__hotpotqa_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.88__max_context200000
+Ministral-3,LOFT,32,8,fastkvzip,musique,36.0,25,Fast KVzip,loft__musique_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.88__max_context200000
+Ministral-3,LOFT,32,8,fastkvzip,nq,52.0,25,Fast KVzip,loft__nq_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.88__max_context200000
+Ministral-3,LOFT,32,8,fastkvzip,qampari,0.0,25,Fast KVzip,loft__qampari_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.88__max_context200000
+Ministral-3,LOFT,32,8,fastkvzip,quest,8.0,25,Fast KVzip,loft__quest_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.88__max_context200000
+Ministral-3,LOFT,32,8,kvzip,hotpotqa,56.0,25,KVzip,loft__hotpotqa_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.88__max_context200000
+Ministral-3,LOFT,32,8,kvzip,musique,40.0,25,KVzip,loft__musique_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.88__max_context200000
+Ministral-3,LOFT,32,8,kvzip,nq,32.0,25,KVzip,loft__nq_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.88__max_context200000
+Ministral-3,LOFT,32,8,kvzip,qampari,8.0,25,KVzip,loft__qampari_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.88__max_context200000
+Ministral-3,LOFT,32,8,kvzip,quest,12.0,25,KVzip,loft__quest_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.88__max_context200000
+Ministral-3,LOFT,32,8,vkv_final_fastkvzip,hotpotqa,72.0,25,vKV+Fast KVzip,loft__hotpotqa_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.88__max_context200000
+Ministral-3,LOFT,32,8,vkv_final_fastkvzip,musique,28.0,25,vKV+Fast KVzip,loft__musique_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.88__max_context200000
+Ministral-3,LOFT,32,8,vkv_final_fastkvzip,nq,72.0,25,vKV+Fast KVzip,loft__nq_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.88__max_context200000
+Ministral-3,LOFT,32,8,vkv_final_fastkvzip,qampari,48.0,25,vKV+Fast KVzip,loft__qampari_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.88__max_context200000
+Ministral-3,LOFT,32,8,vkv_final_fastkvzip,quest,36.0,25,vKV+Fast KVzip,loft__quest_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.88__max_context200000
+Ministral-3,LOFT,32,8,vkv_final_kvzip,hotpotqa,72.0,25,vKV+KVzip,loft__hotpotqa_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.88__max_context200000
+Ministral-3,LOFT,32,8,vkv_final_kvzip,musique,36.0,25,vKV+KVzip,loft__musique_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.88__max_context200000
+Ministral-3,LOFT,32,8,vkv_final_kvzip,nq,76.0,25,vKV+KVzip,loft__nq_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.88__max_context200000
+Ministral-3,LOFT,32,8,vkv_final_kvzip,qampari,40.0,25,vKV+KVzip,loft__qampari_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.88__max_context200000
+Ministral-3,LOFT,32,8,vkv_final_kvzip,quest,40.0,25,vKV+KVzip,loft__quest_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.88__max_context200000
+Ministral-3,LOFT,32,8,vkv_final_perfect,hotpotqa,68.0,25,"vKV, exact sketch",loft__hotpotqa_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.88__max_context200000
+Ministral-3,LOFT,32,8,vkv_final_perfect,musique,28.0,25,"vKV, exact sketch",loft__musique_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.88__max_context200000
+Ministral-3,LOFT,32,8,vkv_final_perfect,nq,72.0,25,"vKV, exact sketch",loft__nq_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.88__max_context200000
+Ministral-3,LOFT,32,8,vkv_final_perfect,qampari,40.0,25,"vKV, exact sketch",loft__qampari_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.88__max_context200000
+Ministral-3,LOFT,32,8,vkv_final_perfect,quest,44.0,25,"vKV, exact sketch",loft__quest_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.88__max_context200000
+Ministral-3,LOFT,32,8,vkv_nofetch_kvzip,hotpotqa,48.0,25,vKV (no fetch)+KVzip,loft__hotpotqa_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.88__max_context200000
+Ministral-3,LOFT,32,8,vkv_nofetch_kvzip,musique,40.0,25,vKV (no fetch)+KVzip,loft__musique_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.88__max_context200000
+Ministral-3,LOFT,32,8,vkv_nofetch_kvzip,nq,72.0,25,vKV (no fetch)+KVzip,loft__nq_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.88__max_context200000
+Ministral-3,LOFT,32,8,vkv_nofetch_kvzip,qampari,28.0,25,vKV (no fetch)+KVzip,loft__qampari_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.88__max_context200000
+Ministral-3,LOFT,32,8,vkv_nofetch_kvzip,quest,32.0,25,vKV (no fetch)+KVzip,loft__quest_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.88__max_context200000
+Ministral-3,LOFT,32,16,dense,hotpotqa,68.0,25,Dense,loft__hotpotqa_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,32,16,dense,musique,32.0,25,Dense,loft__musique_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,32,16,dense,nq,76.0,25,Dense,loft__nq_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,32,16,dense,qampari,36.0,25,Dense,loft__qampari_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,32,16,dense,quest,36.0,25,Dense,loft__quest_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,32,16,fastkvzip,hotpotqa,40.0,25,Fast KVzip,loft__hotpotqa_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.94__max_context200000
+Ministral-3,LOFT,32,16,fastkvzip,musique,12.0,25,Fast KVzip,loft__musique_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.94__max_context200000
+Ministral-3,LOFT,32,16,fastkvzip,nq,28.0,25,Fast KVzip,loft__nq_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.94__max_context200000
+Ministral-3,LOFT,32,16,fastkvzip,qampari,0.0,25,Fast KVzip,loft__qampari_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.94__max_context200000
+Ministral-3,LOFT,32,16,fastkvzip,quest,0.0,25,Fast KVzip,loft__quest_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.94__max_context200000
+Ministral-3,LOFT,32,16,kvzip,hotpotqa,52.0,25,KVzip,loft__hotpotqa_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.94__max_context200000
+Ministral-3,LOFT,32,16,kvzip,musique,4.0,25,KVzip,loft__musique_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.94__max_context200000
+Ministral-3,LOFT,32,16,kvzip,nq,8.0,25,KVzip,loft__nq_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.94__max_context200000
+Ministral-3,LOFT,32,16,kvzip,qampari,0.0,25,KVzip,loft__qampari_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.94__max_context200000
+Ministral-3,LOFT,32,16,kvzip,quest,16.0,25,KVzip,loft__quest_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.94__max_context200000
+Ministral-3,LOFT,32,16,vkv_final_fastkvzip,hotpotqa,52.0,25,vKV+Fast KVzip,loft__hotpotqa_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.94__max_context200000
+Ministral-3,LOFT,32,16,vkv_final_fastkvzip,musique,40.0,25,vKV+Fast KVzip,loft__musique_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.94__max_context200000
+Ministral-3,LOFT,32,16,vkv_final_fastkvzip,nq,64.0,25,vKV+Fast KVzip,loft__nq_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.94__max_context200000
+Ministral-3,LOFT,32,16,vkv_final_fastkvzip,qampari,48.0,25,vKV+Fast KVzip,loft__qampari_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.94__max_context200000
+Ministral-3,LOFT,32,16,vkv_final_fastkvzip,quest,28.0,25,vKV+Fast KVzip,loft__quest_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.94__max_context200000
+Ministral-3,LOFT,32,16,vkv_final_kvzip,hotpotqa,64.0,25,vKV+KVzip,loft__hotpotqa_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.94__max_context200000
+Ministral-3,LOFT,32,16,vkv_final_kvzip,musique,36.0,25,vKV+KVzip,loft__musique_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.94__max_context200000
+Ministral-3,LOFT,32,16,vkv_final_kvzip,nq,64.0,25,vKV+KVzip,loft__nq_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.94__max_context200000
+Ministral-3,LOFT,32,16,vkv_final_kvzip,qampari,24.0,25,vKV+KVzip,loft__qampari_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.94__max_context200000
+Ministral-3,LOFT,32,16,vkv_final_kvzip,quest,20.0,25,vKV+KVzip,loft__quest_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.94__max_context200000
+Ministral-3,LOFT,32,16,vkv_final_perfect,hotpotqa,68.0,25,"vKV, exact sketch",loft__hotpotqa_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.94__max_context200000
+Ministral-3,LOFT,32,16,vkv_final_perfect,musique,28.0,25,"vKV, exact sketch",loft__musique_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.94__max_context200000
+Ministral-3,LOFT,32,16,vkv_final_perfect,nq,72.0,25,"vKV, exact sketch",loft__nq_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.94__max_context200000
+Ministral-3,LOFT,32,16,vkv_final_perfect,qampari,40.0,25,"vKV, exact sketch",loft__qampari_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.94__max_context200000
+Ministral-3,LOFT,32,16,vkv_final_perfect,quest,36.0,25,"vKV, exact sketch",loft__quest_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.94__max_context200000
+Ministral-3,LOFT,32,16,vkv_nofetch_kvzip,hotpotqa,48.0,25,vKV (no fetch)+KVzip,loft__hotpotqa_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.94__max_context200000
+Ministral-3,LOFT,32,16,vkv_nofetch_kvzip,musique,16.0,25,vKV (no fetch)+KVzip,loft__musique_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.94__max_context200000
+Ministral-3,LOFT,32,16,vkv_nofetch_kvzip,nq,44.0,25,vKV (no fetch)+KVzip,loft__nq_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.94__max_context200000
+Ministral-3,LOFT,32,16,vkv_nofetch_kvzip,qampari,4.0,25,vKV (no fetch)+KVzip,loft__qampari_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.94__max_context200000
+Ministral-3,LOFT,32,16,vkv_nofetch_kvzip,quest,24.0,25,vKV (no fetch)+KVzip,loft__quest_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.94__max_context200000
+Ministral-3,LOFT,32,32,dense,hotpotqa,68.0,25,Dense,loft__hotpotqa_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,32,32,dense,musique,32.0,25,Dense,loft__musique_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,32,32,dense,nq,76.0,25,Dense,loft__nq_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,32,32,dense,qampari,36.0,25,Dense,loft__qampari_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,32,32,dense,quest,36.0,25,Dense,loft__quest_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,32,32,fastkvzip,hotpotqa,8.0,25,Fast KVzip,loft__hotpotqa_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.97__max_context200000
+Ministral-3,LOFT,32,32,fastkvzip,musique,0.0,25,Fast KVzip,loft__musique_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.97__max_context200000
+Ministral-3,LOFT,32,32,fastkvzip,nq,4.0,25,Fast KVzip,loft__nq_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.97__max_context200000
+Ministral-3,LOFT,32,32,fastkvzip,qampari,0.0,25,Fast KVzip,loft__qampari_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.97__max_context200000
+Ministral-3,LOFT,32,32,fastkvzip,quest,0.0,25,Fast KVzip,loft__quest_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.97__max_context200000
+Ministral-3,LOFT,32,32,kvzip,hotpotqa,0.0,25,KVzip,loft__hotpotqa_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.97__max_context200000
+Ministral-3,LOFT,32,32,kvzip,musique,0.0,25,KVzip,loft__musique_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.97__max_context200000
+Ministral-3,LOFT,32,32,kvzip,nq,0.0,25,KVzip,loft__nq_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.97__max_context200000
+Ministral-3,LOFT,32,32,kvzip,qampari,0.0,25,KVzip,loft__qampari_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.97__max_context200000
+Ministral-3,LOFT,32,32,kvzip,quest,0.0,25,KVzip,loft__quest_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.97__max_context200000
+Ministral-3,LOFT,32,32,vkv_final_fastkvzip,hotpotqa,68.0,25,vKV+Fast KVzip,loft__hotpotqa_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.97__max_context200000
+Ministral-3,LOFT,32,32,vkv_final_fastkvzip,musique,28.0,25,vKV+Fast KVzip,loft__musique_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.97__max_context200000
+Ministral-3,LOFT,32,32,vkv_final_fastkvzip,nq,56.0,25,vKV+Fast KVzip,loft__nq_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.97__max_context200000
+Ministral-3,LOFT,32,32,vkv_final_fastkvzip,qampari,32.0,25,vKV+Fast KVzip,loft__qampari_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.97__max_context200000
+Ministral-3,LOFT,32,32,vkv_final_fastkvzip,quest,20.0,25,vKV+Fast KVzip,loft__quest_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.97__max_context200000
+Ministral-3,LOFT,32,32,vkv_final_kvzip,hotpotqa,64.0,25,vKV+KVzip,loft__hotpotqa_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.97__max_context200000
+Ministral-3,LOFT,32,32,vkv_final_kvzip,musique,32.0,25,vKV+KVzip,loft__musique_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.97__max_context200000
+Ministral-3,LOFT,32,32,vkv_final_kvzip,nq,72.0,25,vKV+KVzip,loft__nq_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.97__max_context200000
+Ministral-3,LOFT,32,32,vkv_final_kvzip,qampari,36.0,25,vKV+KVzip,loft__qampari_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.97__max_context200000
+Ministral-3,LOFT,32,32,vkv_final_kvzip,quest,24.0,25,vKV+KVzip,loft__quest_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.97__max_context200000
+Ministral-3,LOFT,32,32,vkv_final_perfect,hotpotqa,72.0,25,"vKV, exact sketch",loft__hotpotqa_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.97__max_context200000
+Ministral-3,LOFT,32,32,vkv_final_perfect,musique,32.0,25,"vKV, exact sketch",loft__musique_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.97__max_context200000
+Ministral-3,LOFT,32,32,vkv_final_perfect,nq,72.0,25,"vKV, exact sketch",loft__nq_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.97__max_context200000
+Ministral-3,LOFT,32,32,vkv_final_perfect,qampari,40.0,25,"vKV, exact sketch",loft__qampari_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.97__max_context200000
+Ministral-3,LOFT,32,32,vkv_final_perfect,quest,44.0,25,"vKV, exact sketch",loft__quest_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.97__max_context200000
+Ministral-3,LOFT,32,32,vkv_nofetch_kvzip,hotpotqa,16.0,25,vKV (no fetch)+KVzip,loft__hotpotqa_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.97__max_context200000
+Ministral-3,LOFT,32,32,vkv_nofetch_kvzip,musique,12.0,25,vKV (no fetch)+KVzip,loft__musique_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.97__max_context200000
+Ministral-3,LOFT,32,32,vkv_nofetch_kvzip,nq,24.0,25,vKV (no fetch)+KVzip,loft__nq_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.97__max_context200000
+Ministral-3,LOFT,32,32,vkv_nofetch_kvzip,qampari,0.0,25,vKV (no fetch)+KVzip,loft__qampari_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.97__max_context200000
+Ministral-3,LOFT,32,32,vkv_nofetch_kvzip,quest,12.0,25,vKV (no fetch)+KVzip,loft__quest_32k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.97__max_context200000
+Ministral-3,LOFT,128,8,dense,hotpotqa,64.0,25,Dense,loft__hotpotqa_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,128,8,dense,musique,52.0,25,Dense,loft__musique_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,128,8,dense,nq,48.0,25,Dense,loft__nq_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,128,8,dense,qampari,12.0,25,Dense,loft__qampari_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,128,8,dense,quest,28.0,25,Dense,loft__quest_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,128,8,fastkvzip,hotpotqa,36.0,25,Fast KVzip,loft__hotpotqa_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.88__max_context200000
+Ministral-3,LOFT,128,8,fastkvzip,musique,52.0,25,Fast KVzip,loft__musique_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.88__max_context200000
+Ministral-3,LOFT,128,8,fastkvzip,nq,20.0,25,Fast KVzip,loft__nq_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.88__max_context200000
+Ministral-3,LOFT,128,8,fastkvzip,qampari,4.0,25,Fast KVzip,loft__qampari_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.88__max_context200000
+Ministral-3,LOFT,128,8,fastkvzip,quest,12.0,25,Fast KVzip,loft__quest_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.88__max_context200000
+Ministral-3,LOFT,128,8,kvzip,hotpotqa,36.0,25,KVzip,loft__hotpotqa_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.88__max_context200000
+Ministral-3,LOFT,128,8,kvzip,musique,40.0,25,KVzip,loft__musique_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.88__max_context200000
+Ministral-3,LOFT,128,8,kvzip,nq,20.0,25,KVzip,loft__nq_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.88__max_context200000
+Ministral-3,LOFT,128,8,kvzip,qampari,0.0,25,KVzip,loft__qampari_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.88__max_context200000
+Ministral-3,LOFT,128,8,kvzip,quest,4.0,25,KVzip,loft__quest_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.88__max_context200000
+Ministral-3,LOFT,128,8,vkv_final_fastkvzip,hotpotqa,64.0,25,vKV+Fast KVzip,loft__hotpotqa_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.88__max_context200000
+Ministral-3,LOFT,128,8,vkv_final_fastkvzip,musique,48.0,25,vKV+Fast KVzip,loft__musique_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.88__max_context200000
+Ministral-3,LOFT,128,8,vkv_final_fastkvzip,nq,52.0,25,vKV+Fast KVzip,loft__nq_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.88__max_context200000
+Ministral-3,LOFT,128,8,vkv_final_fastkvzip,qampari,12.0,25,vKV+Fast KVzip,loft__qampari_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.88__max_context200000
+Ministral-3,LOFT,128,8,vkv_final_fastkvzip,quest,32.0,25,vKV+Fast KVzip,loft__quest_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.88__max_context200000
+Ministral-3,LOFT,128,8,vkv_final_kvzip,hotpotqa,68.0,25,vKV+KVzip,loft__hotpotqa_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.88__max_context200000
+Ministral-3,LOFT,128,8,vkv_final_kvzip,musique,40.0,25,vKV+KVzip,loft__musique_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.88__max_context200000
+Ministral-3,LOFT,128,8,vkv_final_kvzip,nq,36.0,25,vKV+KVzip,loft__nq_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.88__max_context200000
+Ministral-3,LOFT,128,8,vkv_final_kvzip,qampari,24.0,25,vKV+KVzip,loft__qampari_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.88__max_context200000
+Ministral-3,LOFT,128,8,vkv_final_kvzip,quest,24.0,25,vKV+KVzip,loft__quest_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.88__max_context200000
+Ministral-3,LOFT,128,8,vkv_final_perfect,hotpotqa,68.0,25,"vKV, exact sketch",loft__hotpotqa_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.88__max_context200000
+Ministral-3,LOFT,128,8,vkv_final_perfect,musique,52.0,25,"vKV, exact sketch",loft__musique_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.88__max_context200000
+Ministral-3,LOFT,128,8,vkv_final_perfect,nq,48.0,25,"vKV, exact sketch",loft__nq_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.88__max_context200000
+Ministral-3,LOFT,128,8,vkv_final_perfect,qampari,16.0,25,"vKV, exact sketch",loft__qampari_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.88__max_context200000
+Ministral-3,LOFT,128,8,vkv_final_perfect,quest,28.0,25,"vKV, exact sketch",loft__quest_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.88__max_context200000
+Ministral-3,LOFT,128,8,vkv_nofetch_kvzip,hotpotqa,64.0,25,vKV (no fetch)+KVzip,loft__hotpotqa_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.88__max_context200000
+Ministral-3,LOFT,128,8,vkv_nofetch_kvzip,musique,12.0,25,vKV (no fetch)+KVzip,loft__musique_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.88__max_context200000
+Ministral-3,LOFT,128,8,vkv_nofetch_kvzip,nq,68.0,25,vKV (no fetch)+KVzip,loft__nq_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.88__max_context200000
+Ministral-3,LOFT,128,8,vkv_nofetch_kvzip,qampari,16.0,25,vKV (no fetch)+KVzip,loft__qampari_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.88__max_context200000
+Ministral-3,LOFT,128,8,vkv_nofetch_kvzip,quest,24.0,25,vKV (no fetch)+KVzip,loft__quest_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.88__max_context200000
+Ministral-3,LOFT,128,16,dense,hotpotqa,64.0,25,Dense,loft__hotpotqa_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,128,16,dense,musique,52.0,25,Dense,loft__musique_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,128,16,dense,nq,48.0,25,Dense,loft__nq_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,128,16,dense,qampari,12.0,25,Dense,loft__qampari_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,128,16,dense,quest,28.0,25,Dense,loft__quest_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,128,16,fastkvzip,hotpotqa,24.0,25,Fast KVzip,loft__hotpotqa_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.94__max_context200000
+Ministral-3,LOFT,128,16,fastkvzip,musique,36.0,25,Fast KVzip,loft__musique_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.94__max_context200000
+Ministral-3,LOFT,128,16,fastkvzip,nq,28.0,25,Fast KVzip,loft__nq_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.94__max_context200000
+Ministral-3,LOFT,128,16,fastkvzip,qampari,0.0,25,Fast KVzip,loft__qampari_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.94__max_context200000
+Ministral-3,LOFT,128,16,fastkvzip,quest,0.0,25,Fast KVzip,loft__quest_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.94__max_context200000
+Ministral-3,LOFT,128,16,kvzip,hotpotqa,24.0,25,KVzip,loft__hotpotqa_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.94__max_context200000
+Ministral-3,LOFT,128,16,kvzip,musique,12.0,25,KVzip,loft__musique_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.94__max_context200000
+Ministral-3,LOFT,128,16,kvzip,nq,4.0,25,KVzip,loft__nq_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.94__max_context200000
+Ministral-3,LOFT,128,16,kvzip,qampari,0.0,25,KVzip,loft__qampari_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.94__max_context200000
+Ministral-3,LOFT,128,16,kvzip,quest,0.0,25,KVzip,loft__quest_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.94__max_context200000
+Ministral-3,LOFT,128,16,vkv_final_fastkvzip,hotpotqa,48.0,25,vKV+Fast KVzip,loft__hotpotqa_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.94__max_context200000
+Ministral-3,LOFT,128,16,vkv_final_fastkvzip,musique,32.0,25,vKV+Fast KVzip,loft__musique_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.94__max_context200000
+Ministral-3,LOFT,128,16,vkv_final_fastkvzip,nq,36.0,25,vKV+Fast KVzip,loft__nq_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.94__max_context200000
+Ministral-3,LOFT,128,16,vkv_final_fastkvzip,qampari,12.0,25,vKV+Fast KVzip,loft__qampari_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.94__max_context200000
+Ministral-3,LOFT,128,16,vkv_final_fastkvzip,quest,16.0,25,vKV+Fast KVzip,loft__quest_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.94__max_context200000
+Ministral-3,LOFT,128,16,vkv_final_kvzip,hotpotqa,60.0,25,vKV+KVzip,loft__hotpotqa_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.94__max_context200000
+Ministral-3,LOFT,128,16,vkv_final_kvzip,musique,24.0,25,vKV+KVzip,loft__musique_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.94__max_context200000
+Ministral-3,LOFT,128,16,vkv_final_kvzip,nq,68.0,25,vKV+KVzip,loft__nq_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.94__max_context200000
+Ministral-3,LOFT,128,16,vkv_final_kvzip,qampari,12.0,25,vKV+KVzip,loft__qampari_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.94__max_context200000
+Ministral-3,LOFT,128,16,vkv_final_kvzip,quest,16.0,25,vKV+KVzip,loft__quest_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.94__max_context200000
+Ministral-3,LOFT,128,16,vkv_final_perfect,hotpotqa,60.0,25,"vKV, exact sketch",loft__hotpotqa_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.94__max_context200000
+Ministral-3,LOFT,128,16,vkv_final_perfect,musique,48.0,25,"vKV, exact sketch",loft__musique_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.94__max_context200000
+Ministral-3,LOFT,128,16,vkv_final_perfect,nq,44.0,25,"vKV, exact sketch",loft__nq_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.94__max_context200000
+Ministral-3,LOFT,128,16,vkv_final_perfect,qampari,12.0,25,"vKV, exact sketch",loft__qampari_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.94__max_context200000
+Ministral-3,LOFT,128,16,vkv_final_perfect,quest,24.0,25,"vKV, exact sketch",loft__quest_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.94__max_context200000
+Ministral-3,LOFT,128,16,vkv_nofetch_kvzip,hotpotqa,40.0,25,vKV (no fetch)+KVzip,loft__hotpotqa_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.94__max_context200000
+Ministral-3,LOFT,128,16,vkv_nofetch_kvzip,musique,4.0,25,vKV (no fetch)+KVzip,loft__musique_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.94__max_context200000
+Ministral-3,LOFT,128,16,vkv_nofetch_kvzip,nq,36.0,25,vKV (no fetch)+KVzip,loft__nq_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.94__max_context200000
+Ministral-3,LOFT,128,16,vkv_nofetch_kvzip,qampari,4.0,25,vKV (no fetch)+KVzip,loft__qampari_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.94__max_context200000
+Ministral-3,LOFT,128,16,vkv_nofetch_kvzip,quest,8.0,25,vKV (no fetch)+KVzip,loft__quest_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.94__max_context200000
+Ministral-3,LOFT,128,32,dense,hotpotqa,64.0,25,Dense,loft__hotpotqa_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,128,32,dense,musique,52.0,25,Dense,loft__musique_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,128,32,dense,nq,48.0,25,Dense,loft__nq_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,128,32,dense,qampari,12.0,25,Dense,loft__qampari_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,128,32,dense,quest,28.0,25,Dense,loft__quest_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__max_context200000
+Ministral-3,LOFT,128,32,fastkvzip,hotpotqa,24.0,25,Fast KVzip,loft__hotpotqa_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.97__max_context200000
+Ministral-3,LOFT,128,32,fastkvzip,musique,12.0,25,Fast KVzip,loft__musique_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.97__max_context200000
+Ministral-3,LOFT,128,32,fastkvzip,nq,8.0,25,Fast KVzip,loft__nq_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.97__max_context200000
+Ministral-3,LOFT,128,32,fastkvzip,qampari,0.0,25,Fast KVzip,loft__qampari_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.97__max_context200000
+Ministral-3,LOFT,128,32,fastkvzip,quest,0.0,25,Fast KVzip,loft__quest_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.97__max_context200000
+Ministral-3,LOFT,128,32,kvzip,hotpotqa,0.0,25,KVzip,loft__hotpotqa_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.97__max_context200000
+Ministral-3,LOFT,128,32,kvzip,musique,0.0,25,KVzip,loft__musique_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.97__max_context200000
+Ministral-3,LOFT,128,32,kvzip,nq,0.0,25,KVzip,loft__nq_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.97__max_context200000
+Ministral-3,LOFT,128,32,kvzip,qampari,0.0,25,KVzip,loft__qampari_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.97__max_context200000
+Ministral-3,LOFT,128,32,kvzip,quest,0.0,25,KVzip,loft__quest_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.97__max_context200000
+Ministral-3,LOFT,128,32,vkv_final_fastkvzip,hotpotqa,44.0,25,vKV+Fast KVzip,loft__hotpotqa_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.97__max_context200000
+Ministral-3,LOFT,128,32,vkv_final_fastkvzip,musique,28.0,25,vKV+Fast KVzip,loft__musique_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.97__max_context200000
+Ministral-3,LOFT,128,32,vkv_final_fastkvzip,nq,48.0,25,vKV+Fast KVzip,loft__nq_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.97__max_context200000
+Ministral-3,LOFT,128,32,vkv_final_fastkvzip,qampari,8.0,25,vKV+Fast KVzip,loft__qampari_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.97__max_context200000
+Ministral-3,LOFT,128,32,vkv_final_fastkvzip,quest,20.0,25,vKV+Fast KVzip,loft__quest_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.97__max_context200000
+Ministral-3,LOFT,128,32,vkv_final_kvzip,hotpotqa,44.0,25,vKV+KVzip,loft__hotpotqa_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.97__max_context200000
+Ministral-3,LOFT,128,32,vkv_final_kvzip,musique,24.0,25,vKV+KVzip,loft__musique_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.97__max_context200000
+Ministral-3,LOFT,128,32,vkv_final_kvzip,nq,40.0,25,vKV+KVzip,loft__nq_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.97__max_context200000
+Ministral-3,LOFT,128,32,vkv_final_kvzip,qampari,12.0,25,vKV+KVzip,loft__qampari_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.97__max_context200000
+Ministral-3,LOFT,128,32,vkv_final_kvzip,quest,8.0,25,vKV+KVzip,loft__quest_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.97__max_context200000
+Ministral-3,LOFT,128,32,vkv_final_perfect,hotpotqa,68.0,25,"vKV, exact sketch",loft__hotpotqa_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.97__max_context200000
+Ministral-3,LOFT,128,32,vkv_final_perfect,musique,48.0,25,"vKV, exact sketch",loft__musique_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.97__max_context200000
+Ministral-3,LOFT,128,32,vkv_final_perfect,nq,52.0,25,"vKV, exact sketch",loft__nq_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.97__max_context200000
+Ministral-3,LOFT,128,32,vkv_final_perfect,qampari,12.0,25,"vKV, exact sketch",loft__qampari_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.97__max_context200000
+Ministral-3,LOFT,128,32,vkv_final_perfect,quest,24.0,25,"vKV, exact sketch",loft__quest_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.97__max_context200000
+Ministral-3,LOFT,128,32,vkv_nofetch_kvzip,hotpotqa,0.0,25,vKV (no fetch)+KVzip,loft__hotpotqa_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.97__max_context200000
+Ministral-3,LOFT,128,32,vkv_nofetch_kvzip,musique,12.0,25,vKV (no fetch)+KVzip,loft__musique_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.97__max_context200000
+Ministral-3,LOFT,128,32,vkv_nofetch_kvzip,nq,16.0,25,vKV (no fetch)+KVzip,loft__nq_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.97__max_context200000
+Ministral-3,LOFT,128,32,vkv_nofetch_kvzip,qampari,0.0,25,vKV (no fetch)+KVzip,loft__qampari_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.97__max_context200000
+Ministral-3,LOFT,128,32,vkv_nofetch_kvzip,quest,0.0,25,vKV (no fetch)+KVzip,loft__quest_128k__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.97__max_context200000
+Ministral-3,RULER,32,8,dense,cwe,76.4,50,Dense,ruler32k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples50__max_context200000
+Ministral-3,RULER,32,8,dense,niah_mk3,100.0,50,Dense,ruler32k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples50__max_context200000
+Ministral-3,RULER,32,8,dense,niah_mv,98.0,50,Dense,ruler32k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples50__max_context200000
+Ministral-3,RULER,32,8,dense,qa1,74.0,50,Dense,ruler32k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples50__max_context200000
+Ministral-3,RULER,32,8,fastkvzip,cwe,31.8,50,Fast KVzip,ruler32k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,fastkvzip,niah_mk3,68.0,50,Fast KVzip,ruler32k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,fastkvzip,niah_mv,86.0,50,Fast KVzip,ruler32k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,fastkvzip,qa1,62.0,50,Fast KVzip,ruler32k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,kvzip,cwe,40.0,50,KVzip,ruler32k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,kvzip,niah_mk3,28.0,50,KVzip,ruler32k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,kvzip,niah_mv,92.0,50,KVzip,ruler32k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,kvzip,qa1,60.0,50,KVzip,ruler32k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,vkv_final_fastkvzip,cwe,79.4,50,vKV+Fast KVzip,ruler32k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,vkv_final_fastkvzip,niah_mk3,100.0,50,vKV+Fast KVzip,ruler32k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,vkv_final_fastkvzip,niah_mv,94.0,50,vKV+Fast KVzip,ruler32k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,vkv_final_fastkvzip,qa1,66.0,50,vKV+Fast KVzip,ruler32k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,vkv_final_kvzip,cwe,75.2,50,vKV+KVzip,ruler32k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,vkv_final_kvzip,niah_mk3,98.0,50,vKV+KVzip,ruler32k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,vkv_final_kvzip,niah_mv,95.5,50,vKV+KVzip,ruler32k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,vkv_final_kvzip,qa1,68.0,50,vKV+KVzip,ruler32k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,vkv_final_perfect,cwe,78.8,50,"vKV, exact sketch",ruler32k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,vkv_final_perfect,niah_mk3,100.0,50,"vKV, exact sketch",ruler32k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,vkv_final_perfect,niah_mv,98.0,50,"vKV, exact sketch",ruler32k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,vkv_final_perfect,qa1,76.0,50,"vKV, exact sketch",ruler32k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,vkv_nofetch_kvzip,cwe,74.6,50,vKV (no fetch)+KVzip,ruler32k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,vkv_nofetch_kvzip,niah_mk3,100.0,50,vKV (no fetch)+KVzip,ruler32k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,vkv_nofetch_kvzip,niah_mv,98.0,50,vKV (no fetch)+KVzip,ruler32k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,8,vkv_nofetch_kvzip,qa1,62.0,50,vKV (no fetch)+KVzip,ruler32k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.88__nsamples50__max_context200000
+Ministral-3,RULER,32,16,dense,cwe,76.4,50,Dense,ruler32k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples50__max_context200000
+Ministral-3,RULER,32,16,dense,niah_mk3,100.0,50,Dense,ruler32k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples50__max_context200000
+Ministral-3,RULER,32,16,dense,niah_mv,98.0,50,Dense,ruler32k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples50__max_context200000
+Ministral-3,RULER,32,16,dense,qa1,74.0,50,Dense,ruler32k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples50__max_context200000
+Ministral-3,RULER,32,16,fastkvzip,cwe,26.8,50,Fast KVzip,ruler32k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,fastkvzip,niah_mk3,16.0,50,Fast KVzip,ruler32k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,fastkvzip,niah_mv,38.0,50,Fast KVzip,ruler32k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,fastkvzip,qa1,44.0,50,Fast KVzip,ruler32k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,kvzip,cwe,13.0,50,KVzip,ruler32k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,kvzip,niah_mk3,14.0,50,KVzip,ruler32k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,kvzip,niah_mv,54.5,50,KVzip,ruler32k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,kvzip,qa1,42.0,50,KVzip,ruler32k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,vkv_final_fastkvzip,cwe,76.0,50,vKV+Fast KVzip,ruler32k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,vkv_final_fastkvzip,niah_mk3,100.0,50,vKV+Fast KVzip,ruler32k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,vkv_final_fastkvzip,niah_mv,95.5,50,vKV+Fast KVzip,ruler32k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,vkv_final_fastkvzip,qa1,74.0,50,vKV+Fast KVzip,ruler32k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,vkv_final_kvzip,cwe,80.4,50,vKV+KVzip,ruler32k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,vkv_final_kvzip,niah_mk3,98.0,50,vKV+KVzip,ruler32k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,vkv_final_kvzip,niah_mv,99.5,50,vKV+KVzip,ruler32k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,vkv_final_kvzip,qa1,72.0,50,vKV+KVzip,ruler32k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,vkv_final_perfect,cwe,78.0,50,"vKV, exact sketch",ruler32k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,vkv_final_perfect,niah_mk3,100.0,50,"vKV, exact sketch",ruler32k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,vkv_final_perfect,niah_mv,98.0,50,"vKV, exact sketch",ruler32k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,vkv_final_perfect,qa1,74.0,50,"vKV, exact sketch",ruler32k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,vkv_nofetch_kvzip,cwe,65.6,50,vKV (no fetch)+KVzip,ruler32k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,vkv_nofetch_kvzip,niah_mk3,86.0,50,vKV (no fetch)+KVzip,ruler32k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,vkv_nofetch_kvzip,niah_mv,57.0,50,vKV (no fetch)+KVzip,ruler32k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,16,vkv_nofetch_kvzip,qa1,60.0,50,vKV (no fetch)+KVzip,ruler32k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.94__nsamples50__max_context200000
+Ministral-3,RULER,32,32,dense,cwe,76.4,50,Dense,ruler32k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples50__max_context200000
+Ministral-3,RULER,32,32,dense,niah_mk3,100.0,50,Dense,ruler32k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples50__max_context200000
+Ministral-3,RULER,32,32,dense,niah_mv,98.0,50,Dense,ruler32k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples50__max_context200000
+Ministral-3,RULER,32,32,dense,qa1,74.0,50,Dense,ruler32k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples50__max_context200000
+Ministral-3,RULER,32,32,fastkvzip,cwe,12.6,50,Fast KVzip,ruler32k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,fastkvzip,niah_mk3,0.0,50,Fast KVzip,ruler32k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,fastkvzip,niah_mv,3.0,50,Fast KVzip,ruler32k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,fastkvzip,qa1,16.0,50,Fast KVzip,ruler32k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,kvzip,cwe,1.8,50,KVzip,ruler32k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,kvzip,niah_mk3,0.0,50,KVzip,ruler32k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,kvzip,niah_mv,26.0,50,KVzip,ruler32k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,kvzip,qa1,20.0,50,KVzip,ruler32k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,vkv_final_fastkvzip,cwe,74.8,50,vKV+Fast KVzip,ruler32k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,vkv_final_fastkvzip,niah_mk3,94.0,50,vKV+Fast KVzip,ruler32k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,vkv_final_fastkvzip,niah_mv,98.0,50,vKV+Fast KVzip,ruler32k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,vkv_final_fastkvzip,qa1,74.0,50,vKV+Fast KVzip,ruler32k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,vkv_final_kvzip,cwe,76.2,50,vKV+KVzip,ruler32k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,vkv_final_kvzip,niah_mk3,88.0,50,vKV+KVzip,ruler32k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,vkv_final_kvzip,niah_mv,96.0,50,vKV+KVzip,ruler32k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,vkv_final_kvzip,qa1,74.0,50,vKV+KVzip,ruler32k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,vkv_final_perfect,cwe,78.4,50,"vKV, exact sketch",ruler32k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,vkv_final_perfect,niah_mk3,100.0,50,"vKV, exact sketch",ruler32k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,vkv_final_perfect,niah_mv,98.0,50,"vKV, exact sketch",ruler32k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,vkv_final_perfect,qa1,72.0,50,"vKV, exact sketch",ruler32k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,vkv_nofetch_kvzip,cwe,47.2,50,vKV (no fetch)+KVzip,ruler32k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,vkv_nofetch_kvzip,niah_mk3,0.0,50,vKV (no fetch)+KVzip,ruler32k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,vkv_nofetch_kvzip,niah_mv,2.0,50,vKV (no fetch)+KVzip,ruler32k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.97__nsamples50__max_context200000
+Ministral-3,RULER,32,32,vkv_nofetch_kvzip,qa1,40.0,50,vKV (no fetch)+KVzip,ruler32k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.97__nsamples50__max_context200000
+Ministral-3,RULER,128,8,dense,cwe,10.0,20,Dense,ruler128k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples20__max_context200000
+Ministral-3,RULER,128,8,dense,niah_mk3,100.0,20,Dense,ruler128k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples20__max_context200000
+Ministral-3,RULER,128,8,dense,niah_mv,97.5,20,Dense,ruler128k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples20__max_context200000
+Ministral-3,RULER,128,8,dense,qa1,80.0,20,Dense,ruler128k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples20__max_context200000
+Ministral-3,RULER,128,8,fastkvzip,cwe,11.0,20,Fast KVzip,ruler128k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.88__nsamples20__max_context200000
+Ministral-3,RULER,128,8,fastkvzip,niah_mk3,20.0,20,Fast KVzip,ruler128k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.88__nsamples20__max_context200000
+Ministral-3,RULER,128,8,fastkvzip,niah_mv,77.5,20,Fast KVzip,ruler128k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.88__nsamples20__max_context200000
+Ministral-3,RULER,128,8,fastkvzip,qa1,75.0,20,Fast KVzip,ruler128k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.88__nsamples20__max_context200000
+Ministral-3,RULER,128,8,kvzip,cwe,6.5,20,KVzip,ruler128k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.88__nsamples20__max_context200000
+Ministral-3,RULER,128,8,kvzip,niah_mk3,0.0,20,KVzip,ruler128k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.88__nsamples20__max_context200000
+Ministral-3,RULER,128,8,kvzip,niah_mv,81.25,20,KVzip,ruler128k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.88__nsamples20__max_context200000
+Ministral-3,RULER,128,8,kvzip,qa1,40.0,20,KVzip,ruler128k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.88__nsamples20__max_context200000
+Ministral-3,RULER,128,8,vkv_final_fastkvzip,cwe,7.2,50,vKV+Fast KVzip,ruler128k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Ministral-3,RULER,128,8,vkv_final_fastkvzip,niah_mk3,88.0,50,vKV+Fast KVzip,ruler128k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Ministral-3,RULER,128,8,vkv_final_fastkvzip,niah_mv,96.0,50,vKV+Fast KVzip,ruler128k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Ministral-3,RULER,128,8,vkv_final_fastkvzip,qa1,68.0,50,vKV+Fast KVzip,ruler128k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Ministral-3,RULER,128,8,vkv_final_kvzip,cwe,8.0,50,vKV+KVzip,ruler128k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Ministral-3,RULER,128,8,vkv_final_kvzip,niah_mk3,94.0,50,vKV+KVzip,ruler128k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Ministral-3,RULER,128,8,vkv_final_kvzip,niah_mv,99.0,50,vKV+KVzip,ruler128k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Ministral-3,RULER,128,8,vkv_final_kvzip,qa1,60.0,50,vKV+KVzip,ruler128k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Ministral-3,RULER,128,8,vkv_final_perfect,cwe,8.2,50,"vKV, exact sketch",ruler128k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.88__nsamples50__max_context200000
+Ministral-3,RULER,128,8,vkv_final_perfect,niah_mk3,96.0,50,"vKV, exact sketch",ruler128k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.88__nsamples50__max_context200000
+Ministral-3,RULER,128,8,vkv_final_perfect,niah_mv,99.0,50,"vKV, exact sketch",ruler128k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.88__nsamples50__max_context200000
+Ministral-3,RULER,128,8,vkv_final_perfect,qa1,66.0,50,"vKV, exact sketch",ruler128k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.88__nsamples50__max_context200000
+Ministral-3,RULER,128,8,vkv_nofetch_kvzip,cwe,7.0,20,vKV (no fetch)+KVzip,ruler128k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.88__nsamples20__max_context200000
+Ministral-3,RULER,128,8,vkv_nofetch_kvzip,niah_mk3,95.0,20,vKV (no fetch)+KVzip,ruler128k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.88__nsamples20__max_context200000
+Ministral-3,RULER,128,8,vkv_nofetch_kvzip,niah_mv,96.25,20,vKV (no fetch)+KVzip,ruler128k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.88__nsamples20__max_context200000
+Ministral-3,RULER,128,8,vkv_nofetch_kvzip,qa1,80.0,20,vKV (no fetch)+KVzip,ruler128k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.88__nsamples20__max_context200000
+Ministral-3,RULER,128,16,dense,cwe,10.0,20,Dense,ruler128k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples20__max_context200000
+Ministral-3,RULER,128,16,dense,niah_mk3,100.0,20,Dense,ruler128k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples20__max_context200000
+Ministral-3,RULER,128,16,dense,niah_mv,97.5,20,Dense,ruler128k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples20__max_context200000
+Ministral-3,RULER,128,16,dense,qa1,80.0,20,Dense,ruler128k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples20__max_context200000
+Ministral-3,RULER,128,16,fastkvzip,cwe,3.5,20,Fast KVzip,ruler128k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.94__nsamples20__max_context200000
+Ministral-3,RULER,128,16,fastkvzip,niah_mk3,10.0,20,Fast KVzip,ruler128k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.94__nsamples20__max_context200000
+Ministral-3,RULER,128,16,fastkvzip,niah_mv,37.5,20,Fast KVzip,ruler128k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.94__nsamples20__max_context200000
+Ministral-3,RULER,128,16,fastkvzip,qa1,45.0,20,Fast KVzip,ruler128k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.94__nsamples20__max_context200000
+Ministral-3,RULER,128,16,kvzip,cwe,0.0,20,KVzip,ruler128k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.94__nsamples20__max_context200000
+Ministral-3,RULER,128,16,kvzip,niah_mk3,0.0,20,KVzip,ruler128k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.94__nsamples20__max_context200000
+Ministral-3,RULER,128,16,kvzip,niah_mv,50.0,20,KVzip,ruler128k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.94__nsamples20__max_context200000
+Ministral-3,RULER,128,16,kvzip,qa1,30.0,20,KVzip,ruler128k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.94__nsamples20__max_context200000
+Ministral-3,RULER,128,16,vkv_final_fastkvzip,cwe,7.2,50,vKV+Fast KVzip,ruler128k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Ministral-3,RULER,128,16,vkv_final_fastkvzip,niah_mk3,64.0,50,vKV+Fast KVzip,ruler128k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Ministral-3,RULER,128,16,vkv_final_fastkvzip,niah_mv,96.0,50,vKV+Fast KVzip,ruler128k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Ministral-3,RULER,128,16,vkv_final_fastkvzip,qa1,56.0,50,vKV+Fast KVzip,ruler128k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Ministral-3,RULER,128,16,vkv_final_kvzip,cwe,7.2,50,vKV+KVzip,ruler128k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Ministral-3,RULER,128,16,vkv_final_kvzip,niah_mk3,70.0,50,vKV+KVzip,ruler128k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Ministral-3,RULER,128,16,vkv_final_kvzip,niah_mv,97.0,50,vKV+KVzip,ruler128k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Ministral-3,RULER,128,16,vkv_final_kvzip,qa1,58.0,50,vKV+KVzip,ruler128k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Ministral-3,RULER,128,16,vkv_final_perfect,cwe,7.6,50,"vKV, exact sketch",ruler128k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.94__nsamples50__max_context200000
+Ministral-3,RULER,128,16,vkv_final_perfect,niah_mk3,96.0,50,"vKV, exact sketch",ruler128k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.94__nsamples50__max_context200000
+Ministral-3,RULER,128,16,vkv_final_perfect,niah_mv,99.5,50,"vKV, exact sketch",ruler128k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.94__nsamples50__max_context200000
+Ministral-3,RULER,128,16,vkv_final_perfect,qa1,68.0,50,"vKV, exact sketch",ruler128k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.94__nsamples50__max_context200000
+Ministral-3,RULER,128,16,vkv_nofetch_kvzip,cwe,6.5,20,vKV (no fetch)+KVzip,ruler128k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.94__nsamples20__max_context200000
+Ministral-3,RULER,128,16,vkv_nofetch_kvzip,niah_mk3,55.0,20,vKV (no fetch)+KVzip,ruler128k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.94__nsamples20__max_context200000
+Ministral-3,RULER,128,16,vkv_nofetch_kvzip,niah_mv,51.25,20,vKV (no fetch)+KVzip,ruler128k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.94__nsamples20__max_context200000
+Ministral-3,RULER,128,16,vkv_nofetch_kvzip,qa1,65.0,20,vKV (no fetch)+KVzip,ruler128k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.94__nsamples20__max_context200000
+Ministral-3,RULER,128,32,dense,cwe,10.0,20,Dense,ruler128k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples20__max_context200000
+Ministral-3,RULER,128,32,dense,niah_mk3,100.0,20,Dense,ruler128k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples20__max_context200000
+Ministral-3,RULER,128,32,dense,niah_mv,97.5,20,Dense,ruler128k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples20__max_context200000
+Ministral-3,RULER,128,32,dense,qa1,80.0,20,Dense,ruler128k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__no_press__0.00__nsamples20__max_context200000
+Ministral-3,RULER,128,32,fastkvzip,cwe,4.5,20,Fast KVzip,ruler128k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.97__nsamples20__max_context200000
+Ministral-3,RULER,128,32,fastkvzip,niah_mk3,0.0,20,Fast KVzip,ruler128k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.97__nsamples20__max_context200000
+Ministral-3,RULER,128,32,fastkvzip,niah_mv,0.0,20,Fast KVzip,ruler128k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.97__nsamples20__max_context200000
+Ministral-3,RULER,128,32,fastkvzip,qa1,30.0,20,Fast KVzip,ruler128k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__fastkvzip__0.97__nsamples20__max_context200000
+Ministral-3,RULER,128,32,kvzip,cwe,0.5,20,KVzip,ruler128k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.97__nsamples20__max_context200000
+Ministral-3,RULER,128,32,kvzip,niah_mk3,0.0,20,KVzip,ruler128k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.97__nsamples20__max_context200000
+Ministral-3,RULER,128,32,kvzip,niah_mv,5.0,20,KVzip,ruler128k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.97__nsamples20__max_context200000
+Ministral-3,RULER,128,32,kvzip,qa1,20.0,20,KVzip,ruler128k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__kvzip_c__0.97__nsamples20__max_context200000
+Ministral-3,RULER,128,32,vkv_final_fastkvzip,cwe,8.2,50,vKV+Fast KVzip,ruler128k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Ministral-3,RULER,128,32,vkv_final_fastkvzip,niah_mk3,30.0,50,vKV+Fast KVzip,ruler128k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Ministral-3,RULER,128,32,vkv_final_fastkvzip,niah_mv,91.0,50,vKV+Fast KVzip,ruler128k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Ministral-3,RULER,128,32,vkv_final_fastkvzip,qa1,60.0,50,vKV+Fast KVzip,ruler128k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Ministral-3,RULER,128,32,vkv_final_kvzip,cwe,7.0,50,vKV+KVzip,ruler128k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Ministral-3,RULER,128,32,vkv_final_kvzip,niah_mk3,30.0,50,vKV+KVzip,ruler128k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Ministral-3,RULER,128,32,vkv_final_kvzip,niah_mv,94.5,50,vKV+KVzip,ruler128k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Ministral-3,RULER,128,32,vkv_final_kvzip,qa1,56.0,50,vKV+KVzip,ruler128k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Ministral-3,RULER,128,32,vkv_final_perfect,cwe,7.2,50,"vKV, exact sketch",ruler128k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.97__nsamples50__max_context200000
+Ministral-3,RULER,128,32,vkv_final_perfect,niah_mk3,96.0,50,"vKV, exact sketch",ruler128k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.97__nsamples50__max_context200000
+Ministral-3,RULER,128,32,vkv_final_perfect,niah_mv,98.5,50,"vKV, exact sketch",ruler128k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.97__nsamples50__max_context200000
+Ministral-3,RULER,128,32,vkv_final_perfect,qa1,70.0,50,"vKV, exact sketch",ruler128k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__vkv_final_perfect__0.97__nsamples50__max_context200000
+Ministral-3,RULER,128,32,vkv_nofetch_kvzip,cwe,4.0,20,vKV (no fetch)+KVzip,ruler128k__cwe__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.97__nsamples20__max_context200000
+Ministral-3,RULER,128,32,vkv_nofetch_kvzip,niah_mk3,0.0,20,vKV (no fetch)+KVzip,ruler128k__niah_multikey_3__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.97__nsamples20__max_context200000
+Ministral-3,RULER,128,32,vkv_nofetch_kvzip,niah_mv,5.0,20,vKV (no fetch)+KVzip,ruler128k__niah_multivalue__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.97__nsamples20__max_context200000
+Ministral-3,RULER,128,32,vkv_nofetch_kvzip,qa1,40.0,20,vKV (no fetch)+KVzip,ruler128k__qa_1__mistralai--Ministral-3-8B-Instruct-2512-BF16__bernoulli_kvzip_c__0.97__nsamples20__max_context200000
+Qwen3,LOFT,32,8,dense,hotpotqa,44.0,25,Dense,loft__hotpotqa_32k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,32,8,dense,musique,28.0,25,Dense,loft__musique_32k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,32,8,dense,nq,40.0,25,Dense,loft__nq_32k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,32,8,dense,qampari,48.0,25,Dense,loft__qampari_32k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,32,8,dense,quest,16.0,25,Dense,loft__quest_32k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,32,8,fastkvzip,hotpotqa,44.0,25,Fast KVzip,loft__hotpotqa_32k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.88__max_context200000
+Qwen3,LOFT,32,8,fastkvzip,musique,28.0,25,Fast KVzip,loft__musique_32k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.88__max_context200000
+Qwen3,LOFT,32,8,fastkvzip,nq,32.0,25,Fast KVzip,loft__nq_32k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.88__max_context200000
+Qwen3,LOFT,32,8,fastkvzip,qampari,0.0,25,Fast KVzip,loft__qampari_32k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.88__max_context200000
+Qwen3,LOFT,32,8,fastkvzip,quest,8.0,25,Fast KVzip,loft__quest_32k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.88__max_context200000
+Qwen3,LOFT,32,8,kvzip,hotpotqa,52.0,25,KVzip,loft__hotpotqa_32k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.88__max_context200000
+Qwen3,LOFT,32,8,kvzip,musique,20.0,25,KVzip,loft__musique_32k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.88__max_context200000
+Qwen3,LOFT,32,8,kvzip,nq,12.0,25,KVzip,loft__nq_32k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.88__max_context200000
+Qwen3,LOFT,32,8,kvzip,qampari,0.0,25,KVzip,loft__qampari_32k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.88__max_context200000
+Qwen3,LOFT,32,8,kvzip,quest,0.0,25,KVzip,loft__quest_32k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.88__max_context200000
+Qwen3,LOFT,32,8,vkv_final_fastkvzip,hotpotqa,44.0,25,vKV+Fast KVzip,loft__hotpotqa_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.88__max_context200000
+Qwen3,LOFT,32,8,vkv_final_fastkvzip,musique,28.0,25,vKV+Fast KVzip,loft__musique_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.88__max_context200000
+Qwen3,LOFT,32,8,vkv_final_fastkvzip,nq,24.0,25,vKV+Fast KVzip,loft__nq_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.88__max_context200000
+Qwen3,LOFT,32,8,vkv_final_fastkvzip,qampari,48.0,25,vKV+Fast KVzip,loft__qampari_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.88__max_context200000
+Qwen3,LOFT,32,8,vkv_final_fastkvzip,quest,16.0,25,vKV+Fast KVzip,loft__quest_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.88__max_context200000
+Qwen3,LOFT,32,8,vkv_final_kvzip,hotpotqa,40.0,25,vKV+KVzip,loft__hotpotqa_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.88__max_context200000
+Qwen3,LOFT,32,8,vkv_final_kvzip,musique,24.0,25,vKV+KVzip,loft__musique_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.88__max_context200000
+Qwen3,LOFT,32,8,vkv_final_kvzip,nq,28.0,25,vKV+KVzip,loft__nq_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.88__max_context200000
+Qwen3,LOFT,32,8,vkv_final_kvzip,qampari,40.0,25,vKV+KVzip,loft__qampari_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.88__max_context200000
+Qwen3,LOFT,32,8,vkv_final_kvzip,quest,16.0,25,vKV+KVzip,loft__quest_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.88__max_context200000
+Qwen3,LOFT,32,8,vkv_final_perfect,hotpotqa,48.0,25,"vKV, exact sketch",loft__hotpotqa_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.88__max_context200000
+Qwen3,LOFT,32,8,vkv_final_perfect,musique,32.0,25,"vKV, exact sketch",loft__musique_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.88__max_context200000
+Qwen3,LOFT,32,8,vkv_final_perfect,nq,40.0,25,"vKV, exact sketch",loft__nq_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.88__max_context200000
+Qwen3,LOFT,32,8,vkv_final_perfect,qampari,36.0,25,"vKV, exact sketch",loft__qampari_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.88__max_context200000
+Qwen3,LOFT,32,8,vkv_final_perfect,quest,20.0,25,"vKV, exact sketch",loft__quest_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.88__max_context200000
+Qwen3,LOFT,32,8,vkv_nofetch_kvzip,hotpotqa,60.0,25,vKV (no fetch)+KVzip,loft__hotpotqa_32k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.88__max_context200000
+Qwen3,LOFT,32,8,vkv_nofetch_kvzip,musique,8.0,25,vKV (no fetch)+KVzip,loft__musique_32k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.88__max_context200000
+Qwen3,LOFT,32,8,vkv_nofetch_kvzip,nq,48.0,25,vKV (no fetch)+KVzip,loft__nq_32k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.88__max_context200000
+Qwen3,LOFT,32,8,vkv_nofetch_kvzip,qampari,24.0,25,vKV (no fetch)+KVzip,loft__qampari_32k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.88__max_context200000
+Qwen3,LOFT,32,8,vkv_nofetch_kvzip,quest,8.0,25,vKV (no fetch)+KVzip,loft__quest_32k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.88__max_context200000
+Qwen3,LOFT,32,16,dense,hotpotqa,44.0,25,Dense,loft__hotpotqa_32k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,32,16,dense,musique,28.0,25,Dense,loft__musique_32k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,32,16,dense,nq,40.0,25,Dense,loft__nq_32k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,32,16,dense,qampari,48.0,25,Dense,loft__qampari_32k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,32,16,dense,quest,16.0,25,Dense,loft__quest_32k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,32,16,fastkvzip,hotpotqa,24.0,25,Fast KVzip,loft__hotpotqa_32k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.94__max_context200000
+Qwen3,LOFT,32,16,fastkvzip,musique,4.0,25,Fast KVzip,loft__musique_32k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.94__max_context200000
+Qwen3,LOFT,32,16,fastkvzip,nq,8.0,25,Fast KVzip,loft__nq_32k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.94__max_context200000
+Qwen3,LOFT,32,16,fastkvzip,qampari,0.0,25,Fast KVzip,loft__qampari_32k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.94__max_context200000
+Qwen3,LOFT,32,16,fastkvzip,quest,0.0,25,Fast KVzip,loft__quest_32k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.94__max_context200000
+Qwen3,LOFT,32,16,kvzip,hotpotqa,20.0,25,KVzip,loft__hotpotqa_32k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.94__max_context200000
+Qwen3,LOFT,32,16,kvzip,musique,0.0,25,KVzip,loft__musique_32k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.94__max_context200000
+Qwen3,LOFT,32,16,kvzip,nq,16.0,25,KVzip,loft__nq_32k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.94__max_context200000
+Qwen3,LOFT,32,16,kvzip,qampari,0.0,25,KVzip,loft__qampari_32k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.94__max_context200000
+Qwen3,LOFT,32,16,kvzip,quest,0.0,25,KVzip,loft__quest_32k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.94__max_context200000
+Qwen3,LOFT,32,16,vkv_final_fastkvzip,hotpotqa,48.0,25,vKV+Fast KVzip,loft__hotpotqa_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.94__max_context200000
+Qwen3,LOFT,32,16,vkv_final_fastkvzip,musique,36.0,25,vKV+Fast KVzip,loft__musique_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.94__max_context200000
+Qwen3,LOFT,32,16,vkv_final_fastkvzip,nq,32.0,25,vKV+Fast KVzip,loft__nq_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.94__max_context200000
+Qwen3,LOFT,32,16,vkv_final_fastkvzip,qampari,44.0,25,vKV+Fast KVzip,loft__qampari_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.94__max_context200000
+Qwen3,LOFT,32,16,vkv_final_fastkvzip,quest,12.0,25,vKV+Fast KVzip,loft__quest_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.94__max_context200000
+Qwen3,LOFT,32,16,vkv_final_kvzip,hotpotqa,48.0,25,vKV+KVzip,loft__hotpotqa_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.94__max_context200000
+Qwen3,LOFT,32,16,vkv_final_kvzip,musique,28.0,25,vKV+KVzip,loft__musique_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.94__max_context200000
+Qwen3,LOFT,32,16,vkv_final_kvzip,nq,32.0,25,vKV+KVzip,loft__nq_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.94__max_context200000
+Qwen3,LOFT,32,16,vkv_final_kvzip,qampari,48.0,25,vKV+KVzip,loft__qampari_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.94__max_context200000
+Qwen3,LOFT,32,16,vkv_final_kvzip,quest,16.0,25,vKV+KVzip,loft__quest_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.94__max_context200000
+Qwen3,LOFT,32,16,vkv_final_perfect,hotpotqa,48.0,25,"vKV, exact sketch",loft__hotpotqa_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.94__max_context200000
+Qwen3,LOFT,32,16,vkv_final_perfect,musique,28.0,25,"vKV, exact sketch",loft__musique_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.94__max_context200000
+Qwen3,LOFT,32,16,vkv_final_perfect,nq,44.0,25,"vKV, exact sketch",loft__nq_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.94__max_context200000
+Qwen3,LOFT,32,16,vkv_final_perfect,qampari,40.0,25,"vKV, exact sketch",loft__qampari_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.94__max_context200000
+Qwen3,LOFT,32,16,vkv_final_perfect,quest,16.0,25,"vKV, exact sketch",loft__quest_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.94__max_context200000
+Qwen3,LOFT,32,16,vkv_nofetch_kvzip,hotpotqa,44.0,25,vKV (no fetch)+KVzip,loft__hotpotqa_32k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.94__max_context200000
+Qwen3,LOFT,32,16,vkv_nofetch_kvzip,musique,0.0,25,vKV (no fetch)+KVzip,loft__musique_32k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.94__max_context200000
+Qwen3,LOFT,32,16,vkv_nofetch_kvzip,nq,44.0,25,vKV (no fetch)+KVzip,loft__nq_32k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.94__max_context200000
+Qwen3,LOFT,32,16,vkv_nofetch_kvzip,qampari,0.0,25,vKV (no fetch)+KVzip,loft__qampari_32k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.94__max_context200000
+Qwen3,LOFT,32,16,vkv_nofetch_kvzip,quest,0.0,25,vKV (no fetch)+KVzip,loft__quest_32k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.94__max_context200000
+Qwen3,LOFT,32,32,dense,hotpotqa,44.0,25,Dense,loft__hotpotqa_32k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,32,32,dense,musique,28.0,25,Dense,loft__musique_32k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,32,32,dense,nq,40.0,25,Dense,loft__nq_32k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,32,32,dense,qampari,48.0,25,Dense,loft__qampari_32k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,32,32,dense,quest,16.0,25,Dense,loft__quest_32k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,32,32,fastkvzip,hotpotqa,20.0,25,Fast KVzip,loft__hotpotqa_32k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.97__max_context200000
+Qwen3,LOFT,32,32,fastkvzip,musique,0.0,25,Fast KVzip,loft__musique_32k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.97__max_context200000
+Qwen3,LOFT,32,32,fastkvzip,nq,0.0,25,Fast KVzip,loft__nq_32k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.97__max_context200000
+Qwen3,LOFT,32,32,fastkvzip,qampari,0.0,25,Fast KVzip,loft__qampari_32k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.97__max_context200000
+Qwen3,LOFT,32,32,fastkvzip,quest,0.0,25,Fast KVzip,loft__quest_32k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.97__max_context200000
+Qwen3,LOFT,32,32,kvzip,hotpotqa,4.0,25,KVzip,loft__hotpotqa_32k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.97__max_context200000
+Qwen3,LOFT,32,32,kvzip,musique,0.0,25,KVzip,loft__musique_32k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.97__max_context200000
+Qwen3,LOFT,32,32,kvzip,nq,0.0,25,KVzip,loft__nq_32k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.97__max_context200000
+Qwen3,LOFT,32,32,kvzip,qampari,0.0,25,KVzip,loft__qampari_32k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.97__max_context200000
+Qwen3,LOFT,32,32,kvzip,quest,0.0,25,KVzip,loft__quest_32k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.97__max_context200000
+Qwen3,LOFT,32,32,vkv_final_fastkvzip,hotpotqa,52.0,25,vKV+Fast KVzip,loft__hotpotqa_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.97__max_context200000
+Qwen3,LOFT,32,32,vkv_final_fastkvzip,musique,24.0,25,vKV+Fast KVzip,loft__musique_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.97__max_context200000
+Qwen3,LOFT,32,32,vkv_final_fastkvzip,nq,32.0,25,vKV+Fast KVzip,loft__nq_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.97__max_context200000
+Qwen3,LOFT,32,32,vkv_final_fastkvzip,qampari,44.0,25,vKV+Fast KVzip,loft__qampari_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.97__max_context200000
+Qwen3,LOFT,32,32,vkv_final_fastkvzip,quest,16.0,25,vKV+Fast KVzip,loft__quest_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.97__max_context200000
+Qwen3,LOFT,32,32,vkv_final_kvzip,hotpotqa,48.0,25,vKV+KVzip,loft__hotpotqa_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.97__max_context200000
+Qwen3,LOFT,32,32,vkv_final_kvzip,musique,24.0,25,vKV+KVzip,loft__musique_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.97__max_context200000
+Qwen3,LOFT,32,32,vkv_final_kvzip,nq,32.0,25,vKV+KVzip,loft__nq_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.97__max_context200000
+Qwen3,LOFT,32,32,vkv_final_kvzip,qampari,48.0,25,vKV+KVzip,loft__qampari_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.97__max_context200000
+Qwen3,LOFT,32,32,vkv_final_kvzip,quest,20.0,25,vKV+KVzip,loft__quest_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.97__max_context200000
+Qwen3,LOFT,32,32,vkv_final_perfect,hotpotqa,52.0,25,"vKV, exact sketch",loft__hotpotqa_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.97__max_context200000
+Qwen3,LOFT,32,32,vkv_final_perfect,musique,28.0,25,"vKV, exact sketch",loft__musique_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.97__max_context200000
+Qwen3,LOFT,32,32,vkv_final_perfect,nq,40.0,25,"vKV, exact sketch",loft__nq_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.97__max_context200000
+Qwen3,LOFT,32,32,vkv_final_perfect,qampari,48.0,25,"vKV, exact sketch",loft__qampari_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.97__max_context200000
+Qwen3,LOFT,32,32,vkv_final_perfect,quest,20.0,25,"vKV, exact sketch",loft__quest_32k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.97__max_context200000
+Qwen3,LOFT,32,32,vkv_nofetch_kvzip,hotpotqa,0.0,25,vKV (no fetch)+KVzip,loft__hotpotqa_32k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.97__max_context200000/1
+Qwen3,LOFT,32,32,vkv_nofetch_kvzip,musique,0.0,25,vKV (no fetch)+KVzip,loft__musique_32k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.97__max_context200000
+Qwen3,LOFT,32,32,vkv_nofetch_kvzip,nq,20.0,25,vKV (no fetch)+KVzip,loft__nq_32k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.97__max_context200000
+Qwen3,LOFT,32,32,vkv_nofetch_kvzip,qampari,0.0,25,vKV (no fetch)+KVzip,loft__qampari_32k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.97__max_context200000
+Qwen3,LOFT,32,32,vkv_nofetch_kvzip,quest,0.0,25,vKV (no fetch)+KVzip,loft__quest_32k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.97__max_context200000
+Qwen3,LOFT,128,8,dense,hotpotqa,32.0,25,Dense,loft__hotpotqa_128k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,128,8,dense,musique,8.0,25,Dense,loft__musique_128k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,128,8,dense,nq,20.0,25,Dense,loft__nq_128k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,128,8,dense,qampari,8.0,25,Dense,loft__qampari_128k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,128,8,dense,quest,8.0,25,Dense,loft__quest_128k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,128,8,fastkvzip,hotpotqa,44.0,25,Fast KVzip,loft__hotpotqa_128k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.88__max_context200000
+Qwen3,LOFT,128,8,fastkvzip,musique,0.0,25,Fast KVzip,loft__musique_128k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.88__max_context200000
+Qwen3,LOFT,128,8,fastkvzip,nq,4.0,25,Fast KVzip,loft__nq_128k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.88__max_context200000
+Qwen3,LOFT,128,8,fastkvzip,qampari,0.0,25,Fast KVzip,loft__qampari_128k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.88__max_context200000
+Qwen3,LOFT,128,8,fastkvzip,quest,4.0,25,Fast KVzip,loft__quest_128k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.88__max_context200000
+Qwen3,LOFT,128,8,kvzip,hotpotqa,36.0,25,KVzip,loft__hotpotqa_128k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.88__max_context200000
+Qwen3,LOFT,128,8,kvzip,musique,4.0,25,KVzip,loft__musique_128k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.88__max_context200000
+Qwen3,LOFT,128,8,kvzip,nq,24.0,25,KVzip,loft__nq_128k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.88__max_context200000
+Qwen3,LOFT,128,8,kvzip,qampari,0.0,25,KVzip,loft__qampari_128k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.88__max_context200000
+Qwen3,LOFT,128,8,kvzip,quest,4.0,25,KVzip,loft__quest_128k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.88__max_context200000
+Qwen3,LOFT,128,8,vkv_final_fastkvzip,hotpotqa,32.0,25,vKV+Fast KVzip,loft__hotpotqa_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.88__max_context200000
+Qwen3,LOFT,128,8,vkv_final_fastkvzip,musique,12.0,25,vKV+Fast KVzip,loft__musique_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.88__max_context200000
+Qwen3,LOFT,128,8,vkv_final_fastkvzip,nq,20.0,25,vKV+Fast KVzip,loft__nq_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.88__max_context200000
+Qwen3,LOFT,128,8,vkv_final_fastkvzip,qampari,12.0,25,vKV+Fast KVzip,loft__qampari_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.88__max_context200000
+Qwen3,LOFT,128,8,vkv_final_fastkvzip,quest,8.0,25,vKV+Fast KVzip,loft__quest_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.88__max_context200000
+Qwen3,LOFT,128,8,vkv_final_kvzip,hotpotqa,40.0,25,vKV+KVzip,loft__hotpotqa_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.88__max_context200000
+Qwen3,LOFT,128,8,vkv_final_kvzip,musique,0.0,25,vKV+KVzip,loft__musique_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.88__max_context200000
+Qwen3,LOFT,128,8,vkv_final_kvzip,nq,20.0,25,vKV+KVzip,loft__nq_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.88__max_context200000
+Qwen3,LOFT,128,8,vkv_final_kvzip,qampari,8.0,25,vKV+KVzip,loft__qampari_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.88__max_context200000
+Qwen3,LOFT,128,8,vkv_final_kvzip,quest,4.0,25,vKV+KVzip,loft__quest_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.88__max_context200000
+Qwen3,LOFT,128,8,vkv_final_perfect,hotpotqa,24.0,25,"vKV, exact sketch",loft__hotpotqa_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.88__max_context200000
+Qwen3,LOFT,128,8,vkv_final_perfect,musique,8.0,25,"vKV, exact sketch",loft__musique_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.88__max_context200000
+Qwen3,LOFT,128,8,vkv_final_perfect,nq,20.0,25,"vKV, exact sketch",loft__nq_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.88__max_context200000
+Qwen3,LOFT,128,8,vkv_final_perfect,qampari,8.0,25,"vKV, exact sketch",loft__qampari_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.88__max_context200000
+Qwen3,LOFT,128,8,vkv_final_perfect,quest,8.0,25,"vKV, exact sketch",loft__quest_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.88__max_context200000
+Qwen3,LOFT,128,8,vkv_nofetch_kvzip,hotpotqa,32.0,25,vKV (no fetch)+KVzip,loft__hotpotqa_128k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.88__max_context200000
+Qwen3,LOFT,128,8,vkv_nofetch_kvzip,musique,4.0,25,vKV (no fetch)+KVzip,loft__musique_128k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.88__max_context200000
+Qwen3,LOFT,128,8,vkv_nofetch_kvzip,nq,12.0,25,vKV (no fetch)+KVzip,loft__nq_128k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.88__max_context200000
+Qwen3,LOFT,128,8,vkv_nofetch_kvzip,qampari,8.0,25,vKV (no fetch)+KVzip,loft__qampari_128k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.88__max_context200000
+Qwen3,LOFT,128,8,vkv_nofetch_kvzip,quest,4.0,25,vKV (no fetch)+KVzip,loft__quest_128k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.88__max_context200000
+Qwen3,LOFT,128,16,dense,hotpotqa,32.0,25,Dense,loft__hotpotqa_128k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,128,16,dense,musique,8.0,25,Dense,loft__musique_128k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,128,16,dense,nq,20.0,25,Dense,loft__nq_128k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,128,16,dense,qampari,8.0,25,Dense,loft__qampari_128k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,128,16,dense,quest,8.0,25,Dense,loft__quest_128k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,128,16,fastkvzip,hotpotqa,24.0,25,Fast KVzip,loft__hotpotqa_128k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.94__max_context200000
+Qwen3,LOFT,128,16,fastkvzip,musique,8.0,25,Fast KVzip,loft__musique_128k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.94__max_context200000
+Qwen3,LOFT,128,16,fastkvzip,nq,8.0,25,Fast KVzip,loft__nq_128k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.94__max_context200000
+Qwen3,LOFT,128,16,fastkvzip,qampari,0.0,25,Fast KVzip,loft__qampari_128k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.94__max_context200000
+Qwen3,LOFT,128,16,fastkvzip,quest,0.0,25,Fast KVzip,loft__quest_128k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.94__max_context200000
+Qwen3,LOFT,128,16,kvzip,hotpotqa,4.0,25,KVzip,loft__hotpotqa_128k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.94__max_context200000
+Qwen3,LOFT,128,16,kvzip,musique,0.0,25,KVzip,loft__musique_128k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.94__max_context200000
+Qwen3,LOFT,128,16,kvzip,nq,4.0,25,KVzip,loft__nq_128k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.94__max_context200000
+Qwen3,LOFT,128,16,kvzip,qampari,0.0,25,KVzip,loft__qampari_128k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.94__max_context200000
+Qwen3,LOFT,128,16,kvzip,quest,0.0,25,KVzip,loft__quest_128k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.94__max_context200000
+Qwen3,LOFT,128,16,vkv_final_fastkvzip,hotpotqa,36.0,25,vKV+Fast KVzip,loft__hotpotqa_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.94__max_context200000
+Qwen3,LOFT,128,16,vkv_final_fastkvzip,musique,4.0,25,vKV+Fast KVzip,loft__musique_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.94__max_context200000
+Qwen3,LOFT,128,16,vkv_final_fastkvzip,nq,20.0,25,vKV+Fast KVzip,loft__nq_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.94__max_context200000
+Qwen3,LOFT,128,16,vkv_final_fastkvzip,qampari,4.0,25,vKV+Fast KVzip,loft__qampari_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.94__max_context200000
+Qwen3,LOFT,128,16,vkv_final_fastkvzip,quest,4.0,25,vKV+Fast KVzip,loft__quest_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.94__max_context200000
+Qwen3,LOFT,128,16,vkv_final_kvzip,hotpotqa,28.0,25,vKV+KVzip,loft__hotpotqa_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.94__max_context200000
+Qwen3,LOFT,128,16,vkv_final_kvzip,musique,4.0,25,vKV+KVzip,loft__musique_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.94__max_context200000
+Qwen3,LOFT,128,16,vkv_final_kvzip,nq,16.0,25,vKV+KVzip,loft__nq_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.94__max_context200000
+Qwen3,LOFT,128,16,vkv_final_kvzip,qampari,8.0,25,vKV+KVzip,loft__qampari_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.94__max_context200000
+Qwen3,LOFT,128,16,vkv_final_kvzip,quest,4.0,25,vKV+KVzip,loft__quest_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.94__max_context200000
+Qwen3,LOFT,128,16,vkv_final_perfect,hotpotqa,24.0,25,"vKV, exact sketch",loft__hotpotqa_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.94__max_context200000
+Qwen3,LOFT,128,16,vkv_final_perfect,musique,8.0,25,"vKV, exact sketch",loft__musique_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.94__max_context200000
+Qwen3,LOFT,128,16,vkv_final_perfect,nq,20.0,25,"vKV, exact sketch",loft__nq_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.94__max_context200000
+Qwen3,LOFT,128,16,vkv_final_perfect,qampari,12.0,25,"vKV, exact sketch",loft__qampari_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.94__max_context200000
+Qwen3,LOFT,128,16,vkv_final_perfect,quest,8.0,25,"vKV, exact sketch",loft__quest_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.94__max_context200000
+Qwen3,LOFT,128,16,vkv_nofetch_kvzip,hotpotqa,40.0,25,vKV (no fetch)+KVzip,loft__hotpotqa_128k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.94__max_context200000
+Qwen3,LOFT,128,16,vkv_nofetch_kvzip,musique,8.0,25,vKV (no fetch)+KVzip,loft__musique_128k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.94__max_context200000
+Qwen3,LOFT,128,16,vkv_nofetch_kvzip,nq,4.0,25,vKV (no fetch)+KVzip,loft__nq_128k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.94__max_context200000
+Qwen3,LOFT,128,16,vkv_nofetch_kvzip,qampari,0.0,25,vKV (no fetch)+KVzip,loft__qampari_128k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.94__max_context200000
+Qwen3,LOFT,128,16,vkv_nofetch_kvzip,quest,4.0,25,vKV (no fetch)+KVzip,loft__quest_128k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.94__max_context200000
+Qwen3,LOFT,128,32,dense,hotpotqa,32.0,25,Dense,loft__hotpotqa_128k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,128,32,dense,musique,8.0,25,Dense,loft__musique_128k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,128,32,dense,nq,20.0,25,Dense,loft__nq_128k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,128,32,dense,qampari,8.0,25,Dense,loft__qampari_128k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,128,32,dense,quest,8.0,25,Dense,loft__quest_128k__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__max_context200000
+Qwen3,LOFT,128,32,fastkvzip,hotpotqa,8.0,25,Fast KVzip,loft__hotpotqa_128k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.97__max_context200000
+Qwen3,LOFT,128,32,fastkvzip,musique,0.0,25,Fast KVzip,loft__musique_128k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.97__max_context200000
+Qwen3,LOFT,128,32,fastkvzip,nq,0.0,25,Fast KVzip,loft__nq_128k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.97__max_context200000
+Qwen3,LOFT,128,32,fastkvzip,qampari,0.0,25,Fast KVzip,loft__qampari_128k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.97__max_context200000
+Qwen3,LOFT,128,32,fastkvzip,quest,0.0,25,Fast KVzip,loft__quest_128k__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.97__max_context200000
+Qwen3,LOFT,128,32,kvzip,hotpotqa,12.0,25,KVzip,loft__hotpotqa_128k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.97__max_context200000
+Qwen3,LOFT,128,32,kvzip,musique,0.0,25,KVzip,loft__musique_128k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.97__max_context200000
+Qwen3,LOFT,128,32,kvzip,nq,0.0,25,KVzip,loft__nq_128k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.97__max_context200000
+Qwen3,LOFT,128,32,kvzip,qampari,0.0,25,KVzip,loft__qampari_128k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.97__max_context200000
+Qwen3,LOFT,128,32,kvzip,quest,0.0,25,KVzip,loft__quest_128k__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.97__max_context200000
+Qwen3,LOFT,128,32,vkv_final_fastkvzip,hotpotqa,40.0,25,vKV+Fast KVzip,loft__hotpotqa_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.97__max_context200000
+Qwen3,LOFT,128,32,vkv_final_fastkvzip,musique,4.0,25,vKV+Fast KVzip,loft__musique_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.97__max_context200000
+Qwen3,LOFT,128,32,vkv_final_fastkvzip,nq,16.0,25,vKV+Fast KVzip,loft__nq_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.97__max_context200000
+Qwen3,LOFT,128,32,vkv_final_fastkvzip,qampari,8.0,25,vKV+Fast KVzip,loft__qampari_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.97__max_context200000
+Qwen3,LOFT,128,32,vkv_final_fastkvzip,quest,4.0,25,vKV+Fast KVzip,loft__quest_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.97__max_context200000
+Qwen3,LOFT,128,32,vkv_final_kvzip,hotpotqa,36.0,25,vKV+KVzip,loft__hotpotqa_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.97__max_context200000
+Qwen3,LOFT,128,32,vkv_final_kvzip,musique,4.0,25,vKV+KVzip,loft__musique_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.97__max_context200000
+Qwen3,LOFT,128,32,vkv_final_kvzip,nq,20.0,25,vKV+KVzip,loft__nq_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.97__max_context200000
+Qwen3,LOFT,128,32,vkv_final_kvzip,qampari,4.0,25,vKV+KVzip,loft__qampari_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.97__max_context200000
+Qwen3,LOFT,128,32,vkv_final_kvzip,quest,12.0,25,vKV+KVzip,loft__quest_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.97__max_context200000
+Qwen3,LOFT,128,32,vkv_final_perfect,hotpotqa,24.0,25,"vKV, exact sketch",loft__hotpotqa_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.97__max_context200000
+Qwen3,LOFT,128,32,vkv_final_perfect,musique,8.0,25,"vKV, exact sketch",loft__musique_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.97__max_context200000
+Qwen3,LOFT,128,32,vkv_final_perfect,nq,20.0,25,"vKV, exact sketch",loft__nq_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.97__max_context200000
+Qwen3,LOFT,128,32,vkv_final_perfect,qampari,8.0,25,"vKV, exact sketch",loft__qampari_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.97__max_context200000
+Qwen3,LOFT,128,32,vkv_final_perfect,quest,8.0,25,"vKV, exact sketch",loft__quest_128k__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.97__max_context200000
+Qwen3,LOFT,128,32,vkv_nofetch_kvzip,hotpotqa,28.0,25,vKV (no fetch)+KVzip,loft__hotpotqa_128k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.97__max_context200000
+Qwen3,LOFT,128,32,vkv_nofetch_kvzip,musique,4.0,25,vKV (no fetch)+KVzip,loft__musique_128k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.97__max_context200000
+Qwen3,LOFT,128,32,vkv_nofetch_kvzip,nq,0.0,25,vKV (no fetch)+KVzip,loft__nq_128k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.97__max_context200000
+Qwen3,LOFT,128,32,vkv_nofetch_kvzip,qampari,0.0,25,vKV (no fetch)+KVzip,loft__qampari_128k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.97__max_context200000
+Qwen3,LOFT,128,32,vkv_nofetch_kvzip,quest,0.0,25,vKV (no fetch)+KVzip,loft__quest_128k__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.97__max_context200000
+Qwen3,RULER,32,8,dense,cwe,75.6,50,Dense,ruler32k__cwe__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,32,8,dense,niah_mk3,100.0,50,Dense,ruler32k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,32,8,dense,niah_mv,100.0,50,Dense,ruler32k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,32,8,dense,qa1,76.0,50,Dense,ruler32k__qa_1__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,32,8,fastkvzip,cwe,52.6,50,Fast KVzip,ruler32k__cwe__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,fastkvzip,niah_mk3,90.0,50,Fast KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,fastkvzip,niah_mv,68.0,50,Fast KVzip,ruler32k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,fastkvzip,qa1,60.0,50,Fast KVzip,ruler32k__qa_1__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,kvzip,cwe,63.0,50,KVzip,ruler32k__cwe__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,kvzip,niah_mk3,68.0,50,KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,kvzip,niah_mv,81.0,50,KVzip,ruler32k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,kvzip,qa1,64.0,50,KVzip,ruler32k__qa_1__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,vkv_final_fastkvzip,cwe,75.6,50,vKV+Fast KVzip,ruler32k__cwe__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,vkv_final_fastkvzip,niah_mk3,100.0,50,vKV+Fast KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,vkv_final_fastkvzip,niah_mv,100.0,50,vKV+Fast KVzip,ruler32k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,vkv_final_fastkvzip,qa1,74.0,50,vKV+Fast KVzip,ruler32k__qa_1__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,vkv_final_kvzip,cwe,72.6,50,vKV+KVzip,ruler32k__cwe__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,vkv_final_kvzip,niah_mk3,100.0,50,vKV+KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,vkv_final_kvzip,niah_mv,100.0,50,vKV+KVzip,ruler32k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,vkv_final_kvzip,qa1,72.0,50,vKV+KVzip,ruler32k__qa_1__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,vkv_final_perfect,cwe,77.8,50,"vKV, exact sketch",ruler32k__cwe__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,vkv_final_perfect,niah_mk3,100.0,50,"vKV, exact sketch",ruler32k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,vkv_final_perfect,niah_mv,100.0,50,"vKV, exact sketch",ruler32k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,vkv_final_perfect,qa1,76.0,50,"vKV, exact sketch",ruler32k__qa_1__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,vkv_nofetch_kvzip,cwe,67.8,50,vKV (no fetch)+KVzip,ruler32k__cwe__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,vkv_nofetch_kvzip,niah_mk3,98.0,50,vKV (no fetch)+KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,vkv_nofetch_kvzip,niah_mv,95.0,50,vKV (no fetch)+KVzip,ruler32k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,8,vkv_nofetch_kvzip,qa1,72.0,50,vKV (no fetch)+KVzip,ruler32k__qa_1__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.88__nsamples50__max_context200000
+Qwen3,RULER,32,16,dense,cwe,75.6,50,Dense,ruler32k__cwe__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,32,16,dense,niah_mk3,100.0,50,Dense,ruler32k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,32,16,dense,niah_mv,100.0,50,Dense,ruler32k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,32,16,dense,qa1,76.0,50,Dense,ruler32k__qa_1__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,32,16,fastkvzip,cwe,7.6,50,Fast KVzip,ruler32k__cwe__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,fastkvzip,niah_mk3,28.0,50,Fast KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,fastkvzip,niah_mv,17.0,50,Fast KVzip,ruler32k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,fastkvzip,qa1,28.0,50,Fast KVzip,ruler32k__qa_1__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,kvzip,cwe,2.2,50,KVzip,ruler32k__cwe__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,kvzip,niah_mk3,4.0,50,KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,kvzip,niah_mv,36.0,50,KVzip,ruler32k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,kvzip,qa1,34.0,50,KVzip,ruler32k__qa_1__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,vkv_final_fastkvzip,cwe,70.6,50,vKV+Fast KVzip,ruler32k__cwe__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,vkv_final_fastkvzip,niah_mk3,100.0,50,vKV+Fast KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,vkv_final_fastkvzip,niah_mv,100.0,50,vKV+Fast KVzip,ruler32k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,vkv_final_fastkvzip,qa1,74.0,50,vKV+Fast KVzip,ruler32k__qa_1__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,vkv_final_kvzip,cwe,71.4,50,vKV+KVzip,ruler32k__cwe__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,vkv_final_kvzip,niah_mk3,100.0,50,vKV+KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,vkv_final_kvzip,niah_mv,100.0,50,vKV+KVzip,ruler32k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,vkv_final_kvzip,qa1,74.0,50,vKV+KVzip,ruler32k__qa_1__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,vkv_final_perfect,cwe,76.8,50,"vKV, exact sketch",ruler32k__cwe__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,vkv_final_perfect,niah_mk3,100.0,50,"vKV, exact sketch",ruler32k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,vkv_final_perfect,niah_mv,100.0,50,"vKV, exact sketch",ruler32k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,vkv_final_perfect,qa1,76.0,50,"vKV, exact sketch",ruler32k__qa_1__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,vkv_nofetch_kvzip,cwe,50.0,50,vKV (no fetch)+KVzip,ruler32k__cwe__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,vkv_nofetch_kvzip,niah_mk3,90.0,50,vKV (no fetch)+KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,vkv_nofetch_kvzip,niah_mv,53.0,50,vKV (no fetch)+KVzip,ruler32k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,16,vkv_nofetch_kvzip,qa1,44.0,50,vKV (no fetch)+KVzip,ruler32k__qa_1__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.94__nsamples50__max_context200000
+Qwen3,RULER,32,32,dense,cwe,75.6,50,Dense,ruler32k__cwe__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,32,32,dense,niah_mk3,100.0,50,Dense,ruler32k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,32,32,dense,niah_mv,100.0,50,Dense,ruler32k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,32,32,dense,qa1,76.0,50,Dense,ruler32k__qa_1__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,32,32,fastkvzip,cwe,0.4,50,Fast KVzip,ruler32k__cwe__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,fastkvzip,niah_mk3,0.0,50,Fast KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,fastkvzip,niah_mv,2.0,50,Fast KVzip,ruler32k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,fastkvzip,qa1,10.0,50,Fast KVzip,ruler32k__qa_1__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,kvzip,cwe,0.4,50,KVzip,ruler32k__cwe__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,kvzip,niah_mk3,0.0,50,KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,kvzip,niah_mv,2.5,50,KVzip,ruler32k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,kvzip,qa1,18.0,50,KVzip,ruler32k__qa_1__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,vkv_final_fastkvzip,cwe,65.0,50,vKV+Fast KVzip,ruler32k__cwe__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,vkv_final_fastkvzip,niah_mk3,100.0,50,vKV+Fast KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,vkv_final_fastkvzip,niah_mv,100.0,50,vKV+Fast KVzip,ruler32k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,vkv_final_fastkvzip,qa1,76.0,50,vKV+Fast KVzip,ruler32k__qa_1__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,vkv_final_kvzip,cwe,69.8,50,vKV+KVzip,ruler32k__cwe__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,vkv_final_kvzip,niah_mk3,100.0,50,vKV+KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,vkv_final_kvzip,niah_mv,99.5,50,vKV+KVzip,ruler32k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,vkv_final_kvzip,qa1,76.0,50,vKV+KVzip,ruler32k__qa_1__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,vkv_final_perfect,cwe,77.6,50,"vKV, exact sketch",ruler32k__cwe__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,vkv_final_perfect,niah_mk3,100.0,50,"vKV, exact sketch",ruler32k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,vkv_final_perfect,niah_mv,100.0,50,"vKV, exact sketch",ruler32k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,vkv_final_perfect,qa1,74.0,50,"vKV, exact sketch",ruler32k__qa_1__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,vkv_nofetch_kvzip,cwe,29.4,50,vKV (no fetch)+KVzip,ruler32k__cwe__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,vkv_nofetch_kvzip,niah_mk3,0.0,50,vKV (no fetch)+KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,vkv_nofetch_kvzip,niah_mv,1.0,50,vKV (no fetch)+KVzip,ruler32k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.97__nsamples50__max_context200000
+Qwen3,RULER,32,32,vkv_nofetch_kvzip,qa1,28.0,50,vKV (no fetch)+KVzip,ruler32k__qa_1__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,8,dense,cwe,4.2,50,Dense,ruler128k__cwe__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,128,8,dense,niah_mk3,88.0,50,Dense,ruler128k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,128,8,dense,niah_mv,100.0,50,Dense,ruler128k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,128,8,dense,qa1,68.0,50,Dense,ruler128k__qa_1__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,128,8,fastkvzip,cwe,2.0,50,Fast KVzip,ruler128k__cwe__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,fastkvzip,niah_mk3,14.0,50,Fast KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,fastkvzip,niah_mv,71.0,50,Fast KVzip,ruler128k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,fastkvzip,qa1,46.0,50,Fast KVzip,ruler128k__qa_1__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,kvzip,cwe,8.2,50,KVzip,ruler128k__cwe__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,kvzip,niah_mk3,2.0,50,KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,kvzip,niah_mv,76.5,50,KVzip,ruler128k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,kvzip,qa1,48.0,50,KVzip,ruler128k__qa_1__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,vkv_final_fastkvzip,cwe,4.8,50,vKV+Fast KVzip,ruler128k__cwe__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,vkv_final_fastkvzip,niah_mk3,88.0,50,vKV+Fast KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,vkv_final_fastkvzip,niah_mv,100.0,50,vKV+Fast KVzip,ruler128k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,vkv_final_fastkvzip,qa1,66.0,50,vKV+Fast KVzip,ruler128k__qa_1__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,vkv_final_kvzip,cwe,5.2,50,vKV+KVzip,ruler128k__cwe__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,vkv_final_kvzip,niah_mk3,88.0,50,vKV+KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,vkv_final_kvzip,niah_mv,100.0,50,vKV+KVzip,ruler128k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,vkv_final_kvzip,qa1,70.0,50,vKV+KVzip,ruler128k__qa_1__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,vkv_final_perfect,cwe,4.2,50,"vKV, exact sketch",ruler128k__cwe__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,vkv_final_perfect,niah_mk3,86.0,50,"vKV, exact sketch",ruler128k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,vkv_final_perfect,niah_mv,100.0,50,"vKV, exact sketch",ruler128k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,vkv_final_perfect,qa1,70.0,50,"vKV, exact sketch",ruler128k__qa_1__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,vkv_nofetch_kvzip,cwe,3.4,50,vKV (no fetch)+KVzip,ruler128k__cwe__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,vkv_nofetch_kvzip,niah_mk3,78.0,50,vKV (no fetch)+KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,vkv_nofetch_kvzip,niah_mv,99.0,50,vKV (no fetch)+KVzip,ruler128k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,8,vkv_nofetch_kvzip,qa1,72.0,50,vKV (no fetch)+KVzip,ruler128k__qa_1__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.88__nsamples50__max_context200000
+Qwen3,RULER,128,16,dense,cwe,4.2,50,Dense,ruler128k__cwe__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,128,16,dense,niah_mk3,88.0,50,Dense,ruler128k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,128,16,dense,niah_mv,100.0,50,Dense,ruler128k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,128,16,dense,qa1,68.0,50,Dense,ruler128k__qa_1__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,128,16,fastkvzip,cwe,0.2,50,Fast KVzip,ruler128k__cwe__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,fastkvzip,niah_mk3,0.0,50,Fast KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,fastkvzip,niah_mv,22.0,50,Fast KVzip,ruler128k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,fastkvzip,qa1,24.0,50,Fast KVzip,ruler128k__qa_1__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,kvzip,cwe,2.4,50,KVzip,ruler128k__cwe__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,kvzip,niah_mk3,0.0,50,KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,kvzip,niah_mv,34.0,50,KVzip,ruler128k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,kvzip,qa1,26.0,50,KVzip,ruler128k__qa_1__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,vkv_final_fastkvzip,cwe,4.2,50,vKV+Fast KVzip,ruler128k__cwe__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,vkv_final_fastkvzip,niah_mk3,72.0,50,vKV+Fast KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,vkv_final_fastkvzip,niah_mv,100.0,50,vKV+Fast KVzip,ruler128k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,vkv_final_fastkvzip,qa1,70.0,50,vKV+Fast KVzip,ruler128k__qa_1__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,vkv_final_kvzip,cwe,3.8,50,vKV+KVzip,ruler128k__cwe__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,vkv_final_kvzip,niah_mk3,80.0,50,vKV+KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,vkv_final_kvzip,niah_mv,100.0,50,vKV+KVzip,ruler128k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,vkv_final_kvzip,qa1,68.0,50,vKV+KVzip,ruler128k__qa_1__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,vkv_final_perfect,cwe,4.2,50,"vKV, exact sketch",ruler128k__cwe__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,vkv_final_perfect,niah_mk3,90.0,50,"vKV, exact sketch",ruler128k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,vkv_final_perfect,niah_mv,100.0,50,"vKV, exact sketch",ruler128k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,vkv_final_perfect,qa1,70.0,50,"vKV, exact sketch",ruler128k__qa_1__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,vkv_nofetch_kvzip,cwe,3.6,50,vKV (no fetch)+KVzip,ruler128k__cwe__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,vkv_nofetch_kvzip,niah_mk3,56.0,50,vKV (no fetch)+KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,vkv_nofetch_kvzip,niah_mv,78.0,50,vKV (no fetch)+KVzip,ruler128k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,16,vkv_nofetch_kvzip,qa1,52.0,50,vKV (no fetch)+KVzip,ruler128k__qa_1__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.94__nsamples50__max_context200000
+Qwen3,RULER,128,32,dense,cwe,4.2,50,Dense,ruler128k__cwe__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,128,32,dense,niah_mk3,88.0,50,Dense,ruler128k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,128,32,dense,niah_mv,100.0,50,Dense,ruler128k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,128,32,dense,qa1,68.0,50,Dense,ruler128k__qa_1__Qwen--Qwen3-4B-Instruct-2507__no_press__0.00__nsamples50__max_context200000
+Qwen3,RULER,128,32,fastkvzip,cwe,0.6,50,Fast KVzip,ruler128k__cwe__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,fastkvzip,niah_mk3,0.0,50,Fast KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,fastkvzip,niah_mv,2.5,50,Fast KVzip,ruler128k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,fastkvzip,qa1,14.0,50,Fast KVzip,ruler128k__qa_1__Qwen--Qwen3-4B-Instruct-2507__fastkvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,kvzip,cwe,0.8,50,KVzip,ruler128k__cwe__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,kvzip,niah_mk3,0.0,50,KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,kvzip,niah_mv,1.5,50,KVzip,ruler128k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,kvzip,qa1,18.0,50,KVzip,ruler128k__qa_1__Qwen--Qwen3-4B-Instruct-2507__kvzip_c__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,vkv_final_fastkvzip,cwe,3.6,50,vKV+Fast KVzip,ruler128k__cwe__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,vkv_final_fastkvzip,niah_mk3,66.0,50,vKV+Fast KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,vkv_final_fastkvzip,niah_mv,99.5,50,vKV+Fast KVzip,ruler128k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,vkv_final_fastkvzip,qa1,68.0,50,vKV+Fast KVzip,ruler128k__qa_1__Qwen--Qwen3-4B-Instruct-2507__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,vkv_final_kvzip,cwe,5.4,50,vKV+KVzip,ruler128k__cwe__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,vkv_final_kvzip,niah_mk3,60.0,50,vKV+KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,vkv_final_kvzip,niah_mv,100.0,50,vKV+KVzip,ruler128k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,vkv_final_kvzip,qa1,66.0,50,vKV+KVzip,ruler128k__qa_1__Qwen--Qwen3-4B-Instruct-2507__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,vkv_final_perfect,cwe,4.4,50,"vKV, exact sketch",ruler128k__cwe__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,vkv_final_perfect,niah_mk3,88.0,50,"vKV, exact sketch",ruler128k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,vkv_final_perfect,niah_mv,100.0,50,"vKV, exact sketch",ruler128k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,vkv_final_perfect,qa1,68.0,50,"vKV, exact sketch",ruler128k__qa_1__Qwen--Qwen3-4B-Instruct-2507__vkv_final_perfect__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,vkv_nofetch_kvzip,cwe,5.2,50,vKV (no fetch)+KVzip,ruler128k__cwe__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,vkv_nofetch_kvzip,niah_mk3,0.0,50,vKV (no fetch)+KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,vkv_nofetch_kvzip,niah_mv,5.0,50,vKV (no fetch)+KVzip,ruler128k__niah_multivalue__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.97__nsamples50__max_context200000
+Qwen3,RULER,128,32,vkv_nofetch_kvzip,qa1,26.0,50,vKV (no fetch)+KVzip,ruler128k__qa_1__Qwen--Qwen3-4B-Instruct-2507__bernoulli_kvzip_c__0.97__nsamples50__max_context200000
+Qwen3.5,LOFT,32,8,dense,hotpotqa,60.0,25,Dense,loft__hotpotqa_32k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,32,8,dense,musique,36.0,25,Dense,loft__musique_32k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,32,8,dense,nq,68.0,25,Dense,loft__nq_32k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,32,8,dense,qampari,64.0,25,Dense,loft__qampari_32k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,32,8,dense,quest,44.0,25,Dense,loft__quest_32k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,32,8,fastkvzip,hotpotqa,8.0,25,Fast KVzip,loft__hotpotqa_32k__Qwen--Qwen3.5-9B__fastkvzip__0.88__max_context200000
+Qwen3.5,LOFT,32,8,fastkvzip,musique,0.0,25,Fast KVzip,loft__musique_32k__Qwen--Qwen3.5-9B__fastkvzip__0.88__max_context200000
+Qwen3.5,LOFT,32,8,fastkvzip,nq,0.0,25,Fast KVzip,loft__nq_32k__Qwen--Qwen3.5-9B__fastkvzip__0.88__max_context200000
+Qwen3.5,LOFT,32,8,fastkvzip,qampari,0.0,25,Fast KVzip,loft__qampari_32k__Qwen--Qwen3.5-9B__fastkvzip__0.88__max_context200000
+Qwen3.5,LOFT,32,8,fastkvzip,quest,0.0,25,Fast KVzip,loft__quest_32k__Qwen--Qwen3.5-9B__fastkvzip__0.88__max_context200000
+Qwen3.5,LOFT,32,8,kvzip,hotpotqa,16.0,25,KVzip,loft__hotpotqa_32k__Qwen--Qwen3.5-9B__kvzip_c__0.88__max_context200000
+Qwen3.5,LOFT,32,8,kvzip,musique,4.0,25,KVzip,loft__musique_32k__Qwen--Qwen3.5-9B__kvzip_c__0.88__max_context200000
+Qwen3.5,LOFT,32,8,kvzip,nq,0.0,25,KVzip,loft__nq_32k__Qwen--Qwen3.5-9B__kvzip_c__0.88__max_context200000
+Qwen3.5,LOFT,32,8,kvzip,qampari,0.0,25,KVzip,loft__qampari_32k__Qwen--Qwen3.5-9B__kvzip_c__0.88__max_context200000
+Qwen3.5,LOFT,32,8,kvzip,quest,0.0,25,KVzip,loft__quest_32k__Qwen--Qwen3.5-9B__kvzip_c__0.88__max_context200000
+Qwen3.5,LOFT,32,8,vkv_final_fastkvzip,hotpotqa,64.0,25,vKV+Fast KVzip,loft__hotpotqa_32k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.88__max_context200000
+Qwen3.5,LOFT,32,8,vkv_final_fastkvzip,musique,44.0,25,vKV+Fast KVzip,loft__musique_32k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.88__max_context200000
+Qwen3.5,LOFT,32,8,vkv_final_fastkvzip,nq,52.0,25,vKV+Fast KVzip,loft__nq_32k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.88__max_context200000
+Qwen3.5,LOFT,32,8,vkv_final_fastkvzip,qampari,60.0,25,vKV+Fast KVzip,loft__qampari_32k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.88__max_context200000
+Qwen3.5,LOFT,32,8,vkv_final_fastkvzip,quest,40.0,25,vKV+Fast KVzip,loft__quest_32k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.88__max_context200000
+Qwen3.5,LOFT,32,8,vkv_final_kvzip,hotpotqa,60.0,25,vKV+KVzip,loft__hotpotqa_32k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.88__max_context200000
+Qwen3.5,LOFT,32,8,vkv_final_kvzip,musique,32.0,25,vKV+KVzip,loft__musique_32k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.88__max_context200000
+Qwen3.5,LOFT,32,8,vkv_final_kvzip,nq,36.0,25,vKV+KVzip,loft__nq_32k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.88__max_context200000
+Qwen3.5,LOFT,32,8,vkv_final_kvzip,qampari,56.0,25,vKV+KVzip,loft__qampari_32k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.88__max_context200000
+Qwen3.5,LOFT,32,8,vkv_final_kvzip,quest,32.0,25,vKV+KVzip,loft__quest_32k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.88__max_context200000
+Qwen3.5,LOFT,32,8,vkv_final_perfect,hotpotqa,60.0,25,"vKV, exact sketch",loft__hotpotqa_32k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.88__max_context200000
+Qwen3.5,LOFT,32,8,vkv_final_perfect,musique,36.0,25,"vKV, exact sketch",loft__musique_32k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.88__max_context200000
+Qwen3.5,LOFT,32,8,vkv_final_perfect,nq,68.0,25,"vKV, exact sketch",loft__nq_32k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.88__max_context200000
+Qwen3.5,LOFT,32,8,vkv_final_perfect,qampari,60.0,25,"vKV, exact sketch",loft__qampari_32k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.88__max_context200000
+Qwen3.5,LOFT,32,8,vkv_final_perfect,quest,44.0,25,"vKV, exact sketch",loft__quest_32k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.88__max_context200000
+Qwen3.5,LOFT,32,8,vkv_nofetch_kvzip,hotpotqa,44.0,25,vKV (no fetch)+KVzip,loft__hotpotqa_32k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.88__max_context200000
+Qwen3.5,LOFT,32,8,vkv_nofetch_kvzip,musique,12.0,25,vKV (no fetch)+KVzip,loft__musique_32k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.88__max_context200000
+Qwen3.5,LOFT,32,8,vkv_nofetch_kvzip,nq,32.0,25,vKV (no fetch)+KVzip,loft__nq_32k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.88__max_context200000
+Qwen3.5,LOFT,32,8,vkv_nofetch_kvzip,qampari,0.0,25,vKV (no fetch)+KVzip,loft__qampari_32k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.88__max_context200000
+Qwen3.5,LOFT,32,8,vkv_nofetch_kvzip,quest,0.0,25,vKV (no fetch)+KVzip,loft__quest_32k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.88__max_context200000
+Qwen3.5,LOFT,32,16,dense,hotpotqa,60.0,25,Dense,loft__hotpotqa_32k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,32,16,dense,musique,36.0,25,Dense,loft__musique_32k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,32,16,dense,nq,68.0,25,Dense,loft__nq_32k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,32,16,dense,qampari,64.0,25,Dense,loft__qampari_32k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,32,16,dense,quest,44.0,25,Dense,loft__quest_32k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,32,16,fastkvzip,hotpotqa,0.0,25,Fast KVzip,loft__hotpotqa_32k__Qwen--Qwen3.5-9B__fastkvzip__0.94__max_context200000
+Qwen3.5,LOFT,32,16,fastkvzip,musique,0.0,25,Fast KVzip,loft__musique_32k__Qwen--Qwen3.5-9B__fastkvzip__0.94__max_context200000
+Qwen3.5,LOFT,32,16,fastkvzip,nq,12.0,25,Fast KVzip,loft__nq_32k__Qwen--Qwen3.5-9B__fastkvzip__0.94__max_context200000
+Qwen3.5,LOFT,32,16,fastkvzip,qampari,0.0,25,Fast KVzip,loft__qampari_32k__Qwen--Qwen3.5-9B__fastkvzip__0.94__max_context200000
+Qwen3.5,LOFT,32,16,fastkvzip,quest,0.0,25,Fast KVzip,loft__quest_32k__Qwen--Qwen3.5-9B__fastkvzip__0.94__max_context200000
+Qwen3.5,LOFT,32,16,kvzip,hotpotqa,0.0,25,KVzip,loft__hotpotqa_32k__Qwen--Qwen3.5-9B__kvzip_c__0.94__max_context200000
+Qwen3.5,LOFT,32,16,kvzip,musique,0.0,25,KVzip,loft__musique_32k__Qwen--Qwen3.5-9B__kvzip_c__0.94__max_context200000
+Qwen3.5,LOFT,32,16,kvzip,nq,0.0,25,KVzip,loft__nq_32k__Qwen--Qwen3.5-9B__kvzip_c__0.94__max_context200000
+Qwen3.5,LOFT,32,16,kvzip,qampari,0.0,25,KVzip,loft__qampari_32k__Qwen--Qwen3.5-9B__kvzip_c__0.94__max_context200000
+Qwen3.5,LOFT,32,16,kvzip,quest,0.0,25,KVzip,loft__quest_32k__Qwen--Qwen3.5-9B__kvzip_c__0.94__max_context200000
+Qwen3.5,LOFT,32,16,vkv_final_fastkvzip,hotpotqa,76.0,25,vKV+Fast KVzip,loft__hotpotqa_32k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.94__max_context200000
+Qwen3.5,LOFT,32,16,vkv_final_fastkvzip,musique,24.0,25,vKV+Fast KVzip,loft__musique_32k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.94__max_context200000
+Qwen3.5,LOFT,32,16,vkv_final_fastkvzip,nq,24.0,25,vKV+Fast KVzip,loft__nq_32k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.94__max_context200000
+Qwen3.5,LOFT,32,16,vkv_final_fastkvzip,qampari,68.0,25,vKV+Fast KVzip,loft__qampari_32k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.94__max_context200000
+Qwen3.5,LOFT,32,16,vkv_final_fastkvzip,quest,40.0,25,vKV+Fast KVzip,loft__quest_32k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.94__max_context200000
+Qwen3.5,LOFT,32,16,vkv_final_kvzip,hotpotqa,72.0,25,vKV+KVzip,loft__hotpotqa_32k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.94__max_context200000
+Qwen3.5,LOFT,32,16,vkv_final_kvzip,musique,36.0,25,vKV+KVzip,loft__musique_32k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.94__max_context200000
+Qwen3.5,LOFT,32,16,vkv_final_kvzip,nq,24.0,25,vKV+KVzip,loft__nq_32k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.94__max_context200000
+Qwen3.5,LOFT,32,16,vkv_final_kvzip,qampari,68.0,25,vKV+KVzip,loft__qampari_32k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.94__max_context200000
+Qwen3.5,LOFT,32,16,vkv_final_kvzip,quest,40.0,25,vKV+KVzip,loft__quest_32k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.94__max_context200000
+Qwen3.5,LOFT,32,16,vkv_final_perfect,hotpotqa,60.0,25,"vKV, exact sketch",loft__hotpotqa_32k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.94__max_context200000
+Qwen3.5,LOFT,32,16,vkv_final_perfect,musique,36.0,25,"vKV, exact sketch",loft__musique_32k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.94__max_context200000
+Qwen3.5,LOFT,32,16,vkv_final_perfect,nq,68.0,25,"vKV, exact sketch",loft__nq_32k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.94__max_context200000
+Qwen3.5,LOFT,32,16,vkv_final_perfect,qampari,64.0,25,"vKV, exact sketch",loft__qampari_32k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.94__max_context200000
+Qwen3.5,LOFT,32,16,vkv_final_perfect,quest,44.0,25,"vKV, exact sketch",loft__quest_32k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.94__max_context200000
+Qwen3.5,LOFT,32,16,vkv_nofetch_kvzip,hotpotqa,20.0,25,vKV (no fetch)+KVzip,loft__hotpotqa_32k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.94__max_context200000
+Qwen3.5,LOFT,32,16,vkv_nofetch_kvzip,musique,0.0,25,vKV (no fetch)+KVzip,loft__musique_32k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.94__max_context200000
+Qwen3.5,LOFT,32,16,vkv_nofetch_kvzip,nq,0.0,25,vKV (no fetch)+KVzip,loft__nq_32k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.94__max_context200000
+Qwen3.5,LOFT,32,16,vkv_nofetch_kvzip,qampari,0.0,25,vKV (no fetch)+KVzip,loft__qampari_32k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.94__max_context200000
+Qwen3.5,LOFT,32,16,vkv_nofetch_kvzip,quest,0.0,25,vKV (no fetch)+KVzip,loft__quest_32k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.94__max_context200000
+Qwen3.5,LOFT,32,32,dense,hotpotqa,60.0,25,Dense,loft__hotpotqa_32k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,32,32,dense,musique,36.0,25,Dense,loft__musique_32k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,32,32,dense,nq,68.0,25,Dense,loft__nq_32k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,32,32,dense,qampari,64.0,25,Dense,loft__qampari_32k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,32,32,dense,quest,44.0,25,Dense,loft__quest_32k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,32,32,fastkvzip,hotpotqa,0.0,25,Fast KVzip,loft__hotpotqa_32k__Qwen--Qwen3.5-9B__fastkvzip__0.97__max_context200000
+Qwen3.5,LOFT,32,32,fastkvzip,musique,0.0,25,Fast KVzip,loft__musique_32k__Qwen--Qwen3.5-9B__fastkvzip__0.97__max_context200000
+Qwen3.5,LOFT,32,32,fastkvzip,nq,16.0,25,Fast KVzip,loft__nq_32k__Qwen--Qwen3.5-9B__fastkvzip__0.97__max_context200000
+Qwen3.5,LOFT,32,32,fastkvzip,qampari,0.0,25,Fast KVzip,loft__qampari_32k__Qwen--Qwen3.5-9B__fastkvzip__0.97__max_context200000
+Qwen3.5,LOFT,32,32,fastkvzip,quest,0.0,25,Fast KVzip,loft__quest_32k__Qwen--Qwen3.5-9B__fastkvzip__0.97__max_context200000
+Qwen3.5,LOFT,32,32,kvzip,hotpotqa,0.0,25,KVzip,loft__hotpotqa_32k__Qwen--Qwen3.5-9B__kvzip_c__0.97__max_context200000
+Qwen3.5,LOFT,32,32,kvzip,musique,0.0,25,KVzip,loft__musique_32k__Qwen--Qwen3.5-9B__kvzip_c__0.97__max_context200000
+Qwen3.5,LOFT,32,32,kvzip,nq,0.0,25,KVzip,loft__nq_32k__Qwen--Qwen3.5-9B__kvzip_c__0.97__max_context200000
+Qwen3.5,LOFT,32,32,kvzip,qampari,0.0,25,KVzip,loft__qampari_32k__Qwen--Qwen3.5-9B__kvzip_c__0.97__max_context200000
+Qwen3.5,LOFT,32,32,kvzip,quest,0.0,25,KVzip,loft__quest_32k__Qwen--Qwen3.5-9B__kvzip_c__0.97__max_context200000
+Qwen3.5,LOFT,32,32,vkv_final_fastkvzip,hotpotqa,56.0,25,vKV+Fast KVzip,loft__hotpotqa_32k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.97__max_context200000
+Qwen3.5,LOFT,32,32,vkv_final_fastkvzip,musique,36.0,25,vKV+Fast KVzip,loft__musique_32k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.97__max_context200000
+Qwen3.5,LOFT,32,32,vkv_final_fastkvzip,nq,52.0,25,vKV+Fast KVzip,loft__nq_32k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.97__max_context200000
+Qwen3.5,LOFT,32,32,vkv_final_fastkvzip,qampari,60.0,25,vKV+Fast KVzip,loft__qampari_32k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.97__max_context200000
+Qwen3.5,LOFT,32,32,vkv_final_fastkvzip,quest,28.0,25,vKV+Fast KVzip,loft__quest_32k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.97__max_context200000
+Qwen3.5,LOFT,32,32,vkv_final_kvzip,hotpotqa,68.0,25,vKV+KVzip,loft__hotpotqa_32k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.97__max_context200000
+Qwen3.5,LOFT,32,32,vkv_final_kvzip,musique,40.0,25,vKV+KVzip,loft__musique_32k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.97__max_context200000
+Qwen3.5,LOFT,32,32,vkv_final_kvzip,nq,68.0,25,vKV+KVzip,loft__nq_32k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.97__max_context200000
+Qwen3.5,LOFT,32,32,vkv_final_kvzip,qampari,68.0,25,vKV+KVzip,loft__qampari_32k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.97__max_context200000
+Qwen3.5,LOFT,32,32,vkv_final_kvzip,quest,40.0,25,vKV+KVzip,loft__quest_32k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.97__max_context200000
+Qwen3.5,LOFT,32,32,vkv_final_perfect,hotpotqa,60.0,25,"vKV, exact sketch",loft__hotpotqa_32k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.97__max_context200000
+Qwen3.5,LOFT,32,32,vkv_final_perfect,musique,32.0,25,"vKV, exact sketch",loft__musique_32k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.97__max_context200000
+Qwen3.5,LOFT,32,32,vkv_final_perfect,nq,68.0,25,"vKV, exact sketch",loft__nq_32k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.97__max_context200000
+Qwen3.5,LOFT,32,32,vkv_final_perfect,qampari,68.0,25,"vKV, exact sketch",loft__qampari_32k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.97__max_context200000
+Qwen3.5,LOFT,32,32,vkv_final_perfect,quest,44.0,25,"vKV, exact sketch",loft__quest_32k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.97__max_context200000
+Qwen3.5,LOFT,32,32,vkv_nofetch_kvzip,hotpotqa,0.0,25,vKV (no fetch)+KVzip,loft__hotpotqa_32k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.97__max_context200000
+Qwen3.5,LOFT,32,32,vkv_nofetch_kvzip,musique,0.0,25,vKV (no fetch)+KVzip,loft__musique_32k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.97__max_context200000
+Qwen3.5,LOFT,32,32,vkv_nofetch_kvzip,nq,0.0,25,vKV (no fetch)+KVzip,loft__nq_32k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.97__max_context200000
+Qwen3.5,LOFT,32,32,vkv_nofetch_kvzip,qampari,0.0,25,vKV (no fetch)+KVzip,loft__qampari_32k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.97__max_context200000
+Qwen3.5,LOFT,32,32,vkv_nofetch_kvzip,quest,0.0,25,vKV (no fetch)+KVzip,loft__quest_32k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.97__max_context200000
+Qwen3.5,LOFT,128,8,dense,hotpotqa,64.0,25,Dense,loft__hotpotqa_128k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,128,8,dense,musique,36.0,25,Dense,loft__musique_128k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,128,8,dense,nq,56.0,25,Dense,loft__nq_128k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,128,8,dense,qampari,28.0,25,Dense,loft__qampari_128k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,128,8,dense,quest,36.0,25,Dense,loft__quest_128k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,128,8,fastkvzip,hotpotqa,24.0,25,Fast KVzip,loft__hotpotqa_128k__Qwen--Qwen3.5-9B__fastkvzip__0.88__max_context200000
+Qwen3.5,LOFT,128,8,fastkvzip,musique,4.0,25,Fast KVzip,loft__musique_128k__Qwen--Qwen3.5-9B__fastkvzip__0.88__max_context200000
+Qwen3.5,LOFT,128,8,fastkvzip,nq,4.0,25,Fast KVzip,loft__nq_128k__Qwen--Qwen3.5-9B__fastkvzip__0.88__max_context200000
+Qwen3.5,LOFT,128,8,fastkvzip,qampari,0.0,25,Fast KVzip,loft__qampari_128k__Qwen--Qwen3.5-9B__fastkvzip__0.88__max_context200000
+Qwen3.5,LOFT,128,8,fastkvzip,quest,4.0,25,Fast KVzip,loft__quest_128k__Qwen--Qwen3.5-9B__fastkvzip__0.88__max_context200000
+Qwen3.5,LOFT,128,8,kvzip,hotpotqa,0.0,25,KVzip,loft__hotpotqa_128k__Qwen--Qwen3.5-9B__kvzip_c__0.88__max_context200000
+Qwen3.5,LOFT,128,8,kvzip,musique,0.0,25,KVzip,loft__musique_128k__Qwen--Qwen3.5-9B__kvzip_c__0.88__max_context200000
+Qwen3.5,LOFT,128,8,kvzip,nq,0.0,25,KVzip,loft__nq_128k__Qwen--Qwen3.5-9B__kvzip_c__0.88__max_context200000
+Qwen3.5,LOFT,128,8,kvzip,qampari,0.0,25,KVzip,loft__qampari_128k__Qwen--Qwen3.5-9B__kvzip_c__0.88__max_context200000
+Qwen3.5,LOFT,128,8,kvzip,quest,0.0,25,KVzip,loft__quest_128k__Qwen--Qwen3.5-9B__kvzip_c__0.88__max_context200000
+Qwen3.5,LOFT,128,8,vkv_final_fastkvzip,hotpotqa,56.0,25,vKV+Fast KVzip,loft__hotpotqa_128k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.88__max_context200000
+Qwen3.5,LOFT,128,8,vkv_final_fastkvzip,musique,20.0,25,vKV+Fast KVzip,loft__musique_128k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.88__max_context200000
+Qwen3.5,LOFT,128,8,vkv_final_fastkvzip,nq,48.0,25,vKV+Fast KVzip,loft__nq_128k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.88__max_context200000
+Qwen3.5,LOFT,128,8,vkv_final_fastkvzip,qampari,16.0,25,vKV+Fast KVzip,loft__qampari_128k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.88__max_context200000
+Qwen3.5,LOFT,128,8,vkv_final_fastkvzip,quest,16.0,25,vKV+Fast KVzip,loft__quest_128k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.88__max_context200000
+Qwen3.5,LOFT,128,8,vkv_final_kvzip,hotpotqa,52.0,25,vKV+KVzip,loft__hotpotqa_128k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.88__max_context200000
+Qwen3.5,LOFT,128,8,vkv_final_kvzip,musique,24.0,25,vKV+KVzip,loft__musique_128k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.88__max_context200000
+Qwen3.5,LOFT,128,8,vkv_final_kvzip,nq,36.0,25,vKV+KVzip,loft__nq_128k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.88__max_context200000
+Qwen3.5,LOFT,128,8,vkv_final_kvzip,qampari,40.0,25,vKV+KVzip,loft__qampari_128k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.88__max_context200000
+Qwen3.5,LOFT,128,8,vkv_final_kvzip,quest,20.0,25,vKV+KVzip,loft__quest_128k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.88__max_context200000
+Qwen3.5,LOFT,128,8,vkv_final_perfect,hotpotqa,64.0,25,"vKV, exact sketch",loft__hotpotqa_128k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.88__max_context200000
+Qwen3.5,LOFT,128,8,vkv_final_perfect,musique,32.0,25,"vKV, exact sketch",loft__musique_128k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.88__max_context200000
+Qwen3.5,LOFT,128,8,vkv_final_perfect,nq,56.0,25,"vKV, exact sketch",loft__nq_128k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.88__max_context200000
+Qwen3.5,LOFT,128,8,vkv_final_perfect,qampari,32.0,25,"vKV, exact sketch",loft__qampari_128k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.88__max_context200000
+Qwen3.5,LOFT,128,8,vkv_final_perfect,quest,36.0,25,"vKV, exact sketch",loft__quest_128k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.88__max_context200000
+Qwen3.5,LOFT,128,8,vkv_nofetch_kvzip,hotpotqa,44.0,25,vKV (no fetch)+KVzip,loft__hotpotqa_128k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.88__max_context200000
+Qwen3.5,LOFT,128,8,vkv_nofetch_kvzip,musique,0.0,25,vKV (no fetch)+KVzip,loft__musique_128k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.88__max_context200000
+Qwen3.5,LOFT,128,8,vkv_nofetch_kvzip,nq,16.0,25,vKV (no fetch)+KVzip,loft__nq_128k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.88__max_context200000
+Qwen3.5,LOFT,128,8,vkv_nofetch_kvzip,qampari,0.0,25,vKV (no fetch)+KVzip,loft__qampari_128k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.88__max_context200000
+Qwen3.5,LOFT,128,8,vkv_nofetch_kvzip,quest,4.0,25,vKV (no fetch)+KVzip,loft__quest_128k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.88__max_context200000
+Qwen3.5,LOFT,128,16,dense,hotpotqa,64.0,25,Dense,loft__hotpotqa_128k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,128,16,dense,musique,36.0,25,Dense,loft__musique_128k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,128,16,dense,nq,56.0,25,Dense,loft__nq_128k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,128,16,dense,qampari,28.0,25,Dense,loft__qampari_128k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,128,16,dense,quest,36.0,25,Dense,loft__quest_128k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,128,16,fastkvzip,hotpotqa,4.0,25,Fast KVzip,loft__hotpotqa_128k__Qwen--Qwen3.5-9B__fastkvzip__0.94__max_context200000
+Qwen3.5,LOFT,128,16,fastkvzip,musique,4.0,25,Fast KVzip,loft__musique_128k__Qwen--Qwen3.5-9B__fastkvzip__0.94__max_context200000
+Qwen3.5,LOFT,128,16,fastkvzip,nq,4.0,25,Fast KVzip,loft__nq_128k__Qwen--Qwen3.5-9B__fastkvzip__0.94__max_context200000
+Qwen3.5,LOFT,128,16,fastkvzip,qampari,0.0,25,Fast KVzip,loft__qampari_128k__Qwen--Qwen3.5-9B__fastkvzip__0.94__max_context200000
+Qwen3.5,LOFT,128,16,fastkvzip,quest,0.0,25,Fast KVzip,loft__quest_128k__Qwen--Qwen3.5-9B__fastkvzip__0.94__max_context200000
+Qwen3.5,LOFT,128,16,kvzip,hotpotqa,0.0,25,KVzip,loft__hotpotqa_128k__Qwen--Qwen3.5-9B__kvzip_c__0.94__max_context200000
+Qwen3.5,LOFT,128,16,kvzip,musique,0.0,25,KVzip,loft__musique_128k__Qwen--Qwen3.5-9B__kvzip_c__0.94__max_context200000
+Qwen3.5,LOFT,128,16,kvzip,nq,0.0,25,KVzip,loft__nq_128k__Qwen--Qwen3.5-9B__kvzip_c__0.94__max_context200000
+Qwen3.5,LOFT,128,16,kvzip,qampari,0.0,25,KVzip,loft__qampari_128k__Qwen--Qwen3.5-9B__kvzip_c__0.94__max_context200000
+Qwen3.5,LOFT,128,16,kvzip,quest,0.0,25,KVzip,loft__quest_128k__Qwen--Qwen3.5-9B__kvzip_c__0.94__max_context200000
+Qwen3.5,LOFT,128,16,vkv_final_fastkvzip,hotpotqa,44.0,25,vKV+Fast KVzip,loft__hotpotqa_128k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.94__max_context200000
+Qwen3.5,LOFT,128,16,vkv_final_fastkvzip,musique,32.0,25,vKV+Fast KVzip,loft__musique_128k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.94__max_context200000
+Qwen3.5,LOFT,128,16,vkv_final_fastkvzip,nq,52.0,25,vKV+Fast KVzip,loft__nq_128k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.94__max_context200000
+Qwen3.5,LOFT,128,16,vkv_final_fastkvzip,qampari,4.0,25,vKV+Fast KVzip,loft__qampari_128k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.94__max_context200000
+Qwen3.5,LOFT,128,16,vkv_final_fastkvzip,quest,12.0,25,vKV+Fast KVzip,loft__quest_128k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.94__max_context200000
+Qwen3.5,LOFT,128,16,vkv_final_kvzip,hotpotqa,52.0,25,vKV+KVzip,loft__hotpotqa_128k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.94__max_context200000
+Qwen3.5,LOFT,128,16,vkv_final_kvzip,musique,24.0,25,vKV+KVzip,loft__musique_128k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.94__max_context200000
+Qwen3.5,LOFT,128,16,vkv_final_kvzip,nq,44.0,25,vKV+KVzip,loft__nq_128k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.94__max_context200000
+Qwen3.5,LOFT,128,16,vkv_final_kvzip,qampari,32.0,25,vKV+KVzip,loft__qampari_128k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.94__max_context200000
+Qwen3.5,LOFT,128,16,vkv_final_kvzip,quest,28.0,25,vKV+KVzip,loft__quest_128k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.94__max_context200000
+Qwen3.5,LOFT,128,16,vkv_final_perfect,hotpotqa,64.0,25,"vKV, exact sketch",loft__hotpotqa_128k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.94__max_context200000
+Qwen3.5,LOFT,128,16,vkv_final_perfect,musique,36.0,25,"vKV, exact sketch",loft__musique_128k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.94__max_context200000
+Qwen3.5,LOFT,128,16,vkv_final_perfect,nq,56.0,25,"vKV, exact sketch",loft__nq_128k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.94__max_context200000
+Qwen3.5,LOFT,128,16,vkv_final_perfect,qampari,32.0,25,"vKV, exact sketch",loft__qampari_128k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.94__max_context200000
+Qwen3.5,LOFT,128,16,vkv_final_perfect,quest,40.0,25,"vKV, exact sketch",loft__quest_128k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.94__max_context200000
+Qwen3.5,LOFT,128,16,vkv_nofetch_kvzip,hotpotqa,20.0,25,vKV (no fetch)+KVzip,loft__hotpotqa_128k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.94__max_context200000
+Qwen3.5,LOFT,128,16,vkv_nofetch_kvzip,musique,0.0,25,vKV (no fetch)+KVzip,loft__musique_128k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.94__max_context200000
+Qwen3.5,LOFT,128,16,vkv_nofetch_kvzip,nq,4.0,25,vKV (no fetch)+KVzip,loft__nq_128k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.94__max_context200000
+Qwen3.5,LOFT,128,16,vkv_nofetch_kvzip,qampari,0.0,25,vKV (no fetch)+KVzip,loft__qampari_128k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.94__max_context200000
+Qwen3.5,LOFT,128,16,vkv_nofetch_kvzip,quest,0.0,25,vKV (no fetch)+KVzip,loft__quest_128k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.94__max_context200000
+Qwen3.5,LOFT,128,32,dense,hotpotqa,64.0,25,Dense,loft__hotpotqa_128k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,128,32,dense,musique,36.0,25,Dense,loft__musique_128k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,128,32,dense,nq,56.0,25,Dense,loft__nq_128k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,128,32,dense,qampari,28.0,25,Dense,loft__qampari_128k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,128,32,dense,quest,36.0,25,Dense,loft__quest_128k__Qwen--Qwen3.5-9B__no_press__0.00__max_context200000
+Qwen3.5,LOFT,128,32,fastkvzip,hotpotqa,4.0,25,Fast KVzip,loft__hotpotqa_128k__Qwen--Qwen3.5-9B__fastkvzip__0.97__max_context200000
+Qwen3.5,LOFT,128,32,fastkvzip,musique,4.0,25,Fast KVzip,loft__musique_128k__Qwen--Qwen3.5-9B__fastkvzip__0.97__max_context200000
+Qwen3.5,LOFT,128,32,fastkvzip,nq,4.0,25,Fast KVzip,loft__nq_128k__Qwen--Qwen3.5-9B__fastkvzip__0.97__max_context200000
+Qwen3.5,LOFT,128,32,fastkvzip,qampari,0.0,25,Fast KVzip,loft__qampari_128k__Qwen--Qwen3.5-9B__fastkvzip__0.97__max_context200000
+Qwen3.5,LOFT,128,32,fastkvzip,quest,0.0,25,Fast KVzip,loft__quest_128k__Qwen--Qwen3.5-9B__fastkvzip__0.97__max_context200000
+Qwen3.5,LOFT,128,32,kvzip,hotpotqa,0.0,25,KVzip,loft__hotpotqa_128k__Qwen--Qwen3.5-9B__kvzip_c__0.97__max_context200000
+Qwen3.5,LOFT,128,32,kvzip,musique,0.0,25,KVzip,loft__musique_128k__Qwen--Qwen3.5-9B__kvzip_c__0.97__max_context200000
+Qwen3.5,LOFT,128,32,kvzip,nq,0.0,25,KVzip,loft__nq_128k__Qwen--Qwen3.5-9B__kvzip_c__0.97__max_context200000
+Qwen3.5,LOFT,128,32,kvzip,qampari,0.0,25,KVzip,loft__qampari_128k__Qwen--Qwen3.5-9B__kvzip_c__0.97__max_context200000
+Qwen3.5,LOFT,128,32,kvzip,quest,0.0,25,KVzip,loft__quest_128k__Qwen--Qwen3.5-9B__kvzip_c__0.97__max_context200000
+Qwen3.5,LOFT,128,32,vkv_final_fastkvzip,hotpotqa,56.0,25,vKV+Fast KVzip,loft__hotpotqa_128k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.97__max_context200000
+Qwen3.5,LOFT,128,32,vkv_final_fastkvzip,musique,32.0,25,vKV+Fast KVzip,loft__musique_128k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.97__max_context200000
+Qwen3.5,LOFT,128,32,vkv_final_fastkvzip,nq,32.0,25,vKV+Fast KVzip,loft__nq_128k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.97__max_context200000
+Qwen3.5,LOFT,128,32,vkv_final_fastkvzip,qampari,20.0,25,vKV+Fast KVzip,loft__qampari_128k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.97__max_context200000
+Qwen3.5,LOFT,128,32,vkv_final_fastkvzip,quest,12.0,25,vKV+Fast KVzip,loft__quest_128k__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.97__max_context200000
+Qwen3.5,LOFT,128,32,vkv_final_kvzip,hotpotqa,64.0,25,vKV+KVzip,loft__hotpotqa_128k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.97__max_context200000
+Qwen3.5,LOFT,128,32,vkv_final_kvzip,musique,28.0,25,vKV+KVzip,loft__musique_128k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.97__max_context200000
+Qwen3.5,LOFT,128,32,vkv_final_kvzip,nq,48.0,25,vKV+KVzip,loft__nq_128k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.97__max_context200000
+Qwen3.5,LOFT,128,32,vkv_final_kvzip,qampari,4.0,25,vKV+KVzip,loft__qampari_128k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.97__max_context200000
+Qwen3.5,LOFT,128,32,vkv_final_kvzip,quest,12.0,25,vKV+KVzip,loft__quest_128k__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.97__max_context200000
+Qwen3.5,LOFT,128,32,vkv_final_perfect,hotpotqa,64.0,25,"vKV, exact sketch",loft__hotpotqa_128k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.97__max_context200000
+Qwen3.5,LOFT,128,32,vkv_final_perfect,musique,32.0,25,"vKV, exact sketch",loft__musique_128k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.97__max_context200000
+Qwen3.5,LOFT,128,32,vkv_final_perfect,nq,56.0,25,"vKV, exact sketch",loft__nq_128k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.97__max_context200000
+Qwen3.5,LOFT,128,32,vkv_final_perfect,qampari,32.0,25,"vKV, exact sketch",loft__qampari_128k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.97__max_context200000
+Qwen3.5,LOFT,128,32,vkv_final_perfect,quest,40.0,25,"vKV, exact sketch",loft__quest_128k__Qwen--Qwen3.5-9B__vkv_final_perfect__0.97__max_context200000
+Qwen3.5,LOFT,128,32,vkv_nofetch_kvzip,hotpotqa,0.0,25,vKV (no fetch)+KVzip,loft__hotpotqa_128k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.97__max_context200000
+Qwen3.5,LOFT,128,32,vkv_nofetch_kvzip,musique,0.0,25,vKV (no fetch)+KVzip,loft__musique_128k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.97__max_context200000
+Qwen3.5,LOFT,128,32,vkv_nofetch_kvzip,nq,0.0,25,vKV (no fetch)+KVzip,loft__nq_128k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.97__max_context200000
+Qwen3.5,LOFT,128,32,vkv_nofetch_kvzip,qampari,0.0,25,vKV (no fetch)+KVzip,loft__qampari_128k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.97__max_context200000
+Qwen3.5,LOFT,128,32,vkv_nofetch_kvzip,quest,0.0,25,vKV (no fetch)+KVzip,loft__quest_128k__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.97__max_context200000
+Qwen3.5,RULER,32,8,dense,cwe,98.4,50,Dense,ruler32k__cwe__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,dense,niah_mk3,100.0,50,Dense,ruler32k__niah_multikey_3__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,dense,niah_mv,100.0,50,Dense,ruler32k__niah_multivalue__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,dense,qa1,90.0,50,Dense,ruler32k__qa_1__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,fastkvzip,cwe,55.4,50,Fast KVzip,ruler32k__cwe__Qwen--Qwen3.5-9B__fastkvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,fastkvzip,niah_mk3,14.0,50,Fast KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3.5-9B__fastkvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,fastkvzip,niah_mv,2.5,50,Fast KVzip,ruler32k__niah_multivalue__Qwen--Qwen3.5-9B__fastkvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,fastkvzip,qa1,16.0,50,Fast KVzip,ruler32k__qa_1__Qwen--Qwen3.5-9B__fastkvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,kvzip,cwe,30.6,50,KVzip,ruler32k__cwe__Qwen--Qwen3.5-9B__kvzip_c__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,kvzip,niah_mk3,0.0,50,KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3.5-9B__kvzip_c__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,kvzip,niah_mv,41.0,50,KVzip,ruler32k__niah_multivalue__Qwen--Qwen3.5-9B__kvzip_c__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,kvzip,qa1,36.0,50,KVzip,ruler32k__qa_1__Qwen--Qwen3.5-9B__kvzip_c__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,vkv_final_fastkvzip,cwe,92.6,50,vKV+Fast KVzip,ruler32k__cwe__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,vkv_final_fastkvzip,niah_mk3,100.0,50,vKV+Fast KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,vkv_final_fastkvzip,niah_mv,100.0,50,vKV+Fast KVzip,ruler32k__niah_multivalue__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,vkv_final_fastkvzip,qa1,92.0,50,vKV+Fast KVzip,ruler32k__qa_1__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,vkv_final_kvzip,cwe,90.8,50,vKV+KVzip,ruler32k__cwe__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,vkv_final_kvzip,niah_mk3,100.0,50,vKV+KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,vkv_final_kvzip,niah_mv,100.0,50,vKV+KVzip,ruler32k__niah_multivalue__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,vkv_final_kvzip,qa1,90.0,50,vKV+KVzip,ruler32k__qa_1__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,vkv_final_perfect,cwe,98.4,50,"vKV, exact sketch",ruler32k__cwe__Qwen--Qwen3.5-9B__vkv_final_perfect__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,vkv_final_perfect,niah_mk3,100.0,50,"vKV, exact sketch",ruler32k__niah_multikey_3__Qwen--Qwen3.5-9B__vkv_final_perfect__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,vkv_final_perfect,niah_mv,100.0,50,"vKV, exact sketch",ruler32k__niah_multivalue__Qwen--Qwen3.5-9B__vkv_final_perfect__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,vkv_final_perfect,qa1,92.0,50,"vKV, exact sketch",ruler32k__qa_1__Qwen--Qwen3.5-9B__vkv_final_perfect__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,vkv_nofetch_kvzip,cwe,82.4,50,vKV (no fetch)+KVzip,ruler32k__cwe__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,vkv_nofetch_kvzip,niah_mk3,0.0,50,vKV (no fetch)+KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,vkv_nofetch_kvzip,niah_mv,4.0,50,vKV (no fetch)+KVzip,ruler32k__niah_multivalue__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,8,vkv_nofetch_kvzip,qa1,48.0,50,vKV (no fetch)+KVzip,ruler32k__qa_1__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,dense,cwe,98.4,50,Dense,ruler32k__cwe__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,dense,niah_mk3,100.0,50,Dense,ruler32k__niah_multikey_3__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,dense,niah_mv,100.0,50,Dense,ruler32k__niah_multivalue__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,dense,qa1,90.0,50,Dense,ruler32k__qa_1__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,fastkvzip,cwe,40.4,50,Fast KVzip,ruler32k__cwe__Qwen--Qwen3.5-9B__fastkvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,fastkvzip,niah_mk3,0.0,50,Fast KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3.5-9B__fastkvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,fastkvzip,niah_mv,2.0,50,Fast KVzip,ruler32k__niah_multivalue__Qwen--Qwen3.5-9B__fastkvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,fastkvzip,qa1,16.0,50,Fast KVzip,ruler32k__qa_1__Qwen--Qwen3.5-9B__fastkvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,kvzip,cwe,1.4,50,KVzip,ruler32k__cwe__Qwen--Qwen3.5-9B__kvzip_c__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,kvzip,niah_mk3,0.0,50,KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3.5-9B__kvzip_c__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,kvzip,niah_mv,1.0,50,KVzip,ruler32k__niah_multivalue__Qwen--Qwen3.5-9B__kvzip_c__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,kvzip,qa1,12.0,50,KVzip,ruler32k__qa_1__Qwen--Qwen3.5-9B__kvzip_c__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,vkv_final_fastkvzip,cwe,92.4,50,vKV+Fast KVzip,ruler32k__cwe__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,vkv_final_fastkvzip,niah_mk3,96.0,50,vKV+Fast KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,vkv_final_fastkvzip,niah_mv,100.0,50,vKV+Fast KVzip,ruler32k__niah_multivalue__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,vkv_final_fastkvzip,qa1,92.0,50,vKV+Fast KVzip,ruler32k__qa_1__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,vkv_final_kvzip,cwe,90.6,50,vKV+KVzip,ruler32k__cwe__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,vkv_final_kvzip,niah_mk3,100.0,50,vKV+KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,vkv_final_kvzip,niah_mv,100.0,50,vKV+KVzip,ruler32k__niah_multivalue__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,vkv_final_kvzip,qa1,90.0,50,vKV+KVzip,ruler32k__qa_1__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,vkv_final_perfect,cwe,97.6,50,"vKV, exact sketch",ruler32k__cwe__Qwen--Qwen3.5-9B__vkv_final_perfect__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,vkv_final_perfect,niah_mk3,100.0,50,"vKV, exact sketch",ruler32k__niah_multikey_3__Qwen--Qwen3.5-9B__vkv_final_perfect__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,vkv_final_perfect,niah_mv,100.0,50,"vKV, exact sketch",ruler32k__niah_multivalue__Qwen--Qwen3.5-9B__vkv_final_perfect__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,vkv_final_perfect,qa1,90.0,50,"vKV, exact sketch",ruler32k__qa_1__Qwen--Qwen3.5-9B__vkv_final_perfect__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,vkv_nofetch_kvzip,cwe,74.0,50,vKV (no fetch)+KVzip,ruler32k__cwe__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,vkv_nofetch_kvzip,niah_mk3,0.0,50,vKV (no fetch)+KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,vkv_nofetch_kvzip,niah_mv,0.0,50,vKV (no fetch)+KVzip,ruler32k__niah_multivalue__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,16,vkv_nofetch_kvzip,qa1,28.0,50,vKV (no fetch)+KVzip,ruler32k__qa_1__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,dense,cwe,98.4,50,Dense,ruler32k__cwe__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,dense,niah_mk3,100.0,50,Dense,ruler32k__niah_multikey_3__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,dense,niah_mv,100.0,50,Dense,ruler32k__niah_multivalue__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,dense,qa1,90.0,50,Dense,ruler32k__qa_1__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,fastkvzip,cwe,40.8,50,Fast KVzip,ruler32k__cwe__Qwen--Qwen3.5-9B__fastkvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,fastkvzip,niah_mk3,0.0,50,Fast KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3.5-9B__fastkvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,fastkvzip,niah_mv,2.0,50,Fast KVzip,ruler32k__niah_multivalue__Qwen--Qwen3.5-9B__fastkvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,fastkvzip,qa1,14.0,50,Fast KVzip,ruler32k__qa_1__Qwen--Qwen3.5-9B__fastkvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,kvzip,cwe,0.0,50,KVzip,ruler32k__cwe__Qwen--Qwen3.5-9B__kvzip_c__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,kvzip,niah_mk3,0.0,50,KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3.5-9B__kvzip_c__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,kvzip,niah_mv,0.0,50,KVzip,ruler32k__niah_multivalue__Qwen--Qwen3.5-9B__kvzip_c__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,kvzip,qa1,16.0,50,KVzip,ruler32k__qa_1__Qwen--Qwen3.5-9B__kvzip_c__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,vkv_final_fastkvzip,cwe,87.8,50,vKV+Fast KVzip,ruler32k__cwe__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,vkv_final_fastkvzip,niah_mk3,98.0,50,vKV+Fast KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,vkv_final_fastkvzip,niah_mv,100.0,50,vKV+Fast KVzip,ruler32k__niah_multivalue__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,vkv_final_fastkvzip,qa1,92.0,50,vKV+Fast KVzip,ruler32k__qa_1__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,vkv_final_kvzip,cwe,90.4,50,vKV+KVzip,ruler32k__cwe__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,vkv_final_kvzip,niah_mk3,98.0,50,vKV+KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,vkv_final_kvzip,niah_mv,100.0,50,vKV+KVzip,ruler32k__niah_multivalue__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,vkv_final_kvzip,qa1,94.0,50,vKV+KVzip,ruler32k__qa_1__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,vkv_final_perfect,cwe,98.4,50,"vKV, exact sketch",ruler32k__cwe__Qwen--Qwen3.5-9B__vkv_final_perfect__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,vkv_final_perfect,niah_mk3,100.0,50,"vKV, exact sketch",ruler32k__niah_multikey_3__Qwen--Qwen3.5-9B__vkv_final_perfect__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,vkv_final_perfect,niah_mv,100.0,50,"vKV, exact sketch",ruler32k__niah_multivalue__Qwen--Qwen3.5-9B__vkv_final_perfect__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,vkv_final_perfect,qa1,90.0,50,"vKV, exact sketch",ruler32k__qa_1__Qwen--Qwen3.5-9B__vkv_final_perfect__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,vkv_nofetch_kvzip,cwe,46.0,50,vKV (no fetch)+KVzip,ruler32k__cwe__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,vkv_nofetch_kvzip,niah_mk3,0.0,50,vKV (no fetch)+KVzip,ruler32k__niah_multikey_3__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,vkv_nofetch_kvzip,niah_mv,0.0,50,vKV (no fetch)+KVzip,ruler32k__niah_multivalue__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,32,32,vkv_nofetch_kvzip,qa1,14.0,50,vKV (no fetch)+KVzip,ruler32k__qa_1__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,dense,cwe,100.0,50,Dense,ruler128k__cwe__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,dense,niah_mk3,100.0,50,Dense,ruler128k__niah_multikey_3__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,dense,niah_mv,100.0,50,Dense,ruler128k__niah_multivalue__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,dense,qa1,86.0,50,Dense,ruler128k__qa_1__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,fastkvzip,cwe,59.2,50,Fast KVzip,ruler128k__cwe__Qwen--Qwen3.5-9B__fastkvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,fastkvzip,niah_mk3,16.0,50,Fast KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3.5-9B__fastkvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,fastkvzip,niah_mv,4.5,50,Fast KVzip,ruler128k__niah_multivalue__Qwen--Qwen3.5-9B__fastkvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,fastkvzip,qa1,18.0,50,Fast KVzip,ruler128k__qa_1__Qwen--Qwen3.5-9B__fastkvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,kvzip,cwe,47.0,50,KVzip,ruler128k__cwe__Qwen--Qwen3.5-9B__kvzip_c__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,kvzip,niah_mk3,4.0,50,KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3.5-9B__kvzip_c__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,kvzip,niah_mv,46.5,50,KVzip,ruler128k__niah_multivalue__Qwen--Qwen3.5-9B__kvzip_c__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,kvzip,qa1,30.0,50,KVzip,ruler128k__qa_1__Qwen--Qwen3.5-9B__kvzip_c__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,vkv_final_fastkvzip,cwe,95.4,50,vKV+Fast KVzip,ruler128k__cwe__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,vkv_final_fastkvzip,niah_mk3,100.0,50,vKV+Fast KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,vkv_final_fastkvzip,niah_mv,100.0,50,vKV+Fast KVzip,ruler128k__niah_multivalue__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,vkv_final_fastkvzip,qa1,78.0,50,vKV+Fast KVzip,ruler128k__qa_1__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,vkv_final_kvzip,cwe,97.6,50,vKV+KVzip,ruler128k__cwe__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,vkv_final_kvzip,niah_mk3,100.0,50,vKV+KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,vkv_final_kvzip,niah_mv,100.0,50,vKV+KVzip,ruler128k__niah_multivalue__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,vkv_final_kvzip,qa1,76.0,50,vKV+KVzip,ruler128k__qa_1__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,vkv_final_perfect,cwe,100.0,50,"vKV, exact sketch",ruler128k__cwe__Qwen--Qwen3.5-9B__vkv_final_perfect__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,vkv_final_perfect,niah_mk3,100.0,50,"vKV, exact sketch",ruler128k__niah_multikey_3__Qwen--Qwen3.5-9B__vkv_final_perfect__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,vkv_final_perfect,niah_mv,100.0,50,"vKV, exact sketch",ruler128k__niah_multivalue__Qwen--Qwen3.5-9B__vkv_final_perfect__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,vkv_final_perfect,qa1,86.0,50,"vKV, exact sketch",ruler128k__qa_1__Qwen--Qwen3.5-9B__vkv_final_perfect__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,vkv_nofetch_kvzip,cwe,84.4,50,vKV (no fetch)+KVzip,ruler128k__cwe__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,vkv_nofetch_kvzip,niah_mk3,2.0,50,vKV (no fetch)+KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,vkv_nofetch_kvzip,niah_mv,2.0,50,vKV (no fetch)+KVzip,ruler128k__niah_multivalue__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,8,vkv_nofetch_kvzip,qa1,50.0,50,vKV (no fetch)+KVzip,ruler128k__qa_1__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.88__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,dense,cwe,100.0,50,Dense,ruler128k__cwe__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,dense,niah_mk3,100.0,50,Dense,ruler128k__niah_multikey_3__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,dense,niah_mv,100.0,50,Dense,ruler128k__niah_multivalue__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,dense,qa1,86.0,50,Dense,ruler128k__qa_1__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,fastkvzip,cwe,48.0,50,Fast KVzip,ruler128k__cwe__Qwen--Qwen3.5-9B__fastkvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,fastkvzip,niah_mk3,0.0,50,Fast KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3.5-9B__fastkvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,fastkvzip,niah_mv,2.0,50,Fast KVzip,ruler128k__niah_multivalue__Qwen--Qwen3.5-9B__fastkvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,fastkvzip,qa1,18.0,50,Fast KVzip,ruler128k__qa_1__Qwen--Qwen3.5-9B__fastkvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,kvzip,cwe,6.2,50,KVzip,ruler128k__cwe__Qwen--Qwen3.5-9B__kvzip_c__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,kvzip,niah_mk3,0.0,50,KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3.5-9B__kvzip_c__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,kvzip,niah_mv,3.0,50,KVzip,ruler128k__niah_multivalue__Qwen--Qwen3.5-9B__kvzip_c__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,kvzip,qa1,16.0,50,KVzip,ruler128k__qa_1__Qwen--Qwen3.5-9B__kvzip_c__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,vkv_final_fastkvzip,cwe,93.0,50,vKV+Fast KVzip,ruler128k__cwe__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,vkv_final_fastkvzip,niah_mk3,88.0,50,vKV+Fast KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,vkv_final_fastkvzip,niah_mv,100.0,50,vKV+Fast KVzip,ruler128k__niah_multivalue__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,vkv_final_fastkvzip,qa1,74.0,50,vKV+Fast KVzip,ruler128k__qa_1__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,vkv_final_kvzip,cwe,87.6,50,vKV+KVzip,ruler128k__cwe__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,vkv_final_kvzip,niah_mk3,94.0,50,vKV+KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,vkv_final_kvzip,niah_mv,100.0,50,vKV+KVzip,ruler128k__niah_multivalue__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,vkv_final_kvzip,qa1,72.0,50,vKV+KVzip,ruler128k__qa_1__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,vkv_final_perfect,cwe,99.8,50,"vKV, exact sketch",ruler128k__cwe__Qwen--Qwen3.5-9B__vkv_final_perfect__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,vkv_final_perfect,niah_mk3,100.0,50,"vKV, exact sketch",ruler128k__niah_multikey_3__Qwen--Qwen3.5-9B__vkv_final_perfect__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,vkv_final_perfect,niah_mv,100.0,50,"vKV, exact sketch",ruler128k__niah_multivalue__Qwen--Qwen3.5-9B__vkv_final_perfect__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,vkv_final_perfect,qa1,86.0,50,"vKV, exact sketch",ruler128k__qa_1__Qwen--Qwen3.5-9B__vkv_final_perfect__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,vkv_nofetch_kvzip,cwe,74.8,50,vKV (no fetch)+KVzip,ruler128k__cwe__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,vkv_nofetch_kvzip,niah_mk3,0.0,50,vKV (no fetch)+KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,vkv_nofetch_kvzip,niah_mv,0.0,50,vKV (no fetch)+KVzip,ruler128k__niah_multivalue__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,16,vkv_nofetch_kvzip,qa1,32.0,50,vKV (no fetch)+KVzip,ruler128k__qa_1__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.94__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,dense,cwe,100.0,50,Dense,ruler128k__cwe__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,dense,niah_mk3,100.0,50,Dense,ruler128k__niah_multikey_3__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,dense,niah_mv,100.0,50,Dense,ruler128k__niah_multivalue__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,dense,qa1,86.0,50,Dense,ruler128k__qa_1__Qwen--Qwen3.5-9B__no_press__0.00__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,fastkvzip,cwe,47.4,50,Fast KVzip,ruler128k__cwe__Qwen--Qwen3.5-9B__fastkvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,fastkvzip,niah_mk3,0.0,50,Fast KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3.5-9B__fastkvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,fastkvzip,niah_mv,2.0,50,Fast KVzip,ruler128k__niah_multivalue__Qwen--Qwen3.5-9B__fastkvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,fastkvzip,qa1,16.0,50,Fast KVzip,ruler128k__qa_1__Qwen--Qwen3.5-9B__fastkvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,kvzip,cwe,0.0,50,KVzip,ruler128k__cwe__Qwen--Qwen3.5-9B__kvzip_c__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,kvzip,niah_mk3,0.0,50,KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3.5-9B__kvzip_c__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,kvzip,niah_mv,0.0,50,KVzip,ruler128k__niah_multivalue__Qwen--Qwen3.5-9B__kvzip_c__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,kvzip,qa1,14.0,50,KVzip,ruler128k__qa_1__Qwen--Qwen3.5-9B__kvzip_c__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,vkv_final_fastkvzip,cwe,73.6,50,vKV+Fast KVzip,ruler128k__cwe__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,vkv_final_fastkvzip,niah_mk3,86.0,50,vKV+Fast KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,vkv_final_fastkvzip,niah_mv,100.0,50,vKV+Fast KVzip,ruler128k__niah_multivalue__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,vkv_final_fastkvzip,qa1,76.0,50,vKV+Fast KVzip,ruler128k__qa_1__Qwen--Qwen3.5-9B__vkv_final_fastkvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,vkv_final_kvzip,cwe,79.0,50,vKV+KVzip,ruler128k__cwe__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,vkv_final_kvzip,niah_mk3,94.0,50,vKV+KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,vkv_final_kvzip,niah_mv,100.0,50,vKV+KVzip,ruler128k__niah_multivalue__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,vkv_final_kvzip,qa1,82.0,50,vKV+KVzip,ruler128k__qa_1__Qwen--Qwen3.5-9B__vkv_final_kvzip__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,vkv_final_perfect,cwe,100.0,50,"vKV, exact sketch",ruler128k__cwe__Qwen--Qwen3.5-9B__vkv_final_perfect__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,vkv_final_perfect,niah_mk3,100.0,50,"vKV, exact sketch",ruler128k__niah_multikey_3__Qwen--Qwen3.5-9B__vkv_final_perfect__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,vkv_final_perfect,niah_mv,100.0,50,"vKV, exact sketch",ruler128k__niah_multivalue__Qwen--Qwen3.5-9B__vkv_final_perfect__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,vkv_final_perfect,qa1,86.0,50,"vKV, exact sketch",ruler128k__qa_1__Qwen--Qwen3.5-9B__vkv_final_perfect__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,vkv_nofetch_kvzip,cwe,45.0,50,vKV (no fetch)+KVzip,ruler128k__cwe__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,vkv_nofetch_kvzip,niah_mk3,0.0,50,vKV (no fetch)+KVzip,ruler128k__niah_multikey_3__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,vkv_nofetch_kvzip,niah_mv,0.0,50,vKV (no fetch)+KVzip,ruler128k__niah_multivalue__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.97__nsamples50__max_context200000
+Qwen3.5,RULER,128,32,vkv_nofetch_kvzip,qa1,14.0,50,vKV (no fetch)+KVzip,ruler128k__qa_1__Qwen--Qwen3.5-9B__bernoulli_kvzip_c__0.97__nsamples50__max_context200000

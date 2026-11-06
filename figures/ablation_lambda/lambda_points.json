@@ -1,0 +1,17 @@
+{
+ "rows": 44640,
+ "ratio": 0.9375,
+ "source": "phase4/experiments/trunc_ablation/out/sketch_ab_16x.npz",
+ "jump_rule_points": {
+  "exact": {
+   "median_frac": 0.0015331544653123803,
+   "median_mse_rel": 0.5171120987772816,
+   "frac_rows_not_worse": 1.0
+  },
+  "sketch": {
+   "median_frac": 0.0012705269510529492,
+   "median_mse_rel": 0.6660382985259656,
+   "frac_rows_not_worse": 1.0
+  }
+ }
+}

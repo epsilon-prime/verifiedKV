@@ -1,0 +1,319 @@
+"""Integration tests for the full offloading pipeline."""
+from __future__ import annotations
+
+import pytest
+import torch
+
+from offload_package.config import OffloadConfig
+from offload_package.controller import KVCompressionController
+from offload_package.integration.manager import OffloadOrchestrator
+from offload_package.offload.manager import KVOffloadManager
+from offload_package.scoring.base import BlockRef
+from offload_package.scoring.paged_eviction import PagedEvictionScorer
+from offload_package.staging.pool import KVStagingPool
+from offload_package.staging.residency import Residency, ResidencyTable
+from offload_package.shared.types import OrchestratorConfig, build_orchestrator
+
+
+class TestOffloadOrchestrator:
+    """Integration tests for OffloadOrchestrator."""
+
+    @pytest.fixture
+    def orchestrator_setup(self, sample_kv_cache, sample_cpu_cache):
+        """Create a full orchestrator setup on the fork's combined cache layout."""
+        from offload_package.tests.conftest import combined_caches
+        k_cache, v_cache = sample_kv_cache   # [P, N, H, D] each
+        num_pages, page_size, num_heads, head_dim = k_cache.shape
+
+        combined = combined_caches([k_cache], [v_cache])[0]  # [P, H, N, 2D]
+        layers = [combined]
+        k_caches = [combined]
+        v_caches = [combined]
+
+        # Create KVCacheView manually for testing
+        from offload_package.vllm_adapter import KVCacheView
+        kv_cache_view = KVCacheView(
+            layers=layers,
+            k_caches=k_caches,
+            v_caches=v_caches,
+            block_size=page_size,
+            num_kv_heads=num_heads,
+            head_dim=head_dim,
+            kv_layout="HND",
+            staging_base_page=100,
+        )
+
+        cfg = OrchestratorConfig(
+            offload_fraction=0.2,
+            num_cpu_slots=64,
+            num_staging_slots=8,
+            W=16,
+            page_size=16,
+            dtype=torch.float32,
+            device=k_cache.device,
+            gpu_budget_blocks=64,
+            kv_layout="HND",
+            scorer_decay=1.0,
+            scorer_head_reduction="mean",
+        )
+
+        orchestrator = build_orchestrator(
+            cfg,
+            kv_cache_view=kv_cache_view,
+        )
+
+        return orchestrator, cfg
+
+    def test_orchestrator_initialization(self, orchestrator_setup):
+        """Test that orchestrator initializes correctly."""
+        orchestrator, cfg = orchestrator_setup
+        
+        assert orchestrator is not None
+        assert orchestrator.offload_manager is not None
+        assert orchestrator.staging_pool is not None
+        assert orchestrator.residency is not None
+        assert orchestrator.controller is not None
+
+    def test_sync_request_blocks_creates_residency(self, orchestrator_setup):
+        """Test that sync_request_blocks creates residency records."""
+        orchestrator, _ = orchestrator_setup
+        
+        req_id = "req1"
+        block_ids = [0, 1, 2]
+        
+        orchestrator.sync_request_blocks(req_id, block_ids, num_computed_tokens=0)
+        
+        refs = orchestrator._request_blocks.get(req_id)
+        assert refs is not None
+        assert len(refs) == 3
+        
+        # Check residency was created
+        for ref in refs:
+            loc = orchestrator.residency.get(ref)
+            assert loc is not None
+            assert loc.residency == Residency.GPU
+
+    def test_on_prefill_complete_leaves_partial_tail_incomplete(self, orchestrator_setup):
+        """Regression: prefill completion must NOT mark the partially-filled
+        tail block complete -- offloading it would snapshot garbage rows and
+        free the page while decode is still writing into it."""
+        orchestrator, _ = orchestrator_setup
+
+        req_id = "req1"
+        page = orchestrator.page_size
+        n_full = 4                      # 4 full blocks...
+        tail_rows = 6                   # ...and a 6/16-filled tail
+        total_tokens = n_full * page + tail_rows
+        block_ids = list(range(n_full + 1))
+        orchestrator.sync_request_blocks(
+            req_id, block_ids, num_computed_tokens=total_tokens)
+        for i, ref in enumerate(orchestrator._request_blocks[req_id]):
+            orchestrator.residency.mark_gpu(ref, gpu_block_id=i, complete=False)
+
+        orchestrator.on_prefill_complete(req_id, total_tokens)
+
+        locs = {r.block_idx: orchestrator.residency.get(r)
+                for r in orchestrator._request_blocks[req_id]}
+        for idx in range(n_full):
+            assert locs[idx].complete, f"full block {idx} must be complete"
+        assert not locs[n_full].complete, (
+            "partially-filled tail block must stay incomplete so the "
+            "offloader never snapshots it mid-write"
+        )
+
+    def test_on_prefill_complete_offloads(self, orchestrator_setup):
+        """Prefill complete marks+scores; offload_fraction then moves blocks."""
+        orchestrator, _ = orchestrator_setup
+
+        req_id = "req1"
+        # Use enough blocks to exceed GPU budget (64) so eviction happens
+        block_ids = list(range(80))
+        num_computed = 80 * 16  # All blocks complete
+
+        orchestrator.sync_request_blocks(req_id, block_ids, num_computed_tokens=num_computed)
+
+        # Mark all blocks as complete
+        for i, ref in enumerate(orchestrator._request_blocks[req_id]):
+            loc = orchestrator.residency.get(ref)
+            orchestrator.residency.mark_gpu(ref, gpu_block_id=i, complete=True)
+
+        # Prefill-complete: blocks get scored and marked complete; the offload
+        # call itself is the scheduler's (offload_fraction) responsibility.
+        orchestrator.on_prefill_complete(req_id, num_computed)
+        assert all(orchestrator.residency.get(r).complete for r in orchestrator._request_blocks[req_id])
+        assert all(r in orchestrator._scored for r in orchestrator._request_blocks[req_id])
+
+        offloaded = orchestrator.offload_manager.offload_fraction(
+            orchestrator._request_blocks[req_id], 0.5, orchestrator._scored
+        )
+        assert len(offloaded) > 0
+        for ref in offloaded:
+            loc = orchestrator.residency.get(ref)
+            assert loc.residency == Residency.CPU
+
+    def test_prepare_staging_moves_to_staging(self, orchestrator_setup):
+        """Test that prepare_staging moves blocks from CPU to staging."""
+        orchestrator, _ = orchestrator_setup
+        
+        req_id = "req1"
+        block_ids = [0, 1, 2]
+        
+        orchestrator.sync_request_blocks(req_id, block_ids, num_computed_tokens=50)
+        
+        # Mark blocks complete and offload to CPU
+        for i, ref in enumerate(orchestrator._request_blocks[req_id]):
+            orchestrator.residency.mark_gpu(ref, gpu_block_id=i, complete=True)
+            # Simulate offload
+            orchestrator.offload_manager.offload_fraction([ref], fraction=0.99)
+        
+        # Prepare staging for needed blocks - need valid sparse tensors
+        # Get device from k_caches
+        device = orchestrator.offload_manager.gpu_k_caches[0].device
+        # sparse_idx: [B, q_heads, max_S], sparse_len: [B, q_heads, 1]
+        sparse_idx = torch.zeros(1, 1, 3, dtype=torch.long, device=device)
+        sparse_idx[0, 0, :] = torch.tensor([0, 1, 2], dtype=torch.long)
+        sparse_len = torch.tensor([[[3]]], dtype=torch.int32, device=device)
+        
+        staging_map = orchestrator.prepare_staging([req_id], sparse_idx, sparse_len)
+        
+        # At least some blocks should be in staging map
+        assert isinstance(staging_map, dict)
+
+    def test_on_request_done_cleans_up(self, orchestrator_setup):
+        """Test that on_request_done cleans up resources."""
+        orchestrator, _ = orchestrator_setup
+        
+        req_id = "req1"
+        block_ids = [0, 1, 2]
+        
+        orchestrator.sync_request_blocks(req_id, block_ids, num_computed_tokens=50)
+        
+        # Mark blocks complete
+        for i, ref in enumerate(orchestrator._request_blocks[req_id]):
+            orchestrator.residency.mark_gpu(ref, gpu_block_id=i, complete=True)
+        
+        # Offload some
+        orchestrator.offload_manager.offload_fraction(list(orchestrator._request_blocks[req_id]), 0.5)
+        
+        orchestrator.on_request_done(req_id)
+        
+        # Request should be cleaned up
+        assert req_id not in orchestrator._request_blocks
+        
+        # Controller should forget the request
+        assert orchestrator.controller.count(req_id) == 0
+
+    def test_multiple_requests_concurrent(self, orchestrator_setup):
+        """Test handling multiple concurrent requests."""
+        orchestrator, _ = orchestrator_setup
+        
+        # Add two requests with enough blocks to exceed GPU budget
+        req_ids = ["req1", "req2"]
+        for req_id in req_ids:
+            block_ids = list(range(50))  # 50 blocks each = 100 total > 64 budget
+            orchestrator.sync_request_blocks(req_id, block_ids, num_computed_tokens=800)
+            
+            for i, ref in enumerate(orchestrator._request_blocks[req_id]):
+                orchestrator.residency.mark_gpu(ref, gpu_block_id=i, complete=True)
+        
+        # Prefill-complete marks + scores; the offload call lives in the
+        # scheduler (offload_fraction over the global candidate pool).
+        orchestrator.on_prefill_complete(req_ids[0], 800)
+        orchestrator.on_prefill_complete(req_ids[1], 800)
+
+        offloaded = orchestrator.offload_manager.offload_fraction(
+            orchestrator._request_blocks[req_ids[0]] + orchestrator._request_blocks[req_ids[1]],
+            0.5,
+            orchestrator._scored,
+        )
+        assert len(offloaded) > 0
+
+        # Both should have blocks
+        for req_id in req_ids:
+            refs = orchestrator._request_blocks.get(req_id)
+            assert refs is not None
+
+        # Finish first request
+        orchestrator.on_request_done(req_ids[0])
+        
+        # Second request should still exist
+        assert req_ids[0] not in orchestrator._request_blocks
+        assert req_ids[1] in orchestrator._request_blocks
+
+    def test_residency_consistency(self, orchestrator_setup):
+        """Test that residency table stays consistent through operations."""
+        orchestrator, _ = orchestrator_setup
+        
+        req_id = "req1"
+        block_ids = [0, 1, 2]
+        
+        orchestrator.sync_request_blocks(req_id, block_ids, num_computed_tokens=50)
+        
+        refs = orchestrator._request_blocks[req_id]
+        
+        # All should start as GPU
+        for ref in refs:
+            loc = orchestrator.residency.get(ref)
+            assert loc.residency == Residency.GPU
+        
+        # Mark complete
+        for i, ref in enumerate(refs):
+            orchestrator.residency.mark_gpu(ref, gpu_block_id=i, complete=True)
+        
+        # Offload some
+        offloaded = orchestrator.offload_manager.offload_fraction(refs, 0.5)
+        
+        # Check they transitioned to CPU
+        for ref in offloaded:
+            loc = orchestrator.residency.get(ref)
+            assert loc.residency == Residency.CPU
+        
+        # Not offloaded should still be GPU
+        for ref in refs:
+            if ref not in offloaded:
+                loc = orchestrator.residency.get(ref)
+                assert loc.residency == Residency.GPU
+
+    def test_cpu_memory_budget_respected(self, orchestrator_setup):
+        """Test that CPU memory budget is respected."""
+        orchestrator, cfg = orchestrator_setup
+        
+        # Add request
+        req_id = "req1"
+        block_ids = list(range(20))  # Many blocks
+        
+        orchestrator.sync_request_blocks(req_id, block_ids, num_computed_tokens=320)
+        
+        # Mark all complete
+        for i, ref in enumerate(orchestrator._request_blocks[req_id]):
+            orchestrator.residency.mark_gpu(ref, gpu_block_id=i % 128, complete=True)
+        
+        # Try to offload all
+        refs = list(orchestrator._request_blocks[req_id])
+        offloaded = orchestrator.offload_manager.offload_fraction(refs, 0.9)
+        
+        # CPU pool should not exceed budget
+        cpu_used = cfg.num_cpu_slots - orchestrator.offload_manager._cpu_pool.num_free
+        assert cpu_used <= cfg.num_cpu_slots
+
+    def test_scoring_triggered_on_prefill_complete(self, orchestrator_setup):
+        """Test that scoring happens on prefill complete."""
+        orchestrator, _ = orchestrator_setup
+        
+        req_id = "req1"
+        block_ids = [0, 1, 2]
+        
+        orchestrator.sync_request_blocks(req_id, block_ids, num_computed_tokens=50)
+        
+        # Mark complete
+        for i, ref in enumerate(orchestrator._request_blocks[req_id]):
+            orchestrator.residency.mark_gpu(ref, gpu_block_id=i, complete=True)
+        
+        # Blocks should be scored when marked complete in sync_request_blocks
+        refs = orchestrator._request_blocks[req_id]
+        assert len(orchestrator._scored) == 3
+        
+        # After prefill complete, offload should happen
+        orchestrator.on_prefill_complete(req_id)
+        
+        assert len(orchestrator._scored) == 3

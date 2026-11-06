@@ -1,0 +1,14 @@
+# Test rows, written by make_sweeps.py. Do not edit by hand.
+group: final_vkv_qwen3-4b
+model: Qwen/Qwen3-4B-Instruct-2507
+ratio: 0.9375
+max_context_length: 200000
+arms:
+- vkv_final_kvzip
+- vkv_final_fastkvzip
+- vkv_final_perfect
+require_clean: true
+n_samples: 50
+cells:
+- dataset: ruler128k
+  task: qa_1

@@ -1,0 +1,15 @@
+# Test rows, written by make_sweeps.py. Do not edit by hand.
+group: final_baselines_qwen3-4b
+model: Qwen/Qwen3-4B-Instruct-2507
+ratio: 0.875
+max_context_length: 200000
+arms:
+- no_press
+- kvzip_c
+- fastkvzip
+- bernoulli_kvzip_c
+require_clean: true
+n_samples: 50
+cells:
+- dataset: ruler128k
+  task: niah_multivalue

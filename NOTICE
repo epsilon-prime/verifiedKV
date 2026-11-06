@@ -1,0 +1,7 @@
+This repository contains modified copies of third-party software under the Apache License 2.0.
+
+kvpress/ and evaluation/ are a fork of NVIDIA kvpress (https://github.com/NVIDIA/kvpress), version 0.5.4. The fork adds
+presses and benchmark loaders used by VerifiedKV. Upstream notebooks, tests and CI files are omitted.
+
+serving/vllm-0.29.0/ is a modified copy of vLLM 0.29.0 (https://github.com/vllm-project/vllm). Upstream documentation,
+tests, examples and CI files are omitted. Its license is in serving/vllm-0.29.0/LICENSE.
