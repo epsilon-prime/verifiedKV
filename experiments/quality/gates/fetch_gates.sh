@@ -13,5 +13,8 @@ if [ ! -f "$f" ]; then
   curl -fL -o "$f" "$GATE_URL"
 fi
 f=qwen3-4b-instruct-2507/q4_dim16_sink16.pt
-[ -f "$f" ] || { mkdir -p "$(dirname "$f")"; cp -L "$(hf download Jang-Hyun/Fast-KVzip "$f")" "$f"; }
+if [ ! -f "$f" ]; then
+  mkdir -p "$(dirname "$f")"
+  python -c "import shutil, sys; from huggingface_hub import hf_hub_download as d; shutil.copy(d('Jang-Hyun/Fast-KVzip', sys.argv[1]), sys.argv[1])" "$f"
+fi
 sha256sum -c SHA256SUMS

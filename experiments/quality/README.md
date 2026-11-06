@@ -4,7 +4,7 @@
 
 ```bash
 cd experiments/quality
-export CONDA_ENV=verifiedkv HF_HOME=/path/to/hf
+export HF_HOME=/path/to/hf
 ./download.sh qwen3-4b qwen3.5-9b ministral3-8b    # models, datasets and gates; needs internet access
 source env.sh
 ```

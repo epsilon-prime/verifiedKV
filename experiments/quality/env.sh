@@ -2,7 +2,7 @@
 #   source env.sh            (from any folder)
 # Paths you may override BEFORE sourcing (defaults in brackets):
 #   CONDA_SH       conda's profile script     [$HOME/miniforge3/etc/profile.d/conda.sh]
-#   CONDA_ENV      the conda env               [kvpress-final]
+#   CONDA_ENV      the conda env               [verifiedkv]
 #   VENV           a virtualenv folder to use instead of conda          [unset]
 #   HF_HOME        Hugging Face cache (models, datasets)   [$HOME/hf]
 #   KVPRESS_SCORE_CACHE   KVzip score cache, filled on first use and shared by all arms and ratios
@@ -13,7 +13,7 @@ if [ -n "${VENV:-}" ]; then             # a plain virtualenv instead of conda (e
   source "$VENV/bin/activate"
 else
   source "${CONDA_SH:-$HOME/miniforge3/etc/profile.d/conda.sh}"
-  conda activate "${CONDA_ENV:-kvpress-final}"
+  conda activate "${CONDA_ENV:-verifiedkv}"
 fi
 export FINAL_GRID
 export HF_HOME="${HF_HOME:-$HOME/hf}"
